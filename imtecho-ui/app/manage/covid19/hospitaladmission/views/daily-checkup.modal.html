@@ -1,0 +1,488 @@
+<div class="modal-header">
+    <h4 class="text">Add Daily Status</h4>
+</div>
+<form role="form" name="covid19ACDStatusModalCtrl.covid19ACDStatusModalCtrlForm" id="mangeCovid19CaseForm" novalidate>
+    <div class="modal-body" style="overflow: inherit;max-height: none">
+        <div class="inline-form">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <strong> <label for="name" control-label>Day Number:</label></strong>
+                                <label style="white-space: initial;" for="name"
+                                    ng-bind-html="covid19ACDStatusModalCtrl.dayNumber">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <strong> <label for="name" control-label>Name:</label></strong>
+                                <label style="white-space: initial;" for="name"
+                                    ng-bind-html="covid19ACDStatusModalCtrl.covid19ACDStatus.memberDetail">
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <strong> <label for="name" control-label>Admission Date:</label></strong>
+                                <label style="white-space: initial;" for="name"
+                                    ng-bind="covid19ACDStatusModalCtrl.covid19ACDStatus.admissionDate">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <strong> <label for="name" control-label>Ward Name:</label></strong>
+                                <label style="white-space: initial;" for="name"
+                                    ng-bind="covid19ACDStatusModalCtrl.covid19ACDStatus.wardName">
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <strong> <label for="name" control-label>Bed number:</label></strong>
+                                <label style="white-space: initial;" for="name"
+                                    ng-bind="covid19ACDStatusModalCtrl.covid19ACDStatus.bedNumber">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <div>
+                        <div class="form-group">
+                            <validate for="date" required-msg="Please select visit date">
+                                <label for="date" control-label>Visit Date
+                                </label>
+                                <input name="date" type="text" datepicker id="date"
+                                    min-date = "covid19ACDStatusModalCtrl.visitDateLimit"
+                                    max-date = "covid19ACDStatusModalCtrl.visitMaxDateLimit"                                    
+                                    ng-change="covid19ACDStatusModalCtrl.onServiceDateChange();"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.serviceDate" ng-required="true"
+                                    style="float: right !important;" form-control>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <label for="clinicallyCured" control-label style="white-space: normal">
+                                Clinically Clear
+                            </label>
+                            <label class="control control-radio mt-10"> No
+                                <input type="radio" name="clinicallyCured" icheck
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.clinicallyCured"
+                                    ng-value="false" />
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label class="control control-radio mt-10"> Yes
+                                <input type="radio" name="clinicallyCured" icheck
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.clinicallyCured"
+                                    ng-value="true" />
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group" ng-if="covid19ACDStatusModalCtrl.dayNumber === 1">
+                            <label for="admissionDate" style="float: left;" control-label>Symptoms</label>
+                            <label control-label class="control control-checkbox">Fever
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.hasFever">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Cough
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.hasCough">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Shortness of Breath
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.hasShortnessBreath">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">SARI
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isSari">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group" ng-if="covid19ACDStatusModalCtrl.dayNumber === 1">
+                            <label for="admissionDate" style="float: left;" control-label>Comorbidity</label>
+                            <label control-label class="control control-checkbox">HIV
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isHIV">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Heart Patient
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isHeartPatient">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Diabetes
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isDiabetes">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">COPD
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isCOPD">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group " ng-if="covid19ACDStatusModalCtrl.dayNumber === 1">
+                            <label for="admissionDate" style="float: left;" control-label>&nbsp;</label>
+                            <label control-label class="control control-checkbox">Hypertension
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isHypertension">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Renal Condition
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isRenalCondition">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Immunocompromized
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isImmunocompromized">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group " ng-if="covid19ACDStatusModalCtrl.dayNumber === 1">
+                            <label for="admissionDate" style="float: left;" control-label>&nbsp;</label>
+                            <label control-label class="control control-checkbox">Malignancy
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isMalignancy">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Other
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isOtherCoMobidity">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <validate style="display:inline-block;" for="otherComorbidity"
+                                required-msg="Please enter other comorbidity"
+                                ng-if="covid19ACDStatusModalCtrl.covid19ACDStatus.isOtherCoMobidity">
+                                <input name="otherComorbidity" type="text" id="otherComorbidity" style="width: 200px;"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.otherCoMobidity"
+                                    class="form-control cst-form-control" ng-required="true" form-control>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <validate for='healthStatus' required-msg="Select Health Status">
+                                <label for="healthStatus" control-label>Health Status</label>
+                                <select class="form-control cst-form-control" form-control
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.healthStatus"
+                                    name="healthStatus" id="gender" required>
+                                    <option value selected>--Select--</option>
+                                    <option value="Asymptomatic">Asymptomatic</option>
+                                    <option value="Stable-Mild">Stable-Mild</option>
+                                    <option value="Stable-Moderate">Stable-Moderate</option>
+                                    <option value="Critical">Critical</option>
+
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <label for="onVentilator" control-label style="white-space: normal">
+                                Select
+                            </label>
+                            <label class="control control-radio mt-10"> On Air
+                                <input type="radio" name="onVentilator" icheck
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.onAir" ng-change="covid19ACDStatusModalCtrl.covid19ACDStatus.onVentilator = false;
+                                           covid19ACDStatusModalCtrl.covid19ACDStatus.ventilatorType1 = false;
+                                           covid19ACDStatusModalCtrl.covid19ACDStatus.ventilatorType2 = false;
+                                                       covid19ACDStatusModalCtrl.covid19ACDStatus.onO2 = false;
+                                                       covid19ACDStatusModalCtrl.covid19ACDStatus.isNone = false;"
+                                    ng-value="true" />
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label class="control control-radio mt-10"> BiPAP
+                                <input type="radio" name="onVentilator" icheck
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.ventilatorType1" ng-change="covid19ACDStatusModalCtrl.covid19ACDStatus.onAir = false;
+                                           covid19ACDStatusModalCtrl.covid19ACDStatus.onVentilator = true;
+                                           covid19ACDStatusModalCtrl.covid19ACDStatus.ventilatorType2 = false;
+                                                       covid19ACDStatusModalCtrl.covid19ACDStatus.onO2 = false;
+                                                       covid19ACDStatusModalCtrl.covid19ACDStatus.isNone = false;"
+                                    ng-value="true" />
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label class="control control-radio mt-10"> Venti
+                                <input type="radio" name="onVentilator" icheck
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.ventilatorType2" ng-change="covid19ACDStatusModalCtrl.covid19ACDStatus.onAir = false;
+                                           covid19ACDStatusModalCtrl.covid19ACDStatus.onVentilator = true;
+                                           covid19ACDStatusModalCtrl.covid19ACDStatus.ventilatorType1 = false;
+                                                       covid19ACDStatusModalCtrl.covid19ACDStatus.onO2 = false;
+                                                       covid19ACDStatusModalCtrl.covid19ACDStatus.isNone = false;"
+                                    ng-value="true" />
+                                <div class="control_indicator"></div>
+                            </label>
+
+                            <label class="control control-radio mt-10"> On O2
+                                <input type="radio" name="onVentilator" icheck
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.onO2" ng-change="covid19ACDStatusModalCtrl.covid19ACDStatus.onVentilator = false;
+                                           covid19ACDStatusModalCtrl.covid19ACDStatus.ventilatorType1 = false;
+                                           covid19ACDStatusModalCtrl.covid19ACDStatus.ventilatorType2 = false;
+                                                       covid19ACDStatusModalCtrl.covid19ACDStatus.onAir = false;
+                                                       covid19ACDStatusModalCtrl.covid19ACDStatus.isNone = false;"
+                                    ng-value="true" />
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="isLabTest" style="white-space: initial" class="control-label">Advise Covid19 Lab
+                                Test</label>
+                            <label control-label class="control control-checkbox">
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isLabTest"
+                                    ng-disabled="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isLabTestInProgress">
+                                <div class="control_indicator"></div>
+                                <span class="text-muted"
+                                    ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isLabTestInProgress">
+                                    (Another lab test is in progress)</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="isLabTest" class="control-label">Ward Change</label>
+                            <label control-label class="control control-checkbox">
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isWardChange"
+                                    ng-change="covid19ACDStatusModalCtrl.getBedByWard(covid19ACDStatusModalCtrl.covid19ACDStatus.wardId)">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group" ng-if="covid19ACDStatusModalCtrl.covid19ACDStatus.isWardChange">
+                            <validate for='selectWard' required-msg="Please select Ward ">
+                                <label for="selectWard" control-label>Select Ward</label>
+                                <select class="form-control cst-form-control" form-control name="selectWard"
+                                    id="selectWard" required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.wardId" ng-options="ward.id as ward.ward_name for
+                                                            ward in  covid19ACDStatusModalCtrl.wardList">
+                                    <option value="" selected>--Select--</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.wardId
+                                                && covid19ACDStatusModalCtrl.covid19ACDStatus.isWardChange">
+                            <validate for='bedno' required-msg="Please select bed no ">
+                                <label for="bedno" control-label>Select Bed</label>
+                                <input type="text" class="form-control cst-form-control" form-control
+                                    placeholder="Enter enter bed no" name="bedno" id="bedno" required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.bedNumber" form-control>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <validate for="name" required-msg="Please enter details">
+                                <label for="name" control-label>Vitals Section </label>
+                                <input type="number" class="form-control cst-form-control" form-control
+                                    style="width:155px; margin-bottom: 10px;" placeholder="Enter Temperature"
+                                    name="temprature" id="temprature"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.temprature" ng-required="false"
+                                    form-control>
+                                <input type="number" class="form-control cst-form-control" form-control
+                                    style="width:155px" placeholder="Enter Pulse Rate" name="pulseRate" id="pulseRate"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.pulseRate" ng-required="false"
+                                    form-control>
+                                <input type="number" class="form-control cst-form-control" form-control
+                                    style="width:155px; " placeholder="Enter Respiration Rate" name="respirationRate"
+                                    id="respirationRate"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.respirationRate"
+                                    ng-required="false" form-control>
+                                <input type="number" class="form-control cst-form-control" form-control
+                                    style="width:155px;margin-left:160px;" placeholder="Systolic" name="bpSytolic"
+                                    id="bpSytolic" ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.bpSystolic"
+                                    ng-required="false" form-control>/
+                                <input type="number" class="form-control cst-form-control" form-control
+                                    style="width:155px" placeholder="Dialostic" name="bpDialostic" id="bpDialostic"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.bpDialostic"
+                                    ng-required="false" form-control>
+                                <input type="number" class="form-control cst-form-control" form-control
+                                    style="width:155px" placeholder="Enter SPO2" name="sp02" id="sp02"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.sp02" ng-required="false"
+                                    form-control>
+                                <placeholder></placeholder>
+                            </validate>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="admissionDate" style="float: left;" control-label>Treatment</label>
+                            <label control-label class="control control-checkbox">Azithromycin
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.azithromycin">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Hydroxychloroquine
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.hydroxychloroquine">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Oseltamivir
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.oseltamivir">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Antibiotics
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.antibiotics">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="admissionDate" style="float: left;" control-label>Lab & Investigations</label>
+                            <label control-label class="control control-checkbox">X-RAY
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isXray">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">CT Scan
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isCtScan">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">ECG
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isECG">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Serum Creatinine
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isSerum">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">SGPT
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isSGPT">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">H1N1 Test
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isH1N1">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">Blood Culture
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isBlood">
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label control-label class="control control-checkbox">G6PD
+                                <input checked="checked" type="checkbox"
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.isG6PD">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group bottom-spacer-20"
+                            ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isXray">
+                            <validate for='xRAYImpression' required-msg="Enter X-RAY Impression">
+                                <label for="xRAYImpression" control-label>X-RAY Impression</label>
+                                <textarea form-control maxlength="1024" rows="2" cols="47"
+                                    class="form-control cst-form-control" form-control required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.xRAYImpression"
+                                    name="xRAYImpression">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group bottom-spacer-20"
+                            ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isCtScan">
+                            <validate for='cTScanImpression' required-msg="Enter CT Scan Impression">
+                                <label for="cTScanImpression" control-label>CT Scan Impression</label>
+                                <textarea form-control maxlength="1024" rows="2" cols="47"
+                                    class="form-control cst-form-control" form-control required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.cTScanImpression"
+                                    name="cTScanImpression">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group bottom-spacer-20"
+                            ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isECG">
+                            <validate for='eCGImpression' required-msg="Enter ECG Impression">
+                                <label for="eCGImpression" control-label>ECG Impression</label>
+                                <textarea form-control maxlength="1024" rows="2" cols="47"
+                                    class="form-control cst-form-control" form-control required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.eCGImpression"
+                                    name="eCGImpression">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group bottom-spacer-20"
+                            ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isSerum">
+                            <validate for='serumCreatinineImpression' required-msg="Enter Serum Creatinine Impression">
+                                <label for="serumCreatinineImpression" style="white-space: initial;" control-label>Serum
+                                    Creatinine Impression</label>
+                                <textarea form-control maxlength="1024" rows="2" cols="47"
+                                    class="form-control cst-form-control" form-control required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.serumCreatinineImpression"
+                                    name="serumCreatinineImpression">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group bottom-spacer-20"
+                            ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isSGPT">
+                            <validate for='sGPTImpression' required-msg="Enter SGPT Impression">
+                                <label for="sGPTImpression" control-label>SGPT Impression</label>
+                                <textarea form-control maxlength="1024" rows="2" cols="47"
+                                    class="form-control cst-form-control" form-control required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.sGPTImpression"
+                                    name="sGPTImpression">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group bottom-spacer-20"
+                            ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isH1N1">
+                            <validate for='h1N1TestImpression' required-msg="Enter H1N1 Test Impression">
+                                <label for="h1N1TestImpression" control-label>H1N1 Test Impression</label>
+                                <textarea form-control maxlength="1024" rows="2" cols="47"
+                                    class="form-control cst-form-control" form-control required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.h1N1TestImpression"
+                                    name="h1N1TestImpression">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group bottom-spacer-20"
+                            ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isBlood">
+                            <validate for='bloodCultureImpression' required-msg="Enter Blood Culture Impression">
+                                <label for="bloodCultureImpression" style="white-space: initial;" control-label>Blood
+                                    Culture Impression</label>
+                                <textarea form-control maxlength="1024" rows="2" cols="47"
+                                    class="form-control cst-form-control" form-control required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.bloodCultureImpression"
+                                    name="bloodCultureImpression">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group bottom-spacer-20"
+                            ng-if="!!covid19ACDStatusModalCtrl.covid19ACDStatus.isG6PD">
+                            <validate for='G6PDImpression' required-msg="G6PD Impression">
+                                <label for="G6PDImpression" control-label>G6PD Impression</label>
+                                <textarea form-control maxlength="1024" rows="2" cols="47"
+                                    class="form-control cst-form-control" form-control required
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.G6PDImpression"
+                                    name="G6PDImpression">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group bottom-spacer-20">
+                            <validate for='remarks' required-msg="Enter remarks">
+                                <label for="remarks" control-label>Remarks</label>
+                                <textarea form-control maxlength="1024" rows="4" cols="47"
+                                    class="form-control cst-form-control" form-control
+                                    ng-model="covid19ACDStatusModalCtrl.covid19ACDStatus.remarks" name="remarks">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" ng-click="covid19ACDStatusModalCtrl.submit()">Save</button>
+        <button class="btn btn-secondary" ng-click="covid19ACDStatusModalCtrl.cancel()">Cancel</button>
+    </div>
+</form>

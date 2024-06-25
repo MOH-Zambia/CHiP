@@ -1,0 +1,73 @@
+<div class="modal-header">
+    {{labelController.editModal?'Edit Label':'Add Label'}}
+    <button type="button" class="close" aria-label="Close" ng-click="labelController.close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form role="form" name="labelController.languageForm" novalidate>
+        <div class="inline-form">     
+            <div class="form-group mb-3">
+                <div class="control-label pb-2" ng-if="labelController.addAppFlag"> <b>Label already exists in {{labelController.existingApps}}.</b> </div>
+                <validate for='app' required-msg="Select app">
+                    <label for='app' class="control-label" control-label>App</label>
+                    <select chosen-directive="labelController.appList" class="form-control cst-form-control " id="app"
+                        name="app" form-control ng-options="app.id as app.appValue for app in labelController.appList"
+                        multiple ng-model="labelController.apps" ng-required="!labelController.editModal">
+                    </select>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <ng-container ng-if="!labelController.addAppFlag">
+                <div class="form-group">
+                    <validate for='labelValueEn' required-msg="Enter Value">
+                        <label for="labelValueEn" class="control-label" control-label>English</label>
+                        <input type="text" class="form-control cst-form-control col-9" id="labelValueEn" form-control name="labelValueEn"
+                            ng-model="labelController.englishValue" ng-pattern="/.*/" maxlength="250" required />
+                            <button class="btn btn-primary" ng-click="labelController.translate()">Translate</button>         
+                            <placeholder></placeholder>
+                    </validate>
+                </div>
+                 <div class="form-group" ng-repeat="lang in labelController.translations">
+                    <validate for='labelValue' required-msg="Enter Value">
+                        <label for="labelValue" class="control-label" control-label>{{lang.language}}</label>
+                        <input type="text" class="form-control cst-form-control" value="" form-control name="labelValue"
+                            ng-pattern="/.*/" ng-blur="labelController.valueChanged(lang.id,lang.translation)"
+                            ng-model="lang.translation" maxlength="250" required />
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <ng-container ng-if="labelController.translations === undefined">
+                    <div class="form-group" ng-repeat="lang in labelController.languageList" ng-if="lang.languageValue != 'English'">
+                        <validate for='labelValue' required-msg="Enter Value">
+                            <label for="labelValue" class="control-label" control-label>{{lang.languageValue}}</label>
+                            <input type="text" class="form-control cst-form-control " value="" form-control name="labelValue"
+                                ng-pattern="/.*/" ng-blur="labelController.valueChanged(lang.id,translation)"
+                                ng-model="translation" maxlength="250" required />
+                            <placeholder></placeholder>
+                        </validate>
+                    </div>
+                </ng-container>
+                <button type="button" class="btn btn-primary" ng-if="!labelController.editModal"
+                    ng-click="labelController.save()">Save</button>
+            </ng-container>
+            <ng-container ng-if="labelController.addAppFlag">
+                <div class="form-group" ng-repeat="data in labelController.fieldsData">
+                    <validate for='labelValue' required-msg="Enter Value">
+                        <label for="labelValue" class="control-label" control-label>{{data.languagevalue}}</label>
+                        <input type="text" class="form-control cst-form-control" value="" form-control name="labelValue"
+                            ng-pattern="/.*/" ng-change = "labelController.addAppTranslate(data)" ng-model-options="{debounce:1000}"
+                            ng-model="data.value" maxlength="250" required />
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <button type="button" class="btn btn-primary" ng-if="!labelController.editModal"
+                    ng-click="labelController.addApps()">Save</button>
+            </ng-container>   
+        </div>
+    </form>
+
+
+
+
+</div>

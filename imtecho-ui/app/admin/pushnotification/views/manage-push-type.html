@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ctrl.headerText}}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="ctrl.managePushNotificationTypeForm" id="managePushNotificationTypeForm"
+                        novalidate>
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="card-sub-title">
+                                    Push Notification Type details
+                                </h5>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <validate for="type" required-msg="Enter Notification Type Name"
+                                        pattern-msg="Please Enter Type Name Without a Space">
+                                        <label for="type" control-label>Name</label>
+                                        <input type="text" class="form-control cst-form-control" form-control
+                                            name="type" id="type" placeholder="Enter Notification Type Name"
+                                            ng-pattern="/^[A-Za-z1-9_]*$/" maxlength="50" ng-model="ctrl.typeObj.type"
+                                            required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="message" required-msg="Enter Notification Message">
+                                        <label for="message" control-label>Notification Message</label>
+                                        <textarea class="form-control cst-form-control" form-control rows="4" cols="50"
+                                            ng-model="ctrl.typeObj.message" name="message" id="message" maxlength="200"
+                                            placeholder="Enter Notification Message" required></textarea>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Attachment
+                                    </label>
+                                    <span class="form-group" flow-init="ctrl.fileUploadOptions"
+                                        flow-file-added="ctrl.onFileAdded($file, $event, $flow)"
+                                        flow-files-submitted="ctrl.onFileSubmitted($files, $event, $flow)"
+                                        flow-file-success="ctrl.onFileSuccess($file, $message, $flow)"
+                                        flow-file-error="ctrl.onFileError($file, $message);">
+                                        <div style="display: inline-flex;">
+                                            <button style="height: 33px;" type="button" flow-attrs="{accept:'image/*'}"
+                                                flow-btn class="btn btn-primary" ng-disabled="ctrl.isFileUploading">
+                                                Upload File
+                                            </button>
+                                        </div>
+                                        <span class="text-danger" ng-if="ctrl.filePayload.isError">Please use
+                                            only
+                                            supported file types</span>
+                                        <div ng-repeat="file in ctrl.filePayload.flow.files">
+                                            <div ng-if="ctrl.isFileUploadProcessing[file.name]"
+                                                style="margin-bottom: 0; width: max-content;"
+                                                class="mt-2 alert alert-success ">
+                                                <span class="text-center">{{file.name}} Uploading...
+                                                    <i aria-hidden="true" class="fa fa-cog fa-spin fa-1x"></i>
+                                                </span>
+                                            </div>
+                                            <div ng-if="!ctrl.isFileUploadProcessing[file.name]"
+                                                style="margin-bottom: 0; width: max-content;" class="mt-2"
+                                                style="float:left">
+                                                <span class="text-center alert alert-success"> {{file.name}}
+                                                    Uploaded Successfully
+                                                    <i aria-hidden="true" class="fa fa-check fa-1x"></i>
+                                                </span>
+                                                <button class="btn btn-danger" type="button"
+                                                    style="cursor: pointer; margin-left: 6px;"
+                                                    ng-click="ctrl.onRemoveFile(file.name)">
+                                                    Remove <i aria-hidden="true" ng-if="ctrl.isFileRemoving[file.name]"
+                                                        class="fa fa-cog fa-spin fa-1x"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <validate for="description">
+                                        <label for="description" control-label>Notification Description</label>
+                                        <input type="text" class="form-control cst-form-control" form-control
+                                            name="description" id="description"
+                                            placeholder="Enter Notification Description" maxlength="100"
+                                            ng-model="ctrl.typeObj.description">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="heading" required-msg="Enter Notification Heading">
+                                        <label for="heading" control-label>Notification Heading</label>
+                                        <input type="text" class="form-control cst-form-control" form-control
+                                            name="heading" id="heading" placeholder="Enter Notification Heading"
+                                            ng-model="ctrl.typeObj.heading" maxlength="50" required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card-footer mt-5">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary" ng-click="ctrl.saveOrUpdated()">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    Save & Continue
+                                </button>
+                                <button class="btn btn-secondary"
+                                    ui-sref="techo.manage.pushnotificationtype">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

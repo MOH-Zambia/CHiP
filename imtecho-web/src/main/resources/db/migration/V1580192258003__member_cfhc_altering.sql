@@ -1,0 +1,4 @@
+alter table public.imt_member_cfhc_master
+add column family_id integer;
+alter table public.imt_member_cfhc_master
+rename column is_filling_any_weekness to is_feeling_any_weakness;

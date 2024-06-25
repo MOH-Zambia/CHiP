@@ -1,0 +1,86 @@
+<div class="modal-header">
+    {{language.showFields?'Add Language':'Manage Language'}}
+    <button type="button" class="close" aria-label="Close" ng-click="language.close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<ng-container ng-if="language.showFields">
+    <div class="modal-body">
+        <form role="form" name="language.form" novalidate>
+            <div class="inline-form">
+               <div class="form-group">
+                    <validate for="availableLangs" required-msg="Select Language">
+                        <label for="availableLangs" control-label>Language</label>
+                        <select id="availableLangs" name="availableLangs" class="form-control cst-form-control"
+                            ng-model="language.languageToBeAdded"
+                            ng-options="lang as lang.value for lang in language.availableLanguages"
+                            chosen-directive="language.availableLanguages" form-control required>
+                        </select>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+            </div>
+        </form>
+        <button type="button" class="btn btn-primary" ng-click="language.saveLang()">Save</button>
+        <button type="button" class="btn btn-secondary" ng-click="language.toggleFields()">Cancel</button>
+    </div>
+</ng-container>
+<div class="container-fluid">
+    <button type="button" class="btn btn-primary float-right mt-2" ng-if="!language.showFields"
+        ng-click="language.addLang()">Add Language</button>
+</div>
+<div class="table-section" style="padding-top: 0px;">
+    <div class="card-body col-12 col-md-12">
+        <div class="cst-table-responsive cst-table">
+            <table aria-describedby="table"
+                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                <colgroup>
+                    <col style="width: 30%;">
+                    <col style="width: 30%;">
+                    <col style="width: 20%;">
+                    <col style="width: 20%;">
+                </colgroup>
+                <thead class="cst-thead">
+                    <tr>
+                        <th class="white-space-unset" id="language">Language</th>
+                        <th class="white-space-unset" id="orientation">Orientation</th>
+                        <th class="white-space-unset" id="state">State</th>
+                        <th class="white-space-unset" id="action">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="cst-tbody" ng-repeat="lang in language.languageList">
+                    <tr>
+                        <td>
+                            {{lang.languageValue| emptylabel}}
+                        </td>
+                        <td>
+                            {{lang.isLtr===true?'Left to Right':'Right to Left'}}
+                        </td>
+                        <td>
+                            {{lang.active?'Active':'Inactive'| emptylabel}}
+                        </td>
+                        <td class="text-center" ng-if="lang.languageKey === 'en'">-</td>
+                        <td class="action-cell" ng-if="lang.languageKey !== 'en'">
+                            <ul class="action-item">
+                                <!-- <li><a href="#" ng-click="language.edit(lang)" class="action-icon edit-icon"></a>
+                                </li> -->
+                                <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <a href="#" class="action-icon more-icon"></a>
+                                    <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                        aria-labelledby="moreDropdown">
+                                        <li>
+                                            <a href="javascript:void(0)" ng-click="language.toggleActive(lang)">
+                                                <strong>Mark as </strong> {{lang.active===true
+                                                ? 'Inactive': 'Active'}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

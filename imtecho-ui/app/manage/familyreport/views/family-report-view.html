@@ -1,0 +1,369 @@
+<div class="container-fluid report-view">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div ng-if="familyreport.reports.length == 0">
+                <div class="no-data-placeholder">
+                    <h5>No Reports available</h5>
+                </div>
+            </div>
+            <div class="float-right" ng-if="familyreport.reports.length > 0">
+                <span ng-click="familyreport.printReport()" style="cursor: pointer;font-size: 20px"
+                    title="Print Report"><em class="fa fa-print" uib-tooltip="Print pdf"></em></span>
+            </div>
+            <div class="cst-table table-responsive table-set-height" id="report-scroll"
+                ng-if="familyreport.reports.length > 0">
+                <table aria-describedby="table"
+                    class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th id="selectAll" class="white-space-unset">
+                                <label class="control control-checkbox">
+                                    <input type="checkbox" ng-model="familyreport.allSelected"
+                                        ng-change="familyreport.selectAll()" />
+                                    <div class="control_indicator checkbox-success"></div>
+                                    Select a Family to print report
+                                </label>
+                            </th>
+                            <th id="familyId" class="white-space-unset">Family Id</th>
+                            <th id="memberNames" class="white-space-unset">Member Names</th>
+                            <th id="headOfFamily" class="white-space-unset">Head of the Family</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                        infinite-scroll='familyreport.retrieveAll(false)' infinite-scroll-container='"#report-scroll"'
+                        infinite-scroll-immediate-check="false">
+                        <tr ng-repeat="reportObject in familyreport.reports">
+                            <td>
+                                <label class="control control-checkbox">
+                                    <input type="checkbox" ng-model="reportObject.isSelected"
+                                        ng-change="familyreport.changeSelection(reportObject.isSelected)">
+                                    <div class="control_indicator checkbox-success"></div>
+                                </label>
+                            </td>
+                            <td ng-bind="reportObject.family_id|emptylabel"></td>
+                            <td ng-bind="reportObject.member_name|emptylabel"></td>
+                            <td ng-bind="reportObject.contact_person|emptylabel"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="filter-div active no-print">
+    <span class="filter-toggle" ng-click="familyreport.toggleFilter()">Filter</span>
+    <div class="row">
+        <div class="col-12">
+            <h5 class="filter-div-title">Filter</h5>
+        </div>
+    </div>
+    <div class="filter-div-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <ng-form name="familyreport.locationForm">
+                        <location-directive ng-model="familyreport.selectedLocationId"
+                            selected-location="familyreport.selectedLocation" required-upto-level="4"
+                            template-type="'inline'" fetch-according-to-user-aoi="true">
+                        </location-directive>
+                    </ng-form>
+                </div>
+                <div class="form-group">
+                    <label class="control control-checkbox"> Family has Pregnant Women
+                        <input type="checkbox" name="isPregnantWomen" icheck ng-model="familyreport.isPregnantWomen" />
+                        <div class="control_indicator"></div>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="control control-checkbox"> Family has Children with age less than 5
+                        Years
+                        <input type="checkbox" name="children" icheck ng-model="familyreport.moreThan3children" />
+                        <div class="control_indicator"></div>
+                    </label>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary close-filter" ng-click="familyreport.toggleFilter()">Close</button>
+                    <button type="submit" class="btn btn-primary search-filter"
+                        ng-click="familyreport.retrieveFilteredReports()">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="printableDiv" ng-hide="true">
+    <div class="print-wrapper" ng-repeat="report in familyreport.printReportData">
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <div class="print-logo text-center">
+                    <div><img alt="image" src="{{familyreport.imagesPath + 'web_logo.png'}}"></div>
+                    <h1 class=" main-title">Family Health Survey (Register No. - 2)</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h2 class="sub-title">General Information</h2>
+                    </div>
+                    <div class="box-body">
+                        <div class="row-filter">
+
+                            <div class="col-5 border-right">
+                                <div class="row-filter">
+                                    <div class="col-6">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type">કુટુંબ ના વડા : </span>
+                                                <span class="data" ng-bind="report.hof | emptylabel"> </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type">કુટુંબનો ધર્મ : </span>
+                                                <span class="data" ng-bind="report.religion | emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type">કુટુંબની જ્ઞાતિ : </span>
+                                                <span class="data" ng-bind="report.caste|emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type"> બી.પી.એલ. : </span>
+                                                <span class="data"><span ng-if="report.bpl_flag">હા</span><span
+                                                        ng-if="!report.bpl_flag">ના</span> </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type">બી.પી.એલ કાર્ડનંબર : </span>
+                                                <span class="data" ng-bind="report.bpl_card_number|emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type">આર.એસ.બી.વાય નંબર : </span>
+                                                <span class="data"
+                                                    ng-bind="report.rsby_card_number | emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type"> સીજનલ માઈગ્રન્ટ : </span>
+                                                <span class="data"><span ng-if="report.migratory_flag">હા</span><span
+                                                        ng-if="!report.migratory_flag">ના</span> </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type"> ઘરમાં શૌચાલય છે? : </span>
+                                                <span class="data"><span
+                                                        ng-if="report.toilet_available_flag">હા</span><span
+                                                        ng-if="!report.toilet_available_flag">ના</span> </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type">માં વાત્સલ્ય કાર્ડ નંબર : </span>
+                                                <span class="data"
+                                                    ng-bind="report.maa_vatsalya_number | emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 border-right">
+                                <div class="row-filter">
+                                    <div class="col-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type"> સરનામું : </span>
+                                                <span class="data" ng-bind-html="report.address | emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type"> ફેમિલી નંબર : </span>
+                                                <span class="data" ng-bind="report.family_id | emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type"> ઘર નંબર : </span>
+                                                <span class="data" ng-bind="report.house_number | emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type">મોબાઈલ નંબર : </span>
+                                                <span class="data"
+                                                    ng-bind="report.hof_contact_details|emptylabel"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="row-filter">
+                                    <div class="col-6" ng-repeat="locationType in report.loc_details">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type"
+                                                    ng-bind="locationType.location_type+':'| emptylabel"> </span>
+                                                <span class="data" ng-bind="locationType.location_name | emptylabel">
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-15 mt-30">
+                <div class="section-title">
+                    <h4 class="text"></h4>
+                </div>
+                <div>
+                    <table class="table print-table table-sm table-striped table-bordered" aria-describedby="table">
+                        <thead>
+                            <tr>
+                                <th id="srno" rowspan="2" style="width:3%">ક્રમ </th>
+                                <th id="name" rowspan="2" style="width:13%">નામ </th>
+                                <th id="diseases" rowspan="2" style="width:10%">રોગો</th>
+                                <th id="healthId" rowspan="2">હેલ્થ આઈડી નંબર </th>
+                                <th id="age" rowspan="2">ઉંમર (વર્ષ -મહિનો)</th>
+                                <th id="casteGender" rowspan="2">જાતિ <br> પુરુષ/સ્ત્રી </th>
+                                <th id="maritalStatus" rowspan="2">વૈવાહિક દરજ્જો </th>
+                                <th id="pregnant" rowspan="2">હાલમાં સગર્ભા છે?</th>
+                                <th id="method" rowspan="2">કુ.ક.ની પધ્ધતિ અપનાવેલ છે?</th>
+                                <th id="school" rowspan="2">શાળાએ જાય છે? હા/ના </th>
+                                <th id="mobileNumber" rowspan="2">મોબાઇલ નંબર </th>
+                                <th id="bankDetails" colspan="2" class="border text-center">કુટુંબ સભ્યોના બેંક ખાતાની
+                                    વિગત </th>
+                            </tr>
+                            <tr>
+                                <th id="accountNumber">ખાતા નંબર </th>
+                                <th id="ifsc">IFSC Code No</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in report.member_detail"
+                                ng-if="report && report.member_detail.length > 0">
+                                <td>{{$index + 1}}.</td>
+                                <td ng-bind="data.name"> </td>
+                                <td>
+                                    <img ng-if="data.eye_issue_detail && data.eye_issue_detail !== null" alt="image"
+                                        class="icon" src="img/eyes.png">
+                                    <img ng-if="data.current_disease_detail && data.current_disease_detail !== null"
+                                        alt="image" class="icon" src="img/non-communicable.png">
+                                    <img ng-if="data.chronic_disease_detail && data.chronic_disease_detail !== null"
+                                        alt="image" class="icon" src="img/inborn.png">
+                                    <span
+                                        ng-if="data.eye_issue_detail == null && data.current_disease_detail == null && data.chronic_disease_detail == null">N.A</span>
+                                </td>
+                                <td ng-bind="data.unique_health_id|emptylabel"></td>
+                                <td ng-if="data.year==null && data.month==null && data.day==null">N.A</td>
+                                <td ng-if="data.year!=null || data.month!=null || data.day!=null"
+                                    ng-bind-template="{{data.year}} વર્ષ {{data.month}} મહિના {{data.day}} દિવસ"></td>
+                                <td>
+                                    <span ng-if="data.gender === 'M'">પુરુષ</span>
+                                    <span ng-if="data.gender === 'F'">સ્ત્રી</span>
+                                </td>
+                                <td ng-switch="data.marital_status">
+                                    <span ng-switch-when="630">અપરિણિત</span>
+                                    <span ng-switch-when="641">વિધવા</span>
+                                    <span ng-switch-when="629">પરિણિત</span>
+                                    <span ng-switch-when="642">ત્યક્તા</span>
+                                    <span ng-switch-when="643">વિધુર</span>
+                                    <span ng-switch-default>N.A</span>
+                                </td>
+                                <td><span ng-if="!data.is_pregnant">ના</span><span ng-if="data.is_pregnant">હા</span>
+                                </td>
+                                <td>
+                                    <span ng-if="data.family_planning_method !== null">હા</span>
+                                    <span ng-if="!data.family_planning_method || data.family_planning_method === null">
+                                        ના
+                                    </span>
+                                </td>
+                                <td>N.A </td>
+                                <td ng-bind="data.mobile_number | emptylabel"></td>
+                                <td ng-bind="data.account_number | emptylabel"></td>
+                                <td ng-bind="data.ifsc | emptylabel"></td>
+                            </tr>
+                            <tr ng-if="!report || report.member_detail.length === 0">
+                                <td colspan="12">No Data Available!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row" ng-if="report && report.member_detailForDiseases.length > 0">
+            <div class="col-12 mb-15">
+                <div>
+                    <table class="table print-table table-sm table-striped table-bordered" aria-describedby="table">
+                        <thead>
+                            <tr>
+                                <th id="srno" style="width:3%">ક્રમ </th>
+                                <th id="name" style="width:15%">પૂરું નામ </th>
+                                <th id="details"><img alt="image" class="icon" src="img/inborn.png"> ખોડખાપણની વિગત
+                                </th>
+                                <th id="eyeProblems"><img alt="image" class="icon" src="img/eyes.png"> આંખની તકલીફ </th>
+                                <th id="diseases"><img alt="image" class="icon" src="img/non-communicable.png">
+                                    બિન-સંચારી રોગો </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in report.member_detailForDiseases"
+                                ng-if="report && report.member_detailForDiseases.length > 0">
+                                <td>{{$index + 1}}.</td>
+                                <td ng-bind="data.name"> </td>
+                                <td ng-bind="data.chronic_disease_detail | emptylabel"></td>
+                                <td ng-bind="data.eye_issue_detail | emptylabel"></td>
+                                <td ng-bind="data.current_disease_detail | emptylabel"></td>
+                            </tr>
+                            <tr ng-if="!report || report.member_detailForDiseases.length === 0">
+                                <td colspan="5">No Data Available!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <footer>
+        </footer>
+    </div>
+</div>

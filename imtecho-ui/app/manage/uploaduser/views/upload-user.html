@@ -1,0 +1,106 @@
+<!-- <div class="container-fluid">
+    <form class="mb-5" role="form" name="ctrl.form" id="userForm" novalidate>
+        <div class="row justify-content-center mb-2">
+            <div class="col-6">
+                <div class="form-group">
+                    <validate for='role' required-msg="Select user role">
+                        <label for="role" control-label>User Role</label>
+                        <select chosen-directive="ctrl.roleList" class="form-control cst-form-control" form-control
+                            ng-change="ctrl.retrieveLocationByRoleId()"
+                            ng-options="role.id as role.name for role in ctrl.roleList" ng-model="ctrl.roleId"
+                            name="role" id="role" required>
+                            <option value="">Please Select...</option>
+                        </select>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+            </div>
+        </div>
+        <ng-form name="ctrl.locationForm" isolate-form>
+            <div class="row justify-content-center" ng-if="ctrl.roleId">
+                <div class="col-6">
+                    <div class="form-group">
+                        <location-directive selected-location="ctrl.selectedLocation" template-type="'twoPart'"
+                            required-upto-level="1" fetch-upto-level="ctrl.maxAllowedLevel"
+                            fetch-according-to-user-aoi="true">
+                        </location-directive>
+                    </div>
+                </div>
+            </div>
+        </ng-form>
+        <div class="row justify-content-center">
+            <button type="submit" ng-click="ctrl.download()" style="color: white;"
+                class="mx-auto btn btn-primary btn-login mt-4 download-btn">
+                <em class="ion-ios-cloud-download-outline"></em> Download sample</button>
+        </div>
+    </form>
+
+    <div class="col-xl-6 mx-auto card cst-card mt-6 cst-card-new">
+        <div class="row">
+            <div class="col-md-10  col-sm-12 text-center mx-auto">
+                <span class="text-center upload-title">Please click below button to upload
+                    file...</span>
+            </div>
+            <div class="col-md-10  col-sm-12 text-center mx-auto" flow-init="ctrl.uploadFile"
+                flow-file-added="ctrl.upload($file, $event, $flow)"
+                flow-files-submitted="ctrl.uploadFn($files, $event, $flow)"
+                flow-file-success="ctrl.getUploadResponse( $file, $message, $flow )">
+
+                <div ng-repeat="file in $flow.files">
+                    <div class="progress" ng-class="{active: file.isUploading()}" ng-if="file.progress() !== 1">
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                            role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                            ng-style="{width: (file.progress() * 100) + '%'}" style="width: 100%;">
+                        </div>
+                    </div>
+                    <div ng-if="file.progress() !== 1" class="mt-2 alert alert-success ">
+                        <span class="text-center">Uploading...<em class="fa fa-cog fa-spin fa-1x"></em></span>
+                    </div>
+                    <div ng-if="file.progress() === 1" class="mt-2 alert alert-success ">
+                        <span class="text-center">Uploaded Successfully <em class="fa fa-check fa-1x"></em></span>
+                    </div>
+                </div>
+
+                <button type="submit" flow-btn flow-attrs="{accept:'application/xlsx'}"
+                    class="mx-auto btn btn-primary btn-login bg-success mt-4 download-btn"><em
+                        class="ion-ios-cloud-upload-outline"></em> Upload</button>
+                <p style="color: #aaa;">Only .xlsx files allowed</p>
+                <div ng-if="ctrl.isFormatError" class="mx-auto mt-4 alert alert-danger">
+                    <span class="text-center">Please upload valid format file!!</span>
+                </div>
+
+                <div ng-if="ctrl.isDataLoading === true" class="mx-auto mt-4 alert alert-info">
+                    <span class="text-center processing-cog">Processing...<em
+                            class="fa fa-cog fa-spin fa-1x"></em></span>
+                </div>
+                <div ng-if="ctrl.isError" class="mx-auto mt-4 alert alert-danger">
+                    <span class="text-center"
+                        ng-if="ctrl.responseMessage.result">{{ctrl.responseMessage.result}}<br></span>
+                </div>
+                <div ng-if="ctrl.fileName" class="mt-2 alert alert-success ">
+                    File processed Successfuly <em class="fa fa-check fa-1x"></em>
+                </div>
+                <a ng-if="ctrl.fileName" type="submit"
+                    href="{{ctrl.apiPath}}/upload/user/download/{{ctrl.fileName}}?access_token={{ctrl.accessToken}}"
+                    class="mx-auto btn btn-primary btn-login mt-4 download-btn"><em
+                        class="ion-ios-cloud-download-outline"></em> Download</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6 mx-auto card cst-card mt-6 cst-card-new">
+        <h4 class="text">Rules :</h4>
+
+        <ul class="new-list">
+            <li> Do not edit location columns (values in red colour). </li>
+            <li> All fields are mandatory to fill other than location columns and Middle Name. </li>
+            <li> If First Name, Last Name and Phone Number matches then this user will be considered as an
+                existing
+                user and linked that existing user with a new location. </li>
+            <li>Do not edit worksheet name that will be of the selected role.</li>
+            <li> You can add multiple users in one location. </li>
+        </ul>
+        <span class="text">Thanks.</span>
+
+    </div>
+</div> -->

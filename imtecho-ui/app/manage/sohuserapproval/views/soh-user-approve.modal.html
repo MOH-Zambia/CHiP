@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h4 class="text">Select Location:</h4>
+</div>
+<div class="modal-body">
+    <div class="card-body inline-form">
+        <form role="form" name="approvedUser.userProfileUpdateForm" id="userProfileUpdateForm">
+            <div>
+                <location-directive selected-location="approvedUser.selectedLocation"
+                    ng-model="approvedUser.selectedLocationId" fetch-according-to-user-aoi="true">
+                </location-directive>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer mt-2">
+        <div class="float-right">
+            <button type="submit" ng-disabled="approvedUser.selectedLocationId == null" class="btn btn-primary"
+                ng-click="approvedUser.updateUserState(approvedUser.selectedLocationId)">
+                <em class="fa fa-floppy-o"></em>
+                Update
+            </button>
+            <button class="btn btn-secondary" ng-click="approvedUser.cancel()">Cancel</button>
+        </div>
+    </div>
+</div>

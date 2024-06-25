@@ -1,0 +1,128 @@
+<div class="container-fluid">
+    <form name="searchcovid.markSuspected" id="markSuspected" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="pull-right">
+                    <button class="btn btn-primary mb-3" ng-click="searchcovid.addMembersAsSuspected()">Add Member as
+                        Suspected</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div ng-if="searchcovid.memberDetails.length === 0">
+                    <div class="no-data-placeholder">
+                        <h5>No Record Found!</h5>
+                    </div>
+                </div>
+                <div class="cst-table table-responsive" style="overflow: auto;" id="member-scroll"
+                    ng-if="searchcovid.memberDetails.length > 0">
+                    <table aria-describedby="table"
+                        class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                        style="table-layout: auto">
+                        <thead class="cst-thead">
+                            <tr>
+                                <th class="white-space-unset" id="srno">#</th>
+                                <th class="white-space-unset" id="memberId">Member ID</th>
+                                <th class="white-space-unset" id="memberId">Family ID</th>
+                                <th class="white-space-unset" id="memberName">Member Name</th>
+                                <th class="white-space-unset" id="memberId">Location</th>
+                                <th class="white-space-unset" id="memberId">Gender</th>
+                                <th class="white-space-unset" id="memberId">DOB</th>
+                                <th class="white-space-unset" id="memberId">Age</th>
+                                <th class="white-space-unset" id="action">Mark as suspected</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='searchcovid.searchData()'
+                            infinite-scroll-disabled='searchcovid.pagingService.pagingRetrivalOn'
+                            infinite-scroll-container='"#member-scroll"'>
+                            <tr ng-repeat="member in searchcovid.memberDetails">
+                                <td>{{$index + 1}}</td>
+                                <td>{{member.uniqueHealthId|emptylabel}}</td>
+                                <td>{{member.familyId|emptylabel}}</td>
+                                <td>{{member.name|emptylabel}}</td>
+                                <td>{{member.locationHierarchy|emptylabel}}</td>
+                                <td>{{member.gender|emptylabel}}</td>
+                                <td>{{member.dob|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                <td>{{member.age.replace("mons","months")|emptylabel}}</td>
+                                <td>
+                                    <label class="form-group control control-checkbox">
+                                        <input type="checkbox" ng-model="member.markedAsSuspected">
+                                        <div class="control_indicator checkbox-success"></div>
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="large-div filter-div">
+    <span style="left:-66px" class="filter-toggle" ng-click="searchcovid.toggleFilter()">Search</span>
+    <div class="row">
+        <div class="col-12">
+            <h5 class="filter-div-title">Search Members</h5>
+        </div>
+    </div>
+    <div class="filter-div-body">
+        <form name="searchcovid.searchForm" novalidate>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Search By: </label>
+                        <label class="control control-radio"> Member ID
+                            <input type="radio" name="search" icheck ng-model="searchcovid.search.searchBy"
+                                ng-change="searchcovid.resetSearchString()" value="member id" />
+                            <div class="control_indicator"></div>
+                        </label>
+                        <label class="control control-radio"> Family ID
+                            <input type="radio" name="search" icheck ng-model="searchcovid.search.searchBy"
+                                ng-change="searchcovid.resetSearchString()" value="family id" />
+                            <div class="control_indicator"></div>
+                        </label>
+                        <label class="control control-radio"> Mobile Number
+                            <input type="radio" name="search" icheck ng-model="searchcovid.search.searchBy"
+                                ng-change="searchcovid.resetSearchString()" value="mobile number" />
+                            <div class="control_indicator"></div>
+                        </label>
+                        <br>
+                        <div style="margin-top: 10px">
+                            <validate for="searchString" pattern-msg='Enter Valid Number'
+                                ng-if="searchcovid.search.searchBy === 'mobile number'">
+                                <input type="number" name="searchString" form-control
+                                    ng-model="searchcovid.search.searchString" placeholder='Enter contact number'
+                                    class="form-control" maxlength="10" minlength="10" required />
+                            </validate>
+                            <label style="margin-top:2%" class="form-group control control-checkbox"
+                                ng-if="searchcovid.search.searchBy === 'mobile number'">
+                                <input ng-model="searchcovid.search.familyMobileNumber" type="checkbox">
+                                <div class="control_indicator checkbox-success"></div>
+                                Search mobile number in family
+                            </label>
+                        </div>
+                        <div style="margin-top: 10px">
+                            <validate for="searchString" pattern-msg='Enter Valid details'
+                                ng-if="searchcovid.search.searchBy === 'member id' || searchcovid.search.searchBy === 'woman id' || searchcovid.search.searchBy === 'family id' || searchcovid.search.searchBy === 'aadhar number'">
+                                <input type="text" name="searchString" form-control
+                                    ng-model="searchcovid.search.searchString"
+                                    placeholder="Enter {{searchcovid.search.searchBy}}" class="form-control" required />
+                            </validate>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                    <div class="form-group text-right">
+                        <button class="btn btn-secondary close-filter"
+                            ng-click="searchcovid.toggleFilter()">Close</button>
+                        <button type="submit" class="btn btn-primary search-filter"
+                            ng-click="searchcovid.searchData(true)">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="cst-backdrop"></div>

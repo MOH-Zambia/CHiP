@@ -1,0 +1,134 @@
+<style>
+    .cst-card .card-header {
+        background: #fff;
+        border: none;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        font-weight: 600;
+        /* color: #273157; */
+    }
+
+    .cst-card {
+        border-radius: 10px;
+    }
+</style>
+<div class="container-fluid p-0 mt-2">
+    <div class="row">
+        <div class="col-12">
+            <h3>Under 5 Dashboard</h3>
+        </div>
+        <div class="col-4">
+            <div class="card cst-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    Age wise counts
+                </div>
+                <div class="card-body">
+                    <canvas id="pie" height="200px" class="chart chart-pie" chart-data="ctrl.pieChartData"
+                        chart-labels="ctrl.pieChartLabels" chart-colors="ctrl.pieChartColors"
+                        chart-options="ctrl.pieChartOptions">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-8 pl-0">
+            <div class="card cst-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    Under 5 children healthwise count
+                </div>
+                <div class="card-body">
+                    <canvas id="base" height="90px" class="chart chart-bar" chart-labels="ctrl.barChartLabels"
+                        chart-series="ctrl.barChartSeries" chart-colors="ctrl.barChartColors"
+                        chart-options="ctrl.barChartOptions" chart-data="ctrl.barChartData">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    Under 5 data
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Location</th>
+                                    <th scope="col">Total number of children</th>
+                                    <th scope="col">Total Child service visit</th>
+                                    <th scope="col">High-risk children identified</th>
+                                    <th scope="col">Referred children</th>
+                                    <!-- <th scope="col">Children fully vaccinated</th> -->
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: #fff;">
+                                <tr ng-repeat = "data in ctrl.underFiveTableData">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{data.Location}}</td>
+                                    <td>{{data.TotalChildren}}</td>
+                                    <td>{{data.TotalChildServicevisit}}</td>
+                                    <td>{{data.HighRiskChildrenIdentified}}</td>
+                                    <td>{{data.ReferredChildren}}</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="filter-div active">
+        <span
+          style="left: -66px"
+          class="filter-toggle"
+          ng-click="ctrl.toggleFilter()"
+          >Search</span
+        >
+        <div class="row">
+          <div class="col-12">
+            <h5 class="filter-div-title">Search Locations</h5>
+          </div>
+        </div>
+        <div class="filter-div-body">
+          <form name="ctrl.searchForm" novalidate>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <location-directive
+                    template-type="'inline'"
+                    ng-model="ctrl.selectedLocationId"
+                    selected-location="ctrl.selectedLocation"
+                    fetch-according-to-user-aoi="false"
+                    required-upto-level = "1"
+                    fetch-upto-level = "6"
+                  >
+                  </location-directive>
+                </div>
+    
+                <div class="col-12">
+                  <hr />
+                  <div class="form-group text-right">
+                    <button
+                      class="btn btn-secondary close-filter"
+                      ng-click="ctrl.toggleFilter()"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary search-filter"
+                      ng-disabled="ctrl.searchForm.$invalid"
+                      ng-click="ctrl.onSearch()"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+</div>

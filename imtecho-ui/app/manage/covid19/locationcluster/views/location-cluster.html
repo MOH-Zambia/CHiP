@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="section-title">
+                <h4 class="text">Clusters</h4>
+                <button class="pull-right btn btn-primary" ng-click="locationClusterMangementCtrl.onAddEditClick()"
+                    data-test="add-card">
+                    Add
+                </button>
+                <div class="col-2 inline-form float-right mb-15">
+                    <div class="form-group">
+                        <input type="text" ng-model="search" class="form-control cst-form-control" id="search"
+                            placeholder="Search text" style="width:100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-15">
+            <div class="cst-table table-responsive" style="overflow: auto">
+                <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th class="white-space-unset">Sr. No</th>
+                            <th class="white-space-unset">Name</th>
+                            <th class="white-space-unset">Population</th>
+                            <th class="white-space-unset">Location</th>
+                            <th class="white-space-unset">State</th>
+                            <th class="white-space-unset">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="locationCluster in locationClusterMangementCtrl.locationClusters| filter : search"
+                            ng-if="(locationClusterMangementCtrl.locationClusters.length > 0)">
+                            <td>{{$index + 1}}</td>
+                            <td ng-bind-html="locationCluster.name|emptylabel"></td>
+                            <td ng-bind-html="locationCluster.population|emptylabel"></td>
+                            <td ng-bind-html="locationCluster.locations|emptylabel"></td>
+                            <td ng-bind-html="locationCluster.state|emptylabel"></td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li><a href="#" class="action-icon edit-icon"
+                                            ng-click="locationClusterMangementCtrl.onAddEditClick(locationCluster.id)"></a>
+                                    </li>
+                                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <a href="#" class="action-icon more-icon"></a>
+                                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                            aria-labelledby="moreDropdown">
+                                            <li
+                                                ng-if="locationCluster.state==='ACTIVE' ? locationCluster.toggle = 'Inactive' : locationCluster.toggle = 'Active'">
+                                                <a href="#"
+                                                    ng-click="locationClusterMangementCtrl.toggleLocationCluster(locationCluster)"
+                                                    data-test="Inactive-Btn">
+                                                    <strong>Mark as </strong> {{locationCluster.toggle}}</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr ng-if="(!locationClusterMangementCtrl.locationClusters ||
+                                    (locationClusterMangementCtrl.locationClusters | filter : search).length == 0)">
+                            <td colspan="6"> No Location Clusters are available </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

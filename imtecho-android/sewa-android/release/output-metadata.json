@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.argusoft.sewa.android.app",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 129,
+      "versionName": "4.0.42",
+      "outputFile": "09Jan-TeCHO+(4.0.42)-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

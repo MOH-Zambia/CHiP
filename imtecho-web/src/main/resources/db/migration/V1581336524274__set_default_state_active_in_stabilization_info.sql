@@ -1,0 +1,1 @@
+update rbsk_defect_stabilization_info set status = 'ACTIVE';

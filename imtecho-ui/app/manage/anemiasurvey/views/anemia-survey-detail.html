@@ -1,0 +1,465 @@
+<!-- <style>
+	.cursor-pointer {
+		cursor: pointer;
+	}
+
+	.info label {
+		font-weight: 500;
+		margin-bottom: 5px;
+		display: flex;
+	}
+
+	.info label span.info_type {
+		/*width: 200px;*/
+		font-weight: bold;
+	}
+
+	.info label span.data {
+		font-weight: normal;
+		margin-left: 2px;
+	}
+
+	.nopadding {
+		padding: 0px;
+		margin: 2px;
+	}
+
+	.info ul {
+		list-style-type: none;
+	}
+
+	.member_info {
+		background: #ffffff;
+		height: calc(100vh - 140px);
+		padding-top: 15px;
+		padding-bottom: 15px;
+		overflow-y: auto;
+		border: 1px solid #dfdfdf;
+	}
+
+	.btn {
+		border-radius: 0.25rem;
+		transition: all 0.3s ease;
+	}
+
+	.btn-outline-success {
+		color: #28a745;
+		border-color: #28a745;
+	}
+
+	.btn-outline-danger {
+		color: #dc3545;
+		border-color: #dc3545;
+	}
+
+	.btn-outline-success:hover {
+		color: #fff;
+		background-color: #28a745;
+		border-color: #28a745;
+	}
+
+	.btn-outline-danger:hover {
+		color: #fff;
+		background-color: #dc3545;
+		border-color: #dc3545;
+	}
+
+	/* Style the toggle icon */
+	.toggle-icon {
+		font-size: 1.25rem;
+		margin-left: 0.5rem;
+		cursor: pointer;
+		color: #6c757d;
+	}
+
+	/* Adjust card title styling */
+	.card-title {
+		padding: 1rem;
+		border-bottom: 1px solid #dee2e6;
+	}
+
+	/* Style the collapsible content */
+	.card-body {
+		padding: 1rem;
+	}
+
+	.approval-status {
+		font-weight: bold;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+	}
+
+	.approved {
+		color: #28a745;
+		background-color: #d4edda;
+	}
+
+	.discarded {
+		color: #dc3545;
+		background-color: #f8d7da;
+	}
+
+	.image-verification {
+		background-color: #f1f1f1;
+		padding: 10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		text-align: center;
+	}
+
+	.image-verification h4 {
+		margin: 0;
+		color: #333;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+</style>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-9">
+			<div class="tab-content cst-scrollbar"
+				style="padding-right: 0; height: calc(100vh - 140px); overflow-y: auto; overflow-x: hidden;">
+				<div class="tabbable cst-tab">
+					<div class="tab-content">
+						<div class="container-fluid py-3">
+							<form role="form" name="ctrl.form" id="ctrl.form" novalidate>
+
+								<div class="image-verification">
+									<h4>Image Verification</h4>
+								</div>
+
+								<div class="card cst-card mt-4">
+									<div id="cardOne" role="tab"
+										class="card-title collapse-link d-flex align-items-center justify-content-between"
+										data-toggle="collapse" href="#collapseOne-Anemia_Conjunctiva"
+										ng-click="toggleOne = !toggleOne" style="cursor: pointer">
+										<h6 class="mb-0">Anemia Conjunctiva</h6>
+										<ul class="control-list d-flex align-items-center">
+											<li class="m-1 p-1" ng-if="ctrl.Anemia_Conjunctiva != null || ctrl.anemiaSurveyDetail.status=='VERIFIED'">
+												<div class="approval-status"
+													ng-class="{'approved': ctrl.selectAnemia_Conjunctiva == true, 'discarded': ctrl.selectAnemia_Conjunctiva == false}">
+													<span ng-if="ctrl.selectAnemia_Conjunctiva == true" uib-tooltip="Image will be Approved.">Approved</span>
+													<span
+														ng-if="ctrl.selectAnemia_Conjunctiva == false" uib-tooltip="Image will be Discarded.">Discarded</span>
+												</div>
+											</li>
+											<li class="m-1 p-1"
+												ng-if="ctrl.Anemia_Conjunctiva != null && ctrl.anemiaSurveyDetail.status!='VERIFIED'"
+												ng-click="$event.stopPropagation()">
+												<button type="button" ng-if="!ctrl.selectAnemia_Conjunctiva"
+													class="btn btn-outline-success btn-sm mr-2"
+													ng-click="ctrl.selectAnemia_Conjunctiva = true"
+													uib-tooltip="Click to Reselect an Image">
+													<i class="fa fa-check-circle mr-1"></i> Select
+												</button>
+												<button type="button" ng-if="ctrl.selectAnemia_Conjunctiva"
+													class="btn btn-outline-danger btn-sm"
+													ng-click="ctrl.selectAnemia_Conjunctiva = false"
+													uib-tooltip="Click to Discard an Image">
+													<i class="fa fa-times-circle mr-1"></i> Discard
+												</button>
+											</li>
+											<li>
+												<span class="toggle-icon"
+													ng-class="{'ion-plus':!toggleOne,'ion-minus':toggleOne}"></span>
+											</li>
+										</ul>
+									</div>
+									<div class="collapse" id="collapseOne-Anemia_Conjunctiva" role="tabpanel">
+										<div class="card-body">
+											<img ng-src="{{ ctrl.Anemia_Conjunctiva }}" alt="Image Not Available"
+												style="width:100%;height:100%" />
+										</div>
+									</div>
+								</div>
+								<div class="card cst-card">
+									<div id="cardTwo" role="tab"
+										class="card-title collapse-link d-flex align-items-center justify-content-between"
+										data-toggle="collapse" href="#collapseTwo-Anemia_External_Left_Eye"
+										ng-click="toggleTwo = !toggleTwo" style="cursor: pointer">
+										<h6 class="mb-0">Anemia External Left Eye</h6>
+										<ul class="control-list d-flex align-items-center">
+											<li class="m-1 p-1" ng-if="ctrl.Anemia_External_Left_Eye != null || ctrl.anemiaSurveyDetail.status=='VERIFIED'">
+												<div class="approval-status"
+													ng-class="{'approved': ctrl.selectAnemia_External_Left_Eye == true, 'discarded': ctrl.selectAnemia_External_Left_Eye == false}">
+													<span
+														ng-if="ctrl.selectAnemia_External_Left_Eye == true" uib-tooltip="Image will be Approved.">Approved</span>
+													<span
+														ng-if="ctrl.selectAnemia_External_Left_Eye == false" uib-tooltip="Image will be Discarded.">Discarded</span>
+												</div>
+											</li>
+											<li class="m-1 p-1"
+												ng-if="ctrl.Anemia_External_Left_Eye != null && ctrl.anemiaSurveyDetail.status!='VERIFIED'"
+												ng-click="$event.stopPropagation()">
+												<button type="button" ng-if="!ctrl.selectAnemia_External_Left_Eye"
+													class="btn btn-outline-success btn-sm mr-2"
+													ng-click="ctrl.selectAnemia_External_Left_Eye = true"
+													uib-tooltip="Click to Reselect an Image">
+													<i class="fa fa-check-circle mr-1"></i> Select
+												</button>
+												<button type="button" ng-if="ctrl.selectAnemia_External_Left_Eye"
+													class="btn btn-outline-danger btn-sm"
+													ng-click="ctrl.selectAnemia_External_Left_Eye = false"
+													uib-tooltip="Click to Discard an Image">
+													<i class="fa fa-times-circle mr-1"></i> Discard
+												</button>
+											</li>
+											<li>
+												<span class="toggle-icon"
+													ng-class="{'ion-plus':!toggleTwo,'ion-minus':toggleTwo}"></span>
+											</li>
+										</ul>
+									</div>
+									<div class="collapse" id="collapseTwo-Anemia_External_Left_Eye" role="tabpanel">
+										<div class="card-body">
+											<img ng-src="{{ ctrl.Anemia_External_Left_Eye }}" alt="Image Not Available"
+												style="width:100%;height:100%" />
+										</div>
+									</div>
+								</div>
+								<div class="card cst-card">
+									<div id="cardThree" role="tab"
+										class="card-title collapse-link d-flex align-items-center justify-content-between"
+										data-toggle="collapse" href="#collapseThree-Anemia_External_Right_Eye"
+										ng-click="toggleThree = !toggleThree" style="cursor: pointer">
+										<h6 class="mb-0">Anemia External Right Eye</h6>
+										<ul class="control-list d-flex align-items-center">
+											<li class="m-1 p-1" ng-if="ctrl.Anemia_External_Right_Eye != null || ctrl.anemiaSurveyDetail.status=='VERIFIED'">
+												<div class="approval-status"
+													ng-class="{'approved': ctrl.selectAnemia_External_Right_Eye == true, 'discarded': ctrl.selectAnemia_External_Right_Eye == false}">
+													<span
+														ng-if="ctrl.selectAnemia_External_Right_Eye == true" uib-tooltip="Image will be Approved.">Approved</span>
+													<span
+														ng-if="ctrl.selectAnemia_External_Right_Eye == false" uib-tooltip="Image will be Discarded.">Discarded</span>
+												</div>
+											</li>
+											<li class="m-1 p-1"
+												ng-if="ctrl.Anemia_External_Right_Eye != null && ctrl.anemiaSurveyDetail.status!='VERIFIED'"
+												ng-click="$event.stopPropagation()">
+												<button type="button" ng-if="!ctrl.selectAnemia_External_Right_Eye"
+													class="btn btn-outline-success btn-sm mr-2"
+													ng-click="ctrl.selectAnemia_External_Right_Eye = true"
+													uib-tooltip="Click to Reselct an Image">
+													<i class="fa fa-check-circle mr-1"></i> Select
+												</button>
+												<button type="button" ng-if="ctrl.selectAnemia_External_Right_Eye"
+													class="btn btn-outline-danger btn-sm"
+													ng-click="ctrl.selectAnemia_External_Right_Eye = false"
+													uib-tooltip="Click to Discard an Image">
+													<i class="fa fa-times-circle mr-1"></i> Discard
+												</button>
+											</li>
+											<li>
+												<span class="toggle-icon"
+													ng-class="{'ion-plus':!toggleThree,'ion-minus':toggleThree}"></span>
+											</li>
+										</ul>
+									</div>
+									<div class="collapse" id="collapseThree-Anemia_External_Right_Eye" role="tabpanel">
+										<div class="card-body">
+											<img ng-src="{{ ctrl.Anemia_External_Right_Eye }}" alt="Image Not Available"
+												style="width:100%;height:100%" />
+										</div>
+									</div>
+								</div>
+								<div class="card cst-card">
+									<div id="cardFour" role="tab"
+										class="card-title collapse-link d-flex align-items-center justify-content-between"
+										data-toggle="collapse" href="#collapseFour-Anemia_Fingernails_Closed"
+										ng-click="toggleFour = !toggleFour" style="cursor: pointer">
+										<h6 class="mb-0">Anemia Fingernails Closed</h6>
+										<ul class="control-list d-flex align-items-center">
+											<li class="m-1 p-1" ng-if="ctrl.Anemia_Fingernails_Closed != null || ctrl.anemiaSurveyDetail.status=='VERIFIED'">
+												<div class="approval-status"
+													ng-class="{'approved': ctrl.selectAnemia_Fingernails_Closed == true, 'discarded': ctrl.selectAnemia_Fingernails_Closed == false}">
+													<span
+														ng-if="ctrl.selectAnemia_Fingernails_Closed == true" uib-tooltip="Image will be Approved.">Approved</span>
+													<span
+														ng-if="ctrl.selectAnemia_Fingernails_Closed == false" uib-tooltip="Image will be Discarded.">Discarded</span>
+												</div>
+											</li>
+											<li class="m-1 p-1"
+												ng-if="ctrl.Anemia_Fingernails_Closed != null && ctrl.anemiaSurveyDetail.status!='VERIFIED'"
+												ng-click="$event.stopPropagation()">
+												<button type="button" ng-if="!ctrl.selectAnemia_Fingernails_Closed"
+													class="btn btn-outline-success btn-sm mr-2"
+													ng-click="ctrl.selectAnemia_Fingernails_Closed= true"
+													uib-tooltip="Click to Reselect an Image">
+													<i class="fa fa-check-circle mr-1"></i> Select
+												</button>
+												<button type="button" ng-if="ctrl.selectAnemia_Fingernails_Closed"
+													class="btn btn-outline-danger btn-sm"
+													ng-click="ctrl.selectAnemia_Fingernails_Closed = false"
+													uib-tooltip="Click to Discard an Image">
+													<i class="fa fa-times-circle mr-1"></i> Discard
+												</button>
+											</li>
+											<li>
+												<span class="toggle-icon"
+													ng-class="{'ion-plus':!toggleFour,'ion-minus':toggleFour}"></span>
+											</li>
+										</ul>
+									</div>
+									<div class="collapse" id="collapseFour-Anemia_Fingernails_Closed" role="tabpanel">
+										<div class="card-body">
+											<img ng-src="{{ ctrl.Anemia_Fingernails_Closed }}" alt="Image Not Available"
+												style="width:100%;height:100%" />
+										</div>
+									</div>
+								</div>
+								<div class="card cst-card">
+									<div id="cardFive" role="tab"
+										class="card-title collapse-link d-flex align-items-center justify-content-between"
+										data-toggle="collapse" href="#collapseFive-Anemia_Fingernails_Open"
+										ng-click="toggleFive = !toggleFive" style="cursor: pointer">
+										<h6 class="mb-0">Anemia Fingernails Open</h6>
+										<ul class="control-list d-flex align-items-center">
+											<li class="m-1 p-1" ng-if="ctrl.Anemia_Fingernails_Open != null || ctrl.anemiaSurveyDetail.status=='VERIFIED'">
+												<div class="approval-status"
+													ng-class="{'approved': ctrl.selectAnemia_Fingernails_Open == true, 'discarded': ctrl.selectAnemia_Fingernails_Open == false}">
+													<span
+														ng-if="ctrl.selectAnemia_Fingernails_Open == true" uib-tooltip="Image will be Approved.">Approved</span>
+													<span
+														ng-if="ctrl.selectAnemia_Fingernails_Open == false" uib-tooltip="Image will be Discarded.">Discarded</span>
+												</div>
+											</li>
+											<li class="m-1 p-1"
+												ng-if="ctrl.Anemia_Fingernails_Open != null && ctrl.anemiaSurveyDetail.status!='VERIFIED'"
+												ng-click="$event.stopPropagation()">
+												<button type="button" ng-if="!ctrl.selectAnemia_Fingernails_Open"
+													class="btn btn-outline-success btn-sm mr-2"
+													ng-click="ctrl.selectAnemia_Fingernails_Open= true"
+													uib-tooltip="Click to Reselect an Image">
+													<i class="fa fa-check-circle mr-1"></i> Select
+												</button>
+												<button type="button" ng-if="ctrl.selectAnemia_Fingernails_Open"
+													class="btn btn-outline-danger btn-sm"
+													ng-click="ctrl.selectAnemia_Fingernails_Open = false"
+													uib-tooltip="Click to Discard an Image">
+													<i class="fa fa-times-circle mr-1"></i> Discard
+												</button>
+											</li>
+											<li>
+												<span class="toggle-icon"
+													ng-class="{'ion-plus':!toggleFive,'ion-minus':toggleFive}"></span>
+											</li>
+										</ul>
+									</div>
+									<div class="collapse" id="collapseFive-Anemia_Fingernails_Open" role="tabpanel">
+										<div class="card-body">
+											<img ng-src="{{ ctrl.Anemia_Fingernails_Open }}" alt="Image Not Available"
+												style="width:100%;height:100%" />
+										</div>
+									</div>
+								</div>
+								<div class="card cst-card">
+									<div id="cardSix" role="tab"
+										class="card-title collapse-link d-flex align-items-center justify-content-between"
+										data-toggle="collapse" href="#collapseSix-Anemia_Tongue"
+										ng-click="toggleSix = !toggleSix" style="cursor: pointer">
+										<h6 class="mb-0">Anemia Tongue</h6>
+										<ul class="control-list d-flex align-items-center">
+											<li class="m-1 p-1"  ng-if="ctrl.Anemia_Tongue != null || ctrl.anemiaSurveyDetail.status=='VERIFIED'">
+												<div class="approval-status"
+													ng-class="{'approved': ctrl.selectAnemia_Tongue == true, 'discarded': ctrl.selectAnemia_Tongue == false}">
+													<span ng-if="ctrl.selectAnemia_Tongue == true" uib-tooltip="Image will be Approved.">Approved</span>
+													<span ng-if="ctrl.selectAnemia_Tongue == false" uib-tooltip="Image will be Discarded.">Discarded</span>
+												</div>
+											</li>
+											<li class="m-1 p-1"
+												ng-if="ctrl.Anemia_Tongue != null && ctrl.anemiaSurveyDetail.status!='VERIFIED'"
+												ng-click="$event.stopPropagation()">
+												<button type="button" ng-if="!ctrl.selectAnemia_Tongue"
+													class="btn btn-outline-success btn-sm mr-2"
+													ng-click="ctrl.selectAnemia_Tongue= true"
+													uib-tooltip="Click to Reselect an Image">
+													<i class="fa fa-check-circle mr-1"></i> Select
+												</button>
+												<button type="button" ng-if="ctrl.selectAnemia_Tongue"
+													class="btn btn-outline-danger btn-sm"
+													ng-click="ctrl.selectAnemia_Tongue = false"
+													uib-tooltip="Click to Discard an Image">
+													<i class="fa fa-times-circle mr-1"></i> Discard
+												</button>
+											</li>
+											<li>
+												<span class="toggle-icon"
+													ng-class="{'ion-plus':!toggleSix,'ion-minus':toggleSix}"></span>
+											</li>
+										</ul>
+									</div>
+									<div class="collapse" id="collapseSix-Anemia_Tongue" role="tabpanel">
+										<div class="card-body">
+											<img ng-src="{{ ctrl.Anemia_Tongue }}" alt="Image Not Available"
+												style="width:100%;height:100%" />
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<div class="button-footer" style="border: 0px;">
+											<button type="submit" class="btn btn-primary"
+												ng-click="ctrl.callApproveModal()"
+												ng-if="ctrl.anemiaSurveyDetail.status!='VERIFIED' && ctrl.isApprovable == true">Save
+											</button>
+											<button class=" btn btn-secondary"
+												ui-sref="techo.manage.anemiasurveylist">Cancel</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-3 member_info">
+			<div class="row">
+				<div class="col-xl-12">
+					<img alt="image" src="img/default-avatar.png"
+						class="patient-img patient-img--big d-block mx-auto" />
+				</div>
+				<div class="col-xl-12 text-center">
+					<h4>Member's Detail</h4>
+					<h5>Name :
+						{{ctrl.anemiaSurveyDetail.name || emptylabel}}</h5>
+					<h6> Age/Gender :
+						{{ctrl.anemiaSurveyDetail.age}}/{{ctrl.anemiaSurveyDetail.gender}}</h6>
+					<h6 ng-if="ctrl.anemiaSurveyDetail.gender == 'Female'">
+							Is Pregnant: {{ ctrl.anemiaSurveyDetail.is_pregnant ? 'Yes' : 'No' }}</h6>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-xl-12 text-center">
+					<h5>Anemia Survey Detail</h5>
+					<h6>Service Date :
+						{{ctrl.anemiaSurveyDetail.service_date | date:'dd/MM/yyyy'| emptylabel}}</h6>
+					<h6>Hemoglobin :
+						{{ctrl.anemiaSurveyDetail.hemoglobin| emptylabel}}</h6>
+					<h6 ng-if="ctrl.anemiaSurveyDetail.status!=null">Status :
+						{{ctrl.anemiaSurveyDetail.status}}</h6>
+					<h6 ng-if="ctrl.anemiaSurveyDetail.status==null">Status :
+						PENDING</h6>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-xl-12 text-center">
+					<h5>Location</h5>
+					<h6>{{ctrl.anemiaSurveyDetail.location_hierarchy | emptylabel}}</h6>
+				</div>
+			</div>
+			<hr>
+			<div class="row mt-2">
+				<div class="col-xl-12">
+					<div class="btn btn-primary" style="display:block;"
+						ng-click="ctrl.downloadFile(ctrl.anemiaSurveyDetail.uuid)"
+						uib-tooltip="Download Anemia Survey Image File">
+						<i class="fa fa-download m-1 ps-5"></i> Download
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div> -->

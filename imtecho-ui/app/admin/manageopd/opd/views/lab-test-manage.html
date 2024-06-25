@@ -1,0 +1,91 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{manageLabTest.isUpdateForm == true ? 'Edit Lab Test' : 'Add Lab Test'}}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="manageLabTest.labTestForm" novalidate>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <validate for="labTestName" required-msg="Enter Lab Test Name">
+                                        <label for="labTestName" control-label>Lab Test Name</label>
+                                        <input id="labTestName" name="labTestName" auto-focus="true"
+                                            class="form-control cst-form-control" form-control
+                                            ng-model="manageLabTest.labTestObj.name" maxlength="250" required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="labTestCategory" required-msg="Select a value">
+                                        <label for="labTestCategory" control-label>Lab Test Category</label>
+                                        <select class="form-control cst-form-control" form-control
+                                            ng-model="manageLabTest.labTestObj.category" id="labTestCategory"
+                                            name="labTestCategory"
+                                            ng-options="category.id as category.value for category in manageLabTest.categoryList"
+                                            required>
+                                            <option value="" selected>--Select--</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="labForm" required-msg="Select a value">
+                                        <label for="labForm" control-label>Lab Form</label>
+                                        <select class="form-control cst-form-control" form-control
+                                            ng-model="manageLabTest.labTestObj.formId" id="labForm" name="labForm"
+                                            ng-options="form.id as form.form_name for form in manageLabTest.formList"
+                                            required>
+                                            <option value="" selected>--Select--</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                            <div class="col-6" style="border-left: 1px solid #e5e5e5;">
+                                <div class="card cst-card" ng-if="manageLabTest.healthInfraTypeList.length > 0">
+                                    <div class="card-title">
+                                        <div class="float-left">
+                                            <h4 class="text">Health Infrastructure Type</h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-body inline-form">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group"
+                                                    ng-repeat="healthInfraType in manageLabTest.healthInfraTypeList track by $index">
+
+                                                    <label class="form-group control control-checkbox">
+                                                        <input ng-model="healthInfraType.isChecked" type="checkbox">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                        {{healthInfraType.value}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="card-footer mt-5">
+                        <div class="float-right">
+                            <button class="btn btn-secondary" ui-sref="techo.manage.manageOpdLabTest">Back</button>
+                            <button class="btn btn-secondary" ng-if="!manageLabTest.isUpdateForm"
+                                ng-click="manageLabTest.cancel(manageLabTest.labTestForm)"><em class="fa fa-remove"></em>
+                                Clear</button>
+                            <button class="btn btn-primary" ng-click="manageLabTest.action(manageLabTest.labTestForm)">
+                                <em class="fa fa-floppy-o"></em>
+                                {{manageLabTest.isUpdateForm ? 'Update' : 'Save'}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

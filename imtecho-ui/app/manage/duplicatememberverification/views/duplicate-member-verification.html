@@ -1,0 +1,125 @@
+<!-- <div class="container-fluid report-view">
+    <div class="row">
+        <div class="col-12 mb-15 ">
+            <div class="section-title">
+                <h4 class="text">Duplicate Member Details </h4>
+            </div>
+        </div>
+        <div class="col-12 mb-15" ng-if="!dmv.duplicateData || dmv.duplicateData.length === 0">
+            <div class="no-data-placeholder">
+                <h5>Sorry No Reports available!</h5>
+            </div>
+        </div>
+        <div class="col-12  mb-15" ng-if="dmv.duplicateData.length > 0">
+            <div class="cst-table table-responsive" style="overflow: auto;" id="dmv-scroll">
+
+                <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th style="width: 2%;">#</th>
+                            <th>Member-1 </th>
+                            <th>Member-1 Location</th>
+                            <th>Member-2 </th>
+                            <th>Member-2 Location</th>
+                            <th style="width: 15%;">Reason for Duplication</th>
+                            <th style="width: 5%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='dmv.retrieveAll(false)'
+                        infinite-scroll-container='"#dmv-scroll"' infinite-scroll-immediate-check="false">
+                        <tr ng-repeat-start="dataObject in dmv.duplicateData" ng-init="dataObject.showDetials = false"
+                            class='{{$index}}'>
+                            <td>{{$index + 1}}</td>
+                            <td
+                                ng-bind="dataObject.member1_name + '(' + dataObject.mem1_unique_health_id + ')' + '(' + dataObject.member1_family_id + ')'">
+                            </td>
+                            <td ng-bind="dataObject.member1_loc_name"></td>
+                            <td
+                                ng-bind="dataObject.member2_name + '(' + dataObject.mem2_unique_health_id + ')' + '(' + dataObject.member2_family_id + ')'">
+                            </td>
+                            <td ng-bind="dataObject.member2_loc_name"></td>
+                            <td>
+                                <span ng-if="dataObject.is_adhar_number_match">(Aadhar Number)<br> </span>
+                                <span ng-if="dataObject.is_name_dob_match">(DOB and Name)<br> </span>
+                                <span ng-if="dataObject.is_mobile_number_match">(Mobile Number)<br> </span>
+                                <span ng-if="dataObject.is_lmp_name_match">(LMP Date) </span>
+                            </td>
+                            <td><em data-toggle="collapse" data-target="#{{$index}}"
+                                    ng-class="{'fa fa-minus-circle font-size-20 text-danger':dataObject.showDetials,'fa fa-plus-circle font-size-20 text-success':!dataObject.showDetials} "
+                                    uib-tooltip="{{!dataObject.showDetials?'Show more Detail':'Show less Detail'}}"
+                                    ng-click="dmv.onShowMoreDetail(dataObject, $index)"></em></td>
+                        </tr>
+                        <tr class=" extra-detail-table-row " ng-show="dataObject.showDetials" ng-repeat-end>
+                            <td></td>
+                            <td colspan="6">
+                                <div id="{{$index}}" class="collapse show col-xs-12">
+                                    <div class="col-xs-5" style="float:left;width:40%;">
+                                        <strong>DOB</strong>:<span
+                                            ng-bind="dataObject.member1_dob | emptylabel"></span><br>
+                                        <strong>Gender</strong>:<span
+                                            ng-if="dataObject.member1_gender === 'M'">પુરુષ</span><span
+                                            ng-if="dataObject.member1_gender === 'F'">સ્ત્રી</span>
+                                        <span ng-if="!dataObject.member1_gender">N.A</span><br>
+                                        <strong>Mobile Number</strong>:<span
+                                            ng-bind="dataObject.member1_mobile_number | emptylabel"></span><br>
+                                        <span ng-if="dataObject.member1_lmp_date">
+                                            <strong>LMP Date</strong>:<span
+                                                ng-bind="dataObject.member1_lmp_date"></span><br>
+                                        </span>
+                                        <span ng-if="dataObject.member1_fhw_name">
+                                            <strong>FHW </strong>:<span
+                                                ng-bind="dataObject.member1_fhw_name"></span>(<span
+                                                ng-bind="dataObject.member1_fhw_mobile_number | emptylabel"></span>)<br>
+                                        </span>
+                                        <span ng-if="dataObject.member1_asha_name">
+                                            <strong>ASHA </strong>:<span
+                                                ng-bind="dataObject.member1_asha_name"></span>(<span
+                                                ng-bind="dataObject.member1_asha_mobile_number | emptylabel"></span>)<br>
+                                        </span>
+                                        <label class="control control-checkbox">Mark As Invalid
+                                            <input type="checkbox" name="inValidMember1" icheck
+                                                ng-model="dataObject.inValidMember1" />
+                                            <div class="control_indicator"></div>
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-5" style="float:left;width:45%;">
+                                        <strong>DOB</strong>:<span
+                                            ng-bind="dataObject.member2_dob | emptylabel"></span><br>
+                                        <strong>Gender</strong>: <span
+                                            ng-if="dataObject.member2_gender === 'M'">પુરુષ</span><span
+                                            ng-if="dataObject.member2_gender === 'F'">સ્ત્રી</span>
+                                        <span ng-if="!dataObject.member2_gender">N.A</span><br>
+                                        <strong>Mobile Number</strong>:<span
+                                            ng-bind="dataObject.member2_mobile_number | emptylabel"></span><br>
+                                        <span ng-if="dataObject.member2_lmp_date">
+                                            <strong>LMP Date</strong>:<span
+                                                ng-bind="dataObject.member2_lmp_date"></span><br>
+                                        </span>
+                                        <span ng-if="dataObject.member2_fhw_name">
+                                            <strong>FHW </strong>:<span
+                                                ng-bind="dataObject.member2_fhw_name"></span>(<span
+                                                ng-bind="dataObject.member2_fhw_mobile_number | emptylabel"></span>)<br>
+                                        </span>
+                                        <span ng-if="dataObject.member2_asha_name">
+                                            <strong>ASHA </strong>:<span
+                                                ng-bind="dataObject.member2_asha_name"></span>(<span
+                                                ng-bind="dataObject.member2_asha_mobile_number | emptylabel"></span>)<br>
+                                        </span>
+                                        <label class="control control-checkbox">Mark As Invalid
+                                            <input type="checkbox" name="inValidMember2" icheck
+                                                ng-model="dataObject.inValidMember2" />
+                                            <div class="control_indicator"></div>
+                                        </label>
+                                    </div>
+                                    <button type="submit" class="col-xs-2 btn btn-success btn-sm pull-left "
+                                        style="margin-top: 80px;"
+                                        ng-click="dmv.saveVerification(dataObject)">Save</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> -->

@@ -1,0 +1,79 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <input type="button" class="btn btn-primary" style="margin-left: 2%" ng-click="serviceDeliveryLocation.back()"
+            value="Back" ng-if='serviceDeliveryLocation.locationHistory.length > 1'>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div id="bargraph" ng-if="serviceDeliveryLocation.showbar">
+                <h4>Performance of {{serviceDeliveryLocation.selectedLocationInfo.name}} for
+                    {{serviceDeliveryLocation.dateFilterText}}
+                    <i style="cursor: pointer;font-size: 20px;"
+                        uib-tooltip="Percentage count indicates the % of information (correct/incorrect/not known) of the service done in the respective location."
+                        class="fa fa-info-circle font-size-20" tooltip-placement="bottom" aria-hidden="true"></i>
+                </h4>
+                <canvas height="90px" id="service-delivery-bar" class="chart chart-bar "
+                    chart-data="serviceDeliveryLocation.bars" chart-labels="serviceDeliveryLocation.labels"
+                    chart-series="serviceDeliveryLocation.series" chart-options="serviceDeliveryLocation.chartOptions"
+                    chart-click="serviceDeliveryLocation.onClickBarChartFunction"
+                    chart-colors="serviceDeliveryLocation.colors">
+                </canvas>
+                <span ng-if="serviceDeliveryLocation.emptyDataMassageFlag">
+                    {{ fhsdashboard.emptyDataMassage}}
+                </span>
+            </div>
+            <hr>
+        </div>
+        <div class="col-8">
+            <h4>Performance of {{serviceDeliveryLocation.selectedLocationInfo.name}} timeline for
+                {{serviceDeliveryLocation.dateFilterText}}</h4>
+            <canvas height="90px" id="line" class="chart chart-line" chart-data="serviceDeliveryLocation.lineChart.data"
+                chart-labels="serviceDeliveryLocation.lineChart.labels"
+                chart-series="serviceDeliveryLocation.lineChart.series"
+                chart-options="serviceDeliveryLocation.lineChart.options"
+                chart-dataset-override="serviceDeliveryLocation.lineChart.datasetOverride" chart-click="onClick"
+                chart-colors="serviceDeliveryLocation.colors">
+            </canvas>
+        </div>
+    </div>
+</div>
+<div class="small-div filter-div">
+    <span style="left:-66px;padding: 6px 29px" class="filter-toggle"
+        ng-click="serviceDeliveryLocation.toggleFilter()">Filter</span>
+    <div class="row">
+        <div class="col-12">
+            <h5 class="filter-div-title">Select Filters</h5>
+        </div>
+    </div>
+    <div class="filter-div-body">
+        <form name="serviceDeliveryLocation.searchForm" novalidate>
+            <div class="form-group">
+                <location-directive template-type="'inline'" ng-model="serviceDeliveryLocation.selectedLocationId"
+                    selected-location="serviceDeliveryLocation.selectedLocation" required-upto-level="1"
+                    fetch-according-to-user-aoi="true"> </location-directive>
+            </div>
+            <div class="form-group">
+                <validate for='dateFilter' required-msg="Please select a value">
+                    <label for="dateFilter" control-label>Time Period</label>
+                    <select class="form-control cst-form-control" form-control
+                        ng-model="serviceDeliveryLocation.dateFilter" name="dateFilter" id="dateFilter" required>
+                        <option value="" selected>--Select--</option>
+                        <option value="last7Days">Last 7 Days</option>
+                        <option value="last30Days">Last 30 Days</option>
+                        <option value="last60Days">Last 60 Days</option>
+                        <option value="last90Days">Last 90 Days</option>
+                    </select>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+        </form>
+        <div class="col-12" style="margin-top: 2%">
+            <div class="form-group text-right">
+                <button class="btn btn-secondary close-filter"
+                    ng-click="serviceDeliveryLocation.toggleFilter()">Close</button>
+                <button type="submit" class="btn btn-primary search-filter"
+                    ng-click="serviceDeliveryLocation.searchData(true)">Search</button>
+            </div>
+        </div>
+    </div>
+</div> -->

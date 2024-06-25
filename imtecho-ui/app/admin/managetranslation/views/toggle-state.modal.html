@@ -1,0 +1,32 @@
+<div class="modal-header">
+    Toggle state
+    <button type="button" class="close" aria-label="Close" ng-click="ctrl.close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form role="form" name="ctrl.appForm" novalidate>
+        <div class="inline-form">
+            <div class="form-group" ng-repeat="app in ctrl.apps">
+                <label>{{app.appvalue}}</label>
+                <label class="control control-radio mb-8">
+                    Active
+                    <input type="radio" name="{{app.appvalue}}" form-control  ng-change="ctrl.stateChanged(app.appvalue,app.is_active)" ng-model ="app.is_active"
+                        ng-value="true" />
+                    <div class="control_indicator"></div>
+                </label>
+                <label class="control control-radio mb-8">
+                    Inactive
+                    <ng-container ng-checked="!app.isactive">
+                        <input type="radio" name="{{app.appvalue}}" form-control ng-model="app.is_active"
+                            ng-change="ctrl.stateChanged(app.appvalue,app.is_active)" ng-value="false" />
+                        <div class="control_indicator"></div>
+                    </ng-container>
+
+                </label>
+            </div>
+            <button type="button" class="btn btn-primary"
+                ng-click="ctrl.update()">Update</button>
+        </div>
+    </form>
+</div>

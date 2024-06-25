@@ -1,0 +1,52 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-8">
+            <br>
+            <h3>Selected Location: {{serviceDeliveryLineList.location.name}}</h3>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-sm table-striped table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <td>Member Name</td>
+                            <td>Member Location</td>
+                            <td>Service Given Location</td>
+                            <td>Service Type</td>
+                            <td>Service Date</td>
+                            <td>Distance (KM)</td>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="service in serviceDeliveryLineList.services"
+                            ng-class="{'geo-invalid-location':service.geoLocationState == 'INCORRECT', 'geo-location-na': !service.geoLocationState}">
+                            </td>
+                            <td>{{service.memberName}}
+                            </td>
+                            <td>
+                                {{service.location}}
+                            </td>
+                            <td>
+                                <div ng-if="!service.latLongLocation">NA</div>
+                                {{service.latLongLocation}}
+                            </td>
+                            <td>
+                                {{service.serviceType}}
+                            </td>
+                            <td>
+                                {{service.serviceDate}}
+                            </td>
+                            <td>
+                                {{service.latLongLocationDistrance | number:2}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-4" style="padding-top: 5%;padding-left: 0px">
+            <div id="service-delivery-line-list-map"></div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" ng-click="serviceDeliveryLineList.cancel()">Close</button>
+</div> -->

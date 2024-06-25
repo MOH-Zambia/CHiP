@@ -1,0 +1,474 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ manage104CallsCtrl.headerText}}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="manage104CallsCtrl.mangeCovid19CaseForm" id="mangeCovid19CaseForm"
+                        novalidate>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="card-sub-title">
+                                    Demographic Details
+                                </h5>
+                                <div>
+                                    <div class="form-group">
+                                        <validate for='name' required-msg="Enter Name">
+                                            <label for="name" control-label>Name</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter name" name="name" id="name"
+                                                ng-model="manage104CallsCtrl.covid19Call.name" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='age' required-msg="Enter age">
+                                            <label for="age" control-label>Age</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                max="999" min="1" onkeypress="return !(event.charCode == 46)"
+                                                placeholder="Enter age" name="age" id="age"
+                                                ng-model="manage104CallsCtrl.covid19Call.age" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='gender' required-msg="Select Gender">
+                                            <label for="gender" control-label>Gender</label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="manage104CallsCtrl.covid19Call.gender" name="gender"
+                                                id="gender" required>
+                                                <option value="" selected>--Select--</option>
+                                                <option value="M">Male</option>
+                                                <option value="F">Female</option>
+                                                <option value="T">Transgender</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='contact_no' required-msg="Enter contact no"
+                                            maxlength-msg="Invalid mobile number" minlength-msg="Invalid mobile number">
+                                            <label for="contact_no" control-label>Contact No</label>
+                                            <input type="text" numbers-only class="form-control cst-form-control"
+                                                form-control placeholder="Enter contact no" name="contact_no"
+                                                max-length="10" min-length="10" id="contact_no"
+                                                ng-model="manage104CallsCtrl.covid19Call.contact_no" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='address' required-msg="Enter address">
+                                            <label for="address" control-label>Address</label>
+                                            <textarea form-control maxlength="1024" rows="4" cols="47"
+                                                ng-model="manage104CallsCtrl.covid19Call.address" name="address"
+                                                required>
+                                            </textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='pin_code' required-msg="Enter pin code"
+                                            pattern-msg="Please enter valid 6 digit pin code">
+                                            <label for="pin_code" control-label>Pin Code</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Pin Code" pattern="^[0-9]{6}$" name="pin_code"
+                                                id="pin_code" ng-model="manage104CallsCtrl.covid19Call.pinCode"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="manage104CallsCtrl.editMode">
+                                        <div class="form-group">
+                                            <label for="locationHierarchy" control-label>Location</label>
+                                            <input type="text" disabled class="form-control cst-form-control"
+                                                form-control
+                                                ng-model="manage104CallsCtrl.covid19Call.locationHierarchy">
+                                            <button style="margin-left: 24%; margin-top: 2%;margin-bottom: 2%;"
+                                                class="btn btn-primary"
+                                                ng-click="manage104CallsCtrl.changeLocation = true;">
+                                                Change Location
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div
+                                        ng-if="!manage104CallsCtrl.editMode || manage104CallsCtrl.changeLocation == true">
+                                        <div class="form-group">
+                                            <validate for='districtlocation' required-msg="Select District">
+                                                <label for="districtlocation" control-label>District</label>
+                                                <select class="form-control cst-form-control" form-control
+                                                    chosen-directive="manage104CallsCtrl.districtLocations"
+                                                    ng-model="manage104CallsCtrl.covid19Call.district_locationId"
+                                                    id="districtlocation" name="districtlocation"
+                                                    ng-options="location.id as location.english_name for location in manage104CallsCtrl.districtLocations"
+                                                    ng-change="manage104CallsCtrl.getChildLocation(manage104CallsCtrl.covid19Call.district_locationId,true)"
+                                                    required>
+                                                    <option value="" selected>--Select--</option>
+                                                </select>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group"
+                                            ng-if="!!manage104CallsCtrl.covid19Call.district_locationId">
+                                            <validate for='talukaLocation' required-msg="Select Taluka">
+                                                <label for="talukaLocation" control-label>Taluka</label>
+                                                <select class="form-control cst-form-control" form-control
+                                                    chosen-directive="manage104CallsCtrl.talukaLocation"
+                                                    ng-model="manage104CallsCtrl.covid19Call.taluka_locationId"
+                                                    id="talukaLocation" name="talukaLocation"
+                                                    ng-options="taluka.id as taluka.englishName for taluka in manage104CallsCtrl.talukaLocation"
+                                                    ng-change="manage104CallsCtrl.getChildLocation(manage104CallsCtrl.covid19Call.taluka_locationId,false)"
+                                                    required>
+                                                    <option value="" selected>--Select--</option>
+                                                </select>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group"
+                                            ng-if="!!manage104CallsCtrl.covid19Call.taluka_locationId">
+                                            <validate for='locationId' required-msg="Select Village">
+                                                <label for="locationId" control-label>Village</label>
+                                                <select class="form-control cst-form-control" form-control
+                                                    chosen-directive="manage104CallsCtrl.villageLocation"
+                                                    ng-model="manage104CallsCtrl.covid19Call.locationId"
+                                                    name="locationId" id="locationId"
+                                                    ng-options="village.id as village.englishName for village in manage104CallsCtrl.villageLocation"
+                                                    required>
+                                                    <option value="" selected>--Select--</option>
+                                                </select>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6" style="border-left: 1px solid #e5e5e5;">
+                                <div class="form-group">
+                                    <validate for='dateOfCalling' required-msg="Select Date">
+                                        <label for="dateOfCalling" control-label>Date of Calling</label>
+                                        <input type="text" style="float: inherit;" datepicker tabindex="8"
+                                            name="dateOfCalling" form-control
+                                            ng-model="manage104CallsCtrl.covid19Call.dateOfCalling" required
+                                            max-date='manage104CallsCtrl.todayDate'>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for='isInformationCall' required-msg="Please select a value">
+                                        <label for="isInformationCall" control-label style="white-space: normal"
+                                            class="width-350">
+                                            Is this an information call?
+                                        </label>
+                                        <label class="control control-radio mt-10"> Yes
+                                            <input type="radio" name="isInformationCall" icheck form-control
+                                                ng-model="manage104CallsCtrl.covid19Call.isInformationCall"
+                                                ng-change="manage104CallsCtrl.informationCallChanged()" ng-value="true"
+                                                required />
+                                            <div class="control_indicator"></div>
+                                        </label>
+                                        <label class="control control-radio mt-10"> No
+                                            <input type="radio" name="isInformationCall" icheck form-control
+                                                ng-model="manage104CallsCtrl.covid19Call.isInformationCall"
+                                                ng-change="manage104CallsCtrl.informationCallChanged()" ng-value="false"
+                                                required />
+                                            <div class="control_indicator"></div>
+                                        </label>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div ng-if="manage104CallsCtrl.covid19Call.isInformationCall === false">
+                                    <hr>
+                                    <h5 class="card-sub-title">
+                                        Symptom Questions
+                                    </h5>
+                                    <div>
+                                        <div class="form-group">
+                                            <validate for='isHavingFever' required-msg="Please select a value">
+                                                <label for="isHavingFever" control-label style="white-space: normal"
+                                                    class="width-350">
+                                                    Are you having Fever?
+                                                </label>
+                                                <label class="control control-radio mt-10"> Yes
+                                                    <input type="radio" name="isHavingFever" icheck form-control
+                                                        ng-model="manage104CallsCtrl.covid19Call.isHavingFever"
+                                                        ng-change="manage104CallsCtrl.feverChanged()" ng-value="true"
+                                                        required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <label class="control control-radio mt-10"> No
+                                                    <input type="radio" name="isHavingFever" icheck form-control
+                                                        ng-model="manage104CallsCtrl.covid19Call.isHavingFever"
+                                                        ng-change="manage104CallsCtrl.feverChanged()" ng-value="false"
+                                                        required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group"
+                                            ng-if="manage104CallsCtrl.covid19Call.isHavingFever === true">
+                                            <validate for='feverDays' required-msg="Enter number of days having fever">
+                                                <label for="feverDays" control-label>For how many days</label>
+                                                <input type="number" class="form-control cst-form-control" form-control
+                                                    max="999" min="1" onkeypress="return !(event.charCode == 46)"
+                                                    placeholder="Enter number of days having fever" name="feverDays"
+                                                    id="feverDays" ng-model="manage104CallsCtrl.covid19Call.feverDays"
+                                                    required>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group">
+                                            <validate for='isHavingFever' required-msg="Please select a value">
+                                                <label for="isHavingCough" control-label style="white-space: normal"
+                                                    class="width-350">
+                                                    Are you having Cough?
+                                                </label>
+                                                <label class="control control-radio mt-10"> Yes
+                                                    <input type="radio" name="isHavingCough" icheck form-control
+                                                        ng-model="manage104CallsCtrl.covid19Call.isHavingCough"
+                                                        ng-change="manage104CallsCtrl.coughChanged()" ng-value="true"
+                                                        required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <label class="control control-radio mt-10"> No
+                                                    <input type="radio" name="isHavingCough" icheck form-control
+                                                        ng-model="manage104CallsCtrl.covid19Call.isHavingCough"
+                                                        ng-change="manage104CallsCtrl.coughChanged()" ng-value="false"
+                                                        required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group"
+                                            ng-if="manage104CallsCtrl.covid19Call.isHavingCough === true">
+                                            <validate for='coughDays' required-msg="Enter number of days having Cough">
+                                                <label for="coughDays" control-label>For how many days</label>
+                                                <input type="number" class="form-control cst-form-control" form-control
+                                                    max="999" min="1" onkeypress="return !(event.charCode == 46)"
+                                                    placeholder="Enter number of days having Cough" name="coughDays"
+                                                    id="coughDays" ng-model="manage104CallsCtrl.covid19Call.coughDays"
+                                                    required>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group">
+                                            <validate for='isHavingShortnessBreath'
+                                                required-msg="Please select a value">
+                                                <label for="isHavingShortnessBreath" control-label
+                                                    style="white-space: normal" class="width-350">
+                                                    Do you have some shortness of Breath?
+                                                </label>
+                                                <label class="control control-radio mt-10"> Yes
+                                                    <input type="radio" name="isHavingShortnessBreath" icheck
+                                                        form-control
+                                                        ng-model="manage104CallsCtrl.covid19Call.isHavingShortnessBreath"
+                                                        ng-value="true" required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <label class="control control-radio mt-10"> No
+                                                    <input type="radio" name="isHavingShortnessBreath" icheck
+                                                        form-control
+                                                        ng-model="manage104CallsCtrl.covid19Call.isHavingShortnessBreath"
+                                                        ng-value="false" required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <hr>
+                                        <h5 class="card-sub-title">
+                                            Travel Questions
+                                        </h5>
+                                        <div class="form-group">
+                                            <validate for='isTravelAbroad' required-msg="Please select a value">
+                                                <label for="isTravelAbroad" control-label style="white-space: normal"
+                                                    class="width-350">
+                                                    Did you travel abroad in the last 15 days
+                                                </label>
+                                                <label class="control control-radio mt-10"> Yes
+                                                    <input type="radio" name="isTravelAbroad" icheck form-control
+                                                        ng-model="manage104CallsCtrl.covid19Call.isTravelAbroad"
+                                                        ng-change="manage104CallsCtrl.travelAbroadChanged()"
+                                                        ng-value="true" required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <label class="control control-radio mt-10"> No
+                                                    <input type="radio" name="isTravelAbroad" icheck
+                                                        ng-model="manage104CallsCtrl.covid19Call.isTravelAbroad"
+                                                        ng-change="manage104CallsCtrl.travelAbroadChanged()"
+                                                        ng-value="false" required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group"
+                                            ng-if="manage104CallsCtrl.covid19Call.isTravelAbroad === true">
+                                            <validate for='contactCountry' required-msg="Select Country">
+                                                <label for="contactCountry" control-label>Select Country</label>
+                                                <select class="form-control cst-form-control" form-control
+                                                    chosen-directive="manage104CallsCtrl.countryList"
+                                                    ng-model="manage104CallsCtrl.covid19Call.contactCountry"
+                                                    id="contactCountry" name="contactCountry"
+                                                    ng-options="country.id as country.value for country in manage104CallsCtrl.countryList"
+                                                    required>
+                                                    <option value="" selected>--Select--</option>
+                                                </select>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group"
+                                            ng-if="manage104CallsCtrl.covid19Call.isTravelAbroad === true">
+                                            <validate for='dateOfArrival' required-msg="Select Date">
+                                                <label for="dateOfArrival" control-label>Date of Arrival</label>
+                                                <input type="text" style="float: inherit;" datepicker tabindex="8"
+                                                    name="dateOfArrival" form-control
+                                                    ng-model="manage104CallsCtrl.covid19Call.dateOfArrival" required
+                                                    max-date='manage104CallsCtrl.todayDate'>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group">
+                                            <validate for='isInTouchWithRecentTraveller'
+                                                required-msg="Please select a value">
+                                                <label for="isInTouchWithRecentTraveller" control-label
+                                                    class="width-350" style="white-space: normal">
+                                                    Are you in touch with anybody who travelled recently?
+                                                </label>
+                                                <label class="control control-radio mt-10"> Yes
+                                                    <input type="radio" name="isInTouchWithRecentTraveller" icheck
+                                                        form-control
+                                                        ng-model="manage104CallsCtrl.covid19Call.isInTouchWithRecentTraveller"
+                                                        ng-change="manage104CallsCtrl.inTouchChanged()" ng-value="true"
+                                                        required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <label class="control control-radio mt-10"> No
+                                                    <input type="radio" name="isInTouchWithRecentTraveller" icheck
+                                                        ng-model="manage104CallsCtrl.covid19Call.isInTouchWithRecentTraveller"
+                                                        ng-change="manage104CallsCtrl.inTouchChanged()" ng-value="false"
+                                                        required />
+                                                    <div class="control_indicator"></div>
+                                                </label>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="col-12 padding-left-right-0" ng-if="manage104CallsCtrl.covid19Call.isInTouchWithRecentTraveller === true
+                                             && manage104CallsCtrl.showContact">
+                                            <div class="form-group">
+                                                <validate for='name' required-msg="Enter Name">
+                                                    <label for="name" control-label>Name</label>
+                                                    <input type="text" class="form-control cst-form-control"
+                                                        form-control placeholder="Enter name" name="name" id="name"
+                                                        ng-model="manage104CallsCtrl.contactObj.name">
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group">
+                                                <validate for='contact_no' required-msg="Enter contact no"
+                                                    pattern-msg="Invalid mobile number">
+                                                    <label for="contact_no" control-label>Contact No</label>
+                                                    <input type="number" class="form-control cst-form-control"
+                                                        form-control placeholder="Enter contact no"
+                                                        pattern="^[0-9]{10}$" name="contact_no" id="contact_no"
+                                                        ng-model="manage104CallsCtrl.contactObj.contactNo">
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group">
+                                                <validate for='districtlocation' required-msg="Select District">
+                                                    <label for="districtlocation" control-label>District</label>
+                                                    <select class="form-control cst-form-control" form-control
+                                                        chosen-directive="manage104CallsCtrl.districtLocations"
+                                                        ng-model="manage104CallsCtrl.contactObj.districtLocationId"
+                                                        id="districtlocation" name="districtlocation"
+                                                        ng-options="location.id as location.english_name for location in manage104CallsCtrl.districtLocations">
+                                                        <option value="" selected>--Select--</option>
+                                                    </select>
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group">
+                                                <validate for='otherDetail' required-msg="Enter Other Detail">
+                                                    <label for="otherDetail" control-label>Other Detail</label>
+                                                    <textarea form-control maxlength="99" rows="4" cols="47"
+                                                        ng-model="manage104CallsCtrl.contactObj.otherDetail"
+                                                        name="otherDetail">
+                                                    </textarea>
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="bottom-spacer-20">
+                                                <button type="button" class="btn btn-large btn-primary"
+                                                    ng-click="manage104CallsCtrl.addContactPerson()"><span
+                                                        class="fa fa-floppy-o"></span> Save </button>
+                                            </div>
+                                        </div>
+                                        <div class="bottom-spacer-20" ng-if="!manage104CallsCtrl.showContact &&
+                                             manage104CallsCtrl.covid19Call.isInTouchWithRecentTraveller === true">
+                                            <button type="button" class="btn btn-primary"
+                                                ng-click="manage104CallsCtrl.showContact =true;">
+                                                Add Contact
+                                            </button>
+                                        </div>
+                                        <div class="table-section" style="padding-top: 0px;"
+                                            ng-if="manage104CallsCtrl.contactList != null && manage104CallsCtrl.contactList.length > 0">
+                                            <div class="card-body col-12 col-md-12">
+                                                <div class="cst-table-responsive cst-table">
+                                                    <table aria-describedby="table"
+                                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                                        <thead class="cst-thead">
+                                                            <tr>
+                                                                <th id="contactDate">Name</th>
+                                                                <th id="placeOfOrigin">Contact No</th>
+                                                                <th id="destination">Address</th>
+                                                                <th id="modeOfTransport">Other Detail</th>
+                                                                <th id="travelaction">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="cst-tbody">
+                                                            <tr ng-repeat="contact in manage104CallsCtrl.contactList">
+                                                                <td>
+                                                                    {{contact.name| emptylabel}}
+                                                                </td>
+                                                                <td>
+                                                                    {{contact.contactNo| emptylabel}}
+                                                                </td>
+                                                                <td>
+                                                                    {{contact.districtName| emptylabel}}
+                                                                </td>
+                                                                <td>
+                                                                    {{contact.otherDetail| emptylabel}}
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                    <span style="cursor: pointer;" class="fa fa-trash"
+                                                                        ng-click="manage104CallsCtrl.deleteContactPerson($index)"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer mt-5">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary" ng-click="manage104CallsCtrl.save()">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    Save & Continue
+                                </button>
+                                <button class="btn btn-secondary" ng-click="manage104CallsCtrl.cancel()">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".activity.EcgTestActivity_"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/text_device_connection_status"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/device_connection_status"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/default_tooltip_arrow_height"
+                    android:orientation="horizontal"
+                    android:drawablePadding="5dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="@+id/textView" />
+
+                <TextView
+                    android:id="@+id/tvAbort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="@string/text_abort"
+                    android:textColor="#FFFF0000"
+                    android:layout_marginTop="@dimen/action_button_padding"
+                    android:layout_marginEnd="32dp"
+                    android:paddingTop="@dimen/default_tooltip_padding"
+                    android:paddingBottom="@dimen/default_tooltip_padding"
+                    android:paddingStart="@dimen/action_button_padding"
+                    android:paddingEnd="@dimen/action_button_padding"
+                    android:background="@drawable/selector_rect_border_red"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@+id/device_connection_status"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvSkip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="@string/text_skip"
+                    android:textColor="#FFFF0000"
+                    android:layout_marginTop="@dimen/action_button_padding"
+                    android:layout_marginStart="32dp"
+                    android:paddingTop="@dimen/default_tooltip_padding"
+                    android:paddingBottom="@dimen/default_tooltip_padding"
+                    android:paddingStart="@dimen/action_button_padding"
+                    android:paddingEnd="@dimen/action_button_padding"
+                    android:background="@drawable/selector_rect_border_red"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <LinearLayout
+                    android:id="@+id/llTestCases"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp"
+                    android:padding="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAbort">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+                    <TextView
+                        android:id="@+id/tvV1"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:text="V1"
+                        android:textColor="@color/black"
+                        android:background="@drawable/icon_circle_disabled"
+                        android:gravity="center" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+                    <TextView
+                        android:id="@+id/tvV2"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:text="V2"
+                        android:textColor="@color/black"
+                        android:background="@drawable/icon_circle_disabled"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvV3"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:text="V3"
+                        android:textColor="@color/black"
+                        android:background="@drawable/icon_circle_disabled"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvV4"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:text="V4"
+                        android:textColor="@color/black"
+                        android:background="@drawable/icon_circle_disabled"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llTestCases2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:padding="5dp"
+                    app:layout_constraintStart_toStartOf="@+id/llTestCases"
+                    app:layout_constraintTop_toBottomOf="@+id/llTestCases">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvV5"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:text="V5"
+                        android:textColor="@color/black"
+                        android:background="@drawable/icon_circle_disabled"
+                        android:gravity="center" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvV6"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:text="V6"
+                        android:textColor="@color/black"
+                        android:background="@drawable/icon_circle_disabled"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvl2"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:text="II"
+                        android:textColor="@color/black"
+                        android:background="@drawable/icon_circle_disabled"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvl1"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:text="I"
+                        android:textColor="@color/black"
+                        android:background="@drawable/icon_circle_disabled"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="80dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:paddingStart="@dimen/action_button_padding"
+                    android:paddingEnd="@dimen/action_button_padding"
+                    app:layout_constraintTop_toBottomOf="@+id/llTestCases2">
+
+                    <LinearLayout
+                        android:id="@+id/graph"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_test_finished"
+                        android:drawablePadding="5dp"
+                        android:drawableLeft="@drawable/test_done"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:paddingTop="16dp"
+                        android:layout_gravity="center"/>
+
+                    <Button
+                        android:id="@+id/btnRetake"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvHelpText"
+                        android:drawableLeft="@drawable/reload"
+                        android:drawableTint="@color/white"
+                        android:text="@string/retake_reading"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/childrenTextColor"/>
+
+
+                    <Button
+                        android:id="@+id/btnMoveToNext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvHelpText"
+                        android:drawableRight="@drawable/ic_arrow_right"
+                        android:text="@string/text_move_to_next_position"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/normal"/>
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressbar_test_status"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="80dp"
+                    android:scaleY="2"
+                    android:max="10"
+                    android:progressTint="@color/colorAccent"
+                    android:progressBackgroundTint="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:paddingStart="@dimen/action_button_padding"
+                    android:paddingEnd="@dimen/action_button_padding"
+                    app:layout_constraintTop_toBottomOf="@+id/llOptions"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tvFinishingIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/progressbar_test_status"
+                    android:text="@string/finishing_test_in"
+                    android:textSize="16sp"
+                    android:layout_marginTop="80dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tvFinishTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFinishingIn"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/imageHelp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:src="@drawable/test_v1"
+                    android:layout_marginTop="@dimen/action_button_padding"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llTestCases2" />
+
+                <TextView
+                    android:id="@+id/tvHelpText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_help_text"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageHelp"/>
+
+                <Button
+                    android:id="@+id/btnStartTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvHelpText"
+                    android:drawableLeft="@drawable/ic_play"
+                    android:text="@string/start_test"
+                    android:layout_marginTop="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/dark_green"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/llReport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:background="@color/low_opacity_light_gray">
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/footerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/buttonBackground">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/nextButton"
+            style="@style/CustomButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:attr/actionBarSize"
+            android:stateListAnimator="@null"
+            android:text="@string/next"/>
+
+    </LinearLayout>
+
+</LinearLayout>

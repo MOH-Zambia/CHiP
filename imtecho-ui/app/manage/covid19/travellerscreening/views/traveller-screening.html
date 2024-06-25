@@ -1,0 +1,54 @@
+<style>
+    label {
+        vertical-align: middle !important;
+    }
+
+    .display {
+        width: 100px !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-body inline-form">
+                    <form name="covidscreening.covidForm" novalidate>
+                        <label class="control-label">Upload Excel Sheet</label>
+                        <div class="form-group" flow-init="covidscreening.uploadFile"
+                            flow-file-added="covidscreening.upload($file, $event, $flow)"
+                            flow-files-submitted="covidscreening.uploadFn($files, $event, $flow)"
+                            flow-file-success="covidscreening.getUploadResponse( $file, $message, $flow )"
+                            flow-file-error="covidscreening.uploadError($file, $message, $flow )">
+                            <button class="btn btn-success" flow-btn>Upload File</button>
+                            <div ng-repeat="file in covidscreening.flow.files">
+                                <div class="progress" ng-class="{active: file.isUploading()}"
+                                    ng-if="file.progress() !== 1">
+                                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                                        role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                        ng-style="{width: (file.progress() * 100) + '%'}" style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div ng-if="file.progress() !== 1" class="mt-2 alert alert-success ">
+                                    <span class="text-center">{{file.name}} Uploading...<em
+                                            class="fa fa-cog fa-spin fa-1x"></em></span>
+                                </div>
+                                <div ng-if="covidscreening.operationDone" class="mt-2 alert alert-success"
+                                    style="float:left">
+                                    <span class="text-center"> {{file.name}} Uploaded Successfully <em
+                                            class="fa fa-check fa-1x"></em></span>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger valid-feedback" ng-if="covidscreening.error">
+                                Error uploading file. Please try again
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <a class="link" href="app/samplefile.xlsx" download style="margin: 0 8px 8px;">
+                    <em class="fa fa-download" aria-hidden="false"></em>
+                    Download Sample File
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

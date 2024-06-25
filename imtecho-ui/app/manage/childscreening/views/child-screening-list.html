@@ -1,0 +1,925 @@
+<div class="container-fluid users">
+    <div class="row" ng-if="!childscreeninglist.noScreeningCentersAssigned">
+        <div class="col-12">
+            <button ng-if="childscreeninglist.selectedTab == 'child-screening-tab'" class="btn btn-primary pull-right"
+                ng-click="childscreeninglist.openHealthIdModal()">Search</button>
+            <button ng-if="childscreeninglist.selectedTab == 'child-discharge-tab'" class="btn btn-primary pull-right"
+                ng-click="childscreeninglist.openFollowUpSearchModal()">Search</button>
+            <div class="cst-tab">
+                <uib-tabset active='childscreeninglist.selectedTab'>
+                    <uib-tab index="'child-admission-tab'" heading="Child Admission List"
+                        select="childscreeninglist.admissionTabSelected()">
+                        <div class="tab-pane fade show" id="child-admission" role="tabpanel"
+                            aria-labelledby="child-admission" aria-expanded="true">
+                            <div class="tab-pane fade show" id="child-screening" role="tabpanel"
+                                aria-labelledby="child-screening" aria-expanded="true">
+                                <div class="cst-table table-responsive table-set-height" id="admission-scroll"
+                                    ng-if="childscreeninglist.admissionList.length > 0">
+                                    <table aria-describedby="admissionList"
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="srNo" class="white-space-unset">Sr.No</th>
+                                                <th id="uniqueHealthId" class="white-space-unset">Unique Health ID
+                                                    (Family ID)</th>
+                                                <th id="childName" class="white-space-unset">Child Name</th>
+                                                <th id="motherName" class="white-space-unset">Mother Name (Phone No.)
+                                                </th>
+                                                <th id="dob" class="white-space-unset">DOB/Age/Gender</th>
+                                                <th id="village" class="white-space-unset">Village/Area</th>
+                                                <th id="asha" class="white-space-unset">ASHA Name (Contact No.)</th>
+                                                <th id="referred" class="white-space-unset">Referred By (Contact No.)
+                                                </th>
+                                                <th id="screeningCenter" class="white-space-unset">Screening Center</th>
+                                                <th id="admissionDate" class="white-space-unset">Admission Date</th>
+                                                <th id="actions">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='childscreeninglist.getAdmissionListByCriteria(true)'
+                                            infinite-scroll-container='"#admission-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr ng-repeat="child in childscreeninglist.admissionList">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td>{{child.result.uniqueHealthId}}({{child.result.familyId}})</td>
+                                                <td>{{child.result.memberName}}</td>
+                                                <td>{{child.result.motherName|emptylabel}}({{child.result.motherContactNumber|emptylabel}})
+                                                </td>
+                                                <td>{{child.result.dob|date:'dd-MM-yyyy'}}/{{child.age}}
+                                                    months/{{child.result.gender}}</td>
+                                                <td>{{child.result.villageName|emptylabel}}/{{child.result.areaName|emptylabel}}
+                                                </td>
+                                                <td>{{child.result.ashaDetails|emptylabel}}</td>
+                                                <td>{{child.result.referredByName|emptylabel}}({{child.result.referredByContactNumber|emptylabel}})
+                                                </td>
+                                                <td>{{child.result.healthInfrastructureName|emptylabel}}</td>
+                                                <td>{{child.result.admissionDate|date:'dd/MM/yyyy'}}</td>
+                                                <td class="action-cell no-print">
+                                                    <ul class="action-item">
+                                                        <li class="dropdown-toggle" id="moreDropdown"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                            <a href="#" class="action-icon more-icon"></a>
+                                                            <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                                                aria-labelledby="moreDropdown">
+                                                                <li>
+                                                                    <a href="javascript:void(0)"
+                                                                        ng-click='childscreeninglist.navigateToMedicinesForm(child.result.memberId)'>Update
+                                                                        Weight/Medicines</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:void(0)"
+                                                                        ng-click='childscreeninglist.navigateToLaboratoryForm(child.result.memberId)'>Laboratory
+                                                                        Tests</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:void(0)"
+                                                                        ng-click='childscreeninglist.navigateToDischargeForm(child.result.memberId)'>Discharge
+                                                                        <em ng-if="child.result.noOfTimesAmoxicillinGiven >= 5 && child.result.consecutive3DaysWeightGain"
+                                                                            class="fa fa-check"
+                                                                            style="color: green;"></em></a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:void(0)"
+                                                                        ng-click="childscreeninglist.markAsDead(child)">Mark
+                                                                        as Dead</a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div ng-if="childscreeninglist.admissionList.length == 0">
+                                    <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No child found</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'child-defaulter-tab'" heading="Child Defaulter List"
+                        select="childscreeninglist.defaulterTabSelected()">
+                        <div class="tab-pane fade show" id="child-defaulter" role="tabpanel"
+                            aria-labelledby="child-defaulter" aria-expanded="true">
+                            <div class="cst-table table-responsive table-set-height" id="defaulter-scroll"
+                                ng-if="childscreeninglist.defaulterList.length > 0">
+                                <table aria-describedby="defaulterList"
+                                    class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th id="srNo" class="white-space-unset">Sr.No</th>
+                                            <th id="uniqueHealthId" class="white-space-unset">Unique Health ID (Family
+                                                ID)</th>
+                                            <th id="childName" class="white-space-unset">Child Name</th>
+                                            <th id="motherName" class="white-space-unset">Mother Name (Phone No.)</th>
+                                            <th id="dob" class="white-space-unset">DOB/Age/Gender</th>
+                                            <th id="village" class="white-space-unset">Village/Area</th>
+                                            <th id="asha" class="white-space-unset">ASHA Name (Contact No.)</th>
+                                            <th id="referred" class="white-space-unset">Referred By (Contact No.)</th>
+                                            <th id="screeningCenter" class="white-space-unset">Screening Center</th>
+                                            <th id="actions">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                        infinite-scroll='childscreeninglist.getDefaulterListByCriteria(true)'
+                                        infinite-scroll-container='"#defaulter-scroll"'
+                                        infinite-scroll-immediate-check="false">
+                                        <tr ng-repeat="child in childscreeninglist.defaulterList">
+                                            <td ng-bind="$index + 1"></td>
+                                            <td>{{child.result.uniqueHealthId}}({{child.result.familyId}})</td>
+                                            <td>{{child.result.memberName}}</td>
+                                            <td>{{child.result.motherName|emptylabel}}({{child.result.motherContactNumber|emptylabel}})
+                                            </td>
+                                            <td>{{child.result.dob|date:'dd-MM-yyyy'}}/{{child.age}}
+                                                months/{{child.result.gender}}</td>
+                                            <td>{{child.result.villageName|emptylabel}}/{{child.result.areaName|emptylabel}}
+                                            </td>
+                                            <td>{{child.result.ashaDetails|emptylabel}}</td>
+                                            <td>{{child.result.referredByName|emptylabel}}({{child.result.referredByContactNumber|emptylabel}})
+                                            </td>
+                                            <td>{{child.result.healthInfrastructureName|emptylabel}}</td>
+                                            <td><button class="btn btn-primary"
+                                                    ng-click="childscreeninglist.showWeightHistory(child)">View
+                                                    History</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-if="childscreeninglist.defaulterList.length == 0">
+                                <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No child found</h3>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'child-discharge-tab'" heading="Child Discharge List"
+                        select="childscreeninglist.dischargeTabSelected()">
+                        <div class="tab-pane fade show" id="child-discharge" role="tabpanel"
+                            aria-labelledby="child-discharge" aria-expanded="true">
+                            <div class="cst-table table-responsive table-set-height" id="discharge-scroll"
+                                ng-if="childscreeninglist.dischargeList.length > 0">
+                                <table aria-describedby="dischargeList"
+                                    class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th id="srNo" class="white-space-unset">Sr.No</th>
+                                            <th id="uniqueHealthId" class="white-space-unset">Unique Health ID (Family
+                                                ID)</th>
+                                            <th id="childName" class="white-space-unset">Child Name</th>
+                                            <th id="motherName" class="white-space-unset">Mother Name (Phone No.)</th>
+                                            <th id="dob" class="white-space-unset">DOB/Age/Gender</th>
+                                            <th id="village" class="white-space-unset">Village/Area</th>
+                                            <th id="asha" class="white-space-unset">ASHA Name (Contact No.)</th>
+                                            <th id="screeningCenter" class="white-space-unset">Screening Center</th>
+                                            <th id="followUpVisit" class="white-space-unset">Follow Up Visit</th>
+                                            <th id="followUpDueDate" class="white-space-unset">Follow Up Due Date</th>
+                                            <th id="actions">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                        infinite-scroll='childscreeninglist.getDischargeListByCriteria(true)'
+                                        infinite-scroll-container='"#discharge-scroll"'
+                                        infinite-scroll-immediate-check="false">
+                                        <tr ng-repeat="child in childscreeninglist.dischargeList">
+                                            <td ng-bind="$index + 1"></td>
+                                            <td>{{child.result.uniqueHealthId}}({{child.result.familyId}})</td>
+                                            <td>{{child.result.memberName}}</td>
+                                            <td>{{child.result.motherName|emptylabel}}({{child.result.motherContactNumber|emptylabel}})
+                                            </td>
+                                            <td>{{child.result.dob|date:'dd-MM-yyyy'}}/{{child.age}}
+                                                months/{{child.result.gender}}</td>
+                                            <td>{{child.result.villageName|emptylabel}}/{{child.result.areaName|emptylabel}}
+                                            </td>
+                                            <td>{{child.result.ashaDetails|emptylabel}}</td>
+                                            <td>{{child.result.healthInfrastructureName|emptylabel}}</td>
+                                            <td ng-bind="child.result.followUpVisitNo"></td>
+                                            <td ng-bind="child.result.followUpDueDate"></td>
+                                            <td class="action-cell no-print">
+                                                <ul class="action-item">
+                                                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <a href="#" class="action-icon more-icon"></a>
+                                                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                                            aria-labelledby="moreDropdown">
+                                                            <li>
+                                                                <a href="javascript:void(0)"
+                                                                    ng-click='childscreeninglist.navigateToFollowUpForm(child.result.memberId)'>Follow
+                                                                    Up</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0)"
+                                                                    ng-click="childscreeninglist.markAsDead(child)">Mark
+                                                                    as Dead</a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-if="childscreeninglist.dischargeList.length == 0">
+                                <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No child found</h3>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'child-screening-tab'" heading="Child Screening List"
+                        select="childscreeninglist.screeningTabSelected()">
+                        <div class="tab-pane fade show" id="child-screening" role="tabpanel"
+                            aria-labelledby="child-screening" aria-expanded="true">
+                            <div class="cst-table table-responsive table-set-height" id="screening-scroll"
+                                ng-if="childscreeninglist.screeningList.length > 0">
+                                <table aria-describedby="screeningList"
+                                    class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th id="srNo" class="white-space-unset">Sr.No</th>
+                                            <th id="uniqueHealthId" class="white-space-unset">Unique Health ID (Family
+                                                ID)</th>
+                                            <th id="childName" class="white-space-unset">Child Name</th>
+                                            <th id="motherName" class="white-space-unset">Mother Name (Phone No.)</th>
+                                            <th id="dob" class="white-space-unset">DOB/Age/Gender</th>
+                                            <th id="village" class="white-space-unset">Village/Area</th>
+                                            <th id="asha" class="white-space-unset">ASHA Name (Contact No.)</th>
+                                            <th id="referred" class="white-space-unset">Referred By (Contact No.)</th>
+                                            <th id="screeningCenter" class="white-space-unset">Screening Center</th>
+                                            <th id="screeningDate" class="white-space-unset">Screening Date</th>
+                                            <th id="medicalComplications" class="white-space-unset">Medical
+                                                Complications</th>
+                                            <th id="action" class="white-space-unset">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                        infinite-scroll='childscreeninglist.getScreeningListByCriteria(true)'
+                                        infinite-scroll-container='"#screening-scroll"'
+                                        infinite-scroll-immediate-check="false">
+                                        <tr ng-repeat="child in childscreeninglist.screeningList">
+                                            <td ng-bind="$index + 1"></td>
+                                            <td>{{child.result.uniqueHealthId}}({{child.result.familyId}})
+                                            </td>
+                                            <td>{{child.result.memberName}}</td>
+                                            <td>{{child.result.motherName|emptylabel}}({{child.result.motherContactNumber|emptylabel}})
+                                            </td>
+                                            <td>{{child.result.dob|date:'dd-MM-yyyy'}}/{{child.age}}
+                                                months/{{child.result.gender}}</td>
+                                            <td>{{child.result.villageName|emptylabel}}/{{child.result.areaName|emptylabel}}
+                                            </td>
+                                            <td>{{child.result.ashaDetails|emptylabel}}</td>
+                                            <td>{{child.result.referredByName|emptylabel}}({{child.result.referredByContactNumber|emptylabel}})
+                                            </td>
+                                            <td>{{child.result.healthInfrastructureName|emptylabel}}</td>
+                                            <td>{{child.result.screenedOn|date:'dd/MM/yyyy'}}</td>
+                                            <td>{{child.medicalComplications|emptylabel}}</td>
+                                            <td class="action-cell no-print">
+                                                <button class="btn btn-primary"
+                                                    ng-click='childscreeninglist.navigateToAdmissionForm(child.result.memberId)'>Admit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-if="childscreeninglist.screeningList.length == 0">
+                                <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No child found</h3>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'child-referred-tab'" heading="Child Referred List"
+                        select="childscreeninglist.referredTabSelected()">
+                        <div class="tab-pane fade show" id="child-referred" role="tabpanel"
+                            aria-labelledby="child-referred" aria-expanded="true">
+                            <div class="cst-table table-responsive table-set-height" id="screening-scroll"
+                                ng-if="childscreeninglist.referredList.length > 0">
+                                <table aria-describedby="referredList"
+                                    class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th id="srNo" class="white-space-unset">Sr.No</th>
+                                            <th id="uniqueHealthId" class="white-space-unset">Unique Health ID (Family
+                                                ID)</th>
+                                            <th id="childName" class="white-space-unset">Child Name</th>
+                                            <th id="motherName" class="white-space-unset">Mother Name (Phone No.)</th>
+                                            <th id="dob" class="white-space-unset">DOB/Age/Gender</th>
+                                            <th id="village" class="white-space-unset">Village/Area</th>
+                                            <th id="asha" class="white-space-unset">ASHA Name (Contact No.)</th>
+                                            <th id="referredFrom" class="white-space-unset">Referred From</th>
+                                            <th id="referredTo" class="white-space-unset">Referred To</th>
+                                            <th id="referredDate" class="white-space-unset">Referred Date</th>
+                                            <th id="screeningDate" class="white-space-unset">Screening Date</th>
+                                            <th id="medicalComplications" class="white-space-unset">Medical
+                                                Complications</th>
+                                            <th id="status" class="white-space-unset">Status</th>
+                                            <th id="action" class="white-space-unset">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                        infinite-scroll='childscreeninglist.getReferredListByCriteria(true)'
+                                        infinite-scroll-container='"#screening-scroll"'
+                                        infinite-scroll-immediate-check="false">
+                                        <tr ng-repeat="child in childscreeninglist.referredList">
+                                            <td ng-bind="$index + 1"></td>
+                                            <td>{{child.result.uniqueHealthId}}({{child.result.familyId}})
+                                            </td>
+                                            <td>{{child.result.memberName}}</td>
+                                            <td>{{child.result.motherName|emptylabel}}({{child.result.motherContactNumber|emptylabel}})
+                                            </td>
+                                            <td>{{child.result.dob|date:'dd-MM-yyyy'}}/{{child.age}}
+                                                months/{{child.result.gender}}</td>
+                                            <td>{{child.result.villageName|emptylabel}}/{{child.result.areaName|emptylabel}}
+                                            </td>
+                                            <td>{{child.result.ashaDetails|emptylabel}}</td>
+                                            <td>{{child.result.referredFromScreeningCenter}}</td>
+                                            <td>{{child.result.referredToScreeningCenter}}</td>
+                                            <td>{{child.result.referredDate| date:'dd/MM/yyyy'}}</td>
+                                            <td>{{child.result.screenedOn|date:'dd/MM/yyyy'}}</td>
+                                            <td>{{child.medicalComplications|emptylabel}}</td>
+                                            <td
+                                                ng-bind="child.result.state === 'REFERRED' ? 'Admission Pending' : 'Admitted'">
+                                            </td>
+                                            <td class="action-cell no-print"
+                                                ng-if="child.result.referredType === 'referredToPending'">
+                                                <button class="btn btn-primary"
+                                                    ng-click='childscreeninglist.navigateToReferredForm(child.result.memberId)'>Admit</button>
+                                            </td>
+                                            <td
+                                                ng-if="child.result.referredType === 'referredFrom' && child.result.state === 'REFERRED'">
+                                                -
+                                            </td>
+                                            <td class="action-cell no-print"
+                                                ng-if="(child.result.referredType === 'referredFrom' && child.result.state === 'ACTIVE') || child.result.referredType === 'referredToComplete'">
+                                                <button class="btn btn-primary bg-green"
+                                                    ng-click='childscreeninglist.markAsArchive(child.result.id)'>Archive</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-if="childscreeninglist.referredList.length == 0">
+                                <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No child found</h3>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'treatment-completed-tab'" heading="Treatment Completed List"
+                        select="childscreeninglist.treatmentCompletedTabSelected()">
+                        <div class="tab-pane fade show" id="treatment-completed" role="tabpanel"
+                            aria-labelledby="treatment-completed" aria-expanded="true">
+                            <div class="cst-table table-responsive table-set-height" id="treatment-scroll"
+                                ng-if="childscreeninglist.treatmentCompletedList.length > 0">
+                                <table aria-describedby="treatmentCompletedList"
+                                    class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th id="srNo" class="white-space-unset">Sr.No</th>
+                                            <th id="uniqueHealthId" class="white-space-unset">Unique Health ID (Family
+                                                ID)</th>
+                                            <th id="childName" class="white-space-unset">Child Name</th>
+                                            <th id="motherName" class="white-space-unset">Mother Name (Phone No.)</th>
+                                            <th id="dob" class="white-space-unset">DOB/Age/Gender</th>
+                                            <th id="village" class="white-space-unset">Village/Area</th>
+                                            <th id="asha" class="white-space-unset">ASHA Name (Contact No.)</th>
+                                            <th id="referred" class="white-space-unset">Referred By (Contact No.)</th>
+                                            <th id="screeningCenter" class="white-space-unset">Screening Center</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                        infinite-scroll='childscreeninglist.getTreatmentCompletedListByCriteria(true)'
+                                        infinite-scroll-container='"#treatment-scroll"'
+                                        infinite-scroll-immediate-check="false">
+                                        <tr ng-repeat="child in childscreeninglist.treatmentCompletedList">
+                                            <td ng-bind="$index + 1"></td>
+                                            <td>{{child.result.uniqueHealthId}}({{child.result.familyId}})
+                                            </td>
+                                            <td>{{child.result.memberName}}</td>
+                                            <td>{{child.result.motherName|emptylabel}}({{child.result.motherContactNumber|emptylabel}})
+                                            </td>
+                                            <td>{{child.result.dob|date:'dd-MM-yyyy'}}/{{child.age}}
+                                                months/{{child.result.gender}}</td>
+                                            <td>{{child.result.villageName|emptylabel}}/{{child.result.areaName|emptylabel}}
+                                            </td>
+                                            <td>{{child.result.ashaDetails|emptylabel}}</td>
+                                            <td>{{child.result.referredByName|emptylabel}}({{child.result.referredByContactNumber|emptylabel}})
+                                            </td>
+                                            <td>{{child.result.healthInfrastructureName|emptylabel}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-if="childscreeninglist.dischargeList.length == 0">
+                                <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No child found</h3>
+                            </div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+    <div class="no-data-placeholder" ng-if="childscreeninglist.noScreeningCentersAssigned">
+        <h5>No Screening Center Assigned. Please Contact System Administrator</h5>
+    </div>
+
+    <div class="modal fade" id="deathModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Death Details</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="inline-form" name="childscreeninglist.deathForm">
+                        <div class="form-group">
+                            <validate for='deathDate' required-msg="Select Date">
+                                <label for="deathDate" control-label>Death Date</label>
+                                <input id="inputsize" type="text" style="float: inherit;" datepicker tabindex="8"
+                                    name="deathDate" form-control ng-model="childscreeninglist.childDeath.deathDate"
+                                    required max-date='childscreeninglist.todayDate'
+                                    min-date="childscreeninglist.minDeathDate">
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <validate for='deathReason' required-msg="Please select a value">
+                                <label for="deathReason" control-label>Cause of Death</label>
+                                <select style="width:65%" class="form-control cst-form-control" form-control
+                                    ng-model="childscreeninglist.childDeath.deathReason" name="deathReason"
+                                    id="deathReason" required>
+                                    <option value="" selected>--Select--</option>
+                                    <option value="871">Sepsis</option>
+                                    <option value="874">Pneumonia</option>
+                                    <option value="875">Diarrhoea</option>
+                                    <option value="OTHER">Other</option>
+                                </select>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="childscreeninglist.childDeath.deathReason === 'OTHER'">
+                            <validate for='otherDeathReason' required-msg="Please enter other death Reason">
+                                <label for="otherDeathReason" control-label>Other Death Reason</label>
+                                <input style="width:65%" type="text" class="form-control cst-form-control" form-control
+                                    name="otherDeathReason" id="motherDeliveryOtherDangerSign"
+                                    ng-model="childscreeninglist.childDeath.otherDeathReason" required>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <validate for='deathPlace' required-msg="Please select a value">
+                                <label for="deathPlace" control-label>Death Place</label>
+                                <select style="width:65%" class="form-control cst-form-control" form-control
+                                    ng-model="childscreeninglist.childDeath.deathPlace" name="deathPlace"
+                                    id="deathPlace" required>
+                                    <option value="" selected>--Select--</option>
+                                    <option value="HOME">At Home</option>
+                                    <option value="HOSP">At facility</option>
+                                </select>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="childscreeninglist.childDeath.deathPlace === '781'">
+                            <validate for='otherDeathPlace' required-msg="Please enter other death Place">
+                                <label for="otherDeathPlace" control-label>Other Death Place</label>
+                                <input style="width:65%" type="text" class="form-control cst-form-control" form-control
+                                    name="otherDeathPlace" id="motherDeliveryOtherDangerSign"
+                                    ng-model="childscreeninglist.childDeath.otherDeathPlace" required>
+                            </validate>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"
+                        ng-click="childscreeninglist.saveDeathDetails()">Save</button>
+                    <button type="submit" class="btn btn-secondary"
+                        ng-click="childscreeninglist.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="historyModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">View History ({{childscreeninglist.currentHistoryChild.result.uniqueHealthId}})
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="card cst-card" ng-if="childscreeninglist.currentHistoryChild.weightList.length > 0">
+                        <div id="car13" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapse13" ng-click="toggle13 = !toggle13" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="FSAM Weight Information">Daily Weight History</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <em ng-class="{'ion-plus':!toggle13,'ion-minus':toggle13}"></em>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse show" id="collapse13">
+                            <div class="table-section">
+                                <div class="card-body col-12 col-md-12">
+                                    <div class="cst-table-responsive">
+                                        <form name="fsam_weight_information-form" id="fsam_weight_information-form">
+                                            <table aria-describedby="table"
+                                                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                                <thead class="cst-thead">
+                                                    <tr>
+                                                        <th id="weightDate">Weight Date</th>
+                                                        <th id="weight">Weight</th>
+                                                        <th id="height">Height</th>
+                                                        <th id="oedema">Oedema</th>
+                                                        <th id="formulaGiven">Formula Given</th>
+                                                        <th id="motherCouncelling">Mother Councelling Done</th>
+                                                        <th id="amoxicillin">Amoxicillin Given</th>
+                                                        <th id="vitaminA">Vitamin A Given</th>
+                                                        <th id="albendazole">Albendazole Given</th>
+                                                        <th id="folicAcid">Folic Acid Given</th>
+                                                        <th id="potassium">Potassium Given</th>
+                                                        <th id="magnesium">Magnesium Given</th>
+                                                        <th id="zinc">Zinc Given</th>
+                                                        <th id="iron">Iron Given</th>
+                                                        <th id="otherHigherNutrients">Other Higher Nutrients Given</th>
+                                                        <th id="multiVitaminSyrup">Multi Vitamin Syrup Given</th>
+                                                        <th id="sugarSolution">Sugar Solution Given</th>
+                                                        <th id="nightStay">Night Stay</th>
+                                                        <th id="kmcProvided">KMC Provided</th>
+                                                        <th id="noOfTimesKmcDone">No. of times KMC done</th>
+                                                        <th id="createdOn">Entry Done on</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="cst-tbody">
+                                                    <tr
+                                                        ng-repeat="weight in childscreeninglist.currentHistoryChild.weightList">
+                                                        <td>{{weight.weightDate|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                                        <td>{{weight.weight|emptylabel}}</td>
+                                                        <td>{{weight.height|emptylabel}}</td>
+                                                        <td>{{weight.bilateralPittingOedema|emptylabel}}</td>
+                                                        <td>{{weight.formulaGiven|emptylabel}}</td>
+                                                        <td>{{weight.isMotherCouncelling|yesOrNo}}</td>
+                                                        <td>{{weight.isAmoxicillin|yesOrNo}}</td>
+                                                        <td>{{weight.isVitaminA|yesOrNo}}</td>
+                                                        <td>{{weight.isAlbendazole|yesOrNo}}</td>
+                                                        <td>{{weight.isFolicAcid|yesOrNo}}</td>
+                                                        <td>{{weight.isPotassium|yesOrNo}}</td>
+                                                        <td>{{weight.isMagnesium|yesOrNo}}</td>
+                                                        <td>{{weight.isZinc|yesOrNo}}</td>
+                                                        <td>{{weight.isIron|yesOrNo}}</td>
+                                                        <td>{{weight.otherHigherNutrientsGiven|yesOrNo}}</td>
+                                                        <td>{{weight.multiVitaminSyrup|yesOrNo}}</td>
+                                                        <td>{{weight.isSugarSolution|yesOrNo}}</td>
+                                                        <td>{{weight.nightStay|yesOrNo}}</td>
+                                                        <td>{{weight.kmcProvided|yesOrNo}}</td>
+                                                        <td>{{weight.noOfTimesKmcDone|emptylabel}}</td>
+                                                        <td>{{weight.createdOn|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card cst-card" ng-if="childscreeninglist.currentHistoryChild.followUpsList.length > 0">
+                        <div id="car15" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapse15" ng-click="toggle15 = !toggle15" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="FSAM Follow up Information">Follow-up History</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <em ng-class="{'ion-plus':!toggle15,'ion-minus':toggle15}"></em>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse" id="collapse15">
+                            <div class="table-section">
+                                <div class="card-body col-12 col-md-12">
+                                    <div class="cst-table-responsive">
+                                        <form name="fsam_follow_up_information-form"
+                                            id="fsam_follow_up_information-form">
+                                            <table aria-describedby="table"
+                                                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                                <thead class="cst-thead">
+                                                    <tr>
+                                                        <th id="visitNo">Visit No.</th>
+                                                        <th id="visitDate">Visit Date</th>
+                                                        <th id="weight">Weight</th>
+                                                        <th id="height">Height</th>
+                                                        <th id="muac">MUAC</th>
+                                                        <th id="oedema">Oedema</th>
+                                                        <th id="sdScore">SD Score</th>
+                                                        <th id="createdOn">Created On</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="cst-tbody">
+                                                    <tr
+                                                        ng-repeat="followUp in childscreeninglist.currentHistoryChild.followUpsList">
+                                                        <td>{{followUp.follow_up_visit|emptylabel}}</td>
+                                                        <td>{{followUp.follow_up_date|date:'dd/MM/yyyy'|emptylabel}}
+                                                        </td>
+                                                        <td>{{followUp.weight|emptylabel}}</td>
+                                                        <td>{{followUp.height|emptylabel}}</td>
+                                                        <td>{{followUp.mid_upper_arm_circumference|emptylabel}}</td>
+                                                        <td>{{followUp.bilateral_pitting_oedema|emptylabel}}</td>
+                                                        <td>{{followUp.sd_score|emptylabel}}</td>
+                                                        <td>{{followUp.created_on|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="childscreeninglist.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="searchModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="childscreeninglist.searchForm" novalidate>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Search By: </label><br>
+                                    <label class="control control-radio"> Unique Health ID
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="member id" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+
+                                    <label class="control control-radio"> Family ID
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="family id" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio"> Mobile Number
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="mobile number" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio"> Organization Unit
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()"
+                                            value="organization unit" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio"> By village name
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="village name" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio"> Name
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="name" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <div style="margin-top: 10px">
+                                        <validate for="searchString" pattern-msg='Enter Valid Number'
+                                            ng-if="childscreeninglist.search.searchBy === 'mobile number'">
+                                            <input type="number" name="searchString" form-control
+                                                ng-model="childscreeninglist.search.searchString"
+                                                placeholder='Enter contact number' class="form-control" maxlength="10"
+                                                minlength="10" required />
+                                        </validate>
+                                    </div>
+                                    <div style="margin-top: 10px">
+                                        <validate for="searchString" pattern-msg='Enter Valid details'
+                                            ng-if="childscreeninglist.search.searchBy === 'member id' || childscreeninglist.search.searchBy === 'family id'">
+                                            <input type="text" name="searchString" form-control
+                                                ng-model="childscreeninglist.search.searchString"
+                                                placeholder="Enter {{childscreeninglist.search.searchBy}}"
+                                                class="form-control" required />
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreeninglist.search.searchBy === 'organization unit' || childscreeninglist.search.searchBy === 'name'">
+                                        <location-directive template-type="'twoPart'"
+                                            ng-model="childscreeninglist.selectedLocationId"
+                                            selected-location="childscreeninglist.selectedLocation"
+                                            required-upto-level="4" template-type="'inline'"
+                                            fetch-according-to-user-aoi="false"> </location-directive>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreeninglist.search.searchBy === 'village name'">
+                                        <label>Search Village</label>
+                                        <selectize class="form-control cst-form-control disabled-input"
+                                            ng-model='childscreeninglist.selectedLocationId'
+                                            config='childscreeninglist.locationSelectizeNutrition'>
+                                            <option value=''>Select</option>
+                                        </selectize>
+                                    </div>
+                                    <div style="margin-top: 10px">
+                                        <validate for="searchString" pattern-msg='Enter Valid details'
+                                            ng-if="childscreeninglist.search.searchBy === 'name'">
+                                            <input style="width:30%;float:left;margin:4px" type="text" name="firstName"
+                                                form-control ng-model="childscreeninglist.search.firstName"
+                                                placeholder="Enter first Name" class="form-control" required />
+                                        </validate>
+                                        <validate for="searchString" pattern-msg='Enter Valid details'
+                                            ng-if="childscreeninglist.search.searchBy === 'name'">
+                                            <input style="width:30%;float:left;margin:4px" type="text" name="lastName"
+                                                form-control ng-model="childscreeninglist.search.lastName"
+                                                placeholder="Enter last Name" class="form-control" required />
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="cst-table table-responsive table-set-height" id="member-scroll"
+                        ng-if="childscreeninglist.retrievedSearchList.length > 0">
+                        <table aria-describedby="searchList" style="margin-top: 10px"
+                            class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                            <thead class="cst-thead">
+                                <tr>
+                                    <th id="srNo">Sr.No</th>
+                                    <th id="childName">Child Name</th>
+                                    <th id="village">Village</th>
+                                    <th id="action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                infinite-scroll-disabled="childscreeninglist.pagingService.pagingRetrivalOn"
+                                infinite-scroll-container='"#member-scroll"'
+                                infinite-scroll="childscreeninglist.searchData()">
+                                <tr ng-repeat="child in childscreeninglist.retrievedSearchList">
+                                    <td ng-bind="$index + 1"></td>
+                                    <td ng-bind="child.firstName + ' ' + child.middleName + ' ' + child.lastName"></td>
+                                    <td ng-bind="child.locationHierarchy"></td>
+                                    <td class="action-cell no-print">
+                                        <button class="btn btn-primary" href="javascript:void(0)"
+                                            ng-click="childscreeninglist.redirectToChildScreening(child.id)">Admit</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"
+                        ng-click="childscreeninglist.searchData(true)">Search</button>
+                    <button type="submit" class="btn btn-secondary"
+                        ng-click="childscreeninglist.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="followUpSearchModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="childscreeninglist.followUpSearchForm" novalidate>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Search By: </label><br>
+                                    <label class="control control-radio"> Unique Health ID
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="member id" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+
+                                    <label class="control control-radio"> Family ID
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="family id" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio"> Mobile Number
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="mobile number" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio"> Organization Unit
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()"
+                                            value="follow up organization unit" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio"> By village name
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="village name" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio"> Name
+                                        <input type="radio" name="search" icheck
+                                            ng-model="childscreeninglist.search.searchBy"
+                                            ng-change="childscreeninglist.resetSearchString()" value="follow up name" />
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <div style="margin-top: 10px">
+                                        <validate for="searchString" pattern-msg='Enter Valid Number'
+                                            ng-if="childscreeninglist.search.searchBy === 'mobile number'">
+                                            <input type="number" name="searchString" form-control
+                                                ng-model="childscreeninglist.search.searchString"
+                                                placeholder='Enter contact number' class="form-control" maxlength="10"
+                                                minlength="10" required />
+                                        </validate>
+                                    </div>
+                                    <div style="margin-top: 10px">
+                                        <validate for="searchString" pattern-msg='Enter Valid details'
+                                            ng-if="childscreeninglist.search.searchBy === 'member id' || childscreeninglist.search.searchBy === 'family id'">
+                                            <input type="text" name="searchString" form-control
+                                                ng-model="childscreeninglist.search.searchString"
+                                                placeholder="Enter {{childscreeninglist.search.searchBy}}"
+                                                class="form-control" required />
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreeninglist.search.searchBy === 'follow up organization unit' || childscreeninglist.search.searchBy === 'follow up name'">
+                                        <location-directive template-type="'twoPart'"
+                                            ng-model="childscreeninglist.selectedLocationId"
+                                            selected-location="childscreeninglist.selectedLocation"
+                                            required-upto-level="4" template-type="'inline'"
+                                            fetch-according-to-user-aoi="false"> </location-directive>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreeninglist.search.searchBy === 'village name'">
+                                        <label>Search Village</label>
+                                        <selectize class="form-control cst-form-control disabled-input"
+                                            ng-model='childscreeninglist.selectedLocationId'
+                                            config='childscreeninglist.locationSelectizeNutrition'>
+                                            <option value=''>Select</option>
+                                        </selectize>
+                                    </div>
+                                    <div style="margin-top: 10px"
+                                        ng-if="childscreeninglist.search.searchBy === 'follow up name'">
+                                        <validate for="searchString" pattern-msg='Enter Valid details'>
+                                            <input style="width:30%;float:left;margin:4px" type="text" name="firstName"
+                                                form-control ng-model="childscreeninglist.search.firstName"
+                                                placeholder="Enter first Name" class="form-control" required />
+                                        </validate>
+                                        <validate for="searchString" pattern-msg='Enter Valid details'>
+                                            <input style="width:30%;float:left;margin:4px" type="text" name="lastName"
+                                                form-control ng-model="childscreeninglist.search.lastName"
+                                                placeholder="Enter last Name" class="form-control" required />
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="cst-table table-responsive table-set-height" id="followUp-scroll"
+                        ng-if="childscreeninglist.retrievedFollowUpSearchList.length > 0">
+                        <table aria-describedby="followUpSearchList" style="margin-top: 10px"
+                            class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                            <thead class="cst-thead">
+                                <tr>
+                                    <th id="srNo">Sr.No</th>
+                                    <th id="childName">Child Name</th>
+                                    <th id="village">Village</th>
+                                    <th id="action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                infinite-scroll-disabled="childscreeninglist.pagingService.pagingRetrivalOn"
+                                infinite-scroll-container='"#followUp-scroll"'
+                                infinite-scroll="childscreeninglist.searchFollowUpData()">
+                                <tr ng-repeat="child in childscreeninglist.retrievedFollowUpSearchList">
+                                    <td ng-bind="$index + 1"></td>
+                                    <td ng-bind="child.firstName + ' ' + child.middleName + ' ' + child.lastName"></td>
+                                    <td ng-bind="child.locationHierarchy"></td>
+                                    <td class="action-cell no-print">
+                                        <button class="btn btn-primary" href="javascript:void(0)"
+                                            ng-click="childscreeninglist.navigateToFollowUpForm(child.id)">Follow
+                                            Up</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"
+                        ng-click="childscreeninglist.searchFollowUpData(true)">Search</button>
+                    <button type="submit" class="btn btn-secondary"
+                        ng-click="childscreeninglist.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

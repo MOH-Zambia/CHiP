@@ -1,0 +1,154 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <table class="table table-sm table-striped table-bordered header-fixed">
+                <thead class="cst-thead">
+                    <tr>
+                        <td>User Name</td>
+                        <td>Correct Location</td>
+                        <td>Incorrect Location</td>
+                        <td>Location not available</td>
+                    </tr>
+                </thead>
+                <tbody class="cst-tbody">
+                    <tr ng-click="viewGeoServices.onUserClick(user)" ng-repeat="user in viewGeoServices.users">
+                        <td>{{user.name}}
+                        </td>
+                        <td>
+                            {{user.correct_locations}}
+                        </td>
+                        <td>
+                            {{user.incorrect_locations}}
+                        </td>
+                        <td>
+                            {{user.geo_not_available}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-8">
+            <div id="mapid"></div>
+            <div id="geo_map_all_village"></div>
+            <br>
+            <div>
+                <h4>{{viewGeoServices.selectedUser.name}}</h4>
+            </div>
+            <table class="table table-sm table-striped table-bordered header-fixed"
+                ng-if="viewGeoServices.selectedUser.name">
+                <thead class="cst-thead">
+                    <tr>
+                        <td>Sr. No</td>
+                        <td>Member Name</td>
+                        <td>Member Location</td>
+                        <td>Service Given Location</td>
+                        <td>Service Type</td>
+                        <td>Service Date</td>
+                        <td>Latitude</td>
+                        <td>Longitude</td>
+                        <td>Distance (KM)</td>
+                    </tr>
+                </thead>
+                <tbody class="cst-tbody">
+                    <tr ng-repeat="service in viewGeoServices.services"
+                        ng-class="{'geo-invalid-location':service.geoLocationState == 'INCORRECT'}">
+                        <td>
+                            {{service.srNo}}
+                        </td>
+                        </td>
+                        <td>{{service.memberName}}
+                        </td>
+                        <td>
+                            {{service.location}}
+                        </td>
+                        <td>
+                            <div ng-if="!service.latLongLocation">NA</div>{{service.latLongLocation}}
+                        </td>
+                        <td>
+                            {{service.serviceType}}
+                        </td>
+                        <td>
+                            {{service.serviceDate}}
+                        </td>
+                        <td>
+                            {{service.latitude}}
+                        </td>
+                        <td ng-dblclick="viewGeoServices.openGoogleMap(service.latitude, service.longitude)">
+                            {{service.longitude}}
+                        </td>
+                        <td>
+                            {{service.latLongLocationDistrance | number:2}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <form novalidate name="viewGeoServices.searchForm">
+        <div class="filter-div">
+            <h3>{{selectedUser.memberName}}</h3>
+            <span class="filter-toggle" style="left:-96px" ng-click="viewGeoServices.toggleFilter()">Select
+                Location</span>
+            <div class="row">
+                <div class="col-12">
+                    <h5 class="filter-div-title">Select Location</h5>
+                </div>
+            </div>
+            <div class="filter-div-body">
+                <div class="row">
+                    <div class="col-12">
+                        <location-directive ng-model="viewGeoServices.locationId"
+                            selected-location="rdm.selectedLocation" fetch-according-to-user-aoi="true"
+                            required-upto-level="4">
+                        </location-directive>
+                        <br>
+                        <label><span class="info_type" control-label>Service Type</span></label>
+                        <select class="form-control cst-form-control" ng-model="viewGeoServices.serviceType">
+                            <option value="all">All</option>
+                            <option value="FHW_LMP">LMP Service</option>
+                            <option value="FHW_ANC">ANC Service</option>
+                            <option value="FHW_MOTHER_WPD">Delivery Service</option>
+                            <option value="FHW_PNC">PNC Service</option>
+                            <option value="FHW_CS">Child Service</option>
+                        </select>
+                        <div class="form-group">
+                            <validate for="from_date" required-msg="Enter from date">
+                                <label style="margin-top: 4%" for="from_date" control-label>From Date</label>
+                                <div class="{{::inputClass}} form-group" style="margin-bottom: 0px">
+                                    <input name="from_date" type="text" datepicker class="disabled-input" id="from_date"
+                                        ng-model="viewGeoServices.dateFrom" max-date-month="viewGeoServices.maxDate"
+                                        ng-required="true" form-control
+                                        ng-change="viewGeoServices.minDateFieldValidation(viewGeoServices.dateFrom)">
+                                    <placeholder></placeholder>
+                                </div>
+                            </validate>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <validate for="to_date" required-msg="Enter to date">
+                                <label for="data[dateTo]" control-label>To Date</label>
+                                <div class="{{::inputClass}} form-group">
+                                    <input name="to_date" type="text" datepicker class="disabled-input" id="to_date"
+                                        ng-model="viewGeoServices.dateTo" min-date-month="viewGeoServices.minDate"
+                                        max-date-month="viewGeoServices.todayDate" ng-required="true" form-control
+                                        ng-change="viewGeoServices.maxDateFieldValidation(viewGeoServices.dateTo)">
+                                    <placeholder></placeholder>
+                                </div>
+                            </validate>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <hr>
+                        <div class="form-group text-right">
+                            <button class="btn btn-secondary close-filter"
+                                ng-click="viewGeoServices.toggleFilter()">Close</button>
+                            <button class="btn btn-primary search-filter"
+                                ng-click="viewGeoServices.submit(viewGeoServices.serviceType)">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

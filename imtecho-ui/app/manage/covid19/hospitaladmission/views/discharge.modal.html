@@ -1,0 +1,138 @@
+<div class="modal-header">
+    <h4 class="text">OUTCOME</h4>
+</div>
+<form role="form" name="dischargeModalCtrl.dischargeModalCtrlForm" id="mangeCovid19CaseForm" novalidate>
+    <div class="modal-body" style="overflow: inherit;max-height: none">
+        <div class="inline-form">
+            <div class="row">
+                <div class="col-12 bottom-spacer-20">
+                    <div class="form-group">
+                        <label for="notReferred" control-label style="white-space: normal">
+                            Select Outcome
+                        </label>
+                        <label class="control control-radio mt-10"> Discharge
+                            <input type="radio" name="notReferred" icheck ng-model="dischargeModalCtrl.isDischarge"
+                                ng-change="dischargeModalCtrl.isDeath = false;
+                                       dischargeModalCtrl.isReferedToAnotherHospital = false;
+                                       dischargeModalCtrl.isReferral = false;
+                                       dischargeModalCtrl.resetDischargeDate();
+                                       dischargeModalCtrl.isDAMALAMA = false;" ng-value="true" />
+                            <div class="control_indicator"></div>
+                        </label>
+                        <label class="control control-radio mt-10"> Transfer out
+                            <input type="radio" name="notReferred" icheck
+                                ng-model="dischargeModalCtrl.isReferedToAnotherHospital" ng-change="dischargeModalCtrl.isDischarge = false;
+                                       dischargeModalCtrl.isDeath = false;
+                                       dischargeModalCtrl.resetDischargeDate();
+                                       dischargeModalCtrl.isDAMALAMA = false;" ng-value="true" />
+                            <div class="control_indicator"></div>
+                        </label>
+                        <label class="control control-radio mt-10"> LAMA
+                            <input type="radio" name="isDAMALAMA" icheck ng-model="dischargeModalCtrl.isDAMALAMA"
+                                ng-change="dischargeModalCtrl.isDischarge = false;
+                                       dischargeModalCtrl.resetDischargeDate();
+                                       dischargeModalCtrl.isReferedToAnotherHospital = false;
+                                       dischargeModalCtrl.isDeath = false;" ng-value="true" />
+                            <div class="control_indicator"></div>
+                        </label>
+                        <label class="control control-radio mt-10"> Death
+                            <input type="radio" name="notReferred" icheck ng-model="dischargeModalCtrl.isDeath"
+                                ng-change="dischargeModalCtrl.isDischarge = false;
+                                       dischargeModalCtrl.isReferedToAnotherHospital = false;
+                                       dischargeModalCtrl.isReferral = false;
+                                       dischargeModalCtrl.isDAMALAMA = false;" ng-value="true" />
+                            <div class="control_indicator"></div>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <div class="form-group" ng-if="!!dischargeModalCtrl.isDeath">
+                        <div class="form-group">
+                            <validate for="deathDate" required-msg="Please select death date">
+                                <label for="deathDate" control-label>Death Date
+                                </label>
+                                <input name="deathDate" type="text" datepicker id="deathDate" max-date="dischargeModalCtrl.today"
+                                    ng-model="dischargeModalCtrl.deathDate" ng-required="true" min-date="dischargeModalCtrl.admissionDate"
+                                    style="float: right !important;" form-control>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" style="margin-top: 4%">
+                            <validate for='deathTime' required-msg="Select Time" time-msg="Invalid time">
+                                <label for="deathTime" control-label>Death Time</label>
+                                <input class="form-control cst-form-control" type="time" form-control id="deathTime"
+                                    name="deathTime" ng-model="dischargeModalCtrl.deathTime" placeholder="HH:mm"
+                                    required />
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <validate for="deathCause" required-msg="Please enter death cause">
+                                <label for="deathCause" control-label>Death Cause
+                                </label>
+                                <input name="deathCause" type="text" id="deathCause"
+                                    ng-model="dischargeModalCtrl.deathCause" ng-required="true" form-control
+                                    class="form-control cst-form-control">
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="!!dischargeModalCtrl.isDischarge || !!dischargeModalCtrl.isReferedToAnotherHospital
+                         || !!dischargeModalCtrl.isDAMALAMA">
+                        <validate for="dischargeDate" required-msg="Please select dicharge date">
+                            <label for="dischargeDate" control-label>Discharge Date
+                            </label>
+                            <input name="dischargeDate" type="text" datepicker id="dischargeDate"
+                                ng-model="dischargeModalCtrl.dischargeDate" ng-required="true" max-date="dischargeModalCtrl.today"
+                                min-date="dischargeModalCtrl.admissionDate" style="float: right !important;" form-control>
+                            <placeholder></placeholder>
+                        </validate>
+                    </div>
+                    <div class="form-group" ng-if="!!dischargeModalCtrl.isReferedToAnotherHospital">
+                        <div class="form-group">
+                            <validate for='districtlocationId' required-msg="Select District">
+                                <label for="districtlocationId" control-label>District</label>
+                                <select class="form-control cst-form-control" chosen-directive form-control
+                                    ng-model="dischargeModalCtrl.districtlocationId" name="locationId"
+                                    id="districtlocationId" ng-options="location.id as location.english_name for          location in
+                                                    dischargeModalCtrl.districtLocations"
+                                    ng-change="dischargeModalCtrl.referLocationChanged()" required>
+                                    <option value="" selected>--Select--</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="dischargeModalCtrl.isReferedToAnotherHospital &&
+                                    dischargeModalCtrl.districtlocationId">
+                            <validate for='healthInfrastructure' required-msg="Select health infrastructure">
+                                <label for="healthInfrastructure" control-label>Health Infrastructure</label>
+                                <select class="form-control cst-form-control" chosen-directive form-control
+                                    ng-model="dischargeModalCtrl.tohealthInfraId" name="healthInfrastructure"
+                                    id="healthInfrastructure" ng-options="healthInfra.id as healthInfra.name for healthInfra
+                                                    in dischargeModalCtrl.healthInfrastructureList" required>
+                                    <option value="" selected>--Select--</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="(!!dischargeModalCtrl.isDAMALAMA || !!dischargeModalCtrl.isDischarge
+                                || dischargeModalCtrl.isReferedToAnotherHospital)">
+                        <validate for="dischargeRemark" required-msg="Please enter reason">
+                            <label for="dischargeRemark" control-label>Reason
+                            </label>
+                            <input name="dischargeRemark" type="text" id="dischargeRemark"
+                                ng-model="dischargeModalCtrl.dischargeRemark" ng-required="true" form-control
+                                class="form-control cst-form-control">
+                            <placeholder></placeholder>
+                        </validate>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" ng-click="dischargeModalCtrl.submit()">Save</button>
+        <button class="btn btn-secondary" ng-click="dischargeModalCtrl.cancel()">Cancel</button>
+    </div>
+</form>

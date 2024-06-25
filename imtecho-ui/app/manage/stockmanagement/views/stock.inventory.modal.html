@@ -1,0 +1,63 @@
+<style>
+    .input-qty{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.75rem;
+    }
+</style>
+
+<div >   
+    <div class="modal-header">
+        <h4 class="text">Update Medicine Inventory</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <form role="form" novalidate>
+            <div class="form-group">
+                <validate for="user" required-msg="Select User">
+                    <label control-label>Select User</label>
+                    <select type="text" form-control name="user" 
+                        ng-options="user.username for user in mdctrl.userList"
+                        ng-model = "mdctrl.selectedUser"
+                        class="form-control cst-form-control"
+                        ng-change = "mdctrl.fetchMeds(mdctrl.selectedUser.user_id)"
+                        >
+                        <option value="">--Select--</option>
+                    </select>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="form-group">
+                <validate for="name" required-msg="Select Medicine">
+                    <label control-label>Select Medicine</label>
+                    <select type="text" form-control name="name" ng-model="mdctrl.medicine"
+                        ng-options="med.medicine_name for med in mdctrl.medicineList"
+                        class="form-control cst-form-control" ng-disabled = "!mdctrl.selectedUser">
+                        <option value="">--Select--</option>
+                    </select>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="input-qty" ng-if="mdctrl.medicine != null">
+                <div >
+                    In Stock : <b>{{mdctrl.medicine.in_stock ? mdctrl.medicine.in_stock : 'N/A'}}</b>
+                </div>
+    
+                <div class="form-group">
+                    <validate for="qty" required-msg="Enter Quantity">
+                        <label control-label>Enter Quantity : </label>
+                        <input type="number" form-control name="qty" ng-model="mdctrl.qty" placeholder="Enter quantity" numbers-only decimalallowed = "false" >
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+            </div>
+           
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="mdctrl.updateInventory(mdctrl.medicine, mdctrl.qty)"
+            ng-disabled="mdctrl.approvedForm.$invalid">Save</button>
+        <button class="btn btn-secondary" ng-click="mdctrl.cancel()">Cancel</button>
+    </div>
+</div>

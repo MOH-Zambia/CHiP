@@ -1,0 +1,235 @@
+<div class="container-fluid">
+    <!-- User Training Programs Row Start-->
+    <div class="row mb-15">
+        <div class="col-sm-12 col-xl-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">My Training Programs</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row" ng-if="!dashboard.currentTraining">
+                        <div class="col-12">
+                            <div class="no-data-placeholder">
+                                <h5>No Current Training Programs for You!!</h5>
+                                <p>No training programs are currently in progress for you please check back soon...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- When there is training program -->
+                    <div class="row mb-15" ng-if="!!dashboard.currentTraining">
+                        <div class="col-md-12 col-sm-12 col-lg-12 col-xl-9">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 border-right-1">
+                                    <div class="card-small-title">
+                                        <span class="d-inline-block align-top">
+                                            <em class="icon fa fa-book blue fs-12"></em>
+                                        </span>
+                                        <span class="d-inline-block">
+                                            <h5 class="text text-capitalize">COURSE NAME</h5>
+                                            <p class="card-text">
+                                                {{dashboard.courseName}}
+                                            </p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 border-right-1">
+                                    <div class="card-small-title">
+                                        <span class="d-inline-block align-top">
+                                            <em class="icon fa fa-list-ul orange fs-12"></em>
+                                        </span>
+                                        <span class="d-inline-block">
+                                            <h5 class="text text-capitalize">OUs</h5>
+                                            <p class="card-text">
+                                                {{dashboard.organizationUnitsList[0]}}
+                                            </p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 mt-4 border-right-1">
+                                    <div class="card-small-title">
+                                        <span class="d-inline-block align-top">
+                                            <em class="icon fa fa-hourglass-end viking fs-12"></em>
+                                        </span>
+                                        <span class="d-inline-block">
+                                            <h5 class="text">Period of training</h5>
+                                            <p class="card-text">
+                                                {{dashboard.currentTraining.effectiveDate|date:'d MMM yyyy'}} to
+                                                {{dashboard.currentTraining.expirationDate|date:'d MMM yyyy'}}
+                                            </p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 border-right-1 mt-4">
+                                    <div class="card-small-title">
+                                        <span class="d-inline-block align-top">
+                                            <em class="icon ion-ios-location blue fs-15"></em>
+                                        </span>
+                                        <span class="d-inline-block">
+                                            <h5 class="text">Training Location</h5>
+                                            <p class="card-text">{{dashboard.currentTraining.location|emptylabel}}</p>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="col-md-12 col-sm-12 col-lg-12 col-xl-3 mt-sm-4 mt-lg-4 mt-md-4 mt-xl-0">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                    <div class="card-small-title">
+                                        <span class="d-inline-block align-top">
+                                            <em class="icon ion-person-stalker orange fs-15">
+                                            </em>
+                                        </span>
+                                        <span class="d-inline-block align-top">
+                                            <h5 class="text text-capitalize">Trainers</h5>
+                                            <ul class="simple-list">
+                                                <li ng-repeat="binots in dashboard.primaryTrainersList">
+                                                    {{binots}}
+                                                </li>
+                                                <li ng-repeat="binots in dashboard.optionalTrainersList">
+                                                    {{binots}}
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-lg-12 mt-4">
+                                    <div class="card-small-title">
+                                        <span class="d-inline-block align-top">
+                                            <em class="icon ion-person-stalker purple fs-15"></em>
+                                        </span>
+                                        <span class="d-inline-block">
+                                            <h5 class="text"># of Attendees</h5>
+                                            <p class="card-text">{{dashboard.size}}</p>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- When there is training program -->
+                    <div class="row mb-15" ng-if="!!dashboard.currentTraining">
+                        <div class="col-12">
+                            <h4 class="card-sub-title">Table of Schedule</h4>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="!!dashboard.currentTraining">
+                        <div class="col-12">
+                            <div class="cst-table table-responsive" style="overflow: auto;">
+                                <table class="table table-sm table-striped table-fixed table-bordered header-fixed">
+                                    <colgroup>
+                                        <col style="width:10px">
+                                        <col style="width:40px">
+                                        <col style="width:20px">
+                                        <col style="width:80px">
+                                        <col style="width:40px">
+                                    </colgroup>
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Date</th>
+                                            <th>Day</th>
+                                            <th>Training Topics</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody">
+                                        <tr
+                                            ng-repeat="training in dashboard.currentTraining.scheduleList| orderBy:'effectiveDate'">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{training.date|dateSuffix}}</td>
+                                            <td ng-bind="training.day | ordinal"></td>
+                                            <td>
+                                                <span ng-repeat="topic in training.trainingTopic track by $index">
+                                                    {{topic}}{{$last ? '' : ', '}}
+                                                </span>
+                                            </td>
+                                            <td ng-if="(training.status === 'SUBMITTED')">
+                                                <span class="status-badge badge-primary status-cursorpointer"
+                                                    ng-click="dashboard.navigateToTrainerDetails(training.date)">Submitted</span>
+                                            </td>
+                                            <td
+                                                ng-if="dashboard.getStatus(training.date) > 0 && (training.status === 'PENDING')">
+                                                <span class="status-badge badge-success status-cursorpointer"
+                                                    ng-click="dashboard.navigateToTrainerDetails(training.date)">Pending</span>
+                                            </td>
+                                            <td
+                                                ng-if="dashboard.getStatus(training.date) < 0 && (training.status === 'PENDING')">
+                                                <span class="status-badge badge-danger status-cursorpointer"
+                                                    ng-click="dashboard.navigateToTrainerDetails(training.date)">Submit
+                                                    Pending
+                                                </span>
+                                            </td>
+                                            <td
+                                                ng-if="dashboard.getStatus(training.date) === 0 && (training.status === 'PENDING')">
+                                                <span class="status-badge badge-warning status-cursorpointer"
+                                                    ng-click="dashboard.navigateToTrainerDetails(training.date)">Due
+                                                    Today
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- User Training Programs Row end -->
+    <!-- Upcoming Training Programs Row start -->
+    <div class="row mb-15">
+        <div class="col-sm-12 col-xl-12">
+            <div class="section-title">
+                <h4 class="text">Upcoming Training Programs</h4>
+            </div>
+            <div class="no-data-placeholder" ng-if="dashboard.upcomingTrainingList.length < 1">
+                <h5>No training programs are scheduled for you...</h5>
+            </div>
+            <div id="upcoming-scroll" class="cst-table table-responsive" style="overflow: auto;"
+                ng-if="dashboard.upcomingTrainingList.length > 0">
+                <table class="table table-sm table-striped table-fixed table-bordered header-fixed">
+                    <colgroup>
+                        <col style="width:10px">
+                        <col style="width:40px">
+                        <col style="width:40px">
+                        <col style="width:65px">
+                        <col style="width:50px">
+                        <col style="width:40px">
+                        <col style="width:40px">
+                        <col style="width:25px">
+                    </colgroup>
+                    <thead class="cst-thead">
+                        <tr>
+                            <th>#</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Course</th>
+                            <th>Training Location</th>
+                            <th>Trainer Name</th>
+                            <th>Location</th>
+                            <th>Attendees</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="training in dashboard.upcomingTrainingList track by $index">
+                            <td>{{$index + 1}}</td>
+                            <td>{{training.effectiveDate|dateSuffix}}</td>
+                            <td>{{training.expirationDate|dateSuffix}}</td>
+                            <td>{{dashboard.upcomingCourseList[$index][1]}}</td>
+                            <td>{{training.location|emptylabel}}</td>
+                            <td>{{dashboard.upcomingPrimaryTrainersList[$index][1]}}</td>
+                            <td>{{dashboard.upcomingOrganizationUnitsList[$index][1]}}</td>
+                            <td>{{training.upcomingTrainingSize}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--Upcoming Training Programs Row end-->
+</div>

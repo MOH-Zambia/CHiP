@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h5 class="modal-title">Why did <strong>{{$ctrl.participants.name}}</strong> not attend the session today?</h5>
+    <button type="button" class="close" ng-click="$ctrl.cancel()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <label>Reason</label>
+        <select ng-model="$ctrl.participants.reason" ng-options="reason as reason for reason in $ctrl.reasonsList"
+            class="form-control form-control-sm cst-form-control">
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Additional Remarks</label>
+        <textarea ng-model="$ctrl.participants.remarks" maxlength="99" class="form-control cst-form-control"></textarea>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.submitReason()">
+        <em class="fa fa-floppy-o"></em>
+        Save
+    </button>
+    <button type="button" class="btn btn-secondary" ng-click="$ctrl.cancelReason()">Close</button>
+</div>

@@ -1,0 +1,221 @@
+<!-- <style>
+    th,
+    td {
+        white-space: unset !important;
+    }
+
+    .display {
+        width: auto !important;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="text" style="line-height: 1.5;">
+        Not Available RCH Locations
+    </h4>
+    <button type="button" class="close" ng-click="ctrl.cancel()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body" style="overflow: inherit; overflow-y: auto;">
+    <div class="card cst-card">
+        <div class="card-title">
+            <div class="float-left">
+                <h4 class="text">Not Available Locations Detail</h4>
+            </div>
+        </div>
+        <div class="card-body inline-form">
+            <div class="row">
+                <div class="col-12" style="margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Location Hierarchy :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.locationHierarchy | emptylabel}}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Total Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.totalCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>District Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.districtCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Block Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.blockCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>PHC Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.phcCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Sub Center Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.subCenterCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Village Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.villageCount | emptylabel}}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>State Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.stateCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Corporation Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.corporationCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Zone Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.zoneCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>UPHC Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.uphcCount | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>ANM Area Count :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.locationsCount.anmAreaCount | emptylabel}}
+                        </label>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card cst-card">
+        <div class="card-title inline-form">
+            <div class="row">
+                <div class="form-group col-8 mb-0">
+                    <label style="width: auto;">
+                        Not Available Locations List
+                    </label>
+                </div>
+                <div class="form-group col-4 mb-0">
+                    <label for="selectLocationTypes" style="text-align: end;">Select Location Type</label>
+                    <select multiple class="form-control cst-form-control" ng-model="ctrl.selectedLocationTypes"
+                        name="selectLocationTypes" id="selectLocationTypes" chosen-directive="ctrl.locationTypes"
+                        ng-options="location.type as location.name for location in ctrl.locationTypes"
+                        ng-change="ctrl.onLocationTypeSelection();">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body inline-form">
+            <div ng-if="ctrl.locations.length === 0">
+                <div class="no-data-placeholder">
+                    <h5>No Record Found!</h5>
+                </div>
+            </div>
+            <div class="cst-table table-responsive" style="overflow: auto;" ng-if="ctrl.locations.length > 0"
+                id="first-tab-scroll">
+                <table aria-describedby="table"
+                    class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th id="srNo." style="width: 5%;">Sr No.</th>
+                            <th id="locationName" style="width: 20%;">Location Name</th>
+                            <th id="locationEnglishName" style="width: 20%;">Location English Name</th>
+                            <th id="locationType" style="width: 15%;" ng-bind-template="{{ctrl.appName}} Location Type">
+                            </th>
+                            <th id="locationType" style="width: 15%;"
+                                ng-bind-template="{{ctrl.appName}} Location Hierarchy"></th>
+                            <th id="locationType" style="width: 15%;">RCH Location Type</th>
+                            <th id="locationType" style="width: 10%;">LGD Code</th>
+                            <th id="remarks" style="width: 10%">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='ctrl.retrieveAll()'
+                        infinite-scroll-disabled='ctrl.pagingService.pagingRetrivalOn'
+                        infinite-scroll-container='"#first-tab-scroll"'>
+                        <tr ng-repeat="rchLocation in ctrl.locations">
+                            <td>{{$index + 1}}</td>
+                            <td>{{rchLocation.name}}</td>
+                            <td>{{rchLocation.englishName}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li ng-if="rchLocation.type === 'C'">Corporation</li>
+                                    <li ng-if="rchLocation.type === 'D'">District</li>
+                                    <li ng-if="rchLocation.type === 'B'">Block</li>
+                                    <li ng-if="rchLocation.type === 'Z'">Zone</li>
+                                    <li ng-if="rchLocation.type === 'P'">PHC</li>
+                                    <li ng-if="rchLocation.type === 'U'">UPHC</li>
+                                    <li ng-if="rchLocation.type === 'SC'">Sub Center</li>
+                                    <li ng-if="rchLocation.type === 'ANM'">ANM Area</li>
+                                    <li ng-if="rchLocation.type === 'V'">Village</li>
+                                
+                                </ul>
+                            </td>
+                            <td>{{rchLocation.locationHierarchy}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li ng-if="['D', 'C'].includes(rchLocation.type)">District</li>
+                                    <li ng-if="['B', 'Z'].includes(rchLocation.type)">Taluka</li>
+                                    <li ng-if="['P', 'U'].includes(rchLocation.type)">Health Facility</li>
+                                    <li ng-if="['SC', 'ANM'].includes(rchLocation.type)">Health Sub Facility</li>
+                                    <li ng-if="['V'].includes(rchLocation.type)">Village</li>
+                                </ul>
+                            </td>
+                            <td>{{rchLocation.rchCode || '-'}}</td>
+                            <td>
+                                {{!rchLocation.anmolId ? 'Location added' : (rchLocation.isParentRchCodeMismatch ? 'Location moved' : '')}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ctrl.ok()">Ok</button>
+    <button class="btn btn-secondary" ng-click="ctrl.cancel()">Cancel</button>
+</div> -->

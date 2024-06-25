@@ -1,0 +1,6 @@
+--drop table if exists notification_generated_for_asha_location_det;
+--
+--create table notification_generated_for_asha_location_det(
+--    location_id bigint primary key
+--);
+--

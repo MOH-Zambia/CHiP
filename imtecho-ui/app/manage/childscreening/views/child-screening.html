@@ -1,0 +1,891 @@
+<div class="container-fluid child-form">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">CHILD DETAIL</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">Child Id : </span>
+                                            <span
+                                                class="data">{{childscreening.currentChild.uniqueHealthId | emptylabel}}({{childscreening.currentChild.familyId | emptylabel}})</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Child Name :</span>
+                                            <span
+                                                class="data">{{childscreening.currentChild.childName | emptylabel}}({{childscreening.currentChild.motherName | emptylabel}})</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Location :</span>
+                                            <span
+                                                class="data">{{childscreening.currentChild.locationHierarchy | emptylabel}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12" ng-if="childscreening.prefferedHealthId">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">ABHA Address :</span>
+                                            <span ng-if="childscreening.healthIds" class="data">{{childscreening.healthIds}},</span>
+                                            <span class="data">
+                                                <strong uib-tooltip="Preffered ABHA Address" style="color: #299a05;">{{childscreening.prefferedHealthId |
+                                                    emptylabel}}</strong>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> DOB / Age / Gender : </span>
+                                            <span class="data"> {{childscreening.currentChild.dob}} /
+                                                {{childscreening.currentChild.age}} months /
+                                                {{childscreening.currentChild.gender}} </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">Screening Date : </span>
+                                            <span
+                                                class="data">{{childscreening.currentChild.screenedOn | emptylabel}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Contact Number :</span>
+                                            <span
+                                                class="data">{{childscreening.currentChild.mobileNumber | emptylabel}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">BPL : </span>
+                                            <span class="data">{{childscreening.currentChild.bpl | emptylabel}} </span>
+
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Caste : </span>
+                                            <span class="data">{{childscreening.currentChild.caste | emptylabel}}
+                                            </span>
+
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Child Referred By : </span>
+                                            <span class="data"> {{childscreening.currentChild.referredBy|emptylabel}}
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card cst-card" ng-if="childscreening.isDischargeForm && childscreening.weightList.length > 0">
+        <div id="car13" role="tab" class="card-title collapse-link d-block" data-toggle="collapse" href="#collapse13"
+            ng-click="toggle13 = !toggle13" style="cursor: pointer">
+            <h4 class="text">
+                <span data-toggle="tooltip" title="FSAM Weight Information">Daily Weight History</span>
+                <ul class="control-list">
+                    <li>
+                        <span>
+                            <em ng-class="{'ion-plus':!toggle13,'ion-minus':toggle13}"></em>
+                        </span>
+                    </li>
+                </ul>
+            </h4>
+        </div>
+        <div class="collapse" id="collapse13">
+            <div class="table-section">
+                <div class="card-body col-12 col-md-12">
+                    <div class="cst-table-responsive">
+                        <form name="fsam_weight_information-form" id="fsam_weight_information-form">
+                            <table aria-describedby="table"
+                                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="weightDate">Weight Date</th>
+                                        <th id="weight">Weight</th>
+                                        <th id="height">Height</th>
+                                        <th id="oedema">Oedema</th>
+                                        <th id="formulaGiven">Formula Given</th>
+                                        <th id="motherCouncelling">Mother Councelling Done</th>
+                                        <th id="amoxicillin">Amoxicillin Given</th>
+                                        <th id="vitaminA">Vitamin A Given</th>
+                                        <th id="albendazole">Albendazole Given</th>
+                                        <th id="folicAcid">Folic Acid Given</th>
+                                        <th id="potassium">Potassium Given</th>
+                                        <th id="magnesium">Magnesium Given</th>
+                                        <th id="zinc">Zinc Given</th>
+                                        <th id="iron">Iron Given</th>
+                                        <th id="otherHigherNutrients">Other Higher Nutrients Given</th>
+                                        <th id="multiVitaminSyrup">Multi Vitamin Syrup Given</th>
+                                        <th id="sugarSolution">Sugar Solution Given</th>
+                                        <th id="nightStay">Night Stay</th>
+                                        <th id="kmcProvided">KMC Provided</th>
+                                        <th id="noOfTimesKmcDone">No. of times KMC done</th>
+                                        <th id="createdOn">Entry Done on</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="weight in childscreening.weightList">
+                                        <td>{{weight.weightDate|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                        <td>{{weight.weight|emptylabel}}</td>
+                                        <td>{{weight.height|emptylabel}}</td>
+                                        <td>{{weight.bilateralPittingOedema|emptylabel}}</td>
+                                        <td>{{weight.formulaGiven|emptylabel}}</td>
+                                        <td>{{weight.isMotherCouncelling|yesOrNo}}</td>
+                                        <td>{{weight.isAmoxicillin|yesOrNo}}</td>
+                                        <td>{{weight.isVitaminA|yesOrNo}}</td>
+                                        <td>{{weight.isAlbendazole|yesOrNo}}</td>
+                                        <td>{{weight.isFolicAcid|yesOrNo}}</td>
+                                        <td>{{weight.isPotassium|yesOrNo}}</td>
+                                        <td>{{weight.isMagnesium|yesOrNo}}</td>
+                                        <td>{{weight.isZinc|yesOrNo}}</td>
+                                        <td>{{weight.isIron|yesOrNo}}</td>
+                                        <td>{{weight.otherHigherNutrientsGiven|yesOrNo}}</td>
+                                        <td>{{weight.multiVitaminSyrup|yesOrNo}}</td>
+                                        <td>{{weight.isSugarSolution|yesOrNo}}</td>
+                                        <td>{{weight.nightStay|yesOrNo}}</td>
+                                        <td>{{weight.kmcProvided|yesOrNo}}</td>
+                                        <td>{{weight.noOfTimesKmcDone|emptylabel}}</td>
+                                        <td>{{weight.createdOn|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card cst-card" ng-if="childscreening.laboratoryList.length > 0">
+        <div id="car14" role="tab" class="card-title collapse-link d-block" data-toggle="collapse" href="#collapse14"
+            ng-click="toggle14 = !toggle14" style="cursor: pointer">
+            <h4 class="text">
+                <span data-toggle="tooltip" title="FSAM Laboratory test Information">Laboratory Tests History</span>
+                <ul class="control-list">
+                    <li>
+                        <span>
+                            <em ng-class="{'ion-plus':!toggle14,'ion-minus':toggle14}"></em>
+                        </span>
+                    </li>
+                </ul>
+            </h4>
+        </div>
+        <div class="collapse" id="collapse14">
+            <div class="table-section">
+                <div class="card-body col-12 col-md-12">
+                    <div class="cst-table-responsive">
+                        <form name="fsam_laboratory_test_information-form" id="fsam_laboratory_test_information-form">
+                            <table aria-describedby="table"
+                                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="labTestDate">Lab test date</th>
+                                        <th id="isHaemoglobinChecked">Is haemoglobin tested?</th>
+                                        <th id="haemoglobin">Haemoglobin</th>
+                                        <th id="isUrineRMTested">Is urine R/M tested?</th>
+                                        <th id="urinePusCells">Urine pus cells</th>
+                                        <th id="isUrineAlbuminTested">Is urine albumin tested?</th>
+                                        <th id="urineAlbumin">Urine albumin</th>
+                                        <th id="isHivTested">Is HIV tested?</th>
+                                        <th id="hiv">HIV</th>
+                                        <th id="isSickleCellTested">Is sickle cell tested?</th>
+                                        <th id="sickleCell">Sickle cell</th>
+                                        <th id="isPsForMpTested">Is PS for MP tested?</th>
+                                        <th id="psForMp">PS for MP</th>
+                                        <th id="isMantouxTestDone">Is Mantoux test done</th>
+                                        <th id="mantouxTest">Mantoux test</th>
+                                        <th id="isXrayDone">Is X-ray done?</th>
+                                        <th id="xray">X-ray</th>
+                                        <th id="bloodGroup">Blood group</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="test in childscreening.laboratoryList">
+                                        <td>{{test.laboratoryDate|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                        <td>{{test.hemoglobinChecked|yesOrNo}}</td>
+                                        <td>{{test.hemoglobin|emptylabel}}</td>
+                                        <td>{{test.urinePusCellsChecked|yesOrNo}}</td>
+                                        <td>{{test.urinePusCells|emptylabel}}</td>
+                                        <td>{{test.urineAlbuminChecked|yesOrNo}}</td>
+                                        <td>{{test.urineAlbumin|emptylabel}}</td>
+                                        <td>{{test.hivChecked|yesOrNo}}</td>
+                                        <td>{{test.hiv|emptylabel}}</td>
+                                        <td>{{test.sickleChecked|yesOrNo}}</td>
+                                        <td>{{test.sickle|emptylabel}}</td>
+                                        <td>{{test.psForMpChecked|yesOrNo}}</td>
+                                        <td>{{test.psForMp|emptylabel}}</td>
+                                        <td>{{test.monotouxTestChecked|yesOrNo}}</td>
+                                        <td>{{test.monotouxTest|emptylabel}}</td>
+                                        <td>{{test.xrayChestChecked|yesOrNo}}</td>
+                                        <td>{{test.xrayChest|emptylabel}}</td>
+                                        <td>{{test.bloodGroup|emptylabel}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form role="form" name="childscreening.childScreeningForm" id="childScreeningForm" novalidate>
+        <div class="row">
+            <div class="col-12 mb-15">
+                <div class="card cst-card">
+                    <div class="card-title">
+                        <div ng-if='childscreening.isAdmissionForm' class="col-6 float-left nopadding">
+                            <h4 class="text">CHILD ADMISSION</h4>
+                        </div>
+                        <div ng-if='childscreening.isDischargeForm' class="col-6 float-left nopadding">
+                            <h4 class="text">CHILD DISCHARGE</h4>
+                        </div>
+                        <div ng-if='childscreening.isFollowUpForm' class="col-6 float-left nopadding">
+                            <h4 class="text">FOLLOW UP VISIT</h4>
+                        </div>
+                        <div ng-if='childscreening.isAdmissionForm' class="col-6 float-left pl-60 xs-hide">
+                            <h4 class="text">CHILD SCREENING</h4>
+                        </div>
+                        <div ng-if='childscreening.isFollowUpForm && childscreening.followUpVisit == 3'
+                            class="col-6 float-left pl-60 xs-hide">
+                            <h4 class="text">OUTCOME</h4>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <div class="col-md-6 col-sm-12 nopadding float-left">
+                            <div class="card-body ">
+                                <div class="inline-form info">
+                                    <div ng-if='childscreening.isFollowUpForm' class="form-group ">
+                                        <label for="followUpVisit"><span class="info_type"> Discharge Date
+                                            </span></label>
+                                        <label><span class="info_type"> {{childscreening.childDischargeDisplayDate}}
+                                            </span></label>
+                                    </div>
+                                    <div ng-if='childscreening.isFollowUpForm && childscreening.lastFollowUpVisitDisplayDate != null'
+                                        class="form-group ">
+                                        <label for="followUpVisit"><span class="info_type"> Last Follow Up Date
+                                            </span></label>
+                                        <label><span class="info_type"> {{childscreening.lastFollowUpVisitDisplayDate}}
+                                            </span></label>
+                                    </div>
+                                    <div ng-if='childscreening.isFollowUpForm' class="form-group ">
+                                        <label for="followUpVisit"><span class="info_type"> Follow Up Visit No.
+                                            </span></label>
+                                        <label><span class="info_type"> {{childscreening.followUpVisit}} </span></label>
+                                    </div>
+                                    <div class="form-group" ng-if='childscreening.isFollowUpForm'>
+                                        <validate for='otherCmtcCenterFollowUp' required-msg=" Select a value">
+                                            <label for="otherCmtcCenterFollowUp" name="otherCmtcCenterFollowUp"
+                                                id="otherCmtcCenterFollowUp" class="long control-label"
+                                                control-label><span class="info_type">Is follow up done at other CMTC
+                                                    center?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="otherCmtcCenterFollowUp" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.otherCmtcCenterFollowUp"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="otherCmtcCenterFollowUp" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.otherCmtcCenterFollowUp"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreening.isFollowUpForm && childscreening.childScreeningObject.otherCmtcCenterFollowUp">
+                                        <validate for='followUpHospital' required-msg="Select a value">
+                                            <label style="vertical-align: middle;white-space: initial"
+                                                control-label><span class="info_type">CMTC Center</span></label>
+                                            <select class="form-control cst-form-control" form-control chosen-directive
+                                                name="followUpHospital" id="followUpHospital"
+                                                ng-model="childscreening.childScreeningObject.followupOtherCenter"
+                                                required>
+                                                <option value="" selected>--Select--</option>
+                                                <option ng-repeat="institute in childscreening.screeningCentersList"
+                                                    value="{{institute.id}}">{{institute.name}}</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isAdmissionForm' class="form-group ">
+                                        <validate for='admissionDate' required-msg="Select Date">
+                                            <label for="admissionDate"><span class="info_type" control-label> Date of
+                                                    Admission </span></label>
+                                            <input type="text" style="float: inherit" datepicker tabindex="8"
+                                                name="admissionDate" form-control
+                                                ng-model="childscreening.childScreeningObject.admissionDate" required
+                                                ng-change="childscreening.checkAdmissionIndicator()"
+                                                min-date="childscreening.minAdmissionDate"
+                                                max-date='childscreening.todayDate'>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isDischargeForm' class="form-group ">
+                                        <label for="dischargeDate"><span class="info_type" control-label> Date of
+                                                Admission </span></label>
+                                        <label for="dischargeDate"><span class="info_type" control-label>
+                                                {{childscreening.currentChild.displayAdmissionDate}} </span></label>
+                                    </div>
+                                    <div ng-if='childscreening.isDischargeForm' class="form-group">
+                                        <label><span class="info_type" control-label>Weight at time of
+                                                admission</span></label>
+                                        <label><span class="info_type"
+                                                control-label>{{childscreening.displayWeightAtAdmission}}</span></label>
+                                    </div>
+                                    <div ng-if='childscreening.isDischargeForm' class="form-group ">
+                                        <validate for='dischargeDate' required-msg="Select Date">
+                                            <label for="dischargeDate"><span class="info_type" control-label> Date of
+                                                    Discharge </span></label>
+                                            <input type="text" style="float: inherit;width:69%" datepicker tabindex="8"
+                                                name="dischargeDate" form-control
+                                                ng-model="childscreening.childScreeningObject.dischargeDate" required
+                                                max-date='childscreening.todayDate'
+                                                min-date='childscreening.currentChild.minimumDischargeDate'>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isFollowUpForm' class="form-group ">
+                                        <validate for='followUpDate' required-msg="Select Date">
+                                            <label for="followUpDate"><span class="info_type" control-label> Follow Up
+                                                    Date</span></label>
+                                            <input type="text" style="float: inherit;width:69%" datepicker tabindex="8"
+                                                name="followUpDate" form-control
+                                                ng-change="childscreening.followUpDateChanged()"
+                                                ng-model="childscreening.childScreeningObject.followUpDate" required
+                                                max-date='childscreening.maxFollowUpDate'
+                                                min-date='childscreening.minFollowUpDate'>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isAdmissionForm' class="form-group">
+                                        <label for="typeOfAdmission" control-label><span class="info_type"> Type of
+                                                Admission </span></label>
+                                        <label><span class="info_type">
+                                                {{childscreening.childScreeningObject.typeOfAdmission}} </span></label>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreening.isAdmissionForm && childscreening.chooseCmtcCenter">
+                                        <validate for='hospital' required-msg="Select a value">
+                                            <label style="vertical-align: middle;white-space: initial"
+                                                control-label><span class="info_type">Screening Center</span></label>
+                                            <select class="form-control cst-form-control" form-control chosen-directive
+                                                name="hospital" id="hospital" ng-model="childscreening.screeningCenter"
+                                                required>
+                                                <option value="" selected>--Select--</option>
+                                                <option ng-if="childscreening.currentChild.referredFrom != institute.id"
+                                                    ng-repeat="institute in childscreening.assignedCentersList track by institute.id"
+                                                    value="{{institute.id}}">{{institute.name}}</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreening.isAdmissionForm || childscreening.isFollowUpForm">
+                                        <validate for='weightAtAdmission' required-msg="Enter weight">
+                                            <label><span class="info_type" control-label>Weight (in Kg)</span></label>
+                                            <input type="number" max="23" min="0.1"
+                                                class="form-control cst-form-control" form-control
+                                                name="weightAtAdmission" id="weightAtAdmission"
+                                                ng-change="childscreening.calculateSdScore()"
+                                                ng-model="childscreening.childScreeningObject.weightAtAdmission"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="childscreening.isDischargeForm">
+                                        <validate for='weightAtAdmission' required-msg="Enter weight">
+                                            <label><span class="info_type" control-label>Weight (in Kg)</span></label>
+                                            <input type="number" max="23" min="0.1"
+                                                class="form-control cst-form-control" form-control
+                                                name="weightAtAdmission" id="weightAtAdmission"
+                                                ng-change="childscreening.calculateSdScore()"
+                                                ng-blur="childscreening.calculateGain()"
+                                                ng-model="childscreening.childScreeningObject.weightAtAdmission"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isDischargeForm && childscreening.gain != null'
+                                        class="form-group">
+                                        <label><span class="info_type" control-label>Percentage Gained</span></label>
+                                        <label><span class="info_type"
+                                                control-label>{{childscreening.gain}}%</span></label>
+                                    </div>
+                                    <div ng-if='childscreening.isDischargeForm && childscreening.averageWeightGain != null'
+                                        class="form-group">
+                                        <label><span class="info_type" control-label>Average Weight Gained
+                                                (g/kg/d)</span></label>
+                                        <label><span class="info_type"
+                                                control-label>{{childscreening.averageWeightGain}}</span></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='height' required-msg="Enter height">
+                                            <label ng-if="childscreening.above6Months"><span class="info_type"
+                                                    control-label>Height (in cm)</label>
+                                            <label ng-if="childscreening.below6Months"><span class="info_type"
+                                                    control-label>Length (in cm)</label>
+                                            <input type="number" max="120" min="20"
+                                                class="form-control cst-form-control" form-control name="height"
+                                                id="height" onkeypress="return !(event.charCode == 46)"
+                                                ng-change="childscreening.calculateSdScore()"
+                                                ng-model="childscreening.childScreeningObject.height" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="childscreening.above6Months">
+                                        <validate for='midUpperArmCircumference' required-msg="Enter MUAC">
+                                            <label><span class="info_type" control-label>MUAC (in cm)</span></label>
+                                            <input type="number" max="26" min="6" class="form-control cst-form-control"
+                                                form-control name="midUpperArmCircumference"
+                                                id="midUpperArmCircumference"
+                                                ng-blur="childscreening.calculateDischargeStatus()"
+                                                ng-model="childscreening.childScreeningObject.midUpperArmCircumference"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="childscreening.above6Months">
+                                        <label class="long"><span class="info_type" control-label>SD score of weight for
+                                                height</span></label>
+                                        <label class="long"
+                                            ng-if="childscreening.childScreeningObject.sdScore != null"><span
+                                                class="info_type"
+                                                control-label>{{childscreening.childScreeningObject.sdScoreDisplay}}</span></label>
+                                        <label class="long"
+                                            ng-if="childscreening.childScreeningObject.sdScore == null"><span
+                                                class="info_type" control-label>--</span></label>
+                                    </div>
+                                    <div class="form-group" ng-if="childscreening.below6Months">
+                                        <label class="long"><span class="info_type" control-label>SD score of weight for
+                                                length</span></label>
+                                        <label class="long"
+                                            ng-if="childscreening.childScreeningObject.sdScore != null"><span
+                                                class="info_type"
+                                                control-label>{{childscreening.childScreeningObject.sdScoreDisplay}}</span></label>
+                                        <label class="long"
+                                            ng-if="childscreening.childScreeningObject.sdScore == null"><span
+                                                class="info_type" control-label>--</span></label>
+                                    </div>
+                                    <div ng-if="childscreening.isAdmissionForm && childscreening.above6Months"
+                                        class="form-group">
+                                        <validate for='apetiteTest' required-msg=" Select a value">
+                                            <label for="apetiteTest" name="apetiteTest" id="apetiteTest"
+                                                class="long control-label" control-label><span class="info_type">Apetite
+                                                    Test</span></label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Pass
+                                                <input value="PASS" name="apetiteTest" form-control type="radio"
+                                                    ng-model="childscreening.childScreeningObject.apetiteTest" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Fail
+                                                <input value="FAIL" name="apetiteTest" form-control type="radio"
+                                                    ng-model="childscreening.childScreeningObject.apetiteTest" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%;width:auto'
+                                                class="control control-radio mt-10">Not Conducted
+                                                <input value="NOT_CONDUCTED" name="apetiteTest" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.apetiteTest" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='bilateralPittingOedema' required-msg="Select a value">
+                                            <label><span class="info_type" control-label>Bilateral Pitting
+                                                    Oedema</span></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="childscreening.childScreeningObject.bilateralPittingOedema"
+                                                name="bilateralPittingOedema" id="bilateralPittingOedema" required>
+                                                <option value="">--Select--</option>
+                                                <option value="+">+</option>
+                                                <option value="++">++</option>
+                                                <option value="+++">+++</option>
+                                                <option value="NOTPRESENT">Not present</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="childscreening.isAdmissionForm && childscreening.above6Months"
+                                        class="form-group">
+                                        <validate for='complementaryFeeding' required-msg=" Select a value">
+                                            <label for="complementaryFeeding" name="complementaryFeeding"
+                                                id="complementaryFeeding" class="long control-label" control-label><span
+                                                    class="info_type">Has Complementary Feeding Started?</span></label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="complementaryFeeding" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.complementaryFeeding"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">No
+                                                <input ng-value="false" name="complementaryFeeding" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.complementaryFeeding"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isAdmissionForm' class="form-group">
+                                        <validate for='breastFeeding' required-msg=" Select a value">
+                                            <label for="breastFeeding" name="breastFeeding" id="breastFeeding"
+                                                class="long control-label" control-label><span class="info_type">Has
+                                                    Breast Feeding Started?</span></label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="breastFeeding" form-control type="radio"
+                                                    ng-model="childscreening.childScreeningObject.breastFeeding"
+                                                    ng-change="childscreening.breastFeedingChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">No
+                                                <input ng-value="false" name="breastFeeding" form-control type="radio"
+                                                    ng-model="childscreening.childScreeningObject.breastFeeding"
+                                                    ng-change="childscreening.breastFeedingChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="childscreening.isAdmissionForm && childscreening.below6Months"
+                                        class="form-group">
+                                        <validate for='problemInBreastFeeding' required-msg=" Select a value">
+                                            <label for="problemInBreastFeeding" name="problemInBreastFeeding"
+                                                id="problemInBreastFeeding" class="long control-label"
+                                                control-label><span class="info_type">Problem
+                                                    in breastfeeding/suckling?</span></label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="problemInBreastFeeding" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.problemInBreastFeeding"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">No
+                                                <input ng-value="false" name="problemInBreastFeeding" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.problemInBreastFeeding"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="childscreening.isAdmissionForm && childscreening.below6Months"
+                                        class="form-group">
+                                        <validate for='problemInMilkInjection' required-msg=" Select a value">
+                                            <label for="problemInMilkInjection" name="problemInMilkInjection"
+                                                id="problemInMilkInjection" class="long control-label"
+                                                control-label><span class="info_type">Problem in milk
+                                                    injection?</span></label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="problemInMilkInjection" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.problemInMilkInjection"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">No
+                                                <input ng-value="false" name="problemInMilkInjection" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.problemInMilkInjection"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="childscreening.showWasting" class="form-group">
+                                        <validate for='visibleWasting' required-msg=" Select a value">
+                                            <label for="visibleWasting" name="visibleWasting" id="visibleWasting"
+                                                class="long control-label" control-label><span class="info_type">Visible
+                                                    Wasting</span></label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="visibleWasting" form-control type="radio"
+                                                    ng-model="childscreening.childScreeningObject.visibleWasting"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">No
+                                                <input ng-value="false" name="visibleWasting" form-control type="radio"
+                                                    ng-model="childscreening.childScreeningObject.visibleWasting"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="childscreening.below6Months" class="form-group">
+                                        <validate for='kmcProvided' required-msg=" Select a value">
+                                            <label for="kmcProvided" name="kmcProvided" id="kmcProvided"
+                                                class="long control-label" control-label><span class="info_type">KMC
+                                                    provided?</span></label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="kmcProvided" form-control type="radio"
+                                                    ng-model="childscreening.childScreeningObject.kmcProvided"
+                                                    ng-change="childscreening.kmcProvidedChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">No
+                                                <input ng-value="false" name="kmcProvided" form-control type="radio"
+                                                    ng-model="childscreening.childScreeningObject.kmcProvided"
+                                                    ng-change="childscreening.kmcProvidedChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreening.below6Months && childscreening.childScreeningObject.kmcProvided">
+                                        <validate for='noOfTimesKmcDone' required-msg="Enter no of times KMC done">
+                                            <label><span class="info_type" control-label>No. of times KMC done</label>
+                                            <input type="number" min="1" class="form-control cst-form-control"
+                                                form-control name="noOfTimesKmcDone" id="noOfTimesKmcDone"
+                                                onkeypress="return !(event.charCode == 46)"
+                                                ng-model="childscreening.childScreeningObject.noOfTimesKmcDone"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='illness' required-msg="Select a value">
+                                            <label><span class="info_type" control-label>Illness</span></label>
+                                            <select style='margin-left: 20%' chosen-directive multiple='true'
+                                                class="form-control cst-form-control" form-control
+                                                ng-model="childscreening.childScreeningObject.illness" name="illness"
+                                                id="illness" required>
+                                                <option value="ANEMIA"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Anemia</option>
+                                                <option value="RESPIRATORY_ILLNESS"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Respiratory Illness</option>
+                                                <option value="EYE_INFECTION"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Eye infection</option>
+                                                <option value="MEASLES_RUBELLA"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Measles - Rubella</option>
+                                                <option value="BACTERIAL_INFECTION"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Bacterial Infection</option>
+                                                <option value="JAUNDICE"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Jaundice</option>
+                                                <option value="DIARRHOEA"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Diarrhoea</option>
+                                                <option value="DEHYDRATION"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Dehydration</option>
+                                                <option value="DYSENTRY"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Dysentry</option>
+                                                <option value="MALARIA"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Malaria</option>
+                                                <option value="FEVER"
+                                                    ng-if="!childscreening.childScreeningObject.illness.includes('NONE')">
+                                                    Fever</option>
+                                                <option value="NONE">None</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" col-md-6 pl-60 col-sm-12 nopadding float-right ">
+                            <div class="card-body pl-60">
+                                <div class="inline-form info">
+                                    <div ng-if='childscreening.isAdmissionForm' class="form-group">
+                                        <validate for='medicalOfficerVisit' required-msg=" Select a value">
+                                            <label for="medicalOfficerVisit" name="medicalOfficerVisit"
+                                                id="medicalOfficerVisit" class="long control-label" control-label><span
+                                                    class="info_type">Did Medical Officer visit the
+                                                    child?</span></label>
+                                            <label class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="medicalOfficerVisit" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.medicalOfficerVisit"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label class="control control-radio mt-10">No
+                                                <input ng-value="false" name="medicalOfficerVisit" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.medicalOfficerVisit"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isAdmissionForm' class="form-group">
+                                        <validate for='specialistPediatricianVisit' required-msg=" Select a value">
+                                            <label for="specialistPediatricianVisit" name="specialistPediatricianVisit"
+                                                id="specialistPediatricianVisit" control-label class="long"><span
+                                                    class="info_type">Did any specialist/pediatrician visit the
+                                                    child?</span></label>
+                                            <label class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="specialistPediatricianVisit" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.specialistPediatricianVisit"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label class="control control-radio mt-10">No
+                                                <input ng-value="false" name="specialistPediatricianVisit" form-control
+                                                    type="radio"
+                                                    ng-model="childscreening.childScreeningObject.specialistPediatricianVisit"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if='childscreening.isDischargeForm'>
+                                        <validate for='institutionType' required-msg="Select a value">
+                                            <label for="institutionType" control-label><span class="info_type">Higher
+                                                    Facility Referral</span></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="childscreening.childScreeningObject.institutionType"
+                                                ng-change="childscreening.retrieveHospitalsByInstitutionType()"
+                                                name="institutionType" id="institutionType">
+                                                <option value="" selected>--Select--</option>
+                                                <option value="{{institutionType.id}}"
+                                                    ng-repeat="institutionType in childscreening.institutionTypes">
+                                                    {{institutionType.value}}</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="childscreening.isDischargeForm && childscreening.childScreeningObject.institutionType != null && childscreening.showOtherInstitutes">
+                                        <validate for='hospital' required-msg="Select a value">
+                                            <label style="vertical-align: middle;white-space: initial"
+                                                control-label><span class="info_type">Hospital</span></label>
+                                            <select class="form-control cst-form-control" form-control chosen-directive
+                                                name="hospital"
+                                                ng-model="childscreening.childScreeningObject.higherFacilityReferralPlace"
+                                                required>
+                                                <option value="" selected>--Select--</option>
+                                                <option ng-repeat="institute in childscreening.otherInstitutes"
+                                                    value="{{institute.id}}">{{institute.name}}</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="childscreening.isDischargeForm && childscreening.childScreeningObject.higherFacilityReferralPlace != null"
+                                        class="form-group">
+                                        <validate for='referralReason' required-msg="Enter referral reason">
+                                            <label><span class="info_type" control-label>Referral Reason</span></label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                name="referralReason" id="referralReason"
+                                                ng-model="childscreening.childScreeningObject.referralReason" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isDischargeForm' class="form-group">
+                                        <label class="long"><span class="info_type" control-label>Discharge
+                                                Status</span></label>
+                                        <label class="long"><span class="info_type"
+                                                control-label>{{childscreening.childScreeningObject.dischargeStatus}}</span></label>
+                                    </div>
+                                    <div ng-if='childscreening.isFollowUpForm && childscreening.followUpVisit == 3'
+                                        class="form-group">
+                                        <validate for='programOutput' required-msg="Select a value">
+                                            <label><span class="info_type" control-label>Program Output</span></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="childscreening.childScreeningObject.programOutput"
+                                                name="programOutput" id="programOutput" required>
+                                                <option value="">--Select--</option>
+                                                <option value="CURED">Cured</option>
+                                                <option value="NON_RESPONDANT">Nonrespondant</option>
+                                                <option value="MEDICAL_TRANSFER">Medical Transfer</option>
+                                                <option value="DEFAULTER_LAMA">Defaulter-LAMA</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if='childscreening.isFollowUpForm && childscreening.followUpVisit == 3'
+                                        class="form-group ">
+                                        <validate for='dischargeFromProgram' required-msg="Select Date">
+                                            <label for="dischargeFromProgram"><span class="info_type" control-label>
+                                                    Program Discharge Date </span></label>
+                                            <input type="text" style="float: inherit;width:66%" datepicker tabindex="8"
+                                                name="dischargeFromProgram" form-control
+                                                ng-model="childscreening.childScreeningObject.dischargeFromProgram"
+                                                required max-date='childscreening.todayDate'
+                                                min-date='childscreening.childScreeningObject.followUpDate'>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button class="btn btn-primary" ng-click="childscreening.saveForm()">Save & Continue</button>
+                        <button type='button' class="btn btn-secondary" ng-click="childscreening.back()">Back</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

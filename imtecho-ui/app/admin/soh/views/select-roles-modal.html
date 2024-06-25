@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h4 class="text" style="line-height: 1.5;">
+        Configure roles for selected location
+    </h4>
+</div>
+<div class="modal-body" style="overflow: inherit;">
+        <div class="form-group">
+            <label
+                for="exampleFormControlInputForRole">Role</label>
+            <select id="designation" name="designation"
+                class="form-control"
+                chosen-directive="allDesignation"
+                data-placeholder='Select Role' multiple
+                ng-model="selectedRoleIds"
+                ng-options="option.id as option.name disable when (!option.enabled) for option in allDesignation| orderBy:'name'">
+            </select>
+        </div>
+</div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Ok</button>
+    <button class="btn btn-secondary" ng-click="cancel()">Cancel</button>
+</div>

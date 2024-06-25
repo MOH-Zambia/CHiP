@@ -1,0 +1,71 @@
+<div class="container-fluid users">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="section-title">
+                <h4 class="text">Push Notification Type </h4>
+                <div class="float-right">
+                    <button class="btn btn-primary " ui-sref="techo.manage.managepushnotificationtype"> Add </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-15">
+            <div class="cst-table table-responsive" style="overflow: auto;max-height: calc(100vh - 192px);" id="scroll">
+                <table class="table table-sm table-striped filter-table table-auto table-bordered header-fixed"
+                    id="printableDiv">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th class="filter-col">Type<span class="pull-right sort">
+                                </span>
+                            </th>
+                            <th class="filter-col">Heading<span class="pull-right sort">
+                                </span>
+                            </th>
+                            <th class="filter-col">Message<span class="pull-right sort">
+                                </span>
+                            </th>
+                            <th class="filter-col">State<span class="pull-right sort">
+                                </span>
+                            </th>
+                            <th class="no-print">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="typeObj in ctrl.typeList" ng-if="ctrl.typeList.length > 0">
+                            <td>{{$index + 1}}</td>
+                            <td> {{::typeObj.type}}</td>
+                            <td> {{::typeObj.heading}}</td>
+                            <td> {{::typeObj.message}}</td>
+                            <td> {{typeObj.isActive?'ACTIVE':'INACTIVE'}}</td>
+
+                            <td class="action-cell no-print">
+                                <ul class="action-item">
+                                    <li ng-click="ctrl.navigateToEdit(typeObj.id)"><a href="javascript:void(0)"
+                                            class="action-icon edit-icon"></a></li>
+                                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <a href="#" class="action-icon more-icon"></a>
+                                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                            aria-labelledby="moreDropdown">
+                                            <li>
+                                                <a href="javascript:void(0)" ng-click="ctrl.toggleState(typeObj)">
+                                                    <strong>Mark as </strong>
+                                                    {{typeObj.isActive?'INACTIVE':'ACTIVE'}}</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr ng-if="(!ctrl.typeList || ctrl.typeList.length === 0)">
+                            <td colspan="10">No users available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

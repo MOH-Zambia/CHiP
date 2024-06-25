@@ -1,0 +1,30 @@
+-- create temp table wrong_lmp_date_member
+-- (
+-- member_id bigint,
+-- original_lmp date,
+-- emamta_lmp date,
+-- created_on timestamp without time zone
+-- );
+-- 
+-- insert into wrong_lmp_date_member(member_id,original_lmp,emamta_lmp,created_on)
+-- select rch_member_service_data_sync_detail.member_id,rch_member_service_data_sync_detail.original_lmp
+-- ,rch_member_service_data_sync_detail.emamta_lmp,rch_member_service_data_sync_detail.created_on 
+-- from rch_member_service_data_sync_detail,imt_member 
+-- where imt_member.is_pregnant = true and imt_member.id = rch_member_service_data_sync_detail.member_id
+-- and rch_member_service_data_sync_detail.emamta_lmp = imt_member.lmp and rch_member_service_data_sync_detail.emamta_lmp > '08-01-2018' 
+-- and original_lmp is not null and original_lmp != emamta_lmp;
+-- 
+-- 
+-- 
+-- update rch_pregnancy_registration_det set lmp_date = wrong_lmp_date_member.original_lmp,edd = wrong_lmp_date_member.original_lmp + interval '281 day' from wrong_lmp_date_member
+-- where rch_pregnancy_registration_det.member_id = wrong_lmp_date_member.member_id and state = 'PREGNANT';
+-- 
+-- update event_mobile_notification_pending set base_date = wrong_lmp_date_member.original_lmp  from wrong_lmp_date_member
+-- where event_mobile_notification_pending.member_id = wrong_lmp_date_member.member_id 
+-- and notification_configuration_type_id in ('5d1131bc-f5bc-4a4a-8d7d-6dfd3f512f0a','faedb8e7-3e46-40a2-a9ac-ea7d5de944fa');
+-- 
+-- delete from techo_notification_master where member_id in (select member_id from wrong_lmp_date_member) and state in ('PENDING','RESCHEDULE') and notification_type_id = 2;
+-- 
+-- 
+-- update imt_member set lmp = wrong_lmp_date_member.original_lmp from wrong_lmp_date_member
+-- where wrong_lmp_date_member.member_id = imt_member.id;

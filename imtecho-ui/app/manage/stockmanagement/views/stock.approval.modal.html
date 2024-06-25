@@ -1,0 +1,96 @@
+<style>
+    .valid-feedback{
+        position: static;
+        width: 17rem;
+    }
+</style>
+<div ng-if="mdctrl.data.status != 'REJECTED'">   
+    <div class="modal-header">
+        <h4 class="text">Stock Approval</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <form id="form" name="mdctrl.approvedForm" novalidate>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.N.</th>
+                            <th>Medicine Name</th>
+                            <th>Requested Quantity</th>
+                            <th>Approved Quantity</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in mdctrl.data.medicine_data">
+                            <td>{{$index + 1}}</td>
+                            <td>{{item.medicine_name}}</td>
+                            <td>{{item.medicineQuantity}}</td>
+                            <td ng-if = "!item.showReason">
+                                <div class="form-group">
+                                    <validate for="quantity{{$index}}" required-msg="Please enter quantity"
+                                        min-msg="Minimum allowed quantity is 1"
+                                        max-msg="Maximum allowed qty is {{item.in_stock}}">
+                                        <input type="text" form-control required numbers-only
+                                            class="form-control cst-form-control" id="quantity{{$index}}"
+                                            name="quantity{{$index}}" min="1" ng-max="item.in_stock !== 0 ? item.in_stock : 0.9"
+                                            ng-pattern="/[^.]{0,2}/" ng-model="item.approvedQuantity" decimalallowed="false"
+                                            negativeallowed="false">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </td>
+                            <td><button class="btn btn-danger" ng-click="mdctrl.showReason(item)">Reject  </button></td>
+                            <td ng-if = "item.showReason">
+                                <validate for="quantity{{$index}}" required-msg="Please enter reason for rejection">
+                                    <input type="text" form-control required
+                                        class="form-control cst-form-control" id="quantity{{$index}}"
+                                        name="quantity{{$index}}"
+                                        ng-model="item.reason" placeholder="Enter reason for rejection">
+                                    <placeholder></placeholder>
+                                </validate>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="mdctrl.save(mdctrl.data)"
+            ng-disabled="mdctrl.approvedForm.$invalid">Save</button>
+        <button class="btn btn-secondary" ng-click="mdctrl.cancel()">Cancel</button>
+    </div>
+</div>
+<div ng-if="mdctrl.data.status == 'REJECTED'">
+    <div class="modal-header">
+        <h4 class="text">Stock Approval</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <form id="form" name="mdctrl.approvedForm" novalidate>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.N.</th>
+                            <th>Medicine Name</th>
+                            <th>Requested Quantity</th>
+                            <th>Rejection Reason</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in mdctrl.data.medicine_data">
+                            <td>{{$index + 1}}</td>
+                            <td>{{item.medicine_name}}</td>
+                            <td>{{item.medicineQuantity}}</td>
+                            <td>{{item.reason}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" ng-click="mdctrl.cancel()">Close</button>
+    </div>
+</div>

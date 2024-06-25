@@ -1,0 +1,68 @@
+<!-- <div class="container-fluid fhsr-verification">
+    <div class="row">
+        <div class="col-9">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{fwp.locationName}}</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas ng-if="fwp.result.length != 0" id="fwpbar" class="chart chart-bar" chart-data="fwp.data"
+                        chart-labels="fwp.labels" chart-options="fwp.options">
+                    </canvas>
+                    <div class="percentage-legend-fhs-work">
+                        *Percentage Verified = (Verified Families + Archived Families) * 100 /( Total Families imported
+                        from Emamta)
+                    </div>
+                    <div ng-if="fwp.result.length == 0" class="no-data-placeholder">
+                        <h5>No Data Available</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3" ng-if="fwp.result.length != 0">
+            <table class="table table-sm table-striped table-bordered header-fixed" id="fhsdetails-table">
+                <thead class="cst-thead">
+                    <tr>
+                        <th>Date</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody class="cst-tbody">
+                    <tr ng-repeat="r in fwp.result">
+                        <td>{{r.created_on}}</td>
+                        <td>{{r.percentage}}{{'('+r.verified+'/'+r.total+')'}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="filter-div">
+        <span class="filter-toggle" ng-click="fwp.toggleFilter()">Select Location</span>
+        <div class="row">
+            <div class="col-12">
+                <h5 class="filter-div-title">Select Location</h5>
+            </div>
+        </div>
+        <div class="filter-div-body">
+            <div class="row">
+                <div class="col-12">
+                    <ng-form name="fwp.locationForm">
+                        <location-directive ng-model="fwp.selectedLocationId" selected-location="fwp.selectedLocation"
+                            template-type="'inline'" fetch-according-to-user-aoi="true"> </location-directive>
+                        <br>
+                    </ng-form>
+                </div>
+                <div class="col-12">
+                    <hr>
+                    <div class="form-group text-right">
+                        <button class="btn btn-secondary close-filter" ng-click="fwp.toggleFilter()">Close</button>
+                        <button class="btn btn-primary search-filter" ng-click="fwp.submit()">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

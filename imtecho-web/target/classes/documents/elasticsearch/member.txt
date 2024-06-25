@@ -1,0 +1,65 @@
+curl -XPUT 'localhost:9200/idx_member' -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "autocomplete": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase"
+          ]
+        },
+        "autocomplete_search": {
+          "tokenizer": "standard"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "text"
+      },
+      "health_id": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "autocomplete_search"
+      },
+      "dob": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "autocomplete_search"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "autocomplete_search"
+      }
+    }
+  }
+}'
+
+-----------------------------------
+BEGIN;
+
+insert into document_index ( type, created_on, created_by, json)
+select (select key_value from system_configuration where system_key = 'ELASTIC_MEMBER_INDEX_NAME'), now(), -1, row_to_json(t)
+from
+(with lastIndexedDateQuery as (
+select to_timestamp(key_value, 'YYYY-MM-DD HH24:MI:SS.US') as lastIndexedDate from system_configuration
+where system_key = 'LAST_INDEX_DATE_OF_MEMBER_FOR_ELASTICSEARCH' )
+select imt_member.id, imt_member.unique_health_id, imt_member.family_id, imt_member.dob, imt_member.first_name,
+imt_member.middle_name, imt_member.last_name, imt_member.gender, imt_member.state, imt_member.basic_state,
+imt_member.created_on, imt_member.modified_on,
+case when imf.area_id is null then imf.location_id else imf.area_id end as current_location_id
+from imt_member
+inner join imt_family imf on imf.family_id = imt_member.family_id
+where
+imt_member.basic_state in ('VERIFIED','REVERIFICATION','NEW','TEMPORARY')
+and imf.basic_state in ('VERIFIED','REVERIFICATION','NEW','TEMPORARY')
+and (imt_member.created_on > (select lastIndexedDate from lastIndexedDateQuery)
+or imt_member.modified_on > (select lastIndexedDate from lastIndexedDateQuery))) t;
+
+UPDATE system_configuration set key_value = now() where system_key = 'LAST_INDEX_DATE_OF_MEMBER_FOR_ELASTICSEARCH';
+
+COMMIT;

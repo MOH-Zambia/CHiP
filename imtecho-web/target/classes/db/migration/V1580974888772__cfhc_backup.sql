@@ -1,0 +1,1 @@
+select * into imt_member_cfhc_backup_06_feb from imt_member_cfhc_master

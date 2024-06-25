@@ -1,0 +1,210 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15 ">
+            <div class="section-title">
+                <h4 class="text">Duplicate Aadhaar Details </h4>
+                <i ng-if="ctrl.duplicateData.length > 0" style = "font-size : 20px; " class="fa fa-file-excel-o float-right mb-15 mx-5 " ng-click = ctrl.downloadExcelFunc() aria-hidden="true">
+                </i>
+            </div>
+        </div>
+
+        <div class="col-12" ng-if="!ctrl.duplicateData || ctrl.duplicateData.length === 0">
+            <div class="no-data-placeholder">
+                <h5>Sorry No Record Found!</h5>
+            </div>
+        </div>
+
+        <div class="col-12" ng-if="ctrl.duplicateData.length > 0">
+           <div class="cst-table table-responsive table-set-height" id="member-scroll" style="overflow: auto;">
+                <table aria-describedby="table"
+                    class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                    style="table-layout: auto">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th style="width: 50px;">#</th>
+                            <th>Aadhaar Number</th>
+                            <th>Duplicate Aadhaar Member Details</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='ctrl.searchData()'
+                        infinite-scroll-disabled='ctrl.pagingService.pagingRetrivalOn'
+                        infinite-scroll-container='"#member-scroll"'>
+                        <tr ng-repeat="data in ctrl.duplicateData">
+                            <td>{{$index + 1}}</td>
+                            <td>{{data.maskedAadhaarNumber | emptylabel}}</td>
+                            <td>
+                                <div ng-repeat="member in data.memberDetails" class="">{{$index+1}}) <b> {{member.uniqueHealthId}}</b>
+                                    ({{member.familyId | emptylabel}}) - {{member.firstName }} {{member.middleName }}
+                                    {{member.lastName }}
+                                    ( <i class="fa fa-phone" aria-hidden="true"></i> {{member.mobileNumber |
+                                    emptylabel}} ) ,
+                                    ( Dob :- {{member.dob | date: 'dd/MM/yyyy'}} )</div>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" ng-click="ctrl.aadhaarVerificationModal(data)">
+                                    Update
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="medium-div filter-div active">
+    <span style="left: -69px" class="filter-toggle" ng-click="ctrl.toggleFilter()">Search</span>
+    <div class="row">
+        <div class="col-12">
+            <h5 class="filter-div-title">Search Duplicate Records</h5>
+        </div>
+    </div>
+    <div class="filter-div-body">
+        <form role="form" name="ctrl.searchForm" id="searchForm" novalidate>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <location-directive ng-model="ctrl.selectedLocationId" selected-location="ctrl.selectedLocation"
+                            template-type="'inline'" required-upto-level="1" fetch-according-to-user-aoi="false">
+                        </location-directive>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                    <div class="form-group text-right">
+                        <button class="btn btn-secondary close-filter" ng-click="ctrl.close()">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary search-filter"
+                            ng-click="ctrl.searchData(true, true)">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="duplicateAadhaar" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="text">Aadhaar Reverification</h4>
+            </div>
+            <div class="modal-body">
+                <form name="ctrl.aadhaarVerificationForm" novalidate>
+                    <div class="row px-3 pt-2">
+                        <div class="col-12">
+                            <div ng-repeat="member in ctrl.selectedData.memberDetails">
+                                <div class="row">
+                                    <div class="col-md-4 col-xs-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type font-weight-bold">Member ID (Family ID) : </span>
+                                                <span class="data">
+                                                    {{member.uniqueHealthId}}
+                                                    ({{member.familyId}})
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type font-weight-bold">Member Name : </span>
+                                                <span class="data">
+                                                    {{member.firstName }} {{member.middleName }} {{member.lastName }}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type font-weight-bold">Location : </span>
+                                                <span class="data">
+                                                    {{member.locationHierarchy | emptylabel}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type font-weight-bold">DOB : </span>
+                                                <span class="data">
+                                                    {{member.dob | date:'dd-MM-yyyy' | emptylabel}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type font-weight-bold">Gender : </span>
+                                                <span class="data">
+                                                    {{member.gender ==='F' ? 'Female': member.gender ==='M' ?
+                                                    'Male' :
+                                                    member.gender ==='T' ? 'Transgender':''}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12">
+                                        <div class="info">
+                                            <label>
+                                                <span class="info_type font-weight-bold">Mobile Number : </span>
+                                                <span class="data">
+                                                    {{member.mobileNumber | emptylabel}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <hr class="col-10">
+                                    </div>
+                                    <div class="col-md-6 col-xs-12">
+                                        <div class="form-group">
+                                            <validate for='aadharNumber{{$index}}' required-msg="Enter Aadhaar Number"
+                                                maxlength-msg="Invalid aadhar number"
+                                                minlength-msg="Invalid aadhar number">
+                                                <label style="vertical-align: middle;white-space: initial"
+                                                    for="aadharNumber{{$index}}" control-label>Aadhar Number</label>
+                                                <input type="text" class="form-control cst-form-control" form-control
+                                                    id="aadharNumber{{$index}}" name="aadharNumber{{$index}}"
+                                                    placeholder="Enter Aadhar number" ng-model="member.aadhaarNumber"
+                                                    numbers-only max-length="12" min-length="12" limit-to="12" required>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12">
+                                        <div class="form-group">
+                                            <validate for='aadharName{{$index}}'
+                                                required-msg="Enter Name as per aadhaar">
+                                                <label for="aadharName{{$index}}" control-label>Name As Per
+                                                    Aadhaar</label>
+                                                <input type="text" class="form-control cst-form-control" form-control
+                                                    id="aadharName{{$index}}" name="aadharName{{$index}}"
+                                                    placeholder="Enter Name as per Aadhaar"
+                                                    ng-model="member.nameAsPerAadhaar" required>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr ng-show="!$last"
+                                    style="border: none; border-top: 1px solid #000; font-weight: 800;">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="ctrl.saveAadhaarDetails()">Save</button>
+                <button class="btn btn-secondary" ng-click="ctrl.closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div> -->

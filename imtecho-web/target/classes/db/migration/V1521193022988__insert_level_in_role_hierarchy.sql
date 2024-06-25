@@ -1,0 +1,11 @@
+UPDATE role_hierarchy_management SET level = 7 WHERE location_type = 'A';
+UPDATE role_hierarchy_management SET level = 3 WHERE location_type = 'B';
+UPDATE role_hierarchy_management SET level = 2 WHERE location_type = 'C';
+UPDATE role_hierarchy_management SET level = 2 WHERE location_type = 'D';
+UPDATE role_hierarchy_management SET level = 4 WHERE location_type = 'P';
+UPDATE role_hierarchy_management SET level = 1 WHERE location_type = 'S';
+UPDATE role_hierarchy_management SET level = 5 WHERE location_type = 'SC';
+UPDATE role_hierarchy_management SET level = 4 WHERE location_type = 'U';
+UPDATE role_hierarchy_management SET level = 5 WHERE location_type = 'UA';
+UPDATE role_hierarchy_management SET level = 6 WHERE location_type = 'V';
+UPDATE role_hierarchy_management SET level = 3 WHERE location_type = 'Z';

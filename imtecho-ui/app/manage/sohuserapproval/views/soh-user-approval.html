@@ -1,0 +1,60 @@
+<div class="container-fluid report-view">
+    <div class="row">
+        <div class="col-12 mb-15 ">
+            <div class="section-title">
+                <h4 class="text">State Of Health User Approval</h4>
+            </div>
+        </div>
+        <div class="col-12 mb-15" ng-if="!uha.userDetailList || uha.userDetailList.length === 0">
+            <div class="no-data-placeholder">
+                <h5>Sorry No Reports available!</h5>
+            </div>
+        </div>
+        <div class="col-12 mb-15">
+            <div class="call-status-filter">
+                <label for="callStatus">User Status: </label>
+                <select id="callStatus" name="status" ng-model="uha.selectedStatusOption"
+                    ng-options="option.option for option in uha.statusOptionsArray" ng-change="uha.retrieveUserList()">
+                </select>
+            </div>
+        </div>
+        <div class="col-12  mb-15" ng-if="uha.userDetailList.length > 0">
+            <div class="cst-table table-responsive" style="overflow: auto;" id="uha-scroll">
+                <table
+                    class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed column-overlap-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th style="width: 3%">#</th>
+                            <th>User Name </th>
+                            <th style="width: 10%">Designation</th>
+                            <th>Organization</th>
+                            <th>Purpose</th>
+                            <th style="width: 10%">Mobile Number</th>
+                            <th ng-if="uha.userDetailList[0].disapproval_reason">Disapproval Reason</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="dataObject in uha.userDetailList" class='{{$index}}'>
+                            <td>{{$index + 1}}</td>
+                            <td>{{!!dataObject.name ? dataObject.name : 'N/A'}}</td>
+                            <td>{{!!dataObject.designation ? dataObject.designation : 'N/A' }}</td>
+                            <td>{{!!dataObject.organization ? dataObject.organization : 'N/A'}}</td>
+                            <td>{{!!dataObject.purpose ? dataObject.purpose : 'N/A'}}</td>
+                            <td>{{!!dataObject.mobile_no ? dataObject.mobile_no : 'N/A'}}</td>
+                            <td ng-if="uha.userDetailList[0].disapproval_reason">
+                                {{!!dataObject.disapproval_reason ? dataObject.disapproval_reason : 'N/A'}}</td>
+                            <td>
+                                <button ng-disabled="uha.selectedStatusOption.value != 'PENDING'" type="submit"
+                                    class="btn btn-success" ng-click="uha.approvedisapproveuser(dataObject.id,true)">Approve</button>
+                                <button ng-disabled="uha.selectedStatusOption.value != 'PENDING'" type="submit"
+                                    class="btn btn-success"
+                                    ng-click="uha.approvedisapproveuser(dataObject.id,false)">Disapprove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

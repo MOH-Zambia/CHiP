@@ -1,0 +1,74 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="section-title">
+                <button class="btn btn-primary float-right" ng-click="ctrl.navigateToAdd()"> Add </button>
+            </div>
+        </div>
+        <div class="col-12 mb-15">
+            <div class="cst-table table-responsive table-set-height-less" id="label-scroll">
+                <table aria-describedby="table" class="table table-sm table-striped table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th id="th">Ward Name</th>
+                            <th id="th">LGD Code</th>
+                            <th id="th">Location Hierarchy</th>
+                            <th id="th">Assigned UPHCs</th>
+                            <th id="th">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='ctrl.searchData()'
+                        infinite-scroll-disabled='ctrl.pagingService.pagingRetrivalOn'
+                        infinite-scroll-container='"#label-scroll"'>
+                        <tr ng-repeat="ward in ctrl.wards" ng-if="ctrl.wards.length > 0">
+                            <td ng-bind="ward.wardName"></td>
+                            <td ng-bind="ward.lgdCode"></td>
+                            <td ng-bind="ward.locationHierarchy"></td>
+                            <td>
+                                <ul class="default-list">
+                                    <li ng-repeat="uphc in ward.assignedUPHCs">{{uphc}}</li>
+                                </ul>
+                            </td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li ng-click="ctrl.navigateToEdit(ward.id)">
+                                        <a class="action-icon edit-icon"></a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr ng-if="(!ctrl.wards || ctrl.wards.length === 0)">
+                            <td colspan="10">No Wards Available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="filter-div">
+        <span class="filter-toggle" ng-click="ctrl.toggleFilter()">Filter</span>
+        <div class="row">
+            <div class="col-12">
+                <h5 class="filter-div-title">Search</h5>
+            </div>
+        </div>
+        <div class="filter-div-body">
+            <div class="row">
+                <div class="col-12" ng-form="ctrl.searchForm">
+                    <div class="form-group">
+                        <location-directive template-type="'inline'" ng-model="ctrl.searchLocationId"
+                            fetch-according-to-user-aoi="false" fetch-upto-level="3" required-upto-level="1">
+                        </location-directive>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary close-filter" ng-click="ctrl.close()">Close</button>
+                    <button class="btn btn-primary search-filter" ng-click="ctrl.searchData(true);">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

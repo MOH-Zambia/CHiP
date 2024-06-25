@@ -1,0 +1,306 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form role="form" class="" name="ctrl.featureUsage" id="manageTimelineConfigForm">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Select Role</label>
+                        <validate for='role' required-msg="Select Role">
+                            <select id="role" name="role" class="form-control cst-form-control"
+                                chosen-directive="ctrl.roleList" form-control data-placeholder='Filter by Role'
+                                ng-model="ctrl.selectedRole" ng-change="ctrl.onSelectedRoleChange()"
+                                ng-options="role as role.name for role in ctrl.roleList" multiple>
+                            </select>
+                        </validate>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Select Page</label>
+                        <validate for='page' required-msg="Select Page">
+                            <select id="page" name="page" class="form-control cst-form-control"
+                                chosen-directive="ctrl.pageList" form-control data-placeholder='Filter by Page'
+                                ng-model="ctrl.selectedPage" ng-change="ctrl.onSelectedPageChange()"
+                                ng-options="menu as menu for menu in ctrl.pageList" multiple>
+                            </select>
+                        </validate>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Select From Date</label>
+                        <validate for='from_date' required-msg="Select From date">
+                            <input type="text" style="float: inherit;" datepicker name="startDate" form-control
+                                ng-model="ctrl.startDate" required max-date="ctrl.endDate"
+                                ng-change="ctrl.onDateChange()">
+                        </validate>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Select To Date</label>
+                        <validate for='to_date' required-msg="Select To Date">
+                            <input type="text" style="float: inherit;" datepicker name="endDate" form-control
+                                ng-model="ctrl.endDate" required max-date="ctrl.todayFormatted"
+                                min-date="ctrl.startDate" ng-change="ctrl.onDateChange()">
+                        </validate>
+                    </div>
+                </div>
+
+                <br>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-10 offset-1">
+        <div class="alert alert-danger" ng-if="ctrl.filteredData.length == 0" style="text-align: center;">
+            Sorry !! no data to display !! kindly try modifying the filter
+        </div>
+    </div>
+</div>
+
+<div class="row" id="myDIV">
+    <div class="col-md-8 offset-md-2">
+        <div class="container">
+            <div class="row lead">
+                <div class="col-md-10 offset-md-1 text-center">Top 10 usage based on number of times page visited</div>
+            </div>
+            <div class=" border border-dark">
+                <canvas id="bubble-chart">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="container" ng-if="ctrl.filteredData.length > 0">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+
+            <section class="">
+                <div class="row lead">
+                    <div class="col-md-12 text-center">User engagement graph</div>
+                </div>
+                <div class=" border border-dark">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <canvas id="line" class="chart chart-bar" chart-data="data" chart-labels="labels"
+                                chart-series="series" chart-colors="ColorBar" chart-options="options">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="row lead">
+                <div class="col-md-12 text-center">Page/Feature usage raw data</div>
+            </div>
+            <div class="card-body inline-form">
+                <div class="cst-table table-responsive" style="max-height: 275px; overflow: auto">
+                    <table class="table table-sm table-striped table-bordered header-fixed">
+                        <colgroup>
+                            <col style="width:60px">
+                            <col class="medium-col">
+                            <col class="medium-col">
+                            <col class="medium-col">
+                            <col class="medium-col">
+                        </colgroup>
+                        <thead class="cst-thead" style="font-size:12px; position: sticky;top: 0">
+                            <tr>
+                                <th id="index"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">Sr. no.</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Page title</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Number of time page visited</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Average time spent (in seconds)</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Number of distinct users visited the page</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Percentage of distinct users visited the page</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody" style="font-size:12px">
+                            <tr ng-repeat="page in ctrl.filteredData" ng-if="(ctrl.filteredData.length > 0)">
+                                <td> {{$index + 1}}</td>
+                                <td data-test="{{page.menu_name}}"> {{page.menu_name}}</td>
+                                <td data-test="{{page.page_count}}"> {{page.page_count}}</td>
+                                <td data-test="{{(page.avg_time / 1000).toFixed(0)}}">{{(page.avg_time /
+                                    1000).toFixed(0)}}</td>
+                                <td data-test="{{page.user_count}}"> {{page.user_count}}</td>
+                                <td data-test="{{page.percentvalue.toFixed(2)}}"> {{page.percentvalue.toFixed(2)}} %
+                                </td>
+                            </tr>
+                            <tr ng-if="!ctrl.filteredData || ctrl.filteredData.length == 0" data-test="noTimeline">
+                                <td colspan="6">No Data available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row lead" ng-if="(ctrl.filteredData.length > 9)">
+        <div class="col-md-12 text-center">Page/Feature usage overview</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" ng-if="(ctrl.filteredData.length > 9)">
+            <div class="card-body inline-form">
+                <div class="cst-table table-responsive" style="max-height: 250px; overflow: auto">
+                    <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <caption style="caption-side:top">Top 5 usage based on number of time page visited</caption>
+                        <colgroup>
+                            <col class="medium-col">
+                            <col class="medium-col">
+                        </colgroup>
+                        <thead class="cst-thead" style="font-size:12px; position: sticky;top: 0">
+                            <tr>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Page title</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Number of time page visited</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody" style="font-size:12px">
+                            <tr ng-repeat="page in ctrl.filteredData | orderBy : 'page_count':true | limitTo: 5"
+                                ng-if="(ctrl.filteredData.length > 0)">
+                                <td data-test="{{page.menu_name}}"> {{page.menu_name}}</td>
+                                <td data-test="{{page.page_count}}"> {{page.page_count}}</td>
+                            </tr>
+                            <tr ng-if="!ctrl.filteredData || ctrl.filteredData.length == 0" data-test="noTimeline">
+                                <td colspan="6">No data available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="(ctrl.filteredData.length > 9)">
+            <div class="card-body inline-form">
+                <div class="cst-table table-responsive" style="max-height: 250px; overflow: auto">
+                    <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <caption style="caption-side:top">Top 5 usage based on average time (in seconds)</caption>
+                        <colgroup>
+                            <col class="medium-col">
+                            <col class="medium-col">
+                        </colgroup>
+                        <thead class="cst-thead" style="font-size:12px;position: sticky;top: 0">
+                            <tr>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Page title</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Average time spent (in seconds)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody" style="font-size:12px">
+                            <tr ng-repeat="page in ctrl.filteredData | orderBy : 'avg_time':true | limitTo: 5"
+                                ng-if="(ctrl.filteredData.length > 0)">
+                                <td data-test="{{page.menu_name}}"> {{page.menu_name}}</td>
+                                <td data-test="{{(page.avg_time / 1000).toFixed(0)}}">{{(page.avg_time /
+                                    1000).toFixed(0)}}</td>
+                            </tr>
+                            <tr ng-if="!ctrl.filteredData || ctrl.filteredData.length == 0" data-test="noTimeline">
+                                <td colspan="6">No data available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" ng-if="(ctrl.filteredData.length > 9)">
+            <div class="card-body inline-form">
+                <div class="cst-table table-responsive" style="max-height: 250px; overflow: auto">
+                    <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <caption style="caption-side:top">Bottom 5 usage based on number of time page visited</caption>
+                        <colgroup>
+                            <col class="medium-col">
+                            <col class="medium-col">
+                        </colgroup>
+                        <thead class="cst-thead" style="font-size:12px ; position: sticky;top: 0">
+                            <tr>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Page title</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Number of time page visited</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody" style="font-size:12px">
+                            <tr ng-repeat="page in ctrl.filteredData | orderBy : 'page_count' | limitTo: 5"
+                                ng-if="(ctrl.filteredData.length > 0)">
+                                <td data-test="{{page.menu_name}}"> {{page.menu_name}}</td>
+                                <td data-test="{{page.page_count}}"> {{page.page_count}}</td>
+                            </tr>
+                            <tr ng-if="!ctrl.filteredData || ctrl.filteredData.length == 0" data-test="noTimeline">
+                                <td colspan="6">No data available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="(ctrl.filteredData.length > 9)">
+            <div class="card-body inline-form">
+                <div class="cst-table table-responsive" style="max-height: 250px; overflow: auto">
+                    <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <caption style="caption-side:top">Bottom 5 usage based on average time (in seconds)</caption>
+                        <colgroup>
+                            <col class="medium-col">
+                            <col class="medium-col">
+                        </colgroup>
+                        <thead class="cst-thead" style="font-size:12px; position: sticky;top: 0">
+                            <tr>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Page title</th>
+                                <th id="name"
+                                    style="white-space: unset;vertical-align: middle; color: #fff; background-color: #2b7dce;"
+                                    class="filter-col">
+                                    Average time spent (in seconds)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody" style="font-size:12px">
+                            <tr ng-repeat="page in ctrl.filteredData | orderBy : 'avg_time' | limitTo: 5"
+                                ng-if="(ctrl.filteredData.length > 0)">
+                                <td data-test="{{page.menu_name}}"> {{page.menu_name}}</td>
+                                <td data-test="{{(page.avg_time / 1000).toFixed(0)}}">{{(page.avg_time /
+                                    1000).toFixed(0)}}</td>
+                            </tr>
+                            <tr ng-if="!ctrl.filteredData || ctrl.filteredData.length == 0" data-test="noTimeline">
+                                <td colspan="6">No data available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

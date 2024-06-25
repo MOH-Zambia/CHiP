@@ -1,0 +1,40 @@
+-- Inserting new keys
+insert into internationalization_label_master(country, key, language, created_by, created_on, custom3b, text, translation_pending) VALUES
+-- English Language
+('US', 'InfantDetails_web', 'EN', 'Administrator', now(), false, 'Infant Details', false),
+('US', 'First_web', 'EN', 'Administrator', now(), false, 'First', false),
+('US', 'Second_web', 'EN', 'Administrator', now(), false, 'Second', false),
+('US', 'Third_web', 'EN', 'Administrator', now(), false, 'Third', false),
+('US', 'Fourth_web', 'EN', 'Administrator', now(), false, 'Fourth', false),
+('US', 'Fifth_web', 'EN', 'Administrator', now(), false, 'Fifth', false),
+('US', 'Sixth_web', 'EN', 'Administrator', now(), false, 'Sixth', false),
+('US', 'Seventh_web', 'EN', 'Administrator', now(), false, 'Seventh', false),
+('US', 'Eighth_web', 'EN', 'Administrator', now(), false, 'Eighth', false),
+('US', 'Ninth_web', 'EN', 'Administrator', now(), false, 'Ninth', false),
+('US', 'Tenth_web', 'EN', 'Administrator', now(), false, 'Tenth', false),
+('US', 'Eleventh_web', 'EN', 'Administrator', now(), false, 'Eleventh', false),
+('US', 'Twelfth_web', 'EN', 'Administrator', now(), false, 'Twelfth', false),
+('US', 'Thirteenth_web', 'EN', 'Administrator', now(), false, 'Thirteenth', false),
+('US', 'Fourteenth_web', 'EN', 'Administrator', now(), false, 'Fourteenth', false),
+('US', 'Fifteenth_web', 'EN', 'Administrator', now(), false, 'Fifteenth', false),
+('US', 'Details_web', 'EN', 'Administrator', now(), false, 'Details', false),
+-- Gujarati Language
+('IN', 'InfantDetails_web', 'GU', 'Administrator', now(), false, 'શિશુ ની વિગતો', false),
+('IN', 'First_web', 'GU', 'Administrator', now(), false, 'પ્રથમ', false),
+('IN', 'Second_web', 'GU', 'Administrator', now(), false, 'બીજા', false),
+('IN', 'Third_web', 'GU', 'Administrator', now(), false, 'ત્રીજા', false),
+('IN', 'Fourth_web', 'GU', 'Administrator', now(), false, 'ચોથા', false),
+('IN', 'Fifth_web', 'GU', 'Administrator', now(), false, 'પાંચમા', false),
+('IN', 'Sixth_web', 'GU', 'Administrator', now(), false, 'છઠા', false),
+('IN', 'Seventh_web', 'GU', 'Administrator', now(), false, 'સાતમા', false),
+('IN', 'Eighth_web', 'GU', 'Administrator', now(), false, 'આઠમા', false),
+('IN', 'Ninth_web', 'GU', 'Administrator', now(), false, 'નવમા', false),
+('IN', 'Tenth_web', 'GU', 'Administrator', now(), false, 'દસમા', false),
+('IN', 'Eleventh_web', 'GU', 'Administrator', now(), false, 'અગિયારમાં', false),
+('IN', 'Twelfth_web', 'GU', 'Administrator', now(), false, 'બારમાં', false),
+('IN', 'Thirteenth_web', 'GU', 'Administrator', now(), false, 'તેરમાં', false),
+('IN', 'Fourteenth_web', 'GU', 'Administrator', now(), false, 'ચૌદમાં', false),
+('IN', 'Fifteenth_web', 'GU', 'Administrator', now(), false, 'પંદરમાં', false),
+('IN', 'Details_web', 'GU', 'Administrator', now(), false, 'વિગતો', false)
+ON conflict on constraint internationalization_label_master_pkey
+DO NOTHING;

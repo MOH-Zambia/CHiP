@@ -1,0 +1,2 @@
+ALTER TABLE failed_health_id_data
+DROP CONSTRAINT failed_health_id_data_member_id_key;

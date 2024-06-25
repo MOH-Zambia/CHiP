@@ -1,0 +1,549 @@
+<div class="container-fluid">
+    <div class="mb-15" id="printableBlock">
+        <div class="card cst-card">
+            <div class="col-12">
+                <div>
+                    <h3 class="text fs-22">
+                        <img alt="image" width="100" height="80" class="logo img-fluid"
+                            src="{{ctrl.imagesPath + 'web_logo.png'}}" style="margin-left:20px;">
+                        <span style="float:right; vertical-align: middle !important;">
+                            {{ctrl.currentAdmissionDisplayMember.hospital_name}}
+                        </span>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-12">
+                <h3 class="text align-center-h fs-22">
+                    Patient Case Sheet
+                </h3>
+            </div>
+            <div class="col-12">
+                <h4 class="text"> <span ng-bind-html="ctrl.currentAdmissionDisplayMember.name"></span></h4>
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-6">
+                        <table aria-describedby="table" class="table table-sm table-striped filter-table"
+                            style="border: none; !important;">
+                            <colgroup>
+                                <col style="width:200px;">
+                                <col style="width:300px;">
+                            </colgroup>
+                            <tbody class="cst-tbody">
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>OPD Case No. :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.opdCaseNumber | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Case No:</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.caseNumber | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Unit No. :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.unitNumber | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Emergency Details :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.emergencyDetails | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Gender :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.genderText | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Area :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.location | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Address :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.address | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Pincode :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.pincode | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Contact No :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.contactNumber | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Age :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.age | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Occupation :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.occupation | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Travel History :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.travelHistory | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-6 ">
+                        <table aria-describedby="table" class="table table-sm table-striped filter-table table-fixed"
+                            style="border: none; !important;">
+                            <colgroup>
+                                <col style="width:200px;">
+                                <col style="width:300px;">
+                            </colgroup>
+                            <tbody class="cst-tbody">
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Covid 19 Status :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.status | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Admission Date :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.admissionDate | date:'dd / MM / yyyy' | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Current Date:</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.currentDate | date:'dd / MM / yyyy' | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Number of Days since Admission :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.days | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Symptoms :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.symptoms | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>CoMorbidity :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.comorbidity | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Date of onset of symptom :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.onsetDate | date:'dd / MM / yyyy' | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Ward Name/Bed No. :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <span
+                                                ng-bind-html="ctrl.currentAdmissionDisplayMember.wardName | emptylabel">
+                                            </span>
+                                            /
+                                            <span
+                                                ng-bind-html="ctrl.currentAdmissionDisplayMember.bedNumber | emptylabel">
+                                            </span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Contact with covid-19 positive person :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.covidPositiveContact | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display">
+                                            <strong>Contact with international traveller :</strong>
+                                        </label>
+                                    </td>
+                                    <td style="border: none !important; vertical-align: top;">
+                                        <label class="display"
+                                            ng-bind-html="ctrl.currentAdmissionDisplayMember.abroadContact | emptylabel">
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="col-12">
+                <h4 class="text">Patient daily status</h4>
+            </div>
+            <div class="col-12  padding-20">
+                <div class="cst-table table-responsive" style="overflow: auto" id="suspected-scroll">
+                    <table aria-describedby="table"
+                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <colgroup>
+                            <col style="width:40px;">
+                            <col class="medium-col">
+                            <col style="width:120px;">
+                            <col style="width:100px;">
+                            <col style="width:80px;">
+                            <col style="width:230px;">
+                            <col style="width:150px;">
+                        </colgroup>
+                        <thead class="cst-thead">
+                            <tr>
+                                <th id="id">Sr. No</th>
+                                <th id="id">Visit Date</th>
+                                <th id="id">Health Status</th>
+                                <th id="id">Remarks</th>
+                                <th id="id">On Health Instrument </th>
+                                <th id="id">Vitals</th>
+                                <th id="id">Treatment</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody">
+                            <tr ng-repeat="covidCase in ctrl.currentAdmissionDisplayMember.dailyStatus"
+                                ng-if="ctrl.currentAdmissionDisplayMember.dailyStatus.length > 0">
+                                <td ng-bind="$index + 1"></td>
+                                <td ng-bind-html="covidCase.service_date | emptylabel"></td>
+                                <td ng-bind-html="covidCase.health_status | emptylabel"></td>
+                                <td ng-bind-html="covidCase.remarks | emptylabel"></td>
+                                <td>
+                                    <span ng-if="!!covidCase.ventilator_type1">BiPAP<br /></span>
+                                    <span ng-if="!!covidCase.ventilator_type2">Venti<br /></span>
+                                    <span ng-if="covidCase.on_o2 === true">On Oxygen<br /></span>
+                                    <span ng-if="covidCase.on_air === true">On Air<br /></span>
+                                    <span
+                                        ng-if=" !covidCase.ventilator_type1 && !covidCase.ventilator_type2 && !covidCase.on_o2 && !covidCase.on_air"
+                                        ng-bind-html="'' | emptylabel">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span ng-if="!!covidCase.temperature">
+                                        <label class="display"><strong>Temperature :</strong></label>
+                                        {{covidCase.temperature}}<br />
+                                    </span>
+                                    <span ng-if="!!covidCase.pulse_rate">
+                                        <label class="display"><strong>Puls Rate :</strong></label>
+                                        {{covidCase.pulse_rate}}<br />
+                                    </span>
+                                    <span ng-if="!!covidCase.bp_systolic || !!covidCase.bp_dialostic">
+                                        <label class="display"><strong>BP :</strong></label>
+                                        {{covidCase.bp_systolic}} / {{covidCase.bp_dialostic}}<br />
+                                    </span>
+                                    <span ng-if="!!covidCase.respiration_rate">
+                                        <label class="display"><strong>Respiration Rate :</strong></label>
+                                        {{covidCase.respiration_rate}}<br />
+                                    </span>
+                                    <span ng-if="!!covidCase.spo2">
+                                        <label class="display"><strong>SPO2 :</strong></label>
+                                        {{covidCase.spo2}}<br />
+                                    </span>
+                                    <span ng-if=" !covidCase.temperature && !covidCase.pulse_rate
+                                                && !covidCase.respiration_rate && !covidCase.bp_systolic
+                                                && !covidCase.bp_dialostic && !covidCase.spo2"
+                                        ng-bind-html="'' | emptylabel">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span ng-if="covidCase.azithromycin === true">Azithromycin<br /></span>
+                                    <span ng-if="covidCase.hydroxychloroquine === true">Hydroxychloroquine<br /></span>
+                                    <span ng-if="covidCase.oseltamivir === true">Oseltamivir<br /></span>
+                                    <span ng-if="covidCase.antibiotics === true">Antibiotics<br /></span>
+                                    <span ng-if=" !covidCase.azithromycin && !covidCase.hydroxychloroquine
+                                                && !covidCase.oseltamivir && !covidCase.antibiotics"
+                                        ng-bind-html="'' | emptylabel">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr ng-if="!ctrl.currentAdmissionDisplayMember.dailyStatus">
+                                <td colspan="7"> No Visit found </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-12">
+                <h4 class="text">Patient Covid Tests</h4>
+            </div>
+            <div class="col-12 padding-left-right-0 padding-20">
+                <div class="cst-table table-responsive" style="overflow: auto" id="suspected-scroll4">
+                    <table aria-describedby="table"
+                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <colgroup>
+                            <col style="width:40px;">
+                            <col style="width:80px;">
+                            <col style="width:120px;">
+                            <col style="width:130px;">
+                            <col style="width:120px;">
+                            <col style="width:130px;">
+                        </colgroup>
+                        <thead class="cst-thead">
+                            <tr>
+                                <th id="id">Sr. No</th>
+                                <th id="id">Lab Number</th>
+                                <th id="id">Sample Taken</th>
+                                <th id="id">Sample Received</th>
+                                <th id="id">Result on</th>
+                                <th id="id">Result</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody">
+                            <tr ng-repeat="covidCase in ctrl.currentAdmissionDisplayMember.labResults"
+                                ng-if="ctrl.currentAdmissionDisplayMember.labResults.length > 0">
+                                <td ng-bind="$index + 1"></td>
+                                <td ng-bind-html="covidCase.lab_test_number | emptylabel"></td>
+                                <td>
+                                    <span
+                                        ng-bind-html="covidCase.lab_collection_on | date: ctrl.formSDlabTestDateFormat | emptylabel"></span><br />
+                                    <span ng-bind-html="covidCase.sample_health_infra | emptylabel"></span>
+                                </td>
+                                <td>
+                                    <span
+                                        ng-bind-html="covidCase.lab_sample_received_on | date: ctrl.formSDlabTestDateFormat | emptylabel"></span><br />
+                                    <span ng-bind-html="covidCase.sample_health_infra_send_to | emptylabel"></span>
+                                </td>
+                                <td>
+                                    <span
+                                        ng-bind-html="covidCase.lab_result_entry_on | date: ctrl.formSDlabTestDateFormat | emptylabel"></span><br />
+                                </td>
+                                <td ng-bind-html="covidCase.lab_result | emptylabel"></td>
+                            </tr>
+                            <tr ng-if="!ctrl.currentAdmissionDisplayMember.labResults">
+                                <td colspan="7"> No Lab Test Record found </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-12">
+                <h4 class="text">Other Investigations</h4>
+            </div>
+            <div class="col-12 padding-left-right-0 padding-20">
+                <div class="cst-table table-responsive" style="overflow: auto">
+                    <table aria-describedby="table"
+                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <colgroup>
+                            <col style="width:40px;">
+                            <col style="width:80px;">
+                            <col style="width:120px;">
+                            <col style="width:130px;">
+                        </colgroup>
+                        <thead class="cst-thead">
+                            <tr>
+                                <th id="id">Sr. No</th>
+                                <th id="id">Date</th>
+                                <th id="id">Investigations</th>
+                                <th id="id">Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody">
+                            <tr ng-repeat="covidCase in ctrl.currentAdmissionDisplayMember.dailyStatus"
+                                ng-if="ctrl.currentAdmissionDisplayMember.dailyStatus.length > 0">
+                                <td ng-bind="$index + 1"></td>
+                                <td ng-bind-html="covidCase.service_date | emptylabel"></td>
+                                <td>
+                                    <span ng-if="covidCase.is_xray === true">Xray<br /></span>
+                                    <span ng-if="covidCase.is_ctscan === true">CT SCAN<br /></span>
+                                    <span ng-if="covidCase.is_ecg === true">ECG<br /></span>
+                                    <span ng-if="covidCase.is_serum_creatinine === true">Serum Creatinine<br /></span>
+                                    <span ng-if="covidCase.is_sgpt === true">SGPT<br /></span>
+                                    <span ng-if="covidCase.is_h1n1_test === true">H1N1<br /></span>
+                                    <span ng-if="covidCase.blood_culture === true">Blood Culture<br /></span>
+                                    <span ng-if="covidCase.is_g6pd === true">G6PD</span>
+                                    <span ng-if="!covidCase.is_xray &&
+                                        !covidCase.is_ctscan &&
+                                        !covidCase.is_ecg &&
+                                        !covidCase.is_serum_creatinine &&
+                                        !covidCase.is_sgpt &&
+                                        !covidCase.is_h1n1_test &&
+                                        !covidCase.blood_culture &&
+                                        !covidCase.is_g6pd">
+                                        No Investigations
+                                    </span>
+                                </td>
+                                <td>
+                                    <span ng-if="!covidCase.xray_detail"
+                                        ng-bind-html="covidCase.xray_detail"><br /></span>
+                                    <span ng-if="!covidCase.ct_scan_detail"
+                                        ng-bind-html="covidCase.ct_scan_detail"><br /></span>
+                                    <span ng-if="!covidCase.ecg_detail"
+                                        ng-bind-html="covidCase.ecg_detail"><br /></span>
+                                    <span ng-if="!covidCase.serum_creatinine_detail"
+                                        ng-bind-html="covidCase.serum_creatinine_detail"><br /></span>
+                                    <span ng-if="!covidCase.sgpt_detail"
+                                        ng-bind-html="covidCase.sgpt_detail"><br /></span>
+                                    <span ng-if="!covidCase.h1n1_test_detail"
+                                        ng-bind-html="covidCase.h1n1_test_detail"><br /></span>
+                                    <span ng-if="!covidCase.blood_culture_detail"
+                                        ng-bind-html="covidCase.blood_culture_detail"><br /></span>
+                                    <span ng-if="!covidCase.g6pd_detail" ng-bind-html="covidCase.g6pd_detail"></span>
+                                    <span ng-if="!covidCase.xray_detail &&
+                                        !covidCase.ct_scan_detail &&
+                                        !covidCase.ecg_detail &&
+                                        !covidCase.serum_creatinine_detail &&
+                                        !covidCase.sgpt_detail &&
+                                        !covidCase.h1n1_test_detail &&
+                                        !covidCase.blood_culture_detail &&
+                                        !covidCase.g6pd_detail">
+                                        N.A.
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr ng-if="!ctrl.currentAdmissionDisplayMember.dailyStatus">
+                                <td colspan="7"> No Data found </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <div>
+                <span class="text fs-12" style="font-size: 12px; margin-top: 12px;" ng-bind-html="ctrl.footer"></span>
+            </div>
+        </div>
+    </div>
+</div>

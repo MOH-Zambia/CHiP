@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{smsTypeManageController.isUpdateForm == true ? 'Edit Sms Type' : 'Add Sms
+                            Type'}}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="smsTypeManageController.smsTypeForm" novalidate>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <validate for="smsType" required-msg="Enter Sms Type">
+                                        <label for="smsType">Sms Type<span class="required-asterisk">*</span></label>
+                                        <input type="text" auto-focus="true" class="form-control cst-form-control"
+                                            form-control name="smsType"
+                                            ng-model="smsTypeManageController.smsTypeObj.smsType"
+                                            ng-readonly="smsTypeManageController.isUpdateForm" required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="smsText" required-msg="Enter Sms Text">
+                                        <label for="smsText">Sms Text<span class="required-asterisk">*</span></label>
+                                        <textarea id="smsText" ckeditor inline="true" name="smsText"
+                                            class="form-control   cst-form-control " form-control  rows="3"
+                                            ng-model="smsTypeManageController.smsTypeObj.smsText">
+                                        </textarea>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="description">
+                                        <label control-label>Description</label>
+                                        <textarea id="description" ckeditor inline="true" name="description"
+                                            class="form-control   cst-form-control " form-control rows="3"
+                                            ng-model="smsTypeManageController.smsTypeObj.discription">
+                                        </textarea>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="templateId" required-msg="Enter Template Id">
+                                        <label for="templateId">Template Id</label>
+                                        <input type="text" auto-focus="true" class="form-control cst-form-control"
+                                            form-control name="templateId"
+                                            ng-model="smsTypeManageController.smsTypeObj.templateId">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for='state' required-msg="Enter State">
+                                        <label for='state' control-label>
+                                            State
+                                        </label>
+                                        <select class="form-control cst-form-control" form-control name="state"
+                                            id="state" ng-model="smsTypeManageController.smsTypeObj.state" required>
+                                            <option value="">--Select--</option>
+                                            <option value="ACTIVE">Active</option>
+                                            <option value="INACTIVE">Inactive</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer mt-5">
+                    <div class="float-right">
+                        <button class="btn btn-secondary" ui-sref="techo.manage.smstype">Back</button>
+                        <button class="btn btn-primary"
+                            ng-click="smsTypeManageController.action(smsTypeManageController.smsTypeForm)">
+                            <em class="fa fa-floppy-o"></em>
+                            {{smsTypeManageController.isUpdateForm ? 'Update' : 'Save'}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

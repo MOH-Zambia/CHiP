@@ -1,0 +1,10 @@
+update internationalization_label_master set text = 'Age at the time of wedding', modified_on = now() where key = 'Ageatthetimeofwedding' and "language" = 'EN';
+update listvalue_field_value_detail set value = 'Swelling of legs', last_modified_on = now() where id = 766;
+update internationalization_label_master set text = 'Prolapse Cord', modified_on = now() where key = 'prolapseCord' and "language" = 'EN';
+update internationalization_label_master set text = 'Pregnancy Outcome', modified_on = now() where key = 'PREGNANCYOUTCOME' and "language" = 'EN';
+update internationalization_label_master set text = 'General', modified_on = now() where key = 'GENERAL' and "language" = 'EN';
+update internationalization_label_master set text = 'Chhaya', modified_on = now() where key = 'CHHAYA' and "language" = 'EN';
+update internationalization_label_master set text = 'Chhaya', modified_on = now() where key = 'chhaya' and "language" = 'EN';
+update internationalization_label_master set text = 'Antara', modified_on = now() where key = 'ANTARA' and "language" = 'EN';
+update internationalization_label_master set custom3b = true, modified_on = now() where key = 'Oralpills' and "language" = 'EN';
+update internationalization_label_master set custom3b = true, modified_on = now() where key = 'Condom' and "language" = 'EN';

@@ -1,0 +1,3 @@
+alter table ndhm_health_id_user_details
+drop column if exists is_health_id_card_download,
+add column is_health_id_card_download boolean;

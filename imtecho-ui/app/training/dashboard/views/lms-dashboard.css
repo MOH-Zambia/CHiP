@@ -1,0 +1,360 @@
+
+body{
+    font-family: 'Open Sans', sans-serif;
+}
+
+.color-box{
+    border-radius: 16px;
+    background: #fff;
+    padding:20px;
+    width: 18%;
+    min-width: 250px;
+    box-shadow: 0px 0px 15px 1px #cbcbcb;
+    cursor: pointer;
+    transition: 0.2s all;
+}
+
+.color-box:hover{
+    box-shadow: none;
+}
+
+
+.color-box .h5{
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+}
+
+.color-box .text-xs{
+    color: #fff;
+    margin-bottom: 0;
+}
+
+.color-box.pink{
+    background: #f492a0;
+}
+.color-box.blue{
+    background: #3e479b;
+
+}
+.color-box.yellow{
+    background: #feb161;
+
+}
+.color-box.purple{
+    background: #9194ce;
+
+}
+.color-box.green{
+    background: #5cb89f;
+
+}
+
+
+.box-wrapper{
+    padding: 7px;
+    display: inline-flex;
+    margin-bottom: 10px;
+}
+
+.text-xs{
+    font-size: 20px;
+}
+
+.lms_cst-card{
+    border:none;
+    border-radius: 16px;
+    box-shadow: 0px 0px 12px 0px #f0f0f0;
+    margin-bottom: 30px;
+}
+
+.dashboard-header{
+    font-weight: 600;
+    color: #273157;
+    margin-left: 10px;
+}
+
+.tooltip.ng-scope.ng-isolate-scope.top.fade.in {
+    width: 250px;
+    top: 84px !important;
+    left: 323px !important;
+}
+
+.tooltip-inner{
+    text-align: left;
+}
+
+.lms_cst-card .card-header{
+    background: #fff;
+    border: none;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    font-weight: 600;
+    color: #273157;
+}
+
+.card-body .nav li.top-score{
+    width: 35%;
+}
+
+.card-body .nav li.completor{
+    width: 65%;
+}
+
+.card-body .nav li{
+    text-align: center;
+}
+
+.card-body .nav li a{
+    font-size: 14px;
+    color: #000;
+    padding: 7px;
+}
+
+.cursor-ptr {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.component-selected {
+    font-weight: bold;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+.card-body .nav li a.active{
+    border-bottom: 2px solid #f492a0;
+}
+.card-body  .tab-content{
+    padding-top: 10px;
+}
+
+.card-body .tab-content .cst-avatar{
+    text-align: center;
+    margin: 15px 0;
+}
+
+.card-body .tab-content .cst-avatar img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.card-body .tab-content h3{
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.card-body .tab-content .role{
+    font-size: 14px;
+    color: #999999;
+}
+
+.cst-score {
+    width: 80%;
+    max-width: 320px;
+    background: #f3f3f3;
+    margin: 0 auto;
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #9194ce;
+    font-weight: 600;
+}
+
+.card-body img{
+    width: 100%;
+    max-width: 600px;
+}
+
+.daily-task{
+    padding-left: 0;
+}
+.daily-task li{
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 0;
+}
+
+.daily-task li:first-child h6{
+    padding-left: 40px;
+    font-size: 12px;
+     font-weight: 600;
+    color: #384164;
+}
+
+.daily-task li:first-child p{
+    font-size: 12px;
+    font-weight: 600;
+    color: #384164;
+}
+
+.daily-task li h6{
+    font-weight: 700;
+    color: #384164;
+    margin-bottom: 0;
+    line-height: 14px;
+}
+
+.daily-task li span{
+    font-size: 12px;
+    font-weight: 600;
+    color: #b5b5b5;
+}
+
+.daily-task .text-detail{
+    position: relative;
+    padding-left: 40px;
+}
+.daily-task li.blue p{
+    color: #4b4b4b;
+    font-size: 14px;
+}
+.daily-task li.blue .text-detail:before{
+    content: '';
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 2px solid #9194ce;
+    background: #9194ce;
+    position: absolute;
+    left: 0;
+    top: 40%;
+    transform: translateY(-50%);
+        box-shadow: 0px 4px 10px 0px #cbcbcb;
+}
+
+.daily-task li.pink p{
+    color: #4b4b4b;
+    font-size: 14px;
+}
+
+.daily-task li.pink .text-detail:before{
+    content: '';
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 2px solid #f492a0;
+    background: #f492a0;
+    position: absolute;
+    left: 0;
+    top: 40%;
+    transform: translateY(-50%);
+        box-shadow: 0px 4px 10px 0px #cbcbcb;
+}
+.daily-task li.pink .bar {
+    position:relative;
+    float:left;
+    min-width:1%;
+    height:100%;
+    background:#f492a0;
+        border-radius: 6px;
+}
+.daily-task .progress {
+    /*margin:20px auto;*/
+    padding:0;
+    width:70px;
+    height:10px;
+    overflow:hidden;
+    background:#eaeaea;
+    border-radius:6px;
+    margin-right: 15px;
+}
+
+.daily-task li.blue .bar {
+    position:relative;
+    float:left;
+    min-width:1%;
+    height:100%;
+    background:#9194ce;
+        border-radius: 6px;
+}
+
+.daily-task .percent {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    margin:0;
+    font-family:tahoma,arial,helvetica;
+    font-size:12px;
+    color:white;
+}
+
+#user-activity .nav-tabs .nav-link.active {
+    background: #9194ce;
+    color: #fff;
+    border-color: #9194ce;
+}
+
+#user-activity .nav-tabs .nav-link {
+    border-radius: 0;
+    margin-left: -1px;
+    padding: 5px 15px;
+    border: 1px solid #ebeef6;
+}
+
+#user-activity .nav-tabs li:last-child a {
+    border-radius: 0 0.375rem 0.375rem 0;
+}
+
+#user-activity .nav-tabs .nav-link {
+    border-radius: 0;
+    margin-left: -1px;
+    padding: 5px 15px;
+    border: 1px solid #ebeef6;
+    color: #9194ce;
+    font-size: 12px;
+}
+
+#user-activity .nav-tabs li:first-child a {
+    border-radius: 0.375rem 0 0 0.375rem;
+}
+
+.lms_cst-dropdown{
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #9194ce !important;
+    border: 1px solid #9194ce;
+    border-radius: 5px;
+    padding: 5px 16px;
+ }
+
+ .status-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    min-width: 70px;
+    line-height: 16px;
+    text-align: center;
+}
+
+.status-success {
+    border: 1px solid #28a745;
+    color: #28a745;
+    background-color: white;
+}
+
+.status-progress {
+    border: 1px solid #ffc107;
+    color: #ffc107;
+    background-color: white;
+}
+
+.status-not-started {
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    background-color: white;
+}
+
+.progress-bar {
+    font-weight: 900;
+}

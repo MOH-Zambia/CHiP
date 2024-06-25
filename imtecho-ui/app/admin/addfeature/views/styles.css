@@ -1,0 +1,22 @@
+#addBtn{
+    color: #2b7dce;
+    background-color: white;
+    border: 3px solid #2b7dce;
+    border-radius: 15px;
+    margin: 0.5rem;
+}
+#addBtn:hover{
+    background-color: #2b7dce;
+    color: white;
+}
+#deleteBtn{
+    color: #2b7dce;
+    background-color: white;
+    border: 3px solid #2b7dce;
+    border-radius: 15px;
+    margin: 0.5rem;
+}
+#deleteBtn:hover{
+    background-color: #2b7dce;
+    color: white;
+}

@@ -1,0 +1,70 @@
+<div class="col-12 call-center">
+    <div class="col-12 bottom-spacer-20 padding-left-0">
+        <div class="row ">
+            <div class="col-12 text-center pt-10">
+                <div class="call-div">
+                    <div class="floating-panel inline-form ">
+                        <div class="btn-group " role="group" aria-label="Basic example">
+                            <button class="btn btn-secondary" ng-class="{ active: !heatMapCtrl.heatMapView}"
+                                ng-click="heatMapCtrl.getMarkersData()">Case Taggings
+                            </button>
+                            <button class="btn btn-secondary" ng-class="{ active: heatMapCtrl.heatMapView}"
+                                ng-click="heatMapCtrl.getHeatMapData()">HeatMap</button>
+                        </div>
+                        <div class="dropdown heat-map-dropdown" style="padding-top: 5px;"
+                            ng-if="heatMapCtrl.heatMapView">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                ng-class="{ active: heatMapCtrl.heatMapView}">
+                                {{heatMapCtrl.casesTypes[heatMapCtrl.caseType]| titlecase}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" ng-repeat="(key,value) in heatMapCtrl.casesTypes"
+                                    ng-click="heatMapCtrl.changeHeatMap(key)">{{value}}</a>
+                            </div>
+                        </div>
+                        <div class="form-group col-10" ng-if="heatMapCtrl.heatMapView" style="margin-bottom: 0;">
+                            <label control-label class="control control-checkbox">Show Counts
+                                <input checked="checked" type="checkbox" ng-model="heatMapCtrl.showCounts"
+                                    ng-change="heatMapCtrl.showCountsOnMap()">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group col-10" style="margin-bottom: 0;">
+                            <label control-label class="control control-checkbox">Show Containment Areas
+                                <input type="checkbox" ng-model="heatMapCtrl.isShowContainmnetArea"
+                                    ng-change="heatMapCtrl.showContainmnetAreas()">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group col-10" style="margin-bottom: 0;"
+                            ng-if="heatMapCtrl.isShowContainmnetArea">
+                            <label control-label class="control control-checkbox">Delete Containment Areas
+                                <input type="checkbox" ng-model="heatMapCtrl.isDeleteEnable"
+                                    ng-change="heatMapCtrl.showContainmnetAreas()" ng-disabled="heatMapCtrl.showExport">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group col-10" style="margin-bottom: 0;"
+                            ng-if="heatMapCtrl.isShowContainmnetArea">
+                            <label control-label class="control control-checkbox">Export Prominent Places
+                                <input type="checkbox" ng-model="heatMapCtrl.showExport"
+                                    ng-change="heatMapCtrl.showContainmnetAreas()"
+                                    ng-disabled="heatMapCtrl.isDeleteEnable">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="form-group col-10" style="margin-bottom: 0;">
+                            <label control-label class="control control-checkbox">Draw Containment Areas
+                                <input type="checkbox" ng-model="heatMapCtrl.addCircleView"
+                                    ng-change="heatMapCtrl.enableShowContainment()">
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="googleMap" ng-style="{'height': heatMapCtrl.height}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

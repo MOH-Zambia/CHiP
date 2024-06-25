@@ -1,0 +1,41 @@
+<div  >
+    <hr>
+    <h3 style="padding-top: 7px;padding-bottom: 7px;">Report Summary </h3>
+    <div  class="row">
+        <div class="col-12 inline-form">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xl-1">
+                        <label for="exampleFormControlInput3" control-label>Question </label>
+                    </div>
+                    <div class="col-xl-11">
+                        <div class="row">
+                            <div class="col-xl-11">
+                                <textarea class="form-control cst-form-control" style="width: 100%"
+                                    rows="3" form-control name="summaryRequest"
+                                    readonly="true"
+                                    ng-model="rv.reportObj.configJson.containers.tableContainer[0].summaryRequest"
+                                   ></textarea>
+                            </div>
+                            <div class="col-xl-1 float-right">
+                                <em popover-placement="'top'"
+                                    uib-popover="Question for summary generation of the report"
+                                    popover-trigger="'mouseenter'" class="fa fa-question-circle-o">
+                                </em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between">
+        <select class="outBox" ng-model="rv.selectedModel" ng-options="model.value as model.label for model in rv.models" required></select>
+        <button class="btn btn-primary" ng-click="rv.generateSummary($event)" >Generate Summary</button>
+    </div>
+    <div ng-if="rv.summary.Analysis" class="outputBox shadow" style="padding: 15px;margin-top:15px">
+        <div  ng-bind-html="rv.summary.Analysis">
+                    <!-- <textarea cols="30" rows="12" style="width: 100%; outline: none; resize: none; border : none; font-size : 16px; padding: 10px; background-color : #e1e1e1; color : #413d3d;"  ng-model="rv.summary.Analysis" ng-readonly="true"></textarea> -->
+                </div>
+    </div>
+</div>

@@ -1,0 +1,2028 @@
+<!-- <style>
+  .label {
+    white-space: normal !important;
+    height: 50px;
+  }
+  .d-flex {
+    flex-wrap: wrap;
+  }
+</style>
+<div class="d-flex">
+  <div class="row float-right" style="margin-left: auto; margin-right: 0.5rem">
+    <div class="col-12" style="font-size: 24px">
+      <em class="fa fa-print" title="Print PDF" ng-click="ctrl.printPdf()"></em>
+      <em
+        class="fa fa-file-excel-o"
+        title="Download Excel"
+        ng-click="ctrl.printExcel()"
+      ></em>
+    </div>
+  </div>
+</div>
+  <div class="container-fluid" id="mrp-form">
+    <div class="cst-card">
+      <div class="card-body inline-form">
+        <div class="row">
+          <div class="col-3">
+            <label for="month" class="mobile-label" control-label
+              >Month <span class="required-asterisk">*</span></label
+            >
+            <input
+              name="month"
+              id="month"
+              type="text"
+              datepicker
+              class="input-group text-right bottom-spacer-10"
+              ng-model="ctrl.month"
+              date-options="{minMode: 'month'}"
+              datepicker-mode="'month'"
+              date-month-format="true"
+              ng-required="true"
+              ng-change="ctrl.getFormData()"
+            />
+          </div>
+          <div class="col-7">
+            <div class="form-group cst-form-group" >
+              <label for="chw" class="mobile-label" control-label>CHW</label>
+              <input
+                type="text"
+                class="form-control cst-form-control"
+                form-control
+                id="chw"
+                ng-model="ctrl.formObj.chw"
+                ng-disabled="true"
+              />
+            </div>
+            <div class="form-group cst-form-group" >
+              <label for="zone" class="mobile-label" control-label>Zone</label>
+              <input
+                type="text"
+                class="form-control cst-form-control"
+                form-control
+                id="zone"
+                ng-model="ctrl.formObj.zone"
+                ng-disabled="true"
+              />
+            </div>
+          </div>
+          <div class="col-2 text-right">
+            <div class="row">
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <h3 style="border: 2px solid gray; padding: 1vw">Form 4-A</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cst-card">
+      <div class="card-body inline-form">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-3">
+                <div class="form-group cst-form-group">
+                  <label for="totalCHA" class="mobile-label" control-label
+                    >Number of CHA</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="totalCHA"
+                    ng-model="ctrl.formObj.totalCHA"
+                    ng-disabled="true"
+                  />
+                </div>
+                <div class="form-group cst-form-group" >
+                  <label for="totalCHV" class="mobile-label" control-label
+                    >Number of CHV</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="totalCHV"
+                    ng-model="ctrl.formObj.totalCHV"
+                    ng-disabled="true"
+                  />
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group cst-form-group" >
+                  <label
+                    for="reportedCHA"
+                    class="mobile-label"
+                    control-label
+                    class="label"
+                    >Number of Reported CHA</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="reportedCHA"
+                    ng-model="ctrl.formObj.reportedCHA"
+                    ng-disabled="true"
+                  />
+                </div>
+                <div class="form-group cst-form-group" >
+                  <label
+                    for="reportedCHV"
+                    class="mobile-label"
+                    control-label
+                    class="label"
+                    >Number of Reported CHV</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="reportedCHV"
+                    ng-model="ctrl.formObj.reportedCHV"
+                    ng-disabled="true"
+                  />
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group cst-form-group" >
+                  <label
+                    for="timelyCHA"
+                    class="mobile-label"
+                    control-label
+                    class="label"
+                    >Number of Timely Reported CHA</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="timelyCHA"
+                    ng-model="ctrl.formObj.timelyCHA"
+                    ng-disabled="true"
+                  />
+                </div>
+                <div class="form-group cst-form-group" >
+                  <label
+                    for="timelyCHV"
+                    class="mobile-label"
+                    control-label
+                    class="label"
+                    >Number of Timely Reported CHV</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="timelyCHV"
+                    ng-model="ctrl.formObj.timelyCHV"
+                    ng-disabled="true"
+                  />
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group cst-form-group" >
+                  <label
+                    for="zonewiseHHCount"
+                    class="mobile-label"
+                    control-label
+                    >Number of HH in the Zone</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="zonewiseHHCount"
+                    ng-model="ctrl.formObj.zonewiseHHCount"
+                    ng-disabled="true"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-6" style="border-right: 1px solid gray">
+            <div class="card">
+              <div class="card-title">
+                <div class="float-left">
+                  <b>1.0 Contacts and Visits</b>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw1_01"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >First Household Visits CHW1-01</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw1_01"
+                    ng-model="ctrl.formObj.chw1_01"
+                    ng-disabled="true"
+                     style="width:20%"
+                  />
+                </div>
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw1_02"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Follow Up Household Visits CHW1-02</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw1_02"
+                    ng-model="ctrl.formObj.chw1_02"
+                    ng-disabled="true"
+                     style="width:20%"
+                  />
+                </div>
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw1_03"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Total Household Visits CHW1-03</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw1_03"
+                    ng-model="ctrl.formObj.chw1_03"
+                    ng-disabled="true"
+                    style="width:20%"
+                  />
+                </div>
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw1_04"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Number of Client Contacts CHW1-04</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw1_04"
+                    ng-model="ctrl.formObj.chw1_04"
+                    ng-disabled="true"
+                     style="width:20%"
+                  />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="card">
+              <div class="card-title">
+                <div class="float-left">
+                  <b>2.0 Reproductive, Maternal and Neonatal Health</b>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card">
+                  <div class="card-title">
+                    <div class="float-left">
+                      <b>2.1 Family Planning</b>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_01"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Provided Modern FP CHW2-01</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_01"
+                        ng-model="ctrl.formObj.chw2_01"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="card">
+                  <div class="card-title">
+                    <div class="float-left">
+                      <b>2.2 Antenatal Services</b>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_02"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New Pregnancies CHW2-02</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_02"
+                        ng-model="ctrl.formObj.chw2_02"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_03"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Follow up this month CHW2-03</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_03"
+                        ng-model="ctrl.formObj.chw2_03"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_04"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Total Pregnant Women CHW2-04</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_04"
+                        ng-model="ctrl.formObj.chw2_04"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                    <hr />
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_05"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >ANC met 2+ this month CHW2-05</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_05"
+                        ng-model="ctrl.formObj.chw2_05"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_06"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Total ANC contacts CHW2-06</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_06"
+                        ng-model="ctrl.formObj.chw2_06"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_07"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New - seen less than 3 mths GA CHW2-07</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_07"
+                        ng-model="ctrl.formObj.chw2_07"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_08"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New Pregnancies - already visited facility
+                        CHW2-08</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_08"
+                        ng-model="ctrl.formObj.chw2_08"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_09"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New Pregnancies at facility in 1st trimester
+                        CHW2-09</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_09"
+                        ng-model="ctrl.formObj.chw2_09"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_10"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >ANC women with 28+ weeks pregnancies CHW2-10</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_10"
+                        ng-model="ctrl.formObj.chw2_10"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_11"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >ANC women with birth plan of from 28 weeks
+                        CHW2-11</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_11"
+                        ng-model="ctrl.formObj.chw2_11"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_12"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Up-to-date with ANC visits CHW2-12</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_12"
+                        ng-model="ctrl.formObj.chw2_12"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_13"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >ANC women with danger signs CHW2-13</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_13"
+                        ng-model="ctrl.formObj.chw2_13"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="card">
+                  <div class="card-title">
+                    <div class="float-left">
+                      <b>2.3 Delivery and Postnatal Care</b>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_14"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New home deliveries CHW2-14</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_14"
+                        ng-model="ctrl.formObj.chw2_14"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_15"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New facility deliveries CHW2-15</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_15"
+                        ng-model="ctrl.formObj.chw2_15"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_16"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New deliveries this month CHW2-16</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_16"
+                        ng-model="ctrl.formObj.chw2_16"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_17"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >PNC follow-ups this month CHW2-17</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_17"
+                        ng-model="ctrl.formObj.chw2_17"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_18"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Total PNC women CHW2-18</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_18"
+                        ng-model="ctrl.formObj.chw2_18"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_19"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >PNC met this month prior CHW2-19</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_19"
+                        ng-model="ctrl.formObj.chw2_19"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_20"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Total PNC contacts CHW2-20</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_20"
+                        ng-model="ctrl.formObj.chw2_20"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_21"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New home deliveries - visited within 48 hrs
+                        CHW2-21</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_21"
+                        ng-model="ctrl.formObj.chw2_21"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_22"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >New deliveries - Visited at least 4 times in ANC
+                        CHW2-22</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_22"
+                        ng-model="ctrl.formObj.chw2_22"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_23"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >PNC cases with danger CHW2-23</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_23"
+                        ng-model="ctrl.formObj.chw2_23"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_24"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Maternal(home) deaths CHW2-24</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_24"
+                        ng-model="ctrl.formObj.chw2_24"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="card">
+                  <div class="card-title">
+                    <div class="float-left">
+                      <b>2.4 Neonatal Health</b>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_25"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Livebirth - Home CHW2-25</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_25"
+                        ng-model="ctrl.formObj.chw2_25"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_26"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Livebirth - Facility CHW2-26</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_26"
+                        ng-model="ctrl.formObj.chw2_26"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_27"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Total Livebirths CHW2-27</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_27"
+                        ng-model="ctrl.formObj.chw2_27"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_28"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Livebirth - Preterm CHW2-28</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_28"
+                        ng-model="ctrl.formObj.chw2_28"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_29"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Stillbirths(home) CHW2-29</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_29"
+                        ng-model="ctrl.formObj.chw2_29"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_30"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Referred with danger signs CHW2-30</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_30"
+                        ng-model="ctrl.formObj.chw2_30"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_31"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Neonatal deaths(home) CHW2-31</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_31"
+                        ng-model="ctrl.formObj.chw2_31"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw2_32"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Neonatal infants visited CHW2-32</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw2_32"
+                        ng-model="ctrl.formObj.chw2_32"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="card">
+              <div class="card-title">
+                <div class="float-left">
+                  <b>3.0 Child Health</b>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card">
+                  <div class="card-title">
+                    <div class="float-left">
+                      <b>3.1 Immunisation</b>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_01"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Up to date with vaccinations CHW3-01</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_01"
+                        ng-model="ctrl.formObj.chw3_01"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_02"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Children 24 months and below CHW3-02</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_02"
+                        ng-model="ctrl.formObj.chw3_02"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="card">
+                  <div class="card-title">
+                    <div class="float-left">
+                      <b>3.2 iCCM</b>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_03"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Treated for diarrhoea CHW3-03</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_03"
+                        ng-model="ctrl.formObj.chw3_03"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_04"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Referred for diarrhoea CHW3-04</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_04"
+                        ng-model="ctrl.formObj.chw3_04"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_05"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Treated for pneumonia CHW3-05</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_05"
+                        ng-model="ctrl.formObj.chw3_05"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_06"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Referred for pneumonia CHW3-06</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_06"
+                        ng-model="ctrl.formObj.chw3_06"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_07"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Under 5(home) death CHW3-07</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_07"
+                        ng-model="ctrl.formObj.chw3_07"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="card">
+                  <div class="card-title">
+                    <div class="float-left">
+                      <b>3.3 Nutrition and Child Developement</b>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_08"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Delayed development CHW3-08</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_08"
+                        ng-model="ctrl.formObj.chw3_08"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_09"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >On EBF less than 6 months CHW3-09</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_09"
+                        ng-model="ctrl.formObj.chw3_09"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_10"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Infant aged less than 6 months CHW3-10</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_10"
+                        ng-model="ctrl.formObj.chw3_10"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_11"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Severely malnourished CHW3-11</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_11"
+                        ng-model="ctrl.formObj.chw3_11"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_12"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Moderately malnourished CHW3-12</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_12"
+                        ng-model="ctrl.formObj.chw3_12"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_13"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Not growing well CHW3-13</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_13"
+                        ng-model="ctrl.formObj.chw3_13"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw3_14"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Number of under-five children visited CHW3-14</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw3_14"
+                        ng-model="ctrl.formObj.chw3_14"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="card">
+              <div class="card-title">
+                <div class="float-left">
+                  <b>4.0 Tuberculosis</b>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw4_01"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Suspected with TB CHW4-01</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw4_01"
+                    ng-model="ctrl.formObj.chw4_01"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw4_02"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >On TB treatment CHW4-02</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw4_02"
+                    ng-model="ctrl.formObj.chw4_02"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw4_03"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Not active on TB care CHW4-03</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw4_03"
+                    ng-model="ctrl.formObj.chw4_03"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw4_04"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Contact traced CHW4-04</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw4_04"
+                    ng-model="ctrl.formObj.chw4_04"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw4_05"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Newly confirmed TB cases CHW4-05</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw4_05"
+                    ng-model="ctrl.formObj.chw4_05"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+              </div>
+            </div>
+            <hr />
+
+            <div class="card">
+              <div class="card-title">
+                <div class="float-left">
+                  <b>5.0 Malaria</b>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw5_01"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Tested CHW5-01</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw5_01"
+                    ng-model="ctrl.formObj.chw5_01"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw5_02"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Positive test result CHW5-02</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw5_02"
+                    ng-model="ctrl.formObj.chw5_02"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw5_03"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Treated CHW5-03</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw5_03"
+                    ng-model="ctrl.formObj.chw5_03"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw5_04"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Referred CHW5-04</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw5_04"
+                    ng-model="ctrl.formObj.chw5_04"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw5_05"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Passive CHW5-05</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw5_05"
+                    ng-model="ctrl.formObj.chw5_05"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw5_06"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Travelled CHW5-06</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw5_06"
+                    ng-model="ctrl.formObj.chw5_06"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw5_07"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Provided with IPTp CHW5-07</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw5_07"
+                    ng-model="ctrl.formObj.chw5_07"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+              </div>
+            </div>
+            <hr />
+
+            <div class="card">
+              <div class="card-title">
+                <div class="float-left">
+                  <b>6.0 HIV & AIDS</b>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw6_01"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Unknown HIV status CHW6-01</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw6_01"
+                    ng-model="ctrl.formObj.chw6_01"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw6_02"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Tested CHW6-02</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw6_02"
+                    ng-model="ctrl.formObj.chw6_02"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw6_03"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Tested positive for HIV CHW6-03</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw6_03"
+                    ng-model="ctrl.formObj.chw6_03"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw6_04"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Referred for testing CHW6-04</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw6_04"
+                    ng-model="ctrl.formObj.chw6_04"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw6_05"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Known+, not on ART CHW6-05</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw6_05"
+                    ng-model="ctrl.formObj.chw6_05"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw6_06"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Active on ART CHW6-06</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw6_06"
+                    ng-model="ctrl.formObj.chw6_06"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw6_07"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Referred for STI treatment CHW6-07</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw6_07"
+                    ng-model="ctrl.formObj.chw6_07"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="card">
+              <div class="card-title">
+                <div class="float-left">
+                  <b>7.0 Other Information</b>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw7_01"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >At least one HPV dose CHW7-01</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw7_01"
+                    ng-model="ctrl.formObj.chw7_01"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw7_02"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Suspected cases notified CHW7-02</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw7_02"
+                    ng-model="ctrl.formObj.chw7_02"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw7_03"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Differently-abled CHW7-03</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw7_03"
+                    ng-model="ctrl.formObj.chw7_03"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw7_04"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Individuals Referred (any reason) CHW7-04</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw7_04"
+                    ng-model="ctrl.formObj.chw7_04"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+
+                <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                  <label
+                    for="chw7_05"
+                    class="mobile-label"
+                    control-label
+                    style="width: fit-content; flex: 1;"
+                    >Referred and returned the slip CHW7-05</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control cst-form-control"
+                    form-control
+                    id="chw7_05"
+                    ng-model="ctrl.formObj.chw7_05"
+                    ng-disabled="true"
+                      style="width:20%"
+                  />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="card">
+              <div class="card-title">
+                <div class="float-left">
+                  <b>Quarterly Report</b>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card">
+                  <div class="card-title">
+                    <div class="float-left">
+                      <div>8.0 Water and Sanitation</div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw8_01"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Improved toilet facilities CHW8-01</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw8_01"
+                        ng-model="ctrl.formObj.chw8_01"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw8_02"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Water sources CHW8-02</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw8_02"
+                        ng-model="ctrl.formObj.chw8_02"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw8_03"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Handwashing facilities CHW8-03</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw8_03"
+                        ng-model="ctrl.formObj.chw8_03"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+
+                    <div class="form-group cst-form-group" style="display: flex; align-items: center;">
+                      <label
+                        for="chw8_04"
+                        class="mobile-label"
+                        control-label
+                        style="width: fit-content; flex: 1;"
+                        >Approved refuse disposal facilities CHW8-04</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control cst-form-control"
+                        form-control
+                        id="chw8_04"
+                        ng-model="ctrl.formObj.chw8_04"
+                        ng-disabled="true"
+                          style="width:20%"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-2">
+                  <b>Prepared By :</b>
+                </div>
+                <div class="col-4">
+                  <div class="form-group cst-form-group">
+                    <label for="nhcName" class="mobile-label" control-label
+                      >Name (NHC Rep)</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="nhcName"
+                      ng-model="ctrl.formObj.nhcName"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group cst-form-group" >
+                    <label for="nhcDesignation" class="mobile-label" control-label
+                      >Designation</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="nhcDesignation"
+                      ng-model="ctrl.formObj.nhcDesignation"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group cst-form-group" >
+                    <label for="nhcSigned" class="mobile-label" control-label
+                      >Signed</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="nhcSigned"
+                      ng-model="ctrl.formObj.nhcSigned"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  <b>Verified By :</b>
+                </div>
+                <div class="col-4">
+                  <div class="form-group cst-form-group" >
+                    <label for="supervisorName" class="mobile-label" control-label
+                      >Name (Supervisor)</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="supervisorName"
+                      ng-model="ctrl.formObj.supervisorName"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group cst-form-group">
+                    <label
+                      for="supervisorDesignation"
+                      class="mobile-label"
+                      control-label
+                      >Designation</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="supervisorDesignation"
+                      ng-model="ctrl.formObj.supervisorDesignation"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group cst-form-group" >
+                    <label for="supervisorSign" class="mobile-label" control-label
+                      >Signed</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="supervisorSign"
+                      ng-model="ctrl.formObj.supervisorSigned"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  <b>Received By :</b>
+                </div>
+                <div class="col-4">
+                  <div class="form-group cst-form-group" >
+                    <label
+                      for="facilityStaffName"
+                      class="mobile-label"
+                      control-label
+                      >Name (Facility Staff)</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="facilityStaffName"
+                      ng-model="ctrl.formObj.facilityStaffName"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group cst-form-group" >
+                    <label
+                      for="facilityStaffDate"
+                      class="mobile-label"
+                      control-label
+                      >Date</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="facilityStaffDate"
+                      ng-model="ctrl.formObj.facilityStaffDate"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group cst-form-group" >
+                    <label
+                      for="facilityStaffSign"
+                      class="mobile-label"
+                      control-label
+                      >Signed</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cst-form-control"
+                      form-control
+                      id="facilityStaffSign"
+                      ng-model="ctrl.formObj.facilityStaffSigned"
+                      ng-disabled="true"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div> -->

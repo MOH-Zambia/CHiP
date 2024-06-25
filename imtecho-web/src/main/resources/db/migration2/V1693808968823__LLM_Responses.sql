@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS llm_responses (id serial primary key, llm_model varchar(200), prompt varchar(20000), response varchar(20000), temperature varchar(20000), top_p varchar(20000))

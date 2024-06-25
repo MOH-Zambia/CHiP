@@ -1,0 +1,60 @@
+<div class="container-fluid report-view" ng-if="rv.pageLoaded">
+    <div class="row ">
+        <div ng-if="rv.showEditButton;">
+            <div class="col-12" ng-if="rv.data.tableData.length <= 0">
+                <div class="col-12 mb-15" style="margin-left: 15px;">
+                    <button class="btn btn-primary" ng-click="rv.navigateToEditReport(rv.reportUUID)">
+                        Edit Report &nbsp;<i class="fa fa-pencil"></i> 
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 mb-15" style="margin-left: 15px;" ng-if="rv.data.tableData.length > 0">
+                <button class="btn btn-primary" ng-click="rv.navigateToEditReport(rv.reportUUID)">
+                    Edit Report &nbsp;<i class="fa fa-pencil"></i> 
+                </button>
+            </div>
+        </div>
+        
+        <div class="col-12 mb-15 " ng-if='rv.data.tableData.length > 0'>
+            <em class="ion-arrow-left-c" style="cursor: pointer; font-size: 20px;float: left" onclick="history.back()"
+                ng-if="rv.reportObj.configJson.isBackButtonRequired"></em>
+            <div class="pull-right " style="margin-right: 10px;font-size: 20px;">
+                <em ng-if="(rv.reportObj.configJson.isPrintOption == true || rv.reportObj.configJson.isPrintOption == undefined) && (rv.configLocationLevel == '' || rv.configLocationLevel == undefined || rv.reportObj.configJson.locationLevelSelected >= rv.configLocationLevel)"
+                    uib-tooltip="Print pdf" class="fa fa-print" style="cursor: pointer;"
+                    ng-click="rv.printReport()"></em>
+                <em ng-if="(rv.reportObj.configJson.isExcelOption == true || rv.reportObj.configJson.isExcelOption == undefined) && (rv.configLocationLevel == '' || rv.configLocationLevel == undefined || rv.reportObj.configJson.locationLevelSelected >= rv.configLocationLevel)"
+                    uib-tooltip="Download excel" class="fa fa-file-excel-o" style="cursor: pointer;"
+                    ng-click="rv.saveExcel()"></em>
+            </div>
+            <div style="display: inline-flex;">
+                <div style="margin-top: 5px;margin-left: 25px;float: left;max-width:300px"
+                    ng-if="rv.reportObj.configJson.showDateAsOn">
+                    <label>Date as on</label>
+                    <h6>{{rv.currentDate}}</h6>
+                </div>
+                <div style="margin-top: 5px;margin-left: 25px;float: left;max-width:300px"
+                ng-if="rv.lastUpdatedOn">
+                    <label>Last Updated on</label>
+                    <h6>{{rv.lastUpdatedOn}}</h6>
+                </div>
+                <div style="margin-top: 5px;margin-left: 25px;display: inline-block;max-width:300px"
+                    ng-repeat="display in  rv.reportObj.configJson.filterDisplay">
+                    <label>{{display.displayName}}</label>
+                    <h6 style="word-break: break-word;">{{display.value|emptylabel}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 mb-15">
+        <div>
+            <div id="printableReport">
+                <ng-form name="rv.reportForm">
+                    <dynamicview config="rv.reportObj.configJson" paging-service="rv.pagingService" data="rv.data" showembeddedtable = "rv.reportObj.configJson.isTableEmbedded" navigationstate="rv.reportObj.menuConfig.navigationState"
+                        filter-search="rv.searchFilter(reset,isSearch)" get-group-total-count="rv.getGroupTotalCount(items,fieldName)" customscrollbar=false></dynamicview>
+                </ng-form>
+                <ng-include ng-if="rv.isdnhdd && rv.reportObj.configJson.summaryRequest && rv.shouldShowSummaryPrompt && rv.userRoleCode == 'argusadmin'" src="'app/admin/report/views/report-summary.html'"></ng-include>
+<!--                <p ng-if="!rv.reportObj.configJson.summaryRequest && rv.userRoleCode == 'argusadmin'">Summary Generation Is Not Enabled For this report.</p>-->
+            </div>
+        </div>
+    </div>
+</div>

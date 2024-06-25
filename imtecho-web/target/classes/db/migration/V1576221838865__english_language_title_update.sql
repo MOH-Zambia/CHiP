@@ -1,0 +1,1 @@
+update internationalization_label_master SET text = 'Is Pneumonia' where country='US' and key ='IsPnuemonia_web' and language='EN';

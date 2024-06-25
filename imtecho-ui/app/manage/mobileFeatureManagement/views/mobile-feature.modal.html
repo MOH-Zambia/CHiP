@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <h4 class="text" ng-if="$ctrl.createFeatureFlag">Add Feature</h4>
+    <h4 class="text" ng-if="$ctrl.updateFeatureFlag">Update Feature: <strong>{{::$ctrl.featureObject.feature_name}}</strong></h4>
+    <button type="button" class="close" ng-click="$ctrl.cancel()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form role="form" name="$ctrl.featureUpdateForm" novalidate>
+        <div class="inline-form">
+            <div class="form-group">
+                <validate for='featurename' required-msg="Enter Feature Name">
+                    <label for="featurename" control-label>Feature Name</label>
+                    <input type="text" class="form-control cst-form-control" form-control placeholder="Feature name"
+                        maxlength="50" name="featurename" id="featurename" ng-model="$ctrl.featureObject.feature_name" required>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="form-group">
+                <validate for='mobileconstant' required-msg="Enter Mobile Constant">
+                    <label for="mobileconstant" control-label>Mobile Constant</label>
+                    <input type="text" class="form-control cst-form-control" form-control placeholder="Mobile Constant"
+                        maxlength="50" name="mobileconstant" id="mobileconstant" ng-model="$ctrl.featureObject.mobile_constant" required>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="form-group">
+                <validate for='mobiledisplayname' required-msg="Enter Mobile Display Name">
+                    <label for="mobiledisplayname" control-label>Mobile Display Name</label>
+                    <input type="text" class="form-control cst-form-control" form-control placeholder="Mobile Display Name"
+                        maxlength="50" name="mobiledisplayname" id="mobiledisplayname" ng-model="$ctrl.featureObject.mobile_display_name" required>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="form-group">
+                <label for="form" control-label data-toggle="tooltip"
+                    title="Please select the forms that shall be used within this feature">Assigned Forms</label>
+                <select chosen-directive="$ctrl.formsList" class="form-control cst-form-control" form-control
+                    ng-model="$ctrl.featureObject.form" multiple="true" id="form" name="form"
+                    ng-options="form.id as form.form_name for form in $ctrl.formsList| orderBy :'form_name'">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="bean" control-label data-toggle="tooltip"
+                    title="Please select the beans that shall be used within this feature">Used Beans</label>
+                <select chosen-directive="$ctrl.beansList" class="form-control cst-form-control" form-control
+                    ng-model="$ctrl.featureObject.bean" multiple="true" id="bean" name="bean"
+                    ng-options="b.bean as b.bean for b in $ctrl.beansList| orderBy :'bean'">
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" ng-if="$ctrl.updateFeatureFlag" ng-click="$ctrl.ok($ctrl.featureObject)">
+        Update Feature
+    </button>
+    <button type="submit" class="btn btn-primary" ng-if="$ctrl.createFeatureFlag" ng-click="$ctrl.ok($ctrl.featureObject)">
+        Add Feature
+    </button>
+    <button type="button" class="btn btn-secondary" ng-click="$ctrl.cancel()">
+        Close
+    </button>
+</div>

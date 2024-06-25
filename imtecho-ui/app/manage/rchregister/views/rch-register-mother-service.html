@@ -1,0 +1,752 @@
+<style>
+    .break-word {
+        word-break: break-word;
+    }
+</style>
+<div class="cst-table table-responsive table-set-height" style="overflow: auto;" id="member-scroll">
+    <table class="table table-sm table-striped-custom filter-table table-fixed table-bordered header-fixed">
+        <thead class="cst-thead">
+            <tr>
+                <th id="srno" style="width: 3%;">#</th>
+                <th id="memberName">Member Name </th>
+                <th id="currentAge">Current Age(in year)</th>
+                <th id="husbandName">Husband Name</th>
+                <th id="address">Address</th>
+                <th id="religion">Religion</th>
+                <th id="caste">Caste</th>
+                <th id="" style="width: 3%;"></th>
+            </tr>
+        </thead>
+        <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='rchRegister.retrieveMemberInfo(false)'
+            infinite-scroll-container='"#member-scroll"' infinite-scroll-immediate-check="false">
+            <tr ng-repeat-start="memberDetails in rchRegister.memberserviceDtoList"
+                ng-init="memberDetails.showDetials = false" class='{{$index}}'>
+                <td>{{$index + 1}}</td>
+                <td class="break-word" ng-bind="memberDetails.member_name"></td>
+                <td class="break-word" ng-bind="memberDetails.age"></td>
+                <td class="break-word" ng-bind="memberDetails.husband_name"></td>
+                <td class="break-word" ng-bind="memberDetails.address"></td>
+                <td class="break-word" ng-bind="memberDetails.religion"></td>
+                <td class="break-word" ng-bind="memberDetails.cast"></td>
+                <td class="break-word">
+                    <span data-toggle="collapse" data-target="#{{$index}}"
+                        ng-class="{'fa fa-minus-circle font-size-20 text-danger':memberDetails.showDetials,'fa fa-plus-circle font-size-20 text-success':!memberDetails.showDetials} "
+                        uib-tooltip="{{!memberDetails.showDetials?'Show more Detail':'Show less Detail'}}"
+                        ng-click="rchRegister.onShowMoreDetail(memberDetails, $index)">
+                        </i>
+                </td>
+            </tr>
+            <tr class="extra-detail-table" ng-show="memberDetails.showDetials" ng-repeat-end>
+                <td colspan="8" ng-if="rchRegister.selectedServiceType == 'rch_mother_service'">
+
+                    <div class="card cst-card">
+                        <div id="cardOne" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseOne-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            ng-click="toggleOne = !toggleOne" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="General Information">General Information</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <span ng-class="{'ion-minus':!toggleOne,'ion-plus':toggleOne}"></i>
+                                            </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse show" id="collapseOne-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            role="tabpanel">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-title">TeCHO ID</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.unique_health_id}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Family Id</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.family_id}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">ANC Registration Date</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.reg_service_date ? memberDetails.detailMemberInfo.reg_service_date   : 'N/A' }}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Pregnant Woman Name</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.member_name}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Husband Name</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.husband_name}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">P.W. Age (D.O.B.)</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.age_during_delivery}}
+                                                    years
+                                                    <span ng-if="!!memberDetails.detailMemberInfo.dob">
+                                                        ({{!!memberDetails.detailMemberInfo.dob ? memberDetails.detailMemberInfo.dob : 'N/A'}})
+                                                    </span>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Blood Group of P.W.</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.blood_group ? memberDetails.detailMemberInfo.blood_group : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Address</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.address ? memberDetails.detailMemberInfo.address : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Mobile Number</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.mobile_number ? memberDetails.detailMemberInfo.mobile_number : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Religion / Caste</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.religion ? memberDetails.detailMemberInfo.religion : 'N/A'}}/{{!!memberDetails.detailMemberInfo.cast ? memberDetails.detailMemberInfo.cast : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">BPL / APL</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.bpl_flag ? memberDetails.detailMemberInfo.bpl_flag : 'N/A' }}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-header">Previous Pregnancy Details</span>
+                                            </li>
+                                            <span ng-if="!!memberDetails.preDeliveryDetailsInfo">
+                                                <li>
+                                                    <span class="data-list-title">Total Pregnancy</span>
+                                                    <span
+                                                        class="data-list-info">{{memberDetails.preDeliveryDetailsInfo.length}}</span>
+                                                </li>
+                                                <span ng-repeat="preDelivery in memberDetails.preDeliveryDetailsInfo">
+                                                    <li>
+                                                        <span class="data-list-title">Complication in
+                                                            {{rchRegister.stringifyNumber($index + 1)}} Pregnancy</span>
+                                                        <span
+                                                            class="data-list-info">{{preDelivery.preg_complication ? preDelivery.preg_complication : 'N/A'}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="data-list-title">Result of
+                                                            {{rchRegister.stringifyNumber($index + 1)}} Pregnancy</span>
+                                                        <span
+                                                            class="data-list-info">{{preDelivery.preg_gender ? preDelivery.preg_gender : 'N/A'}}</span>
+                                                    </li>
+                                                </span>
+                                            </span>
+                                            <span ng-if="!memberDetails.preDeliveryDetailsInfo">
+                                                No Data Available
+                                            </span>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-title">LMP</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.lmp_date ? memberDetails.detailMemberInfo.lmp_date : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Pregnancy Week Number at the Time of
+                                                    Registration</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.pregnancy_week_number}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Registered within 12 Weeks of
+                                                    Pregnancy</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.twelve_pregnancy_week_number}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Expected Delivery Date</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.edd ? memberDetails.detailMemberInfo.edd : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Expected Place of Delivery</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.expected_delivery_place ? memberDetails.detailMemberInfo.expected_delivery_place : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Previous Complication</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.previous_complication ? memberDetails.detailMemberInfo.previous_complication : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">JSY Beneficiary</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.jsy_beneficiary}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">KPSY Beneficiary</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.kpsy_beneficiary}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">IAY Beneficiary</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.iay_beneficiary}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Marriage Year</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.year_of_wedding}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card cst-card">
+                        <div id="cardSecond" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseSecond-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            ng-click="toggleSecond = !toggleSecond" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="Member Information">ANC Visit</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <span ng-class="{'ion-plus':!toggleSecond,'ion-minus':toggleSecond}"></i>
+                                            </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse" id="collapseSecond-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            role="tabpanel">
+                            <div class="card-body">
+                                <div ng-if="!memberDetails.preDeliveryCareInfo">
+                                    No data Available.
+                                </div>
+                                <div class="row" ng-if="!!memberDetails.preDeliveryCareInfo"
+                                    ng-repeat="preDeliveryInfo in memberDetails.preDeliveryCareInfo">
+                                    <div class="col-md-12">
+                                        <div class="section-title pl-0 pr-0">
+                                            <span ng-if="$index > 0">
+                                                <br />
+                                            </span>
+                                            <h4 class="text">Visit - {{$index + 1}}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-title">Date</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.inspection_date ? preDeliveryInfo.inspection_date + ' (' + preDeliveryInfo.pregnancy_week + ' weeks)' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Place Name</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.inspection_place ? preDeliveryInfo.inspection_place : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Place Type</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.inspection_place_type ? preDeliveryInfo.inspection_place_type : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Pregnancy Week</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.pregnancy_week != null ? preDeliveryInfo.pregnancy_week : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">P.W. Weight</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.preg_women_weight && preDeliveryInfo.preg_women_weight != 'N/A' ? preDeliveryInfo.preg_women_weight + ' Kgs' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">HIV Test</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.hiv_test ? preDeliveryInfo.hiv_test : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">VDRL Test</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.vdrl_test ? preDeliveryInfo.vdrl_test : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-header">Blood Pressure (mmHg)</span>
+                                                <span class="data-list-title">Systolic BP</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.systolic_bp ? preDeliveryInfo.systolic_bp + ' mmHg' : 'N/A'}}
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Diastolic BP</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.diastolic_bp ? preDeliveryInfo.diastolic_bp + ' mmHg' : 'N/A'}}
+                                            </li>
+
+                                            <li>
+                                                <span class="data-list-title">Hb gm%</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.haemoglobin_count ? preDeliveryInfo.haemoglobin_count : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Folic Acid Tablets</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.falic_acid_tablets ? preDeliveryInfo.falic_acid_tablets : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">IFA Tablets</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.ifa_tablet ? preDeliveryInfo.ifa_tablet : 'Not Applicable'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Cortico Steroid given?</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.is_cortico_steroid_given ? preDeliveryInfo.is_cortico_steroid_given : 'N/A'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">Urine Test</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Albumin</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.urine_albumin == null ? 'N/A' : preDeliveryInfo.urine_albumin == 0 ? 'NIL' : preDeliveryInfo.urine_albumin}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Sugar</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.urine_sugar == null ? 'N/A' : preDeliveryInfo.urine_sugar == 0 ? 'NIL' : preDeliveryInfo.urine_sugar}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-header">Blood Sugar</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Before Lunch</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.sugar_test_before_food_val && preDeliveryInfo.sugar_test_before_food_val != 'N/A' ? preDeliveryInfo.sugar_test_before_food_val + ' mg/dl' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">After Lunch</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.sugar_test_after_food_val && preDeliveryInfo.sugar_test_after_food_val != 'N/A' ? preDeliveryInfo.sugar_test_after_food_val + ' mg/dl' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-header">T.T. Dose</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">T.T. First Dose</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.tt1 ? preDeliveryInfo.tt1 : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="preDeliveryInfo.tt2">
+                                                <span class="data-list-title">T.T. Second Dose</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.tt2 ? preDeliveryInfo.tt2 : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="preDeliveryInfo.ttb">
+                                                <span class="data-list-title">T.T. Booster</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.ttb ? preDeliveryInfo.ttb : 'N/A'}}</span>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">Per Abdominal Inspection</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Foetal Height(cm)</span>
+                                                <span class="data-list-info">
+                                                    {{!!preDeliveryInfo.foetal_height && preDeliveryInfo.foetal_height != 'N/A' ?
+                                                        (preDeliveryInfo.foetal_height + ' cm') : 'Not Applicable'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Foetal Heart Sound</span>
+                                                <span class="data-list-info">
+                                                    {{!!preDeliveryInfo.foetal_heart_sound && preDeliveryInfo.foetal_heart_sound != 'N/A' ?
+                                                        preDeliveryInfo.foetal_heart_sound : 'Not Applicable'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Foetal Position</span>
+                                                <span class="data-list-info">
+                                                    {{!!preDeliveryInfo.foetal_position && preDeliveryInfo.foetal_position != 'N/A' ?
+                                                        preDeliveryInfo.foetal_position : 'Not Applicable'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Foetal Movement</span>
+                                                <span class="data-list-info">
+                                                    {{!!preDeliveryInfo.foetal_movement && preDeliveryInfo.foetal_movement != 'N/A' ?
+                                                        preDeliveryInfo.foetal_movement : 'Not Applicable'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Refer Facility</span>
+                                                <span class="data-list-info">
+                                                    {{!!preDeliveryInfo.referral_done && preDeliveryInfo.referral_done != 'N/A' ?
+                                                        preDeliveryInfo.referral_done : 'Not Applicable'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Any Contraceptive Method Post
+                                                    Pregnancy</span>
+                                                <span class="data-list-info">
+                                                    {{!!preDeliveryInfo.family_planning_method && preDeliveryInfo.family_planning_method != 'N/A' ?
+                                                        preDeliveryInfo.family_planning_method : 'Not Applicable'}}
+                                                </span>
+                                            </li>
+
+                                            <li>
+                                                <span class="data-list-title">Is Mother Alive?</span>
+                                                <span class="data-list-info">{{preDeliveryInfo.alive_flag}}</span>
+                                            </li>
+                                            <li ng-if="preDeliveryInfo.alive_flag == 'No'">
+                                                <span class="data-list-title">Death Date</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.death_date ? preDeliveryInfo.death_date : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="preDeliveryInfo.alive_flag == 'No'">
+                                                <span class="data-list-title">Death Place</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.death_place ? preDeliveryInfo.death_place : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="preDeliveryInfo.alive_flag == 'No'">
+                                                <span class="data-list-title">Death Reason</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.death_reason ? preDeliveryInfo.death_reason : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Danger Signs</span>
+                                                <span
+                                                    class="data-list-info">{{!!preDeliveryInfo.anc_danger_signs ? preDeliveryInfo.anc_danger_signs : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Albendanzole Given</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.albendazole_given}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">HBsAg Test</span>
+                                                <span class="data-list-info">{{preDeliveryInfo.hbsag_test}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Sickle Cell Test</span>
+                                                <span class="data-list-info">{{preDeliveryInfo.sickle_cell_test}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Calcium Tablets Given</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.calcium_tablets_given}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is High Risk Case</span>
+                                                <span
+                                                    class="data-list-info">{{preDeliveryInfo.is_high_risk_case}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card cst-card">
+                        <div id="cardThird" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseThird-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            ng-click="toggleThird = !toggleThird" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="Member Information">Delivery Registration</span>
+
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <span ng-class="{'ion-plus':!toggleThird,'ion-minus':toggleThird}"></i>
+                                            </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse" id="collapseThird-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            role="tabpanel">
+                            <div class="card-body">
+                                <div ng-if="!memberDetails.deliveryResultInfo">
+                                    No data Available.
+                                </div>
+                                <div class="row" ng-if="!!memberDetails.deliveryResultInfo">
+
+                                    <div class="col-md-4 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-title">Date and Time of Delivery</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.deliveryResultInfo[0].date_of_delivery ? memberDetails.deliveryResultInfo[0].date_of_delivery : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Place Name of Delivery</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.deliveryResultInfo[0].delivery_place ? memberDetails.deliveryResultInfo[0].delivery_place : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Place Type of Delivery</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.deliveryResultInfo[0].delivery_place_type ? memberDetails.deliveryResultInfo[0].delivery_place_type : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Delivery Conducted By</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.deliveryResultInfo[0].delivery_done_by ? memberDetails.deliveryResultInfo[0].delivery_done_by : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Type of Delivery</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.deliveryResultInfo[0].type_of_delivery ? memberDetails.deliveryResultInfo[0].type_of_delivery : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Date and Time of Discharge</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.deliveryResultInfo[0].discharge_date ? memberDetails.deliveryResultInfo[0].discharge_date : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="memberDetails.is_abortion_done == 'true'">
+                                                <span class="data-list-title">Abortion place</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.deliveryResultInfo[0].abortion_place ? memberDetails.deliveryResultInfo[0].abortion_place : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Has Delivery Happened</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.deliveryResultInfo[0].has_delivery_happened}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Pregnancy Outcome</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.deliveryResultInfo[0].pregnancy_outcome}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Mother Alive</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.deliveryResultInfo[0].mother_alive}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is High Risk Case</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.deliveryResultInfo[0].is_high_risk_case}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 br-1" ng-if="!!memberDetails.deliveryResultInfo.length > 0"
+                                        ng-repeat="infantInfo in  memberDetails.deliveryResultInfo">
+
+                                        <ul class="data-list">
+                                            <li>
+                                                <span
+                                                    class="data-list-header">{{rchRegister.stringifyNumber($index + 1)}}
+                                                    Infant Information:</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Infant Alive?</span>
+                                                <span
+                                                    class="data-list-info">{{!!infantInfo.is_alive_dead ? infantInfo.is_alive_dead : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Full term</span>
+                                                <span
+                                                    class="data-list-info">{{!!infantInfo.was_premature ? infantInfo.was_premature : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Infant Gender</span>
+                                                <span
+                                                    class="data-list-info">{{!!infantInfo.gender ? infantInfo.gender : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Infant Cried</span>
+                                                <span
+                                                    class="data-list-info">{{!!infantInfo.baby_cried_at_birth ? infantInfo.baby_cried_at_birth : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Referral Done?</span>
+                                                <span
+                                                    class="data-list-info">{{!!infantInfo.is_referral_done ? infantInfo.is_referral_done : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Congenital Deformities</span>
+                                                <span
+                                                    class="data-list-info">{{!!infantInfo.child_congential_deformity ? infantInfo.child_congential_deformity : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Birth Weight</span>
+                                                <span
+                                                    class="data-list-info">{{!!infantInfo.birth_weight ? infantInfo.birth_weight + ' Kgs' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Infant Breastfeeding Started in 1 Hour of
+                                                    Birth?</span>
+                                                <span
+                                                    class="data-list-info">{{!!infantInfo.breast_feeding_in_one_hour ? infantInfo.breast_feeding_in_one_hour : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">OPV</span>
+                                                <span class="data-list-info">{{infantInfo.opv_given}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">BCG</span>
+                                                <span class="data-list-info">{{infantInfo.bcg_given}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">HEP B</span>
+                                                <span class="data-list-info">{{infantInfo.hep_b_given}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">VIT K</span>
+                                                <span class="data-list-info">{{infantInfo.vit_k_given}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card cst-card">
+                        <div id="cardFourth" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseFourth-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            ng-click="toggleFourth = !toggleFourth" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="Member Information">PNC Visit</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <span ng-class="{'ion-plus':!toggleFourth,'ion-minus':toggleFourth}"></i>
+                                            </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse" id="collapseFourth-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            role="tabpanel">
+
+                            <div class="card-body">
+                                <div ng-if="!memberDetails.pncVisitInfo">
+                                    No data Available.
+                                </div>
+                                <div class="row" ng-repeat="pncMember in  memberDetails.pncVisitInfo">
+                                    <div class="col-md-12">
+                                        <div class="section-title pl-0 pr-0">
+                                            <span ng-if="$index > 0">
+                                                <br />
+                                            </span>
+                                            <h4 class="text">Visit - {{$index + 1}} ({{pncMember.service_date}})</h4>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">Mother Details</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Number of IFA Tablets Given</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncMember.ifa_tablets_given ? pncMember.ifa_tablets_given : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Any Complication</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncMember.other_danger_sign ? pncMember.other_danger_sign : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Refer for Advanced Treatment</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncMember.referral_place ? pncMember.referral_place : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Any Contraceptive Used</span><span
+                                                    class="data-list-info">{{!!pncMember.family_planning_method ? pncMember.family_planning_method : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Mother Alive?</span>
+                                                <span class="data-list-info">{{pncMember.is_alive}}</span>
+                                            </li>
+                                            <li ng-if="pncMember.is_alive == 'No'">
+                                                <span class="data-list-title">Date of Death</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncMember.death_date ? pncMember.death_date : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="pncMember.is_alive == 'No'">
+                                                <span class="data-list-title">Reason of Death</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncMember.death_reason ? pncMember.death_reason : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="pncMember.is_alive == 'No'">
+                                                <span class="data-list-title">Place of Death</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncMember.place_of_death ? pncMember.place_of_death : 'N/A'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4" ng-repeat="pncChildDto in pncMember.childPncDto">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span
+                                                    class="data-list-header">{{rchRegister.stringifyNumber($index + 1)}}
+                                                    Infant Details</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Member Name</span>
+                                                <span class="data-list-info">
+                                                    {{pncChildDto.child_name}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Weight(in kg)</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncChildDto.pnc_child_weight ? pncChildDto.pnc_child_weight + " Kgs" : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Refer for Advanced Treatment</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncChildDto.child_referral_done ? pncChildDto.child_referral_done : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Infant Alive?</span>
+                                                <span class="data-list-info">{{pncChildDto.is_child_alive}}</span>
+                                            </li>
+                                            <li ng-if="pncChildDto.is_child_alive == 'No'">
+                                                <span class="data-list-title">Date of Death</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncChildDto.parsed_death_date ? pncChildDto.parsed_death_date : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="pncChildDto.is_child_alive == 'No'">
+                                                <span class="data-list-title">Reason of Death</span>
+                                                <span
+                                                    class="data-list-info">{{!!pncChildDto.child_death_reason ? pncChildDto.child_death_reason : 'N/A'}}</span>
+                                            </li>
+                                            <li ng-if="pncChildDto.is_child_alive == 'No'">
+                                                <span class="data-list-title">Place of Death</span>
+                                                <span
+                                                    class="data-list-info">{{pncChildDto.child_place_of_death ? pncChildDto.child_place_of_death : 'N/A'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

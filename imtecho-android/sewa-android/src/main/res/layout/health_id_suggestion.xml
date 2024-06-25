@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:orientation="horizontal">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="gravity"
+        android:gravity="left"
+        android:text="Suggestions- "
+        android:textColor="@color/labelColor"
+        android:textSize="14sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/suggestion1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="gravity"
+        android:gravity="right"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/comma1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=","
+        android:visibility="gone"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/suggestion2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="gravity"
+        android:gravity="right"
+        android:paddingStart="5dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/comma2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=","
+        android:visibility="gone"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/suggestion3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="gravity"
+        android:gravity="right"
+        android:paddingStart="5dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+
+</LinearLayout>

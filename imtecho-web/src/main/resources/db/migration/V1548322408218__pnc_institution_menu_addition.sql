@@ -1,0 +1,1 @@
+insert into menu_config(active,menu_name,navigation_state,menu_type) values('TRUE','PNC Institution Form','techo.manage.pncSearch','manage');

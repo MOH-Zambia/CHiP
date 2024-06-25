@@ -1,0 +1,97 @@
+--delete from menu_config where menu_name = 'EMO Dashboard';
+--
+--insert into menu_config
+--(group_id,active,menu_name,navigation_state,menu_type)
+--values
+--((select id from menu_group where group_name='COVID-19'),true,'EMO Dashboard','techo.manage.emodashboard','manage');
+--
+--alter table idsp_member_screening_details
+--drop column if exists lab_test_result,
+--drop column if exists status,
+--drop column if exists emo_status;
+--
+--alter table rch_opd_lab_test_details
+--drop column if exists emo_status,
+--add column emo_status text;
+--
+--delete from query_master where code='emo_dashboard_retrieve_referred_for_covid_lab_test';
+--delete from query_master where code='emo_dashboard_update_lab_test_result';
+--​
+--insert into query_master(created_by,created_on,code,params,query,returns_result_set,state)
+--values(1,current_date,'emo_dashboard_retrieve_referred_for_covid_lab_test','l   imit_offset','
+--with idsp_screening as (
+--	select
+--	idsp.id as "idsp_id",
+--	roltd.id as "opd_id",
+--	idsp.location_id as loc_id,
+--	imt_member.family_id,
+--	imt_member.id,
+--	imt_member.first_name || '' '' || imt_member.middle_name || '' '' || imt_member.last_name || '' ('' || imt_member.unique_health_id || '')'' || ''<br>'' || imt_member.family_id as member_det,
+--	to_char(imt_member.dob, ''DD/MM/YYYY'') as dob,
+--	idsp.is_cough,
+--	idsp.is_any_illness_or_discomfort,
+--	case when idsp.covid_symptoms ilike ''%breathlessness%'' then true else false end as breathlessness,
+--	idsp.is_fever,
+--	case when( idsp.travel_detail is null or idsp.travel_detail in (''NO_TRAVEL'')) then false else true end as travel,
+--	concat_ws('','', address1, address2) as address
+--	from idsp_member_screening_details idsp
+--	inner join rch_opd_lab_test_details roltd
+--    on roltd.lab_test_id = (select id from rch_opd_lab_test_master where name = ''COVID-19'')
+--    and roltd.member_id = idsp.member_id
+--	inner join imt_member on imt_member.id = idsp.member_id
+--	inner join imt_family on imt_family.family_id = imt_member.family_id
+--	where roltd.emo_status is null
+--	order by idsp.member_id
+--	#limit_offset#
+--),contact_person as (
+--	select distinct a.id,
+--	 concat( contact_person.first_name, '' '', contact_person.middle_name, '' '', contact_person.last_name,
+--		'' ('', case when contact_person.mobile_number is null then ''N/A'' else contact_person.mobile_number end, '')'' ) as contactPersonMobileNo
+--	from imt_member contact_person
+--	inner join idsp_screening a on a.family_id = contact_person.family_id
+--	inner join imt_family ifm on ifm.family_id = contact_person.family_id and ifm.contact_person_id = contact_person.id
+--),
+--loc as (
+--	select distinct loc_id from idsp_screening
+--),
+--loc_det as (
+--	select loc.loc_id,  string_agg((case when ((l2.english_name is not null)) then l2.english_name else l2.name end),''>'' order by lhcd.depth desc) as aoi
+--	from loc, location_master l1, location_hierchy_closer_det lhcd, location_master l2
+--	where l1.id = loc.loc_id and lhcd.child_id = l1.id and l2.id = lhcd.parent_id
+--	group by loc.loc_id
+--),
+-- fhw_det as (
+--	select loc.loc_id,
+--	u.first_name || '' '' || u.last_name || '' ('' || u.user_name || '')'' || ''<br>''
+--	|| ''Contact : '' || case when u.contact_number is not null then u.contact_number else ''N/A'' end as fhw
+--	from um_user_location ul, um_user u, loc,location_hierchy_closer_det
+--	where loc.loc_id = location_hierchy_closer_det.child_id and
+--	location_hierchy_closer_det.parent_id = ul.loc_id and u.id = ul.user_id
+--	and u.state = ''ACTIVE'' and ul.state = ''ACTIVE''
+--	and u.role_id in (select id from um_role_master where name in (''MO UPHC'', ''MO PHC''))
+--	group by loc.loc_id, ul.state, u.state, u.first_name, u.last_name, u.user_name, u.contact_number
+--)
+--select ROW_NUMBER() over () + cast(SUBSTRING(''#limit_offset#'', POSITION(''offset'' in ''#limit_offset#'') + 7) as int) as "srNo",
+--idsp_screening.idsp_id as "id",
+--idsp_screening.opd_id as "opdId",
+--idsp_screening.member_det as "memberDetails",
+--loc_det.aoi as "location",
+--contact_person.contactPersonMobileNo as "contactPersonMobileNo",
+--idsp_screening.address as "address",
+--idsp_screening.is_cough as "hasCough",
+--idsp_screening.is_fever as "hasFever",
+--idsp_screening.breathlessness as "hasBreathlessness",
+--idsp_screening.travel as "hasTravelHistory",
+--fhw_det.fhw as "moDetails"
+--from idsp_screening
+--left join contact_person on contact_person.id = idsp_screening.id
+--inner join loc_det on idsp_screening.loc_id = loc_det.loc_id
+--left join fhw_det on idsp_screening.loc_id = fhw_det.loc_id;
+--',true,'ACTIVE');
+--
+--insert into query_master(created_by,created_on,code,params,query,returns_result_set,state)
+--values(1,current_date,'emo_dashboard_update_lab_test_result','result,id','
+--update rch_opd_lab_test_details
+--set emo_status = ''#result#''
+--where id = #id#;
+--',false,'ACTIVE');

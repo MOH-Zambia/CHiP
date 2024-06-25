@@ -1,0 +1,1 @@
+update system_configuration set key_value = '94' where system_key = 'MOBILE_FORM_VERSION';

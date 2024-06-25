@@ -1,0 +1,89 @@
+MAIN INDEX->
+-------------------------------------------------------------
+curl -XPUT 'localhost:9200/faq' -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "autocomplete": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase"
+          ]
+        },
+        "autocomplete_search": {
+          "tokenizer": "standard"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+    	"id": {
+        "type": "text"
+      }
+    }
+  }
+}'
+--------------------------------------------------------------------------
+INDEX FOR PHASE CREATION ->
+--------------------------------------------------------------------------
+curl -XPUT 'localhost:9200/idx_phase_faq' -H 'Content-Type: application/json' -d'
+{
+    "settings": {
+        "analysis": {
+            "filter": {
+                "my_shingle": {
+                    "type": "shingle",
+                    "output_unigrams": false,
+                    "max_shingle_size": 5,
+                    "min_shingle_size": 3
+                }
+            },
+            "analyzer": {
+                "analyzer_shingle": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "char_filter": ["html_strip"],
+                    "filter": ["my_shingle", "lowercase"]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "id": {
+                "type": "text"
+            },
+            "answer": {
+                "type": "text",
+                "fielddata": true,
+                "analyzer": "analyzer_shingle"
+            }
+        }
+    }
+}'
+----------------------------------------------------------
+INDEX FOR PHASE DELETION ->
+----------------------------------------------------------
+curl -XDELETE 'localhost:9200/idx_phase_faq'
+----------------------------------------------------------
+QUERY TO UPDATE THE INDEX ->
+----------------------------------------------------------
+BEGIN;
+
+insert into	public.document_index( type, created_on, created_by, json)
+select 'faq', now(), -1, row_to_json(t)
+from
+(with lastIndexedDateQuery as (
+select to_timestamp(key_value, 'YYYY-MM-DD HH24:MI:SS.US') as lastIndexedDate from system_configuration
+where system_key = 'LAST_INDEX_DATE_OF_FAQ_FOR_ELASTICSEARCH' )
+select id, question, content as answer,	tags,language_code
+from mytecho_faq_details
+where created_on > (select lastIndexedDate from	lastIndexedDateQuery)
+or modified_on > (select lastIndexedDate from	lastIndexedDateQuery)) t;
+
+UPDATE system_configuration set key_value = now() where system_key= 'LAST_INDEX_DATE_OF_FAQ_FOR_ELASTICSEARCH';
+
+COMMIT;
+----------------------------------------------------------

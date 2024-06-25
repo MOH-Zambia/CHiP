@@ -1,0 +1,117 @@
+<head>
+    <link rel="stylesheet" href="app/admin/addfeature/views/styles.css">
+</head>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-body inline-form">
+                    <form role="form" name="ctrl.featureForm" id="featureForm" novalidate>
+                        <div class="row">
+                            <div class="col-xl-6 col-12">
+                                <h5 class="card-sub-title">
+                                  Input Details
+                                </h5>
+                                <div>
+                                    <div class="form-group">
+                                        <validate for='featureName' required-msg="Enter Feature Name">
+                                            <label for="featureName" control-label>Feature Name</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Feature Name" maxlength="100" name="featureName" id="featureName"
+                                                ng-model="ctrl.newFeatureInitials['featureName']" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='featureState' required-msg="Enter Feature State" pattern-msg="Invalid format for state">
+                                            <label for="featureState" control-label>Feature State</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Feature State" maxlength="200" name="featureState" id="featureState"
+                                                ng-model="ctrl.newFeatureInitials['featureState']" ng-pattern="/^[a-zA-Z]+\.[a-zA-Z]+(?:\.[a-zA-Z]+)+$/" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div >
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <label for="addRequirement"> Add feature JSON access rights</label>
+                                            <input type="checkbox" id="addRequirement" name="addRequirement" ng-model="ctrl.addRequirement" value=true ng-change="ctrl.toggleRequirement()" style="height: 1.2em;width: 1.2em;" ng-disabled="ctrl.featureJsonExists">
+                                        </div>
+                                        <br>
+                                        <div class="form-group row" ng-repeat="feature in ctrl.featureRequirement" ng-if="ctrl.addRequirement">
+                                            <div class="col-5">
+                                                <validate for='featureKey-{{$index}}' required-msg="Enter Right" pattern-msg="Space and character not allowed">
+                                                    <label for="featureKey-{{$index}}" control-label>Right - {{$index+1}}</label>
+                                                    <input type="text" class="form-control cst-form-control" form-control
+                                                        placeholder="Enter Privilege" maxlength="200" name="featureKey-{{$index}}" id="featureKey-{{$index}}"
+                                                        ng-model="ctrl.featureRequirement[$index]['key']" ng-pattern="/^[a-zA-Z0-9]*$/" required>
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="col-3 row">
+                                                <input type="checkbox" class="col-4" name="featureVal-{{$index}}" ng-model="ctrl.featureRequirement[$index]['value']" value=true style="height: 1.2em;width: 1.2em;" ng-if="ctrl.featureRequirement[$index]['isEditable']==true">
+                                                <p ng-if="!ctrl.featureRequirement[$index]['isEditable']==true" class="col-4"></p>
+                                                <p class="col-8" ng-disabled="true" style="background-color: #d3e3fd;height: min-content;border: 1px solid black;text-align: center;">{{ctrl.featureRequirement[$index]['value']}}</p>
+                                            </div>
+                                            <div class="col-2"><button id="addBtn" class="btn btn-primary" ng-click="ctrl.addFeatureClicked($index)" ng-disabled="ctrl.featureRequirement[$index]['key']==='' || ctrl.featureRequirement[$index]['key']==undefined" ng-if="(($index+1)==ctrl.featureRequirement.length && ctrl.featureRequirement[$index]['isEditable']==true)||(ctrl.featureJsonExists && ctrl.featureRequirement.length==ctrl.existingFeatureRequirementLength && ($index+1)==ctrl.featureRequirement.length)">Add</button></div>
+                                            <div class="col-2"><button id="deleteBtn" class="btn btn-primary" ng-click="ctrl.removeFeatureClicked($index)" ng-disabled="" ng-if="ctrl.featureRequirement[$index]['isEditable']==true">Delete</button></div>
+                                            <br>
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='featureType' required-msg=" Select Feature Type">
+                                            <label for="featureType" control-label>Feature Type</label>
+                                            <select chosen-directive="ctrl.featureTypes" class="form-control cst-form-control" form-control ng-options="type for type in ctrl.featureTypes"
+                                                    ng-change="ctrl.featureTypeChanged()"
+                                                    ng-model="ctrl.newFeatureInitials.featureType" name="featureType" id="featureType" required>
+                                                <option value="">Please Select...</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="ctrl.featureGroups.length>0">
+                                        <validate for='featureGroup' required-msg=" Select Feature Group">
+                                            <label for="featureGroup" control-label>Feature Group</label>
+                                            <select chosen-directive="ctrl.featureGroups" class="form-control cst-form-control" form-control ng-options="group.groupName as group.groupName for group in ctrl.featureGroups"
+                                                    ng-change="ctrl.featureGroupChanged()"
+                                                    ng-model="ctrl.newFeatureInitials.featureGroup" name="featureGroup" id="featureGroup">
+                                                <option value="">Please Select...</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="ctrl.featureSubgroups.length>0">
+                                        <validate for='featureSubgroup' required-msg=" Select user role">
+                                            <label for="featureSubgroup" control-label>Feature Subgroup</label>
+                                            <select chosen-directive="ctrl.featureSubgroups" class="form-control cst-form-control" form-control ng-options="subgroup.subgroupName as subgroup.subgroupName for subgroup in ctrl.featureSubgroups"
+                                                    ng-change=""
+                                                    ng-model="ctrl.newFeatureInitials.featureSubgroup" name="featureSubgroup" id="featureSubgroup">
+                                                <option value="">Please Select...</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer mt-5">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary"
+                                    ng-click="ctrl.saveClicked()" ng-if="!ctrl.editMode">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    Save
+                                </button>
+                                <button type="submit" class="btn btn-primary"
+                                    ng-click="ctrl.editClicked()" ng-if="ctrl.editMode">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    Save
+                                </button>
+                                <button class="btn btn-secondary" ng-click="ctrl.cancelClicked()">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

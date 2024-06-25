@@ -1,0 +1,33 @@
+drop table if exists gbv_visit_master;
+
+CREATE TABLE if not exists gbv_visit_master (
+    id SERIAL PRIMARY KEY,
+    further_treatment BOOLEAN,
+    health_infra TEXT,
+    service_date TIMESTAMP,
+    mobile_start_date TIMESTAMP,
+    mobile_end_date TIMESTAMP,
+    location_id INTEGER,
+    notification_id INTEGER,
+    location_hierarchy_id INTEGER,
+    member_id TEXT,
+    family_id TEXT,
+    latitude TEXT,
+    longitude TEXT,
+    case_date TIMESTAMP,
+    member_status TEXT,
+    severe_case BOOLEAN,
+    client_response BOOLEAN,
+    threatened_with_violence_past_12_months BOOLEAN,
+    physically_hurt_past_12_months BOOLEAN,
+    forced_sex_past_12_months BOOLEAN,
+    forced_sex_for_essentials_past_12_months BOOLEAN,
+    physically_forced_pregnancy_past_12_months BOOLEAN,
+    pregnant_due_to_force BOOLEAN,
+    forced_pregnancy_loss_past BOOLEAN,
+    coerced_or_forced_marriage_past_12_months BOOLEAN,
+    created_by INTEGER NOT NULL,
+    created_on TIMESTAMP NOT NULL,
+    modified_by INTEGER,
+    modified_on TIMESTAMP
+);

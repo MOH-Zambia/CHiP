@@ -1,0 +1,66 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="float-right">
+                <button class="btn btn-primary" ui-sref="techo.manage.opdLabTest">Add Lab Test</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 md-15">
+            <div class="cst-table table-responsive" style="overflow: auto;max-height: calc(100vh - 169px);">
+                <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <colgroup>
+                        <col style="width: 5%">
+                        <col style="width: 25%">
+                        <col style="width: 15%">
+                        <col style="width: 20%">
+                        <col style="width: 15%">
+                        <col style="width: 20%">
+                    </colgroup>
+                    <thead class="cst-thead">
+                        <tr>
+                            <th>#</th>
+                            <th>Lab Test Name</th>
+                            <th>Category</th>
+                            <th>Form Name</th>
+                            <th>State</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="labTest in labTestConfiguration.labTestList"
+                            ng-if="labTestConfiguration.labTestList.length > 0">
+                            <td>{{$index+1}}</td>
+                            <td>{{labTest.name}}</td>
+                            <td>{{labTest.categoryName|emptylabel}}</td>
+                            <td>{{labTest.formName}}</td>
+                            <td>{{labTest.isActive ? 'ACTIVE' : 'INACTIVE'}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li>
+                                        <a href="javascript:void(0)" class="action-icon edit-icon"
+                                            ui-sref="techo.manage.opdLabTest({id : labTest.id})"></a>
+                                    </li>
+                                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <a href="#" class="action-icon more-icon"></a>
+                                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                            aria-labelledby="moreDropdown">
+                                            <li>
+                                                <a href="javascript:void(0)"
+                                                    ng-click="labTestConfiguration.toggleActive(labTest)">
+                                                    <strong>Mark as </strong>
+                                                    {{!labTest.isActive ? 'Active' : 'INACTIVE'}}</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> -->

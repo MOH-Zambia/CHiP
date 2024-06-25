@@ -1,0 +1,208 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ctrl.headerText}}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="ctrl.managePushNotificationConfForm" id="managePushNotificationConfForm"
+                        novalidate>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="card-sub-title">
+                                    Push notification details
+                                </h5>
+                                <div>
+                                    <div class="form-group">
+                                        <validate for='name' required-msg="Enter  name">
+                                            <label for="name" control-label>Name</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter name" maxlength="50" name="name" id="name"
+                                                ng-model="ctrl.name" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='description' required-msg="Enter Description">
+                                            <label for="description" control-label>Description</label>
+                                            <textarea form-control maxlength="500" class="form-control cst-form-control"
+                                                name="description" ng-model="ctrl.description"
+                                                placeholder="Enter Description"
+                                                maxlength="100"
+                                                ng-disabled="ctrl.updateMode==true && (ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')"></textarea>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for="notificationTypeId" required-msg="Select Notification Type">
+                                            <label for="templateId" control-label>Notification Type</label>
+                                            <select class="form-control cst-form-control"
+                                                chosen-directive="ctrl.typeList" form-control name="notificationTypeId"
+                                                id="notificationTypeId"
+                                                ng-disabled="ctrl.updateMode==true && (ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')"
+                                                ng-model="ctrl.notificationTypeId" required
+                                                ng-options="currentType.id as currentType.type for currentType in ctrl.typeList">
+                                                <option value="">--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='triggerType' required-msg="Select Trigger Type">
+                                            <label for="triggerType" control-label>Trigger Type</label>
+                                            <select class="form-control cst-form-control"
+                                                chosen-directive="ctrl.triggerTypesList" form-control name="triggerType"
+                                                id="triggerType"
+                                                ng-disabled="ctrl.updateMode==true && (ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')"
+                                                ng-model="ctrl.triggerType" required
+                                                ng-options="triggerType.value as triggerType.name for triggerType in ctrl.triggerTypesList">
+                                                <option value="">--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="ctrl.triggerType=='SCHEDULE_TIME'">
+                                        <validate for="date" required-msg="Please select date">
+                                            <label for="date" control-label>Date
+                                            </label>
+                                            <input name="date" type="text" datepicker id="date" min-date='ctrl.today'
+                                                ng-model="ctrl.date" ng-required="true"
+                                                ng-disabled="ctrl.updateMode==true && (ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')"
+                                                style="float: right !important;" form-control>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group d-flex align-items-center mb-0"
+                                        ng-if="ctrl.triggerType=='SCHEDULE_TIME'">
+                                        <label for="time" control-label>Time
+                                        </label>
+                                        <div uib-timepicker ng-model="ctrl.time" ng-change="ctrl.timeChanged()"
+                                            show-spinners="ctrl.showspinners" hour-step="ctrl.hstep"
+                                            minute-step="ctrl.mstep" show-meridian="ctrl.ismeridian" id="time"
+                                            name="time" class="d-inline"
+                                            ng-disabled="ctrl.updateMode==true && ( ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')">
+                                        </div>
+                                    </div>
+                                    <div ng-if="!!ctrl.invalidTime" class="text-danger ml-160">
+                                        Please enter a valid time.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 inline-form" style="border-left: 1px solid #e5e5e5;">
+
+                                <div class="form-group" ng-if="ctrl.rights.canAccessQueryBased">
+
+                                    <label class="control control-radio">Role Based
+                                        <input value="ROLE_LOCATION_BASED" name="configType" type="radio"
+                                            ng-model="ctrl.configType" ng-change="ctrl.onConfigTypeChange()"
+                                            ng-disabled="ctrl.updateMode==true && ( ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')">
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label  class="control control-radio">Query
+                                        Base
+                                        <input value="QUERY_BASED" name="configType" type="radio"
+                                            ng-model="ctrl.configType" ng-change="ctrl.onConfigTypeChange()"
+                                            ng-disabled="ctrl.updateMode==true && ( ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')">
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                </div>
+
+                                <div ng-if="ctrl.configType === 'ROLE_LOCATION_BASED'">
+                                    <div class="form-group">
+                                        <validate for='role' required-msg="Select Role">
+                                            <label for="role" control-label>Role</label>
+                                            <select id="role" name="role" class="form-control cst-form-control"
+                                                chosen-directive="ctrl.roleList" form-control
+                                                data-placeholder='Select Role' multiple ng-model="ctrl.userObj.roleId"
+                                                required
+                                                ng-disabled="ctrl.updateMode==true && ( ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')"
+                                                ng-options="role.id as role.name for role in ctrl.roleList">
+                                            </select>
+                                        </validate>
+                                    </div>
+                                    <hr>
+                                    <h5 class="card-sub-title">
+                                        Location
+                                    </h5>
+                                    <ng-form name="ctrl.locationForm" isolate-form>
+                                        <location-directive selected-location="ctrl.selectedLocation"
+                                            required-upto-level="1" fetch-according-to-user-aoi="true"
+                                            disabled="ctrl.updateMode==true && ( ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')"
+                                            fetch-upto-level="ctrl.maxAllowedLevel"> </location-directive>
+                                        <br>
+                                        <div class="pull-right">
+                                            <button
+                                                ng-disabled="ctrl.isLocationButtonDisabled || (ctrl.updateMode==true && ( ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT'))"
+                                                class="btn btn-primary" type="button"
+                                                ng-click="ctrl.selectedArea()">Add</button>
+                                        </div> <br>
+                                    </ng-form>
+                                    <hr>
+                                    <div class="form-group  mt-5">
+                                        <label for="exampleFormControlInput1">Added Areas </label>
+                                        <div class="form-control cst-form-control min-height-65">
+                                            <div ng-repeat="fields in ctrl.selectedLocationsId">
+                                                {{fields.locationFullName}} &nbsp;<em
+                                                    ng-class="{'disabled': !!ctrl.updateMode && ( ctrl.updateTriggerType ==='IMMEDIATELY' || ctrl.updateStatus ==='SENT')}"
+                                                    class="fa fa-times pointer-cursor red"
+                                                    ng-click="ctrl.removeSelectedArea(fields, $index)"></em>
+                                            </div>
+                                        </div>
+                                        <span ng-if="ctrl.duplicateEntry" class="text-danger ml-160">
+                                            This area is already added. Please add another
+                                        </span>
+                                        <span ng-if="ctrl.noLocationSelected" class="text-danger ml-160">
+                                            Please add location.
+                                        </span>
+                                        <span ng-if="ctrl.errorMsg && ctrl.errorCode == 2" class="text-danger ml-160">
+                                            {{ctrl.errorMsg}}
+                                        </span>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div ng-if="ctrl.configType === 'QUERY_BASED'">
+                                    <div class="form-group">
+                                        <validate for='queryId' required-msg="Select Query Code">
+                                            <label for="queryId" control-label>Query Code</label>
+                                            <select class="form-control cst-form-control"
+                                                chosen-directive="ctrl.queryMasters" form-control name="queryId"
+                                                id="queryId"
+                                                ng-disabled="ctrl.updateMode==true && (ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')"
+                                                ng-model="ctrl.queryUUID" required
+                                                ng-options="queryMaster.uuid as queryMaster.code for queryMaster in ctrl.queryMasters">
+                                                <option value="">--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="form-group" style="color: red;">
+                                            *Resultset should content List of user_id.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer mt-5">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary"
+                                    ng-click="ctrl.saveOrUpdate(ctrl.managePushNotificationConfForm)"
+                                    ng-if="!( ctrl.updateTriggerType=='IMMEDIATELY' || ctrl.updateStatus=='SENT')"
+                                    data-test="save-card-Btn)">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    Save & Continue
+                                </button>
+                                <button class="btn btn-secondary" ui-sref="techo.manage.pushnotification">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

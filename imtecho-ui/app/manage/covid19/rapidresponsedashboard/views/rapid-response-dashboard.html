@@ -1,0 +1,239 @@
+<div class="col-12 call-center">
+    <div class="col-12 bottom-spacer-20 padding-left-0">
+        <div class="row ">
+            <div class="col-6 text-center pt-10">
+                <div class="call-div">
+                    <div class="pt-10 ">
+                        <span class="card-sub-title"><strong>IDSP coverage</strong></span>
+                    </div>
+                    <div id="legend_container" class="fs-20" style="padding-top: 30px;">
+                        <span class="col-4">
+                            <em class="fa fa-square" style="color:red; padding: 5px;"></em>
+                            &lt;90%
+                        </span>
+                        <span class="col-4">
+                            <em class="fa fa-square" style="color:yellow;padding: 5px;"></em>
+                            90% to 95%
+                        </span>
+                        <span class="col-4">
+                            <em class="fa fa-square" style="color:green;  padding: 5px;"> </em>
+                            95%&gt;
+                        </span>
+                    </div>
+                    <div id="chart123"></div>
+                </div>
+            </div>
+            <div class="col-6 pt-10">
+                <div class="call-div">
+                    <div class="covidpie-chart-container">
+                        <canvas id="pie" class="chart chart-pie call-div"
+                            chart-data="covid19Dashboardctrl.pieChartData.countData"
+                            chart-labels="covid19Dashboardctrl.pieChartData.labels"
+                            chart-options="covid19Dashboardctrl.pieChartOptions"
+                            chart-colors="covid19Dashboardctrl.colors"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 bottom-spacer-20">
+        <div class="row ">
+            <div class="col-12 padding-left-right-0">
+                <div class="call-div">
+                    <div class="covidbar-chart-container">
+                        <canvas id="base" class="chart chart-bar call-div"
+                            chart-data="covid19Dashboardctrl.barChartData.countData"
+                            chart-labels="covid19Dashboardctrl.barChartData.labels"
+                            chart-series="covid19Dashboardctrl.series"
+                            chart-dataset-override="covid19Dashboardctrl.datasetOverride"
+                            chart-options="covid19Dashboardctrl.chartOptions"
+                            chart-colors="covid19Dashboardctrl.colors"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 bottom-spacer-20 padding-left-right-0">
+        <div class="pt-10 text-left">
+            <span class="card-sub-title"><strong>Testing Status</strong></span>
+        </div>
+        <div class="cst-table table-responsive" style="overflow: auto">
+            <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                <thead class="cst-thead">
+                    <tr>
+                        <th>Sample Collected</th>
+                        <th>Sample in Transit</th>
+                        <th>Positive</th>
+                        <th>Negative</th>
+                        <th>Result Pending</th>
+                    </tr>
+                </thead>
+                <tbody class="cst-tbody">
+                    <tr>
+                        <td>{{covid19Dashboardctrl.testingStatus.samplesCollected}}</td>
+                        <td>{{covid19Dashboardctrl.testingStatus.samplesInTransit}}</td>
+                        <td>{{covid19Dashboardctrl.testingStatus.positive}}</td>
+                        <td>{{covid19Dashboardctrl.testingStatus.negative}}</td>
+                        <td>{{covid19Dashboardctrl.testingStatus.resultPending}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-12 bottom-spacer-20 padding-left-0">
+        <div class="row ">
+            <div class="col-6" style="padding-top:30px;">
+                <div class="cst-table table-responsive" style="overflow: auto">
+                    <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <thead class="cst-thead">
+                            <tr>
+                                <th colspan="2">Contact Tracking Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody">
+                            <tr>
+                                <td>Level 1</td>
+                                <td>N.A.</td>
+                            </tr>
+                            <tr>
+                                <td>Level 2</td>
+                                <td>N.A.</td>
+                            </tr>
+                            <tr>
+                                <td>Level 3</td>
+                                <td>N.A.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center" style="padding-top: 30px;">
+                        <strong style="font-size: 20px;">Home Quarantine:
+                            <span style="font-size: 30px; color: red; padding-left: 5px;">20210
+                            </span>
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 padding-left-right-0">
+                <div class="pt-10 text-left">
+                    <span class="card-sub-title"><strong>Traveler Tracking</strong></span>
+                </div>
+                <div class="cst-table table-responsive" style="overflow: auto">
+                    <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <thead class="cst-thead">
+                            <tr>
+                                <th>Overseas</th>
+                                <th>Total</th>
+                                <th style="white-space: initial">Contact Established</th>
+                                <th style="white-space: initial">Tracking Everyday</th>
+                                <th>Suspected</th>
+                                <th style="white-space: initial">Tracking Exited</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody">
+                            <tr>
+                                <td>Overseas Travel</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                            </tr>
+                            <tr>
+                                <td>Local Travel</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                            </tr>
+                            <tr>
+                                <td>Travelers' Contacts</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                            </tr>
+                            <tr>
+                                <td>Overseas Travel</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 bottom-spacer-20 padding-left-0">
+        <div class="row ">
+
+            <div class="col-6">
+                <div class="call-div">
+                    <div class="pt-10 text-center">
+                        <span class="card-sub-title"><strong>Sample Tested Vs Positive Case</strong></span>
+                    </div>
+                    <div class="covidline-chart-container">
+                        <canvas id="line" class="chart chart-line" chart-data="covid19Dashboardctrl.lineChart.data "
+                            chart-labels="covid19Dashboardctrl.lineChart.labels"
+                            chart-series="covid19Dashboardctrl.lineChart.series"
+                            chart-options="covid19Dashboardctrl.lineChartOptions"
+                            chart-dataset-override="datasetOverride" chart-click="onClick">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 padding-left-right-0">
+                <div class="pt-10 text-left">
+                    <span class="card-sub-title"><strong>Key States</strong></span>
+                </div>
+                <div class="cst-table table-responsive" style="overflow: auto">
+                    <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                        <thead class="cst-thead">
+                            <tr>
+                                <th>Suspected</th>
+                                <th>Tested</th>
+                                <th>Confirmed</th>
+                                <th>Negative</th>
+                                <th>In Progress</th>
+                                <th>Tested</th>
+                                <th>Deaths</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cst-tbody">
+                            <tr>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                            </tr>
+                            <tr>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                                <td>N.A.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

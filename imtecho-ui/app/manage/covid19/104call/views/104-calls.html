@@ -1,0 +1,72 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="section-title">
+                <h4 class="text">{{calls104Ctrl.headerText}}
+                </h4>
+                <button class="pull-right btn btn-primary" ng-click="calls104Ctrl.onAdd()" data-test="add-card">
+                    Add
+                </button>
+                <div class="col-2 inline-form float-right mb-15">
+                    <div class="form-group">
+                        <input type="text" ng-model="search" class="form-control cst-form-control" id="search"
+                            placeholder="Search text" style="width:100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="cst-table table-responsive" style="overflow: auto" id="member-scroll">
+                <table aria-describedby="table"
+                    class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th id="id" class="white-space-unset">Sr. No</th>
+                            <th id="id" class="white-space-unset">Name</th>
+                            <th id="id" class="white-space-unset">Age</th>
+                            <th id="id" class="white-space-unset">Gender</th>
+                            <th id="id" class="white-space-unset">Contact No</th>
+                            <th id="id" class="white-space-unset">Address</th>
+                            <th id="id" class="white-space-unset">Location</th>
+                            <th id="id" class="white-space-unset">Date of calling</th>
+                            <th id="id" class="white-space-unset">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="covid19Case in calls104Ctrl.covid19Cases| filter : search"
+                            ng-if="(calls104Ctrl.covid19Cases.length > 0)" infinite-scroll-distance="0"
+                            infinite-scroll='calls104Ctrl.retrieveMembers()'
+                            infinite-scroll-disabled='calls104Ctrl.pagingService.pagingRetrivalOn'
+                            infinite-scroll-container='"#member-scroll"'>
+                            <td>{{$index + 1}}</td>
+                            <td>{{covid19Case.name}}</td>
+                            <td>{{covid19Case.age}}</td>
+                            <td>
+                                {{covid19Case.gender ==='F' ? 'Female': covid19Case.gender ==='M' ? 'Male' : covid19Case.gender ==='T' ? 'Transgender':''}}
+                            </td>
+                            <td>{{covid19Case.mobileNumber}}</td>
+                            <td>{{covid19Case.address}}</td>
+                            <td>{{covid19Case.locationHierarchy}}</td>
+                            <td>{{covid19Case.dateOfCalling|date:'dd/MM/yyyy'}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li>
+                                        <a href="#" class="action-icon edit-icon"
+                                            ng-click="calls104Ctrl.onEdit(covid19Case.id)">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr
+                            ng-if="(!calls104Ctrl.covid19Cases || (calls104Ctrl.covid19Cases | filter : search).length == 0)">
+                            <td colspan="9"> No COVID-19 Cases are available </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> -->

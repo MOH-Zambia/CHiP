@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Manage Location</h4>
+                    </div>
+                </div>
+                <form role="form" name="locationForm" id="locationForm" novalidate>
+                    <div class="card-body inline-form">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="locationType" control-label class="required">Select Location
+                                        Type</label>
+                                    <select class="form-control cst-form-control" name="locationType"
+                                        ng-options="type as type.name for type in addlocationctrl.locationTypes|filter:{isActive: true}|orderBy:'level'"
+                                        ng-model="addlocationctrl.requiredLevel"
+                                        ng-change="addlocationctrl.onChangeLocation(addlocationctrl.requiredLevel)"
+                                        required>
+                                        <option value="">Please Select.....</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="addlocationctrl.requiredLevel.level != null">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group" ng-if="addlocationctrl.requiredLevel.level > 1">
+                                        <location-directive selected-location="addlocationctrl.selectedLocation"
+                                            template-type="'twoPart'"
+                                            fetch-upto-level="addlocationctrl.requiredLevel.level - 1"
+                                            ng-model="addlocationctrl.selectedLocationId"
+                                            required-upto-level="addlocationctrl.requiredLevel.level - 1"
+                                            fetch-according-to-user-aoi="true">
+                                        </location-directive>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <validate for="locationname" required-msg="Enter Location Name">
+                                        <label for="locationname" control-label>Location Name</label>
+                                        <input type="text" auto-focus="addlocationctrl.focus"
+                                            class="form-control cst-form-control" form-control
+                                            placeholder="Enter Location Name" name="locationname"
+                                            ng-model="addlocationctrl.locationName" required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <validate for="englishName" required-msg="Enter English Name">
+                                        <label for="englishName" control-label>English Name</label>
+                                        <input type="text" class="form-control cst-form-control" form-control
+                                            placeholder="Enter English Name" name="englishName"
+                                            ng-model="addlocationctrl.englishName" required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="card-footer mt-5">
+                        <div class="float-right">
+                            <button type="submit" class="btn btn-primary" ng-if="!addlocationctrl.isUpdate"
+                                ng-click="addlocationctrl.create(locationForm)">
+                                <em class="fa fa-floppy-o"></em> Save & Continue</button>
+                            <button class="btn btn-secondary" ui-sref="techo.manage.location">Back</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

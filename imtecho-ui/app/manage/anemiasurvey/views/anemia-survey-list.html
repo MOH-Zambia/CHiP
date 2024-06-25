@@ -1,0 +1,110 @@
+<!-- <div class="container-fluid">
+	<div class="row">
+		<div class="col-12 mb-15">
+			<div class="cst-table table-responsive table-set-height">
+				<table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+					<colgroup>
+						<col style="width: 5%" />
+						<col style="width: 14%" />
+						<col style="width: 5%" />
+						<col style="width: 7%" />
+						<col style="width: 10%" />
+						<col style="width: 10%" />
+						<col style="width: 10%" />
+						<col style="width: 8%" />
+						<col style="width: 10%" />
+						<col style="width: 20%" />
+					</colgroup>
+					<thead class="cst-thead">
+						<tr>
+							<th>Sr. No.</th>
+							<th>Patient Name</th>
+							<th>Age</th>
+							<th>Gender</th>
+							<th>Service Date</th>
+							<th>Location</th>
+							<th>Hemoglobin</th>
+							<th>Is Pregnant</th>
+							<th>Status</th>
+							<th>Action</th>
+							<!-- <th>Action</th> -->
+						<!-- </tr>
+					</thead>
+					<tbody class="cst-tbody">
+						<tr ng-repeat="member in ctrl.memberList">
+							<td class="text-center">{{ $index + 1 }}</td>
+							<td>{{ member.name  | emptylabel }}</td>
+							<td>{{ member.age  | emptylabel }}</td>
+							<td>{{ member.gender  | emptylabel }}</td>
+							<td>{{ member.service_date | date:'dd/MM/yyyy' | emptylabel}}</td>
+							<td>{{ member.location  | emptylabel}}</td>
+							<td>{{ member.hemoglobin | emptylabel }}</td>
+							<td>{{ member.is_pregnant ? 'Yes' : 'No' | emptylabel }}</td>
+							<td ng-if="member.status!=null">{{ member.status }}</td>
+							<td ng-if="member.status==null">PENDING</td>
+							<td>
+								<div class="button-container">
+									<div class="btn btn-primary download-btn" ng-click="ctrl.downloadFile(member)" uib-tooltip="Download Anemia Survey Images">
+										<i class="fa fa-download mr-1"></i> Download
+									</div>
+									<div class="btn btn-primary examine-btn" ng-click="ctrl.openDetails(member.id)" uib-tooltip="Examine Anemia Survey Images">
+										<i class="fa fa-search mr-1"></i> Verify
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr ng-if="!ctrl.memberList || ctrl.memberList.length==0">
+							<td colspan="10">No Members Available </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div> -->
+<!-- search tab -->
+<!-- <div class="small-div filter-div active no-print">
+	<span style="left:-66px" class="filter-toggle" ng-click="ctrl.toggleFilter()">Search</span>
+	<div class="row">
+		<div class="col-12">
+			<h5 class="filter-div-title">Search Members</h5>
+		</div>
+	</div>
+	<div class="filter-div-body">
+		<form name="ctrl.searchForm" novalidate>
+			<div class="row">
+				<div class="col-12">
+					<div class="form-group">
+						<div class="form-group">
+							<validate for="status" required-msg='Please Select a status'>
+								<label for="status" control-label> Select Status </label>
+								<select class="form-control cst-form-control" form-control ng-model="ctrl.search.status"
+									name="status" id="status" placeholder="Select Status" required>
+									<option value="">Select Status</option>
+									<option value="ALL">All</option>
+									<option value="PENDING">PENDING</option>
+									<option value="VERIFIED">VERIFIED</option>
+								</select>
+								<placeholder></placeholder>
+							</validate>
+						</div>
+						<div class="form-group">
+							<location-directive template-type="'inline'" ng-model="ctrl.search.location"
+								selected-location="ctrl.selectedLocation" required-upto-level="1"
+								template-type="'inline'" fetch-according-to-user-aoi="true">
+							</location-directive>
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<hr>
+					<div class="form-group text-right">
+						<button class="btn btn-secondary close-filter" ng-click="ctrl.toggleFilter()">Close</button>
+						<button type="submit" class="btn btn-primary search-filter"
+							ng-click="ctrl.searchMembers(ctrl.search.status,ctrl.search.location)">Search</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div> --> -->

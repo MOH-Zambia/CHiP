@@ -1,0 +1,178 @@
+<!-- <div class="container-fluid">
+    <div class="row" ng-if="cerebralpalsy.previousCpData != null && cerebralpalsy.previousCpData.length > 0">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Previous Details</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="row" ng-repeat="data in cerebralpalsy.previousCpData">
+                        <div class="col-4">
+                            <label for="memberId" control-label><strong>Remarks : </strong></label>
+                            <label style="width:auto">{{data.remarks}}</label>
+                        </div>
+                        <div class="col-4">
+                            <label for="memberId" control-label><strong>Remarks Date : </strong></label>
+                            <label style="width:auto">{{data.remarks_date}}</label>
+                        </div>
+                        <div class="col-4">
+                            <label for="memberId" control-label><strong>Status : </strong></label>
+                            <label style="width:auto">{{data.status}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Record Details</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="row">
+                        <div class="col-6">
+                            <div>
+                                <div class="form-group">
+                                    <label for="memberId" control-label><strong>Child ID (Family ID)</strong></label>
+                                    <label style="width:auto">{{cerebralpalsy.cpObject.unique_health_id}}
+                                        ({{cerebralpalsy.cpObject.family_id}})</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberName" control-label><strong>Child Name</strong></label>
+                                    <label style="width:auto">
+                                        <span>{{cerebralpalsy.cpObject.childFirstName}}</span><span
+                                            ng-if="cerebralpalsy.cpObject.childMiddleName != null">&nbsp;{{cerebralpalsy.cpObject.childMiddleName}}</span><span
+                                            ng-if="cerebralpalsy.cpObject.childLastName != null">&nbsp;{{cerebralpalsy.cpObject.childLastName}}</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberName" control-label><strong>Location</strong></label>
+                                    <label style="width: auto">
+                                        {{cerebralpalsy.cpObject.locationHierarchy}}
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberLocation" control-label><strong>Date of Birth</strong></label>
+                                    <label style="width:auto">{{cerebralpalsy.cpObject.dob}}
+                                        ({{cerebralpalsy.cpObject.age}})</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberName" control-label><strong>Type of Delivery</strong></label>
+                                    <label style="width:auto">{{cerebralpalsy.cpObject.typeOfDelivery}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberName" control-label><strong>Delivery Place</strong></label>
+                                    <label style="width:auto">{{cerebralpalsy.cpObject.deliveryPlace}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="white-space: initial;vertical-align: middle" for="memberLocation"
+                                        control-label><strong>Child Danger Signs During Delivery</strong></label>
+                                    <label style="width:70%"
+                                        ng-if="cerebralpalsy.cpObject.wpdDangerSigns != null && cerebralpalsy.cpObject.wpdDangerSigns.length > 0">{{cerebralpalsy.cpObject.wpdDangerSigns}}</label>
+                                    <label style="width:70%"
+                                        ng-if="cerebralpalsy.cpObject.wpdDangerSigns == null || cerebralpalsy.cpObject.wpdDangerSigns.length == 0">None</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="white-space: initial;vertical-align: middle" for="memberLocation"
+                                        control-label><strong>Child Danger Signs After Delivery</strong></label>
+                                    <label style="width:70%"
+                                        ng-if="cerebralpalsy.cpObject.pncDangerSigns != null && cerebralpalsy.cpObject.pncDangerSigns.length > 0">{{cerebralpalsy.cpObject.pncDangerSigns}}</label>
+                                    <label style="width:70%"
+                                        ng-if="cerebralpalsy.cpObject.pncDangerSigns == null || cerebralpalsy.cpObject.pncDangerSigns.length == 0">None</label>
+                                </div>
+                                <form role="form" name="cerebralpalsy.cerebralpalsyForm" id="cerebralpalsyForm"
+                                    novalidate>
+                                    <div class="form-group">
+                                        <validate for='status' required-msg="Select a value">
+                                            <label for="status" control-label><strong>Status</strong></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="cerebralpalsy.cpObject.status" name="status" id="status"
+                                                required>
+                                                <option value="" selected>--Select--</option>
+                                                <option value="DELAYED_DEVELOPMENT">Delayed Development</option>
+                                                <option value="NORMAL_DEVELOPMENT">Normal Development</option>
+                                                <option value="TREATMENT_COMMENCED">Treatment Commenced</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for="remarks" required-msg="Enter remarks">
+                                            <label for="remarks" control-label><strong>Remarks (if any)</strong></label>
+                                            <textarea style="width: calc(100% - 162px);" form-control rows="4" cols="49"
+                                                ng-model="cerebralpalsy.cpObject.remarks" name="remarks" id="remarks"
+                                                ng-change="cerebralpalsy.remarksChanged()"></textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div>
+                                <div class="form-group">
+                                    <label for="memberName" control-label><strong>Service Date</strong></label>
+                                    <label style="width:auto">
+                                        {{cerebralpalsy.cpObject.childServiceDate}}
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberName" control-label><strong>Mother Name</strong></label>
+                                    <label style="width:auto">
+                                        <span>{{cerebralpalsy.cpObject.motherFirstName}}</span><span
+                                            ng-if="cerebralpalsy.cpObject.motherMiddleName != null">&nbsp;{{cerebralpalsy.cpObject.motherMiddleName}}</span><span
+                                            ng-if="cerebralpalsy.cpObject.motherLastName != null">&nbsp;{{cerebralpalsy.cpObject.motherLastName}}</span><span
+                                            ng-if="cerebralpalsy.cpObject.mobile_number != null">&nbsp;({{cerebralpalsy.cpObject.mobile_number}})</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="white-space: initial;vertical-align: middle" for="memberLocation"
+                                        control-label><strong>Immunisations Given to Mother</strong></label>
+                                    <label style="width:70%"
+                                        ng-if="cerebralpalsy.cpObject.immunisationDisplay != null && cerebralpalsy.cpObject.immunisationDisplay.length > 0">{{cerebralpalsy.cpObject.immunisationDisplay}}</label>
+                                    <label style="width:70%"
+                                        ng-if="cerebralpalsy.cpObject.immunisationDisplay == null || cerebralpalsy.cpObject.immunisationDisplay.length == 0">None</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="white-space: initial;vertical-align: middle" for="memberLocation"
+                                        control-label><strong>Mother danger Signs during ANC</strong></label>
+                                    <label style="width:70%"
+                                        ng-if="cerebralpalsy.cpObject.ancDangerSigns != null && cerebralpalsy.cpObject.ancDangerSigns.length > 0">{{cerebralpalsy.cpObject.ancDangerSigns}}</label>
+                                    <label style="width:70%"
+                                        ng-if="cerebralpalsy.cpObject.ancDangerSigns == null || cerebralpalsy.cpObject.ancDangerSigns.length == 0">None</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="white-space: initial;vertical-align: middle" for="memberLocation"
+                                        control-label><strong>FHW Name and Phone Number</strong></label>
+                                    <label
+                                        style="width:auto">{{cerebralpalsy.cpObject.FHWName}}({{cerebralpalsy.cpObject.FHWNumber}})</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="white-space: initial;vertical-align: middle" for="memberLocation"
+                                        control-label><strong>ASHA Name and Phone Number</strong></label>
+                                    <label style="width:auto"
+                                        ng-if="cerebralpalsy.cpObject.ashaName != null">{{cerebralpalsy.cpObject.ashaName}}({{cerebralpalsy.cpObject.ashaNumber}})</label>
+                                    <label style="width:auto" ng-if="cerebralpalsy.cpObject.ashaName == null">Not
+                                        available</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer mt-5">
+                        <div class="float-right">
+                            <button type="submit" class="btn btn-primary" ng-click="cerebralpalsy.save()"><em
+                                    class="fa fa-floppy-o"></em> Save & Continue</button>
+                            <button class="btn btn-secondary" ng-click="cerebralpalsy.goBack()">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

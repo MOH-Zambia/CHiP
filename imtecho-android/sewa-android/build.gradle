@@ -1,0 +1,155 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+final BUILD_DATE = new Date().format('ddMMM')
+
+android {
+    compileSdkVersion 33
+    flavorDimensions "default"
+    defaultConfig {
+        multiDexEnabled true
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "androidManifestFile": "$projectDir/src/main/AndroidManifest.xml".toString()
+                ]
+            }
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    signingConfigs {
+        release {
+            storeFile file("/home/prateek/Documents/Work2/imtecho/imtecho-android/sewa-android/sewa.keystroke")
+            storePassword "argusadmin"
+            keyAlias "sewa"
+            keyPassword "argusadmin"
+        }
+    }
+    buildTypes {
+
+        debug {
+            shrinkResources false
+            minifyEnabled false
+            buildConfigField "String", 'BASE_URL', "\"http://192.1.150.30:8181/\""
+            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.1.150.30:8181/\""
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        staging {
+            shrinkResources false
+            minifyEnabled false
+            crunchPngs false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            shrinkResources false
+            minifyEnabled false
+            crunchPngs false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    productFlavors {
+        chip {
+            applicationId "com.argusoft.chip.android.app"
+            minSdkVersion 21
+            targetSdkVersion 32
+            versionCode 121
+            versionName "1.0.22"
+            buildConfigField 'String', 'RELEASE_DATE', "\"17th June 2024\""
+            buildConfigField 'String', 'DB_NAME', "\"chip_final.db\""
+            buildConfigField 'String', 'APK_NAME', "\"chip_app\""
+            buildConfigField 'int', 'DATABASE_VERSION', "17"
+            resValue "string", "app_name", "CHiP"
+            manifestPlaceholders = [
+                    appIcon     : "@mipmap/chip_app_icon",
+                    appIconRound: "@mipmap/chip_app_icon_round"
+            ]
+        }
+    }
+    packagingOptions {
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    }
+}
+
+project.android.applicationVariants.configureEach { variant ->
+    if (variant.buildType.name != 'debug') {
+        def url = project."${variant.flavorName}_${variant.buildType.name}_base_url"
+        variant.buildConfigField('String', 'BASE_URL', "\"${url}\"")
+        def trainingUrl = project."${variant.flavorName}_${variant.buildType.name}_base_url_training"
+        variant.buildConfigField('String', 'BASE_URL_TRAINING', "\"${trainingUrl}\"")
+    }
+    variant.outputs.configureEach {
+        outputFileName = "$BUILD_DATE-${variant.flavorName}(${variant.versionName})-${variant.buildType.name}.apk"
+    }
+}
+
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+def AAVersion = "4.8.0"
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    // supports
+    implementation 'com.google.android.material:material:1.7.0-alpha03'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    // annotation processor
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
+    annotationProcessor "org.androidannotations:ormlite:$AAVersion"
+    // dependencies
+    implementation "org.androidannotations:androidannotations-api:$AAVersion"
+    implementation "org.androidannotations:ormlite-api:$AAVersion"
+    implementation 'com.j256.ormlite:ormlite-android:5.1'
+    implementation 'joda-time:joda-time:2.3'
+    /*Add QR Library Here */
+    implementation('com.journeyapps:zxing-android-embedded:4.3.0') { transitive = false }
+    //provided
+    implementation 'com.github.vihtarb:tooltip:0.1.9'
+    //Library For Reading PDF Files
+    //implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
+    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    implementation 'com.github.smart-fun:XmlToJson:1.5.1'
+
+    // Retrofit dependency
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.zxing:core:3.4.1'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:31.3.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-iid:21.1.0'
+
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
+    implementation 'com.otaliastudios:cameraview:2.7.2'
+
+    implementation "androidx.camera:camera-camera2:1.1.0"
+    implementation "androidx.camera:camera-lifecycle:1.1.0"
+    implementation "androidx.camera:camera-view:1.0.0-alpha32"
+
+    implementation 'com.google.mlkit:text-recognition:16.0.0'
+    implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1'
+}

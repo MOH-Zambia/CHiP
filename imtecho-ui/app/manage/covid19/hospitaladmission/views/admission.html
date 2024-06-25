@@ -1,0 +1,370 @@
+<style>
+    .break-word{
+        word-wrap: break-word;
+    }
+</style>
+<div ng-if="!covidAdmissionctrl.isShowFeature" class="col-12">
+    <h3 style="position: fixed;top: 50%;left: 40%;color: grey"> {{covidAdmissionctrl.message}}</h3>
+</div>
+<div class="container-fluid" ng-if="!!covidAdmissionctrl.isShowFeature">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="pull-right" ng-if="!!covidAdmissionctrl.rights.isShowNewAdmissionButton">
+                <button class="btn btn-primary m-1" ng-click="covidAdmissionctrl.onNewAdmissionClick()">
+                    New Admission </button>
+                <button class="btn btn-primary m-1 pull-right"
+                    ng-if="!!covidAdmissionctrl.rights.isShowPrintButton && covidAdmissionctrl.selectedTab === 1"
+                    ng-click="covidAdmissionctrl.printSuspectList()">
+                    Print</button>
+                <button class="btn btn-primary m-1 pull-right"
+                    ng-if="!!covidAdmissionctrl.rights.isShowPrintButton && covidAdmissionctrl.selectedTab === 2"
+                    ng-click="covidAdmissionctrl.printConfirmList()">
+                    Print</button>
+            </div>
+            <div class="col-2 inline-form float-right">
+                <div class="form-group">
+                    <input type="text" ng-model="covidAdmissionctrl.searchText" class="form-control cst-form-control"
+                        id="search" ng-change="covidAdmissionctrl.performSearch();" ng-model-options="{debounce: 1000}"
+                        placeholder="Search text" style="width:100%">
+                </div>
+            </div>
+            <div class="cst-tab">
+                <uib-tabset active='covidAdmissionctrl.selectedTab'>
+                    <!-- Pending Travellers List tab -->
+                    <uib-tab ng-if="!!covidAdmissionctrl.rights.isShowReferredAdmissionTab"
+                        style="background: none;border: none" heading="Referred for Admission/Testing" index=0
+                        select="covidAdmissionctrl.searchPendingAdmissionData(true)">
+                        <div ng-if="covidAdmissionctrl.selectedTab === 0">
+                            <div class="col-12 padding-left-right-0">
+                                <div class="cst-table table-responsive" style="overflow: auto" id="case-scroll">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="id">Sr. No</th>
+                                                <th id="id" class="white-space-unset">Member Detail</th>
+                                                <th id="id" class="white-space-unset">Refer by</th>
+                                                <th id="id" class="white-space-unset">Location</th>
+                                                <th id="id" class="white-space-unset">Age</th>
+                                                <th id="id" class="white-space-unset">Contact No.</th>
+                                                <th id="id" class="white-space-unset">Address</th>
+                                                <th id="id" class="white-space-unset">Symptoms</th>
+                                                <th id="id" class="white-space-unset">Travel History</th>
+                                                <th id="id" class="white-space-unset">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='covidAdmissionctrl.getPendingAdmissionData()'
+                                            infinite-scroll-immediate-check="false"
+                                            infinite-scroll-container='"#case-scroll"'>
+                                            <tr ng-repeat="covidCase in covidAdmissionctrl.covidAdmissionCases| filter : covidAdmissionctrl.searchText"
+                                                ng-if="(covidAdmissionctrl.covidAdmissionCases.length > 0)">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td class = "break-word"><span
+                                                        ng-if="covidCase.type === 'opdAdmit'">{{covidCase.memberDetails | emptylabel}}<span
+                                                            style="color:red">&nbsp;(POSITIVE)</span></span>
+                                                    <span ng-if="covidCase.type === 'refer'"
+                                                        ng-bind-html="covidCase.memberDetails | emptylabel"></span></td>
+                                                <td ng-bind-html="covidCase.refferBy | emptylabel"></td>
+                                                <td ng-bind-html="covidCase.location | emptylabel"></td>
+                                                <td ng-bind-html="covidCase.age | emptylabel"></td>
+                                                <td ng-bind-html="covidCase.contact_no | emptylabel"></td>
+                                                <td ng-bind-html="covidCase.address | emptylabel"></td>
+                                                <td ng-bind-html="covidCase.symptoms | emptylabel"></td>
+                                                <td ng-bind-html="covidCase.hasTravelHistory"></td>
+                                                <td class="action-cell">
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowAdmitButton"
+                                                        ng-click="covidAdmissionctrl.onAdmitClick(covidCase.id)">
+                                                        Admit</button>
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                ng-if="(!covidAdmissionctrl.covidAdmissionCases ||
+                                                (covidAdmissionctrl.covidAdmissionCases | filter : covidAdmissionctrl.searchText).length == 0)">
+                                                <td colspan="10"> No COVID-19 Admission Entries are available </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <!-- Covid19 Suspect Cases -->
+                    <uib-tab ng-if="!!covidAdmissionctrl.rights.isShowSuspectAdmittedCasesTab"
+                        heading="Admitted Cases (Suspect)" index=1
+                        select="covidAdmissionctrl.searchSuspectedCaseData(true)">
+                        <div ng-if="covidAdmissionctrl.selectedTab === 1">
+                            <div class="col-12 padding-left-right-0">
+                                <div class="cst-table table-responsive" style="overflow: auto" id="suspected-scroll">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="id" ng-if="covidAdmissionctrl.covid19SuspectedCases.length > 0">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="covidAdmissionctrl.markAll"
+                                                            ng-change="covidAdmissionctrl.selectMarkAll(covidAdmissionctrl.covid19SuspectedCases)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </th>
+                                                <th id="id" class="white-space-unset">Sr. No</th>
+                                                <th id="id" class="white-space-unset">Member Detail</th>
+                                                <th id="id" class="white-space-unset">Age</th>
+                                                <th id="id" class="white-space-unset">Admission Date</th>
+                                                <th id="id" class="white-space-unset">Case No.</th>
+                                                <th id="id" class="white-space-unset">Ward Name</th>
+                                                <th id="id" class="white-space-unset">Bed Number</th>
+                                                <th id="id" class="white-space-unset">Test Result</th>
+                                                <th id="id" class="white-space-unset">Health Status</th>
+                                                <th id="id" class="white-space-unset">Last Checkup Date</th>
+                                                <th id="id" class="white-space-unset">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='covidAdmissionctrl.getCovid19SuspectCases()'
+                                            infinite-scroll-immediate-check="false"
+                                            infinite-scroll-container='"#suspected-scroll"'>
+                                            <tr ng-repeat="covidCase in covidAdmissionctrl.covid19SuspectedCases| filter : covidAdmissionctrl.searchText"
+                                                ng-if="(covidAdmissionctrl.covid19SuspectedCases.length > 0)">
+                                                <td class="small-col">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="covidCase.markedForAction"
+                                                            ng-change="covidAdmissionctrl.selectMarkedForAction(covidCase.markedForAction)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </td>
+                                                <td ng-bind="$index + 1"></td>
+                                                <td ng-bind-html="covidCase.memberDetail" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.DOB"></td>
+                                                <td ng-bind-html="covidCase.admissionDate"></td>
+                                                <td ng-bind-html="covidCase.caseNo"></td>
+                                                <td ng-bind-html="covidCase.wardName"></td>
+                                                <td ng-bind-html="covidCase.bedNumber"></td>
+                                                <td ng-bind-html="covidCase.testResult" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.healthStatus"></td>
+                                                <td ng-bind-html="covidCase.lastCheckUpTime"></td>
+                                                <td>
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowCheckUpButton"
+                                                        ng-click="covidAdmissionctrl.onAddDaliyStatus(covidCase, 'suspected')">
+                                                        Checkup</button>
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowEditButton"
+                                                        ng-click="covidAdmissionctrl.editCase(covidCase,$index,'suspected')">
+                                                        Edit</button>
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowDischargeButton"
+                                                        ng-click="covidAdmissionctrl.discharge(covidCase, true)">
+                                                        Outcome</button>
+                                            </tr>
+                                            <tr
+                                                ng-if="(!covidAdmissionctrl.covid19SuspectedCases ||
+                                                (covidAdmissionctrl.covid19SuspectedCases | filter : covidAdmissionctrl.searchText).length == 0)">
+                                                <td colspan="11"> No COVID-19 Admitted Cases are available </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <!-- Covid19 Confirmed Cases -->
+                    <uib-tab ng-if="!!covidAdmissionctrl.rights.isShowConfirmedAdmittedCasesTab"
+                        heading="Admitted Cases (Confirmed)" index=2
+                        select="covidAdmissionctrl.searchConfirmedCaseData(true)">
+                        <div ng-if="covidAdmissionctrl.selectedTab === 2">
+                            <div class="col-12 padding-left-right-0">
+                                <div class="cst-table table-responsive" style="overflow: auto" id="confirmed-scroll">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="id" ng-if="covidAdmissionctrl.covid19ConfirmedCases.length > 0">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="covidAdmissionctrl.markAll"
+                                                            ng-change="covidAdmissionctrl.selectMarkAll(covidAdmissionctrl.covid19ConfirmedCases)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </th>
+                                                <th id="id" class="white-space-unset">Sr. No</th>
+                                                <th id="id" class="white-space-unset">Member Detail</th>
+                                                <th id="id" class="white-space-unset">Age</th>
+                                                <th id="id" class="white-space-unset">Admission Date</th>
+                                                <th id="id" class="white-space-unset">Case No.</th>
+                                                <th id="id" class="white-space-unset">Ward Name</th>
+                                                <th id="id" class="white-space-unset">Bed Number</th>
+                                                <th id="id" class="white-space-unset">Initial Result</th>
+                                                <th id="id" class="white-space-unset">Followup Result</th>
+                                                <th id="id" class="white-space-unset">Health Status</th>
+                                                <th id="id" class="white-space-unset">Last Checkup Date</th>
+                                                <th id="id" class="white-space-unset">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='covidAdmissionctrl.getCovid19ConfirmedCases()'
+                                            infinite-scroll-immediate-check="false"
+                                            infinite-scroll-container='"#confirmed-scroll"'>
+                                            <tr ng-repeat="covidCase in covidAdmissionctrl.covid19ConfirmedCases| filter : covidAdmissionctrl.searchText"
+                                                ng-if="(covidAdmissionctrl.covid19ConfirmedCases.length > 0)">
+                                                <td class="small-col">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="covidCase.markedForAction"
+                                                            ng-change="covidAdmissionctrl.selectMarkedForAction(covidCase.markedForAction)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </td>
+                                                <td ng-bind="$index + 1"></td>
+                                                <td ng-bind-html="covidCase.memberDetail" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.DOB"></td>
+                                                <td ng-bind-html="covidCase.admissionDate"></td>
+                                                <td ng-bind-html="covidCase.caseNo"></td>
+                                                <td ng-bind-html="covidCase.wardName"></td>
+                                                <td ng-bind-html="covidCase.bedNumber"></td>
+                                                <td ng-bind-html="covidCase.initialResult" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.testResult" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.healthStatus"></td>
+                                                <td ng-bind-html="covidCase.lastCheckUpTime"></td>
+                                                <td>
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowCheckUpButton"
+                                                        ng-click="covidAdmissionctrl.onAddDaliyStatus(covidCase, 'confirmed')">
+                                                        Checkup</button>
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowEditButton"
+                                                        ng-click="covidAdmissionctrl.editCase(covidCase,$index,'confirmed')">
+                                                        Edit</button>
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowDischargeButton"
+                                                        ng-click="covidAdmissionctrl.discharge(covidCase, false)">
+                                                        Outcome</button>
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                ng-if="(!covidAdmissionctrl.covid19ConfirmedCases ||
+                                                (covidAdmissionctrl.covid19ConfirmedCases | filter : covidAdmissionctrl.searchText).length == 0)">
+                                                <td colspan="12"> No COVID-19 Admitted Cases are available </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <!-- Reffer In Cases -->
+                    <uib-tab ng-if="!!covidAdmissionctrl.rights.isShowReferInTab" heading="Transfer In" index=3
+                        select="covidAdmissionctrl.searchReferInCaseData(true)">
+                        <div ng-if="covidAdmissionctrl.selectedTab === 3">
+                            <div class="col-12 padding-left-right-0">
+                                <div class="cst-table table-responsive" style="overflow: auto" id="refer-in-scroll">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="id" class="white-space-unset">Sr. No</th>
+                                                <th id="id" class="white-space-unset">Member Detail</th>
+                                                <th id="id" class="white-space-unset">Age</th>
+                                                <th id="id" class="white-space-unset">Admission Date</th>
+                                                <th id="id" class="white-space-unset">Ward Name</th>
+                                                <th id="id" class="white-space-unset">Bed Number</th>
+                                                <th id="id" class="white-space-unset">Test Result</th>
+                                                <th id="id" class="white-space-unset">Health Status</th>
+                                                <th id="id" class="white-space-unset">Last Checkup Date</th>
+                                                <th id="id" class="white-space-unset">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='covidAdmissionctrl.getCovid19ReferInCases()'
+                                            infinite-scroll-immediate-check="false"
+                                            infinite-scroll-container='"#refer-in-scroll"'>
+                                            <tr ng-repeat="covidCase in covidAdmissionctrl.covid19ReferInCases| filter : covidAdmissionctrl.searchText"
+                                                ng-if="(covidAdmissionctrl.covid19ReferInCases.length > 0)">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td ng-bind-html="covidCase.memberDetail" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.DOB"></td>
+                                                <td ng-bind-html="covidCase.admissionDate"></td>
+                                                <td ng-bind-html="covidCase.wardName"></td>
+                                                <td ng-bind-html="covidCase.bedNumber"></td>
+                                                <td ng-bind-html="covidCase.testResult" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.healthStatus"></td>
+                                                <td ng-bind-html="covidCase.lastCheckUpTime"></td>
+                                                <td class="action-cell">
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowReferInAdmitButton"
+                                                        ng-click="covidAdmissionctrl.onReferInAdmitClick(covidCase.admissionId)">
+                                                        Admit</button>
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                ng-if="(!covidAdmissionctrl.covid19ReferInCases ||
+                                                (covidAdmissionctrl.covid19ReferInCases | filter : covidAdmissionctrl.searchText).length == 0)">
+                                                <td colspan="10"> No COVID-19 Refer In Cases are available </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <!--  Reffer Out Cases  -->
+                    <uib-tab ng-if="!!covidAdmissionctrl.rights.isShowReferOutTab" heading="Transfer Out" index=4
+                        select="covidAdmissionctrl.searchReferOutCaseData(true)">
+                        <div ng-if="covidAdmissionctrl.selectedTab === 4">
+                            <div class="col-12 padding-left-right-0">
+                                <div class="cst-table table-responsive" style="overflow: auto" id="refer-out-scroll">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="id" class="white-space-unset">Sr. No</th>
+                                                <th id="id" class="white-space-unset">Member Detail</th>
+                                                <th id="id" class="white-space-unset">Age</th>
+                                                <th id="id" class="white-space-unset">Admission Date</th>
+                                                <th id="id" class="white-space-unset">State</th>
+                                                <th id="id" class="white-space-unset">Ward Name</th>
+                                                <th id="id" class="white-space-unset">Bed Number</th>
+                                                <th id="id" class="white-space-unset">Test Result</th>
+                                                <th id="id" class="white-space-unset">Health Status</th>
+                                                <th id="id" class="white-space-unset">Last Checkup Date</th>
+                                                <th id="id" class="white-space-unset">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='covidAdmissionctrl.getCovid19ReferOutCase()'
+                                            infinite-scroll-immediate-check="false"
+                                            infinite-scroll-container='"#refer-out-scroll"'>
+                                            <tr ng-repeat="covidCase in covidAdmissionctrl.covid19ReferOutCase| filter : covidAdmissionctrl.searchText"
+                                                ng-if="(covidAdmissionctrl.covid19ReferOutCase.length > 0)">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td ng-bind-html="covidCase.memberDetail" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.DOB"></td>
+                                                <td ng-bind-html="covidCase.admissionDate"></td>
+                                                <td ng-bind-html="covidCase.referStatus"></td>
+                                                <td ng-bind-html="covidCase.wardName"></td>
+                                                <td ng-bind-html="covidCase.bedNumber"></td>
+                                                <td ng-bind-html="covidCase.testResult" class = "break-word"></td>
+                                                <td ng-bind-html="covidCase.healthStatus"></td>
+                                                <td ng-bind-html="covidCase.lastCheckUpTime"></td>
+                                                <td class="action-cell">
+                                                    <button class="btn btn-primary m-1"
+                                                        ng-if="!!covidAdmissionctrl.rights.isShowPrintButton"
+                                                        ng-click="covidAdmissionctrl.printAdmission(covidCase)">
+                                                        Download Report</button>
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                ng-if="(!covidAdmissionctrl.covid19ReferOutCase ||
+                                                (covidAdmissionctrl.covid19ReferOutCase | filter : covidAdmissionctrl.searchText).length == 0)">
+                                                <td colspan="10"> No COVID-19 Refer Out Cases are available </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>

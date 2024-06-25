@@ -1,0 +1,2 @@
+update um_role_master  set code = 'CHO_HWC' where name = 'CHO-HWC';
+insert into listvalue_field_role(role_id,field_key) select (select id from um_role_master where code  = 'CHO_HWC' limit 1),field_key from listvalue_field_role  where role_id = 30;

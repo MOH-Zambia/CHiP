@@ -1,0 +1,156 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="cst-tab">
+                <uib-tabset active='cerebralpalsysearch.selectedTab'>
+                    <uib-tab index="'cp-list'" heading="Suspected CP List" select="cerebralpalsysearch.cpTabSelected()">
+                        <div class="tab-pane fade show" id="cp-list" role="tabpanel" aria-labelledby="cp-list"
+                            aria-expanded="true">
+                            <div class="tab-pane fade show" id="cp-list" role="tabpanel" aria-labelledby="cp-list"
+                                aria-expanded="true">
+                                <div class="col-12 mb-15" ng-if="cerebralpalsysearch.cpList.length === 0">
+                                    <div class="no-data-placeholder">
+                                        <h5>No Record Found!</h5>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="cst-table table-responsive" style="overflow: auto;" id="member-scroll"
+                                        ng-if="cerebralpalsysearch.cpList.length > 0">
+                                        <table
+                                            class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                            style="table-layout: auto">
+                                            <thead class="cst-thead">
+                                                <tr>
+                                                    <th style="width: 50px">
+                                                        #
+                                                    </th>
+                                                    <th>Child Name</th>
+                                                    <th>Date of Birth</th>
+                                                    <th>Location</th>
+                                                    <th>Mother Name</th>
+                                                    <th>Contact Details</th>
+                                                    <th>FHW Name and Contact Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                                infinite-scroll='cerebralpalsysearch.retrieveFilteredMembers("cpData")'
+                                                infinite-scroll-disabled='cerebralpalsysearch.pagingService.pagingRetrivalOn'
+                                                infinite-scroll-container='"#member-scroll"'>
+                                                <tr ng-repeat="member in cerebralpalsysearch.cpList">
+                                                    <td>
+                                                        {{$index + 1}}
+                                                    </td>
+                                                    <td ui-sref="techo.manage.cerebralpalsy({id:member.child_service_id})"
+                                                        style="cursor: pointer">
+                                                        <a ui-sref="techo.manage.cerebralpalsy({id:member.child_service_id})"
+                                                            style="cursor: pointer">
+                                                            <span>{{member.childFirstName}}</span>
+                                                            <span ng-if="member.childMiddleName != null">
+                                                                &nbsp;{{member.childMiddleName}}
+                                                            </span>
+                                                            <span ng-if="member.childLastName != null">
+                                                                &nbsp;{{member.childLastName}}
+                                                            </span>
+                                                        </a>
+                                                    </td>
+                                                    <td>{{member.dob}}</td>
+                                                    <td>{{member.locationHierarchy}}</td>
+                                                    <td>
+                                                        <span>{{member.motherFirstName}}</span>
+                                                        <span ng-if="member.motherMiddleName != null">
+                                                            &nbsp;{{member.motherMiddleName}}
+                                                        </span>
+                                                        <span ng-if="member.motherLastName != null">
+                                                            &nbsp;{{member.motherLastName}}
+                                                        </span>
+                                                    </td>
+                                                    <td
+                                                        ng-bind="member.mobile_number ? member.mobile_number : 'Not available'">
+                                                    </td>
+                                                    <td>{{member.FHWName}}({{member.FHWNumber}})</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'status-list'" heading="Status List"
+                        select="cerebralpalsysearch.statusTabSelected()">
+                        <div class="tab-pane fade show" id="cp-list" role="tabpanel" aria-labelledby="status-list"
+                            aria-expanded="true">
+                            <div class="tab-pane fade show" id="status-list" role="tabpanel"
+                                aria-labelledby="status-list" aria-expanded="true">
+                                <div class="col-12 mb-15" ng-if="cerebralpalsysearch.statusList.length === 0">
+                                    <div class="no-data-placeholder">
+                                        <h5>No Record Found!</h5>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="cst-table table-responsive" style="overflow: auto;" id="member-scroll"
+                                        ng-if="cerebralpalsysearch.statusList.length > 0">
+                                        <table
+                                            class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                            style="table-layout: auto">
+                                            <thead class="cst-thead">
+                                                <tr>
+                                                    <th style="width: 50px">#</th>
+                                                    <th>Child Name</th>
+                                                    <th>Status</th>
+                                                    <th>Date of Birth</th>
+                                                    <th>Location</th>
+                                                    <th>Mother Name</th>
+                                                    <th>Contact Details</th>
+                                                    <th>FHW Name and Contact Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                                infinite-scroll='cerebralpalsysearch.retrieveFilteredMembers("statusData")'
+                                                infinite-scroll-disabled='cerebralpalsysearch.pagingService.pagingRetrivalOn'
+                                                infinite-scroll-container='"#member-scroll"'>
+                                                <tr ng-repeat="member in cerebralpalsysearch.statusList">
+                                                    <td>
+                                                        {{$index + 1}}
+                                                    </td>
+                                                    <td>
+                                                        <span>{{member.childFirstName}}</span>
+                                                        <span ng-if="member.childMiddleName != null">
+                                                            &nbsp;{{member.childMiddleName}}
+                                                        </span>
+                                                        <span ng-if="member.childLastName != null">
+                                                            &nbsp;{{member.childLastName}}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {{member.status}}
+                                                    </td>
+                                                    <td>{{member.dob}}</td>
+                                                    <td>{{member.locationHierarchy}}</td>
+                                                    <td>
+                                                        <span>{{member.motherFirstName}}</span>
+                                                        <span ng-if="member.motherMiddleName != null">
+                                                            &nbsp;{{member.motherMiddleName}}
+                                                        </span>
+                                                        <span ng-if="member.motherLastName != null">
+                                                            &nbsp;{{member.motherLastName}}
+                                                        </span>
+                                                    </td>
+                                                    <td
+                                                        ng-bind="member.mobile_number ? member.mobile_number : 'Not available'">
+                                                    </td>
+                                                    <td>{{member.FHWName}}({{member.FHWNumber}})</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cst-backdrop"></div> -->

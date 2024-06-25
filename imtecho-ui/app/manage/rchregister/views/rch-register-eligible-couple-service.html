@@ -1,0 +1,298 @@
+<style>
+    .break-word {
+        word-break: break-word;
+    }
+</style>
+<div class="cst-table table-responsive table-set-height" style="overflow: auto;" id="member-scroll">
+    <table aria-describedby=""
+        class="table table-sm table-striped-custom filter-table table-fixed table-bordered header-fixed ">
+        <thead class="cst-thead">
+            <tr>
+                <th id="srno" style="width:4%;">#</th>
+                <th id="memberName">Member Name </th>
+                <th id="age">Age(Current)</th>
+                <th id="husbandName">Husband Name</th>
+                <th id="address">Address</th>
+                <th id="religion">Religion</th>
+                <th id="caste">Caste</th>
+                <th id="" style="width:3%"></th>
+            </tr>
+        </thead>
+        <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='rchRegister.retrieveMemberInfo(false)'
+            infinite-scroll-container='"#member-scroll"' infinite-scroll-immediate-check="false">
+            <tr ng-repeat-start="memberDetails in rchRegister.memberserviceDtoList"
+                ng-init="memberDetails.showDetials = false" class='{{$index}}'>
+                <td>{{$index + 1}}</td>
+                <td class="break-word" ng-bind="memberDetails.member_name"></td>
+                <td class="break-word">
+                    {{!!memberDetails.member_current_age ? memberDetails.member_current_age : 'N/A'}}
+                </td>
+                <td class="break-word" ng-bind="memberDetails.husband_name"></td>
+                <td class="break-word" ng-bind="memberDetails.address"></td>
+                <td class="break-word" ng-bind="memberDetails.religion"></td>
+                <td class="break-word" ng-bind="memberDetails.cast"></td>
+                <td class="break-word">
+                    <em data-toggle="collapse" data-target="#{{$index}}"
+                        ng-class="{'fa fa-minus-circle font-size-20 text-danger':memberDetails.showDetials,'fa fa-plus-circle font-size-20 text-success':!memberDetails.showDetials} "
+                        uib-tooltip="{{!memberDetails.showDetials?'Show more Detail':'Show less Detail'}}"
+                        ng-click="rchRegister.onShowMoreDetail(memberDetails, $index)">
+                    </em>
+                </td>
+            </tr>
+            <tr class="extra-detail-table" ng-show="memberDetails.showDetials" ng-repeat-end>
+                <td colspan="8" ng-if="rchRegister.selectedServiceType == 'rch_eligible_couple_service'">
+                    <div class="card cst-card">
+                        <div id="cardOne" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseOne-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            ng-click="toggleOne = !toggleOne" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="General Information">General Information</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <em ng-class="{'ion-minus':!toggleOne,'ion-plus':toggleOne}"></em>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse show" id="collapseOne-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            role="tabpanel">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">Member Information</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Registration Date</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.registration_date ? memberDetails.detailMemberInfo.registration_date : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Member Name</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.member_name}}
+                                                    ({{memberDetails.detailMemberInfo.unique_health_id}})
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Age(at present)</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.member_current_age ? memberDetails.detailMemberInfo.member_current_age + ' years' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Age(at the time of marriage)</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.member_marriage_age? memberDetails.detailMemberInfo.member_marriage_age + ' years' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Eligible Couple Date</span>
+                                                <span class="data-list-info">
+                                                    {{memberDetails.detailMemberInfo.eligible_couple_date? memberDetails.detailMemberInfo.eligible_couple_date : 'N/A'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Aadhar Number available</span>
+                                                <span class="data-list-info">
+                                                    {{memberDetails.detailMemberInfo.member_aadhar_number_available? memberDetails.detailMemberInfo.member_aadhar_number_available : 'N/A'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Bank Account Number available</span>
+                                                <span class="data-list-info">
+                                                    {{memberDetails.detailMemberInfo.member_bank_account_number_available? memberDetails.detailMemberInfo.member_bank_account_number_available : 'N/A'}}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">Husband Information</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Husband Name</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.husband_name ? memberDetails.detailMemberInfo.husband_name : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Age(at present)</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.husband_current_age ? memberDetails.detailMemberInfo.husband_current_age + ' years' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Age(at the time of marriage)</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.husband_marriage_age ? memberDetails.detailMemberInfo.husband_marriage_age  + ' years': 'N/A'}}</span>
+                                            </li>
+
+                                            <li>
+                                                <span class="data-list-header">Family Information</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Address</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.address ? memberDetails.detailMemberInfo.address : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Religion / Caste</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.religion ? memberDetails.detailMemberInfo.religion : 'N/A'}}
+                                                    /
+                                                    {{!!memberDetails.detailMemberInfo.cast ? memberDetails.detailMemberInfo.cast : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">APL / BPL</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.bpl_apl ? memberDetails.detailMemberInfo.bpl_apl : 'N/A'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">Total Number of Child Births</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Male</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.total_given_male_birth ? memberDetails.detailMemberInfo.total_given_male_birth : 0}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Female</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.total_given_female_birth ? memberDetails.detailMemberInfo.total_given_female_birth : 0}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-header">Live Children Count</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Male</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.live_male_birth ? memberDetails.detailMemberInfo.live_male_birth : 0}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Female</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.live_female_birth ? memberDetails.detailMemberInfo.live_female_birth :0}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-header">Youngest Child Information</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Age</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.smallest_child_age ? memberDetails.detailMemberInfo.smallest_child_age + ' years': 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Gender</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.smallest_child_gender ? memberDetails.detailMemberInfo.smallest_child_gender : 'N/A'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card cst-card">
+                        <div id="cardSecond" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseSecond-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            ng-click="toggleSecond = !toggleSecond" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="Member Information">LMP Visit Information</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <em ng-class="{'ion-plus':!toggleSecond,'ion-minus':toggleSecond}"></em>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse" id="collapseSecond-{{memberDetails.detailMemberInfo.unique_health_id}}"
+                            role="tabpanel">
+                            <div class="card-body row col-xs-12">
+                                <div ng-repeat="lmpVisit in memberDetails.lmpVisitInfo track by $index "
+                                    class="col-md-4">
+                                    <span ng-if="$index % 3 == 0">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">
+                                                    {{rchRegister.specialString[$index + 1 ]}} visit
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Date</span>
+                                                <span class="data-list-info">{{lmpVisit.date}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Contraception method</span>
+                                                <span class="data-list-info">
+                                                    {{lmpVisit.contraception_method ? lmpVisit.contraception_method :  'N/A'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Pregnant</span>
+                                                <span class="data-list-info">{{lmpVisit.is_pregnant}}</span>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                    <span ng-if="$index % 3 == 1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">
+                                                    {{rchRegister.specialString[$index + 1 ]}} visit
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Date</span>
+                                                <span class="data-list-info">{{lmpVisit.date}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Contraception method</span>
+                                                <span class="data-list-info">
+                                                    {{lmpVisit.contraception_method ? lmpVisit.contraception_method :  'N/A'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Pregnant</span>
+                                                <span class="data-list-info">{{lmpVisit.is_pregnant}}</span>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                    <span ng-if="$index % 3 == 2">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">
+                                                    {{rchRegister.specialString[$index + 1 ]}} visit
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Date</span>
+                                                <span class="data-list-info">{{lmpVisit.date}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Contraception method</span>
+                                                <span class="data-list-info">
+                                                    {{lmpVisit.contraception_method ? lmpVisit.contraception_method :  'N/A'}}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Pregnant</span>
+                                                <span class="data-list-info">{{lmpVisit.is_pregnant}}</span>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

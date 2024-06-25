@@ -1,0 +1,1 @@
+update covid_travellers_info set is_active = false, modified_on = now() where location_id = -1

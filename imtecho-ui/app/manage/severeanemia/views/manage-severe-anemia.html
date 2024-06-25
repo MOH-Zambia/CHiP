@@ -1,0 +1,372 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title" class="card-title collapse-link d-block" data-toggle="collapse"
+                href="#collapse1" ng-click="toggle1 = !toggle1" style="cursor: pointer">
+                    <div class="float-left">
+                        <h4 class="text">Member Information
+                            <ul class="control-list">
+                                <li>
+                                    <span>
+                                        <em ng-class="{'ion-minus':!toggle1,'ion-plus':toggle1}"></em>
+                                    </span>
+                                </li>
+                            </ul>
+                        </h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form collapse show" id="collapse1">
+                    <div class="row">
+                        <div class="col-7">
+                            <div>
+                                <div class="form-group">
+                                    <label for="memberId" control-label><strong>Member ID (Family ID):</strong></label>
+                                    <label style="width:auto">{{manageSevereAnemiaCtrl.memberDetails.uniqueHealthId}}
+                                        ({{manageSevereAnemiaCtrl.memberDetails.familyId}})</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberName" control-label><strong>Member Name:</strong></label>
+                                    <label style="width:auto">{{manageSevereAnemiaCtrl.memberDetails.firstName}}
+                                        {{manageSevereAnemiaCtrl.memberDetails.middleName}} {{manageSevereAnemiaCtrl.memberDetails.lastName}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberDob" control-label><strong>Member DOB:</strong></label>
+                                    <label style="width:auto">
+                                        {{manageSevereAnemiaCtrl.memberDetails.dob | date:'dd/MM/yyyy'}}</label>
+                                </div>
+                                <div class="form-group" ng-if="manageSevereAnemiaCtrl.memberDetails.mobileNumber">
+                                    <label for="mobileNumber" control-label><strong>Mobile Number:</strong></label>
+                                    <label style="width:auto">{{manageSevereAnemiaCtrl.memberDetails.mobileNumber}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberLocation" control-label><strong>Location Hierarchy:</strong></label>
+                                    <label
+                                        style="width:75%;white-space: inherit;word-break: normal;">{{manageSevereAnemiaCtrl.memberDetails.locationHierarchy| emptylabel}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberCaste" control-label><strong>Caste:</strong></label>
+                                    <label style="width:auto">{{manageSevereAnemiaCtrl.memberDetails.caste| emptylabel}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div>
+                                <div class="form-group" style="margin-top: 4%;" ng-if="manageSevereAnemiaCtrl.showPregnancyFields">
+                                    <label for="memberLmp" control-label><strong>LMP:</strong></label>
+                                    <label
+                                        style="width:auto">{{manageSevereAnemiaCtrl.memberDetails.lmpDate| date:'dd/MM/yyyy' | emptylabel}}</label>
+                                </div>
+                                <div class="form-group" ng-if="manageSevereAnemiaCtrl.showPregnancyFields">
+                                    <label for="memberEdd" control-label><strong>EDD:</strong></label>
+                                    <label
+                                        style="width:auto">{{manageSevereAnemiaCtrl.memberDetails.edd| date:'dd/MM/yyyy' | emptylabel}}</label>
+                                </div>
+                                <div class="form-group" ng-if="manageSevereAnemiaCtrl.memberDetails.accountNumber !== null">
+                                    <label for="memberAccountNumber" control-label><strong>Account Number</strong></label>
+                                    <label style="width:auto">Available</label>
+                                </div>
+                                <div class="form-group" ng-if="manageSevereAnemiaCtrl.memberDetails.ifsc !== null">
+                                    <label for="memberIfsc" control-label><strong>IFSC</strong></label>
+                                    <label style="width:auto">Available</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberAnm" control-label style="width: auto;"><strong>FHW Name and Phone Number:</strong></label>
+                                    <label style="width:auto">{{manageSevereAnemiaCtrl.memberDetails.anmInfo| emptylabel}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="memberAsha" control-label style="width: auto;"><strong>ASHA Name and Phone Number:</strong></label>
+                                    <label style="width:auto">{{manageSevereAnemiaCtrl.memberDetails.ashaInfo| emptylabel}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card cst-card" ng-if="manageSevereAnemiaCtrl.previousAnemiaSurveyInfo.length > 0">
+        <div id="card10" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+            href="#collapse10" ng-click="toggle10 = !toggle10" style="cursor: pointer">
+            <h4 class="text">
+                <span data-toggle="tooltip" title="Previous Anemia Survey Information">Previous Anemia Survey Information</span>
+
+                <ul class="control-list">
+                    <li>
+                        <span>
+                            <em ng-class="{'ion-plus':!toggle10,'ion-minus':toggle10}"></em>
+                        </span>
+                    </li>
+                </ul>
+            </h4>
+        </div>
+        <div class="collapse" id="collapse10">
+            <div class="table-section">
+                <div class="card-body col-12 col-md-12">
+                    <div class="cst-table-responsive">
+                        <form name="anemia_information-form" id="anemia_information-form">
+                            <table aria-describedby="table"
+                                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="id">Family ID</th>
+                                        <th id="id">Service Date</th>
+                                        <th id="id">Anemia Survey Place</th>
+                                        <th id="id" ng-if="manageSevereAnemiaCtrl.showPregnancyFields">LMP</th>
+                                        <th id="id">Weight(in KG)</th>
+                                        <th id="id">Anemia Status</th>
+                                        <th id="id" ng-if="manageSevereAnemiaCtrl.showPregnancyFields">EDD/Expected Delivery </th>
+                                        <th id="id">Haemoglobin Count</th>
+                                        <th id="id">Weekly Iron Supplement</th>
+                                        <th id="id">Blood Group</th>
+                                        <th id="id">Iron Deficiency Anemia Injection</th>
+                                        <th id="id">Iron Deficiency Anemia Injection Given Date</th>
+                                        <th id="id">Blood Transfusion Done</th>
+                                        <th id="id">Anemia Causes</th>
+                                        <th id="id">Other High Risks</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="anemiaInfo in manageSevereAnemiaCtrl.previousAnemiaSurveyInfo">
+                                        <td>
+                                            {{anemiaInfo.familyId == null ? '-' : anemiaInfo.familyId}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.serviceDate == null ? '-' : anemiaInfo.serviceDate| date:'dd/MM/yyyy  HH:mm:ss'}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.anemiaSurveyPlace == null ? '-' : anemiaInfo.anemiaSurveyPlace}}
+                                        </td>
+                                        <td ng-if="manageSevereAnemiaCtrl.showPregnancyFields">
+                                            {{anemiaInfo.lmpDate == null ? '-' : anemiaInfo.lmpDate| date:'dd/MM/yyyy  HH:mm:ss'}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.weight == null ? '-' : anemiaInfo.weight}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.anemiaStatus == null ? '-' : anemiaInfo.anemiaStatus}}
+                                        </td>
+                                        <td ng-if="manageSevereAnemiaCtrl.showPregnancyFields">
+                                            {{anemiaInfo.edd == null ? '-' : anemiaInfo.edd| date:'dd/MM/yyyy  HH:mm:ss'}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.haemoglobin == null ? '-' : anemiaInfo.haemoglobin}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.weeklyIronSupplement == null ? '-' : anemiaInfo.weeklyIronSupplement}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.bloodGroup == null ? '-' : anemiaInfo.bloodGroup}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.ironDefAnemiaInj == null ? '-' : anemiaInfo.ironDefAnemiaInj}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.ironDefAnemiaInjGivenDate == null ? '-' : anemiaInfo.ironDefAnemiaInjGivenDate| date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.bloodTransfusionDone == null ? '-' : anemiaInfo.bloodTransfusionDone == true ? 'Yes' : 'No'}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.anemiaCauses == null ? '-' : anemiaInfo.anemiaCauses}}
+                                        </td>
+                                        <td>
+                                            {{anemiaInfo.otherHighRisks == null ? '-' : anemiaInfo.otherHighRisks}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Anemia Form</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form role="form" name="manageSevereAnemiaCtrl.highRiskForm" novalidate>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-box--inner row">
+                                            <div class="form-group col-xl-4 mb-3">
+                                                <validate for='formDate'
+                                                    required-msg="Please select a value">
+                                                    <label for="formDate" control-label
+                                                        title="Date"><strong>Date:</strong></label>
+                                                    <input datepicker type="text" id="formDate"
+                                                        name="formDate" form-control required
+                                                        ng-model="manageSevereAnemiaCtrl.formDate" ng-change="manageSevereAnemiaCtrl.ironDefInjDate = null"
+                                                        min-date="manageSevereAnemiaCtrl.minServiceDate" max-date="manageSevereAnemiaCtrl.today">
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group col-xl-4 mb-3 mt-2">
+                                                <validate for='isBloodTransfusion'
+                                                    required-msg="Please select a value">
+                                                    <label style="display: block;" for="isBloodTransfusion"
+                                                        uib-tooltip="Is Blood Transfusion Done?"
+                                                        class="control-label" control-label><strong>Is Blood Transfusion Done?</strong></label>
+                                                    <label class="control control-radio">Yes
+                                                        <input ng-value="true" name="isBloodTransfusion" id="isBloodTransfusion"
+                                                            type="radio"
+                                                            ng-model="manageSevereAnemiaCtrl.isBloodTransfusion"
+                                                            form-control required>
+                                                        <div class="control_indicator"></div>
+                                                    </label>
+                                                    <label class="control control-radio">No
+                                                        <input ng-value="false" name="isBloodTransfusion" id="isBloodTransfusion"
+                                                            type="radio"
+                                                            ng-model="manageSevereAnemiaCtrl.isBloodTransfusion"
+                                                            form-control required>
+                                                        <div class="control_indicator"></div>
+                                                    </label>
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row mb-2">
+                                    <div class="col-12">
+                                        <div class="input-box--inner row">
+                                            <div class="form-group col-xl-4 mb-4">
+                                                <validate for='haemoglobin'
+                                                    required-msg="Please Enter Haemoglobin"
+                                                    max-msg="Enter value between 2-18"
+                                                    min-msg="Enter value between 2-18"
+                                                    step-msg="Enter value upto 2 decimal places">
+                                                    <label for="haemoglobin"
+                                                        class="control-label" control-label><strong>Haemoglobin
+                                                    </strong></label>
+                                                    <input type="number"
+                                                        class="form-control cst-form-control"
+                                                        form-control
+                                                        ng-model="manageSevereAnemiaCtrl.haemoglobin" required
+                                                        id="haemoglobin" max="18" min="2" step=".01"
+                                                        name="haemoglobin">
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group col-xl-4 mb-4">
+                                                <validate for="ironDefAnemiaInj"
+                                                    required-msg="Please select a value">
+                                                    <label for="ironDefAnemiaInj" control-label
+                                                        uib-tooltip="Iron Deficiency Anemia Injection*"><strong>
+                                                        Iron Deficiency Anemia Injection
+                                                    </strong></label>
+                                                    <select name="ironDefAnemiaInj" form-control
+                                                        class="form-control cst-form-control"
+                                                        ng-change="manageSevereAnemiaCtrl.ironDefAnemiaInjChanged()"
+                                                        ng-model="manageSevereAnemiaCtrl.ironDefAnemiaInj" required>
+                                                        <option value="">Select Iron Deficiency Anemia Injection</option>
+                                                        <option value="IRON_SUCROSE">Iron Sucrose</option>
+                                                        <option value="FCM">FCM</option>
+                                                        <option value="NONE">None</option>
+                                                    </select>
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group col-xl-4 mb-3 mt-2" ng-if="manageSevereAnemiaCtrl.ironDefAnemiaInj=='IRON_SUCROSE'">
+                                                <validate for='ironDefInjDate'
+                                                    required-msg="Please select a value">
+                                                    <label for="ironDefInjDate" control-label
+                                                        title="ironDefInjDate"><strong>Iron Deficiency Anemia Injection given date</strong></label>
+                                                    <input datepicker type="text" id="ironDefInjDate"
+                                                        name="ironDefInjDate" form-control required
+                                                        ng-model="manageSevereAnemiaCtrl.ironDefInjDate"
+                                                        min-date="manageSevereAnemiaCtrl.minDate"
+                                                        max-date="manageSevereAnemiaCtrl.formDate">
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group col-xl-4 mb-3 mt-2" ng-if="manageSevereAnemiaCtrl.ironDefAnemiaInj!=='IRON_SUCROSE'"></div>
+                                            <div class="form-group col-xl-4 mb-4">
+                                                <validate for="causeOfAnemia"
+                                                    required-msg="Please select a value">
+                                                    <label for="causeOfAnemia" control-label
+                                                        uib-tooltip="Cause of Anemia*"><strong>
+                                                        Cause of Anemia</strong>
+                                                    </label>
+                                                    <select chosen-directive="manageSevereAnemiaCtrl.anemiaCauses"
+                                                        multiple=true form-control
+                                                        name="causeOfAnemia" id="causeOfAnemia"
+                                                        ng-options="anemiaCause.id as anemiaCause.value for anemiaCause in manageSevereAnemiaCtrl.anemiaCauses"
+                                                        ng-model="manageSevereAnemiaCtrl.causeOfAnemia">
+                                                        <option value="OTHER">Other</option>
+                                                    </select>
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group col-xl-4 mb-4" ng-if="manageSevereAnemiaCtrl.causeOfAnemia.includes('OTHER')">
+                                                <validate for='otherAnemiaCause'
+                                                    required-msg="Please Enter Anemia Cause">
+                                                    <label for="otherAnemiaCause"
+                                                        class="control-label" control-label><strong>Other cause</strong>
+                                                    </label>
+                                                    <input type="text"
+                                                        class="form-control cst-form-control"
+                                                        form-control
+                                                        ng-model="manageSevereAnemiaCtrl.otherAnemiaCause" required
+                                                        id="otherAnemiaCause" name="otherAnemiaCause">
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div class="form-group col-xl-4 mb-3">
+                                                <validate for='otherHighRisks'>
+                                                    <label for="otherHighRisks" class="control-label"
+                                                        control-label><strong>Other High Risks</strong></label>
+                                                    <select chosen-directive="manageSevereAnemiaCtrl.otherHighRisks"
+                                                        multiple=true form-control 
+                                                        name="otherHighRisks" id="otherHighRisks"
+                                                        ng-options="otherHighRisk.id as otherHighRisk.value for otherHighRisk in manageSevereAnemiaCtrl.otherHighRisks"
+                                                        ng-model="manageSevereAnemiaCtrl.selectedHighRisks">
+                                                    </select>
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row mb-2">
+                                    <div class="col-12">
+                                        <div class="input-box--inner row">
+                                            <div class="form-group col-xl-5 mb-3 inline-form">
+                                                        <label for="referralPlace"><strong>
+                                                            Treatment given at facility:</strong>
+                                                        </label>
+                                                        <infrastructure-directive ng-model="manageSevereAnemiaCtrl.referralInfraDetails"
+                                                        disabled="false" show-delivery-place="false" type-of-delivery=""
+                                                        institutes-to-fetch="'ANOTHER'">
+                                                    </infrastructure-directive>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="button-footer">
+                                    <button class="btn btn-primary mr-2"
+                                        ng-click="manageSevereAnemiaCtrl.save()">Save & Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

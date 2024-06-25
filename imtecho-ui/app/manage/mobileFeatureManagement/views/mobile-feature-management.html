@@ -1,0 +1,82 @@
+<div class="container-fluid menu-view">
+    <div class="row" ng-form="rl.manageTemplateForm">
+        <div class="col-12 mb-15">
+            <div>
+                <div class="row mb-15 ">
+                    <div class="col-12 mb-15 text-right">
+                        <input type="text" ng-model="ctrl.featureName" ng-model-options="{ debounce: 500 }"
+                            ng-change="ctrl.searchData(true)" id="search" placeholder="Search Feature Name"
+                            data-test="search-menu">
+                        <button class="btn btn-primary " ui-sref="javascript:void(0)"
+                            ng-click="ctrl.updateFeature(null)">Configure New</button>
+                    </div>
+                    <div class="col-12 mb-15" ng-if="!ctrl.features || ctrl.features.length == 0">
+                        <div class="no-data-placeholder">
+                            <h5>Sorry No Feature available!</h5>
+                        </div>
+                    </div>
+                    <div class="col-12 ">
+                        <div class="cst-table table-responsive" id="label-scroll">
+                            <table class="table table-sm table-striped table-bordered header-fixed text-center"
+                                infinite-scroll-distance="0" infinite-scroll='ctrl.searchData()'
+                                ng-if="ctrl.features.length > 0">
+                                <thead>
+                                    <tr>
+                                        <th>Feature Name</th>
+                                        <th>Feature Constant</th>
+                                        <th>Mobile Display Name</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                    infinite-scroll='ctrl.searchData()'
+                                    infinite-scroll-disabled='ctrl.pagingService.pagingRetrivalOn'
+                                    infinite-scroll-container='"#label-scroll"'>
+                                    <tr ng-repeat="featureObject in ctrl.features" ng-if="ctrl.features.length > 0">
+                                        <td>
+                                            {{featureObject.feature_name | titlecase}}
+                                        </td>
+                                        <td>{{featureObject.mobile_constant}}</td>
+                                        <td>{{featureObject.mobile_display_name}}</td>
+                                        <td>{{featureObject.state | titlecase}}</td>
+                                        <td class="action-cell">
+                                            <ul class="action-item">
+                                                <li>
+                                                    <a href="javascript:void(0)" class="action-icon edit-icon"
+                                                        ng-click="ctrl.updateFeature(featureObject.mobile_constant)">
+                                                    </a>
+                                                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <a class="action-icon more-icon"></a>
+                                                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                                            aria-labelledby="moreDropdown" x-placement="bottom-end">
+                                                            <li ng-if="featureObject.state === 'ACTIVE'"
+                                                                ng-click="ctrl.changeStatusOfFeature(featureObject)">
+                                                                <a href="javascript:void(0)"><strong>Mark as </strong>Inactive</a>
+                                                            </li>
+                                                            <li ng-if="featureObject.state !== 'ACTIVE'"
+                                                                ng-click="ctrl.changeStatusOfFeature(featureObject)">
+                                                                <a href="javascript:void(0)"><strong>Mark as </strong>Active</a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="(!ctrl.features || ctrl.features.length === 0)">
+                                        <td colspan="10">No Feature Available</td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

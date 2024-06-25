@@ -1,0 +1,74 @@
+<div ng-if="!covidLabTestEntryCtrl.isShowFeature" class="col-12">
+    <h3 style="position: fixed;top: 50%;left: 40%;color: grey"> {{covidLabTestEntryCtrl.message}}</h3>
+</div>
+<div class="container-fluid" ng-if="!!covidLabTestEntryCtrl.isShowFeature">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="pull-right">
+                <button class="btn btn-primary m-1" ng-click="covidLabTestEntryCtrl.getCollection()">
+                    Print Collection List
+                </button>
+            </div>
+            <div class="pull-right">
+                <button class="btn btn-primary m-1" ng-click="covidLabTestEntryCtrl.onNewLabTestClick()">
+                    New Lab Test Entry
+                </button>
+            </div>
+            <div class="col-2 inline-form float-right">
+                <div class="form-group">
+                    <input type="text" ng-model="covidLabTestEntryCtrl.searchText" class="form-control cst-form-control"
+                        id="search" ng-change="covidLabTestEntryCtrl.performSearch();"
+                        ng-model-options="{debounce: 1000}" placeholder="Search text" style="width:100%">
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-15">
+            <div class="cst-tab">
+                <div class="col-12 padding-left-right-0">
+                    <div class="cst-table table-responsive" style="overflow: auto" id="suspected-scroll">
+                        <table
+                            class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                            <thead class="cst-thead">
+                                <tr>
+                                    <th class="white-space-unset">Sr. No</th>
+                                    <th class="white-space-unset">Lab ID</th>
+                                    <th class="white-space-unset">Member Detail</th>
+                                    <th class="white-space-unset">Age</th>
+                                    <th class="white-space-unset">Sample Collection date</th>
+                                    <th class="white-space-unset">Test Result</th>
+                                    <th class="white-space-unset">Health Status</th>
+                                    <th class="white-space-unset">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                infinite-scroll='covidLabTestEntryCtrl.getCovid19SuspectCases()'
+                                infinite-scroll-immediate-check="false" infinite-scroll-container='"#suspected-scroll"'>
+                                <tr ng-repeat="covidCase in covidLabTestEntryCtrl.covid19SuspectedCases| filter : covidLabTestEntryCtrl.searchText"
+                                    ng-if="(covidLabTestEntryCtrl.covid19SuspectedCases.length > 0)">
+                                    <td ng-bind="$index + 1"></td>
+                                    <td ng-bind-html="covidCase.labTestIdFromLabTest"></td>
+                                    <td ng-bind-html="covidCase.memberDetail"></td>
+                                    <td ng-bind-html="covidCase.DOB"></td>
+                                    <td ng-bind-html="covidCase.admissionDate"></td>
+                                    <td ng-bind-html="covidCase.testResult"></td>
+                                    <td ng-bind-html="covidCase.healthStatus"></td>
+                                    <td class="action-cell">
+                                        <button class="btn btn-primary m-1"
+                                            ng-click="covidLabTestEntryCtrl.printPdf(covidCase)">
+                                            Print
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr
+                                    ng-if="(!covidLabTestEntryCtrl.covid19SuspectedCases ||
+                                    (covidLabTestEntryCtrl.covid19SuspectedCases | filter : covidLabTestEntryCtrl.searchText).length == 0)">
+                                    <td colspan="8"> No COVID-19 Patients are found </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

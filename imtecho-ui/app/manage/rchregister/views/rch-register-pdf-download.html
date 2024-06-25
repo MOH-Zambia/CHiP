@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h4 class="text">Download RCH Register PDF</h4>
+    <button type="button" class="close" ng-click="downloadpdfctrl.cancel()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form name="downloadpdfctrl.PDFDownloadForm" novalidate>
+        <div class="form-group">
+            <validate for="SelectPDFLanguage" required-msg="Select PDF Language">
+                <label for="SelectPDFLanguage" class="control-label" control-label>Select PDF Language</label>
+                <select class="form-control cst-form-control" id="SelectPDFLanguage" name="SelectPDFLanguage"
+                    form-control required ng-model="downloadpdfctrl.selectedPDFLanguage">
+                    <option value="">--Select--</option>
+                    <option value="EN">English</option>
+                    <option value="GU">Gujarati</option>
+                </select>
+                <placeholder></placeholder>
+            </validate>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" ng-click="downloadpdfctrl.cancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary" ng-click="downloadpdfctrl.ok()">Ok</button>
+</div>

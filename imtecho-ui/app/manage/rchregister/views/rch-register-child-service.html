@@ -1,0 +1,381 @@
+<style>
+    .break-word {
+        word-break: break-word;
+    }
+</style>
+<div class="cst-table table-responsive table-set-height" style="overflow: auto;" id="member-scroll">
+    <table aria-describedby=""
+        class="table table-sm table-striped-custom filter-table table-fixed table-bordered header-fixed">
+        <thead class="cst-thead">
+            <tr>
+                <th id="srno" style="width:3%">#</th>
+                <th id="childName">Child Name </th>
+                <th id="birthdate">Birth date</th>
+                <th id="fatherName">Father Name</th>
+                <th id="address">Address</th>
+                <th id="religion">Religion</th>
+                <th id="caste">Caste</th>
+                <th id="" style="width:3%;"></th>
+            </tr>
+        </thead>
+        <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='rchRegister.retrieveMemberInfo(false)'
+            infinite-scroll-container='"#member-scroll"' infinite-scroll-immediate-check="false">
+            <tr ng-repeat-start="memberDetails in rchRegister.memberserviceDtoList"
+                ng-init="memberDetails.showDetials = false" class='{{$index}}'>
+                <td>{{$index + 1}}</td>
+                <td class="break-word" ng-bind="memberDetails.member_name"></td>
+                <td class="break-word">
+                    {{!!memberDetails.dob ? memberDetails.dob : 'N/A'}}
+                </td>
+                <td class="break-word" ng-bind="memberDetails.father_name"></td>
+                <td class="break-word" ng-bind="memberDetails.address"></td>
+                <td class="break-word" ng-bind="memberDetails.religion"></td>
+                <td class="break-word" ng-bind="memberDetails.cast"></td>
+                <td class="break-word">
+                    <em data-toggle="collapse" data-target="#{{$index}}"
+                        ng-class="{'fa fa-minus-circle font-size-20 text-danger':memberDetails.showDetials,'fa fa-plus-circle font-size-20 text-success':!memberDetails.showDetials} "
+                        uib-tooltip="{{!memberDetails.showDetials?'Show more Detail':'Show less Detail'}}"
+                        ng-click="rchRegister.onShowMoreDetail(memberDetails, $index)">
+                    </em>
+                </td>
+            </tr>
+            <tr class="extra-detail-table" ng-show="memberDetails.showDetials" ng-repeat-end>
+                <td colspan="8" ng-if="rchRegister.selectedServiceType == 'rch_child_service'">
+                    <div class="card cst-card">
+                        <div id="cardOne" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseOne-{{memberDetails.detailMemberInfo.child_unique_health_id}}"
+                            ng-click="toggleOne = !toggleOne" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="General Information">General Information</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <em ng-class="{'ion-minus':!toggleOne,'ion-plus':toggleOne}"></em>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse show"
+                            id="collapseOne-{{memberDetails.detailMemberInfo.child_unique_health_id}}" role="tabpanel">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-title">Child Name</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.member_name}}
+                                                    ({{memberDetails.detailMemberInfo.child_unique_health_id}})
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Gender</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.gender}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Birth Weight</span>
+                                                <span class="data-list-info">
+                                                    {{memberDetails.detailMemberInfo.birth_weight ? memberDetails.detailMemberInfo.birth_weight + ' Kgs' : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Address</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.address ? memberDetails.detailMemberInfo.address : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Last given child service date</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.last_child_service_date ? memberDetails.detailMemberInfo.last_child_service_date : 'N/A'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-title">Mother name</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.mother_name}}
+                                                    <span
+                                                        ng-if="memberDetails.detailMemberInfo.mother_unique_health_id != 'N/A'">
+                                                        ({{memberDetails.detailMemberInfo.mother_unique_health_id}})
+                                                    </span>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Birth Date</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.dob ? memberDetails.detailMemberInfo.dob : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Birth Place</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.birth_location ? memberDetails.detailMemberInfo.birth_location : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Religion / Caste</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.religion ? memberDetails.detailMemberInfo.religion : 'N/A'}}/{{!!memberDetails.detailMemberInfo.cast ? memberDetails.detailMemberInfo.cast : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Family Id</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.family_id ? memberDetails.detailMemberInfo.family_id : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Height</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.height}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Have Pedal Edema</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.have_pedal_edema}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Mid Arm Circumference</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.mid_arm_circumference}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card cst-card">
+                        <div id="cardSecond" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseSecond-{{memberDetails.detailMemberInfo.child_unique_health_id}}"
+                            ng-click="toggleSecond = !toggleSecond" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="Member Information">Vaccination Details</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <em ng-class="{'ion-plus':!toggleSecond,'ion-minus':toggleSecond}"></em>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse"
+                            id="collapseSecond-{{memberDetails.detailMemberInfo.child_unique_health_id}}"
+                            role="tabpanel">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-title">BCG</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.bcg}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">OPV 1</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.opv1}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Pentavalent 1</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.penta1}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Rota Virus 1</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.rota_virus_1}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">F IPV 1</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.f_ipv_1}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">OPV 2</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.opv2}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Pentavalent 2</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.penta2}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Rota Virus 2</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.rota_virus_2}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">OPV 3</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.opv3}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">F IPV 2</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.f_ipv_2}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Pentavalent 3</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.penta3}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Rota Virus 3</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.rota_virus_3}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Measles 1/Measles Rubella 1</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.measles}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Fully Immunized in Twelve Months?</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.fully_immunization_in_twelve_of_month}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-title">OPV Booster</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.opv_booster}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">DPT Booster 1</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.dpt_booster}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">DPT Booster 2 (5 yrs)</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.dpt_booster_2_given_on}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">TD (10 yrs)</span>
+                                                <span class="data-list-info">'N/A'</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">TD (16 yrs)</span>
+                                                <span class="data-list-info">'N/A'</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Measles 2/Measles Rubella 2</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.measles_2}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Fully Immunized in Two Years?</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.fully_immunization_in_two_year}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Breastfed until Six Months</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.is_breastfed_till_six_month}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Complementary Feeding Start Period</span>
+                                                <span
+                                                    class="data-list-info">{{memberDetails.detailMemberInfo.complementary_feeding_start_period}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Ifa Syrup Given</span>
+                                                <span class="data-list-info">
+                                                    {{memberDetails.detailMemberInfo.ifa_syrup_given}}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">Vitamin A Dose</span>
+                                            </li>
+                                            <li ng-repeat="vitamin in memberDetails.vitaminADose track by $index">
+                                                <span class="data-list-title">{{rchRegister.specialString[$index + 1 ]}}
+                                                    Dose</span>
+                                                <span class="data-list-info">{{vitamin}}</span>
+                                            </li>
+                                            <li ng-if="!memberDetails.vitaminADose">
+                                                No Data Available
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card cst-card">
+                        <div id="cardThird" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                            href="#collapseThird-{{memberDetails.detailMemberInfo.child_unique_health_id}}"
+                            ng-click="toggleThird = !toggleThird" style="cursor: pointer">
+                            <h4 class="text">
+                                <span data-toggle="tooltip" title="Side Effects">AEFI of Vaccination</span>
+                                <ul class="control-list">
+                                    <li>
+                                        <span>
+                                            <em ng-class="{'ion-plus':!toggleThird,'ion-minus':toggleThird}"></em>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="collapse"
+                            id="collapseThird-{{memberDetails.detailMemberInfo.child_unique_health_id}}"
+                            role="tabpanel">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">DTP Booster</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Child Weight</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.dpt_booster_child_weight ? memberDetails.detailMemberInfo.dpt_booster_child_weight : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Diarrhea</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.is_diarrhea ? memberDetails.detailMemberInfo.is_diarrhea : 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Is Pneumonia</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.is_pnuemonia ? memberDetails.detailMemberInfo.is_pnuemonia : 'N/A'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 br-1">
+                                        <ul class="data-list">
+                                            <li>
+                                                <span class="data-list-header">DTP Booster 2</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Adverse Effect</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.dpt_booster_2_adverse_effect ? memberDetails.detailMemberInfo.dpt_booster_2_adverse_effect: 'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="data-list-title">Vaccination Details</span>
+                                                <span
+                                                    class="data-list-info">{{!!memberDetails.detailMemberInfo.vaccination_details ? memberDetails.detailMemberInfo.vaccination_details : 'N/A'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

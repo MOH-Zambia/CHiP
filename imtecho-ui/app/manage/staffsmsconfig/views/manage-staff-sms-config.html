@@ -1,0 +1,277 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ staffSmsConfig.headerText}}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="staffSmsConfig.manageStaffSmsConfForm" id="manageTimelineConfigForm"
+                        novalidate>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="card-sub-title">
+                                    Staff sms details
+                                </h5>
+                                <div>
+                                    <div class="form-group">
+                                        <validate for='name' required-msg="Enter  name">
+                                            <label for="name" control-label> Name</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter name" maxlength="200" name="name" id="name"
+                                                ng-model="staffSmsConfig.name"
+                                                ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='description' required-msg="Enter  Description">
+                                            <label for="description" control-label>Description</label>
+                                            <textarea form-control maxlength="500" class="form-control cst-form-control"
+                                                required name="description" ng-model="staffSmsConfig.description"
+                                                placeholder="Enter Description"
+                                                ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"></textarea>
+                                        </validate>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <validate for='triggerType' required-msg="Select Trigger Type">
+                                            <label for="triggerType" control-label>Trigger Type</label>
+                                            <select class="form-control cst-form-control"
+                                                chosen-directive="staffSmsConfig.triggerTypesList" form-control
+                                                name="triggerType" id="triggerType"
+                                                ng-disabled="staffSmsConfig.updateMode==true && ( staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                ng-model="staffSmsConfig.triggerType" required
+                                                ng-options="triggerType.value as triggerType.name for triggerType in staffSmsConfig.triggerTypesList">
+                                                <option value="">--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="staffSmsConfig.triggerType=='scheduleTime'">
+                                        <validate for="date" required-msg="Please select date">
+                                            <label for="date" control-label>Date
+                                            </label>
+                                            <input name="date" type="text" datepicker id="date"
+                                                min-date='staffSmsConfig.today' ng-model="staffSmsConfig.date"
+                                                ng-required="true"
+                                                ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                style="float: right !important;" form-control>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group d-flex align-items-center mb-0"
+                                        ng-if="staffSmsConfig.triggerType=='scheduleTime'">
+                                        <label for="time" control-label>Time
+                                        </label>
+                                        <div uib-timepicker ng-model="staffSmsConfig.time"
+                                            ng-change="staffSmsConfig.timeChanged()"
+                                            show-spinners="staffSmsConfig.showspinners" hour-step="staffSmsConfig.hstep"
+                                            minute-step="staffSmsConfig.mstep" show-meridian="staffSmsConfig.ismeridian"
+                                            id="time" name="time" class="d-inline"
+                                            ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')">
+                                        </div>
+                                    </div>
+                                    <div ng-if="!!staffSmsConfig.invalidTime" class="text-danger ml-160">
+                                        Please enter a valid time.
+                                    </div>
+                                    <div class="form-group" ng-if="staffSmsConfig.triggerType=='timer'">
+                                        <validate for='day' required-msg="Enter  Date"></validate>
+                                        <label for="day" control-label> Day</label>
+                                        <input type="number" class="form-control cst-form-control" form-control
+                                            placeholder="Day" min="0" max="30" name="day" id="day"
+                                            ng-model="staffSmsConfig.day"
+                                            ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                            required>
+                                        <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+
+                                    <div class="form-group" ng-if="staffSmsConfig.triggerType=='timer'">
+                                        <validate for='hour' required-msg="Enter Hour">
+                                            <label for="hour" control-label> Hour</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                placeholder="Hour" min="0" max="24" name="hour" id="hour"
+                                                ng-model="staffSmsConfig.hour"
+                                                ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="staffSmsConfig.triggerType=='timer'">
+                                        <validate for='minute' required-msg="Enter  Time">
+                                            <label for="minute" control-label> Minute</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                placeholder="Minute" min="0" max="60" name="minute" id="minute"
+                                                ng-model="staffSmsConfig.minute"
+                                                ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 inline-form" style="border-left: 1px solid #e5e5e5;">
+
+                                <div class="form-group">
+
+                                    <label class="control control-radio">Role Based
+                                        <input value="ROLE_LOCATION_BASED" name="configType" type="radio"
+                                            ng-model="staffSmsConfig.uploadExcel"
+                                            ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')">
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">Excel
+                                        <input value="EXCEL_BASED" name="configType" type="radio"
+                                            ng-model="staffSmsConfig.uploadExcel"
+                                            ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')">
+                                        <div class="control_indicator"></div>
+                                    </label>
+
+                                    <a ng-if="staffSmsConfig.uploadExcel === 'EXCEL_BASED'" target="_self"
+                                        class="pull-right" download="Staff Sms Sample Excel.xlsx"
+                                        ng-class="{'disabled' : staffSmsConfig.updateMode && (staffSmsConfig.updateTriggerType ==='immediately' || staffSmsConfig.updateStatus ==='SENT')}"
+                                        href="files/StaffSmsSampleExcel.xlsx">Download Sample
+                                        Excel</a>
+
+
+                                </div>
+
+
+
+                                <div ng-if="staffSmsConfig.uploadExcel === 'ROLE_LOCATION_BASED'">
+                                    <div class="form-group">
+                                        <validate for='template' required-msg="Enter Template">
+                                            <label for="template" control-label>Template</label>
+                                            <textarea form-control maxlength="500" class="form-control cst-form-control"
+                                                required name="template" required ng-model="staffSmsConfig.template"
+                                                ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                placeholder="Enter Sms Template"></textarea>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='role' required-msg="Select Role">
+                                            <label for="role" control-label>Role</label>
+                                            <select id="role" name="role" class="form-control cst-form-control"
+                                                chosen-directive="staffSmsConfig.roleList" form-control
+                                                data-placeholder='Select Role' multiple
+                                                ng-model="staffSmsConfig.userObj.roleId" required
+                                                ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                ng-options="role.id as role.name for role in staffSmsConfig.roleList">
+                                            </select>
+                                        </validate>
+                                    </div>
+                                    <hr>
+                                    <h5 class="card-sub-title">
+                                        Location
+                                    </h5>
+                                    <ng-form name="staffSmsConfig.locationForm" isolate-form>
+                                        <location-directive selected-location="staffSmsConfig.selectedLocation"
+                                            required-upto-level="1" fetch-according-to-user-aoi="true"
+                                            disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                            fetch-upto-level="staffSmsConfig.maxAllowedLevel"> </location-directive>
+                                        <br>
+                                        <div class="pull-right">
+                                            <button
+                                                ng-disabled="staffSmsConfig.isLocationButtonDisabled || (staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT'))"
+                                                class="btn btn-primary" type="button"
+                                                ng-click="staffSmsConfig.selectedArea()">Add</button>
+                                        </div> <br>
+                                    </ng-form>
+                                    <hr>
+                                    <div class="form-group  mt-5">
+                                        <label for="exampleFormControlInput1">Added Areas </label>
+                                        <div class="form-control cst-form-control min-height-65">
+                                            <div ng-repeat="fields in staffSmsConfig.selectedLocationsId">
+                                                {{fields.locationFullName}} &nbsp;<em
+                                                    ng-class="{'disabled': !!staffSmsConfig.updateMode && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType ==='immediately' || staffSmsConfig.updateStatus ==='SENT')}"
+                                                    class="fa fa-times pointer-cursor red"
+                                                    ng-click="staffSmsConfig.removeSelectedArea(fields, $index)"></em>
+                                            </div>
+                                        </div>
+                                        <span ng-if="staffSmsConfig.duplicateEntry" class="text-danger ml-160">
+                                            This area is already added. Please add another
+                                        </span>
+                                        <span ng-if="staffSmsConfig.noLocationSelected" class="text-danger ml-160">
+                                            Please add location.
+                                        </span>
+                                        <span ng-if="staffSmsConfig.errorMsg && staffSmsConfig.errorCode == 2"
+                                            class="text-danger ml-160">
+                                            {{staffSmsConfig.errorMsg}}
+                                        </span>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div ng-if="staffSmsConfig.uploadExcel === 'EXCEL_BASED'">
+
+                                    <div class="form-group">
+                                        <validate for='template' required-msg="Enter Template">
+                                            <label for="template" control-label>Template</label>
+                                            <textarea form-control maxlength="500" class="form-control cst-form-control"
+                                                required name="template" required ng-model="staffSmsConfig.template"
+                                                ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                placeholder="Enter Sms Template"></textarea>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" flow-init="staffSmsConfig.uploadFile"
+                                        flow-file-added="staffSmsConfig.upload($file, $event, $flow, staffSmsConfig.uploadInfoObj)"
+                                        flow-files-submitted="staffSmsConfig.uploadFn($files, $event, $flow, staffSmsConfig.uploadInfoObj)"
+                                        flow-file-success="staffSmsConfig.getUploadResponse( $file, $message, $flow, staffSmsConfig.uploadInfoObj )"
+                                        flow-file-error="staffSmsConfig.fileError($file, $message);">
+                                        <button
+                                            ng-if="staffSmsConfig.fileUploaded === false &&  !(staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT') "
+                                            flow-btn class="btn btn-primary bg-success"
+                                            flow-attrs="{accept:'application/xlsx'}">
+                                            <em class="ion-ios-cloud-upload-outline"></em>Upload</button>
+
+                                        <div ng-if="staffSmsConfig.fileUploaded" class="mt-2 alert alert-success ">
+
+                                            <span class="text-center"
+                                                ng-click="staffSmsConfig.downloadExcel(staffSmsConfig.uploadInfoObj.mediaName)"><em
+                                                    class="fa fa-check fa-1x"></em><a
+                                                    ng-disabled="staffSmsConfig.updateMode==true && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                                    ng-href="{{staffSmsConfig.apiPath + '/document/getfile/' + staffSmsConfig.uploadInfoObj.mediaName+ '?access_token=' + staffSmsConfig.authToken}}"
+                                                    download>{{staffSmsConfig.uploadInfoObj.originalMediaName}}</a>
+                                                Uploaded Successfully </span>
+                                            <span class="pull-right"><em class="fa fa-close fa-1x"
+                                                    style="cursor: pointer"
+                                                    ng-class="{'disabled': !!staffSmsConfig.updateMode && (staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType ==='immediately' || staffSmsConfig.updateStatus ==='SENT')}"
+                                                    ng-click="staffSmsConfig.removeFile(staffSmsConfig.uploadInfoObj)"></em></span>
+                                        </div>
+
+
+                                    </div>
+                                    <span ng-if="staffSmsConfig.noFileUploaded" class="text-danger">
+                                        Please upload excel file.
+                                    </span>
+                                    <span ng-if="!!staffSmsConfig.excelError" class="text-danger">
+                                        {{staffSmsConfig.excelError}}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer mt-5">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary"
+                                    ng-click="staffSmsConfig.saveOrUpdateStaffSmsConfig(staffSmsConfig.manageStaffSmsConfForm)"
+                                    ng-if="!(staffSmsConfig.createdByUser == false || staffSmsConfig.updateTriggerType=='immediately' || staffSmsConfig.updateStatus=='SENT')"
+                                    data-test="save-card-Btn)">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    Save & Continue
+                                </button>
+                                <button class="btn btn-secondary" ng-click="staffSmsConfig.chagneState()">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,183 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{questionSetController.isUpdateForm ? 'Edit' : 'Add'}} Question Set
+                            Configuration</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="questionSetController.questionSetForm" novalidate>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <validate for="type" required-msg="Select Course">
+                                        <label for="type" class="control-label" control-label
+                                            style="white-space: initial;">Select Question Set Level</label>
+                                        <select chosen-directive="questionSetController.typeList"
+                                            class="form-control cst-form-control" form-control
+                                            ng-model="questionSetController.type"
+                                            ng-change="questionSetController.onTypeChange()" id="type" name="type"
+                                            ng-options="type as type for type in questionSetController.typeList"
+                                            required>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="courseId" required-msg="Select Course">
+                                        <label for="courseId" class="control-label" control-label>Select Course</label>
+                                        <select chosen-directive="questionSetController.courseList"
+                                            class="form-control cst-form-control" form-control
+                                            ng-model="questionSetController.questionSetObj.courseId"
+                                            ng-change="questionSetController.getTopicDetails(); questionSetController.filterQuestionSetTypes(); questionSetController.retrieveMinimumMarks();"
+                                            id="courseId" name="courseId"
+                                            ng-options="course.courseId as course.courseName for course in questionSetController.courseList| orderBy :'courseName' | filter : course.courseType ='ONLINE'"
+                                            required>
+                                            <option value="">--Select--</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group"
+                                    ng-if="(questionSetController.questionSetObj.topicId || questionSetController.topicList.length > 0) && ['Module', 'Lesson'].includes(questionSetController.type)">
+                                    <validate for="topicId">
+                                        <label for="topicId" class="control-label" control-label>Select Module</label>
+                                        <select chosen-directive="questionSetController.topicList"
+                                            class="form-control cst-form-control" form-control
+                                            ng-model="questionSetController.questionSetObj.topicId"
+                                            ng-change="questionSetController.getMediaDetails(); questionSetController.questionSetObj.mediaId = null; questionSetController.filterQuestionSetTypes(); questionSetController.retrieveMinimumMarks();"
+                                            id="topicId" name="topicId"
+                                            ng-options="topic.topicId as topic.topicName for topic in questionSetController.topicList| orderBy :'topicOrder'"
+                                            required>
+                                            <option value="">--Select--</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group"
+                                    ng-if="questionSetController.mediaList.length > 0 && questionSetController.type === 'Lesson'">
+                                    <validate for="mediaId">
+                                        <label for="mediaId" class="control-label" control-label>Select Lesson</label>
+                                        <select chosen-directive="questionSetController.mediaList"
+                                            class="form-control cst-form-control" form-control
+                                            ng-model="questionSetController.questionSetObj.mediaId" id="mediaId"
+                                            ng-change="questionSetController.filterQuestionSetTypes(); questionSetController.retrieveMinimumMarks();" name="mediaId"
+                                            ng-options="media.id as media.title for media in questionSetController.mediaList | orderBy :'mediaOrder'"
+                                            required>
+                                            <option value="">--Select--</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="questionSetType" required-msg="Select Question Set Type">
+                                        <label for="questionSetType" class="control-label" control-label
+                                            style="white-space: initial;">Select Question Set Type</label>
+                                        <select chosen-directive="questionSetController.filteredQuestionSetTypes"
+                                            class="form-control cst-form-control" form-control
+                                            ng-model="questionSetController.questionSetObj.questionSetType"
+                                            ng-change="questionSetController.onQuestionSetTypeChange()"
+                                            id="questionSetType" name="questionSetType"
+                                            ng-options="type.id as type.value for type in questionSetController.filteredQuestionSetTypes"
+                                            ng-disabled="questionSetController.isUpdateForm" required>
+                                            <option value="">--Select--</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="questionSetName" required-msg="Enter question set name">
+                                        <label for="questionSetName" class="control-label" control-label>Question Set
+                                            Name</label>
+                                        <input type="text" auto-focus="true" class="form-control cst-form-control"
+                                            form-control name="questionSetName"
+                                            ng-model="questionSetController.questionSetObj.questionSetName" required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for='status' required-msg="Enter status">
+                                        <label for='status' control-label>
+                                            Status
+                                        </label>
+                                        <select class="form-control cst-form-control" form-control name="status"
+                                            id="state" ng-model="questionSetController.questionSetObj.status" required>
+                                            <option value="">--Select--</option>
+                                            <option value="ACTIVE">Active</option>
+                                            <option value="INACTIVE">Inactive</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group"
+                                    ng-if="questionSetController.selectedQuestionType &&
+                                        questionSetController.testConfig[questionSetController.selectedQuestionType.id] &&
+                                        questionSetController.testConfig[questionSetController.selectedQuestionType.id].doYouWantAQuizToBeMarked">
+                                    <validate for='marks' required-msg="Enter Minimum Marks">
+                                        <label for='marks' control-label>
+                                            Minimum Marks
+                                        </label>
+                                        <input type="text" numbers-only class="form-control cst-form-control"
+                                            form-control name="order" id="order" ng-disabled="!questionSetController.isMinMarksEditable"
+                                            ng-model="questionSetController.questionSetObj.minimumMarks" required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="isAllowedToAttemptQuiz" required-msg="Select a value">
+                                        <label for="isAllowedToAttemptQuiz" class="control-label" control-label
+                                            style="white-space: initial;">
+                                            Is allowed to attempt the quiz without watching the lesson?
+                                        </label>
+                                        <label class="control control-radio">Yes
+                                            <input ng-value="true" name="isAllowedToAttemptQuiz" type="radio"
+                                                ng-model="questionSetController.questionSetObj.isAllowedToAttemptQuiz"
+                                                form-control required>
+                                            <div class="control_indicator"></div>
+                                        </label>
+                                        <label class="control control-radio">No
+                                            <input ng-value="false" name="isAllowedToAttemptQuiz" type="radio"
+                                                ng-model="questionSetController.questionSetObj.isAllowedToAttemptQuiz"
+                                                form-control required>
+                                            <div class="control_indicator"></div>
+                                        </label>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                            <div class="col-6" ng-if="questionSetController.showVideoToMarkPoint">
+                                <video style="max-width: 100%;" autoplay controls id="myVideo">
+                                    <source
+                                        ng-src="{{questionSetController.apiPath + '/mobile/getfileById?id=' + questionSetController.selectedMedia.mediaId}}">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <br>
+                                <button class="btn btn-primary" ng-click="questionSetController.onMarkThisPoint();">
+                                    Mark this point for auto-pause and present quiz
+                                </button>
+                                <div class="mt-2">
+                                    <strong>Present quiz at second:</strong>
+                                    {{questionSetController.questionSetObj.quizAtSecond | emptylabel : '-'}}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer mt-5">
+                    <div class="float-right">
+                        <button class="btn btn-secondary"
+                            ui-sref="techo.training.questionsetlist({refId: questionSetController.refId, refType: questionSetController.refType})">Back</button>
+                        <button class="btn btn-primary"
+                            ng-click="questionSetController.action(questionSetController.questionSetForm)">
+                            <em class="fa fa-floppy-o"></em>
+                            {{questionSetController.isUpdateForm ? 'Update' : 'Save'}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

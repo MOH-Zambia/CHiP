@@ -1,0 +1,101 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ manageLocationClusterMangementCtrl.headerText}}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="manageLocationClusterMangementCtrl.mangeCovid19CaseForm"
+                        id="mangeCovid19CaseForm" novalidate>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="card-sub-title">
+                                    COVID19 Cluster Details
+                                </h5>
+                                <div>
+                                    <div class="form-group">
+                                        <validate for='name' required-msg="Enter Name">
+                                            <label for="name" control-label>Name</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter name" name="name" id="name"
+                                                ng-model="manageLocationClusterMangementCtrl.locationCluster.name"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='population' required-msg="Enter population">
+                                            <label for="population" control-label>Population</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                onkeypress="return !(event.charCode == 46)"
+                                                placeholder="Enter population" name="population" id="population"
+                                                ng-model="manageLocationClusterMangementCtrl.locationCluster.population"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 inline-form" style="border-left: 1px solid #e5e5e5;">
+                                <h5 class="card-sub-title">
+                                    Location
+                                </h5>
+                                <ng-form name="manageLocationClusterMangementCtrl.locationForm" isolate-form>
+                                    <location-directive
+                                        selected-location="manageLocationClusterMangementCtrl.selectedLocation"
+                                        required-upto-level="0" fetch-according-to-user-aoi="true"
+                                        fetch-upto-level="10">
+                                    </location-directive>
+                                    <br>
+                                    <div class="pull-right">
+                                        <button class="btn btn-primary" type="button"
+                                            ng-click="manageLocationClusterMangementCtrl.selectedArea()">Add</button>
+                                    </div> <br>
+                                </ng-form>
+                                <hr>
+                                <div class="form-group  mt-5">
+                                    <label for="exampleFormControlInput1">Added Areas </label>
+                                    <div class="form-control cst-form-control min-height-65 h-auto">
+                                        <div
+                                            ng-repeat="fields in manageLocationClusterMangementCtrl.locationCluster.locations">
+                                            {{fields.locationFullName}} &nbsp;
+                                            <em class="fa fa-times pointer-cursor red"
+                                                ng-click="manageLocationClusterMangementCtrl.removeSelectedArea(fields, $index)"></em>
+                                        </div>
+                                    </div>
+                                    <span ng-if="manageLocationClusterMangementCtrl.duplicateEntry"
+                                        class="text-danger ml-160 d-flex">
+                                        This area is already added. Please add another
+                                    </span>
+                                    <span ng-if="manageLocationClusterMangementCtrl.noLocationSelected"
+                                        class="text-danger ml-160 d-flex">
+                                        Please add location.
+                                    </span>
+                                    <span
+                                        ng-if="manageLocationClusterMangementCtrl.errorMsg && manageLocationClusterMangementCtrl.errorCode == 2"
+                                        class="text-danger ml-160">
+                                        {{manageLocationClusterMangementCtrl.errorMsg}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer mt-5">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary"
+                                    ng-click="manageLocationClusterMangementCtrl.save()">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    Save & Continue
+                                </button>
+                                <button class="btn btn-secondary"
+                                    ng-click="manageLocationClusterMangementCtrl.cancel()">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

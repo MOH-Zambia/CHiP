@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h4 class="text" style="line-height: 1.5;">
+        SOH Element Details
+    </h4>
+</div>
+<div class="modal-body" style="overflow: inherit; overflow-y: auto;">
+    <pre><code>
+        {{element.elementName}}: {
+            module: {{element.module != null ? element.module : 'N/A'}},
+            elementName: {{element.elementName != null ? element.elementName : 'N/A'}},
+            elementDisplayShortName: {{element.elementDisplayShortName != null ? element.elementDisplayShortName : 'N/A'}},
+            elementDisplayName: {{element.elementDisplayName != null ? element.elementDisplayName : 'N/A'}},
+            elementDisplayNamePostfix: {{element.elementDisplayNamePostfix != null ? element.elementDisplayNamePostfix : 'N/A'}},
+            upperBound: {{element.upperBound != null ? element.upperBound : 'N/A'}},
+            lowerBound: {{element.lowerBound != null ? element.lowerBound : 'N/A'}},
+            upperBoundForRural: {{element.upperBoundForRural != null ? element.upperBoundForRural : 'N/A'}},
+            lowerBoundForRural: {{element.lowerBoundForRural != null ? element.lowerBoundForRural : 'N/A'}},
+            isSmallValuePositive: {{element.isSmallValuePositive != null ? element.isSmallValuePositive : 'N/A'}},
+            fieldName: {{element.fieldName != null ? element.fieldName : 'N/A'}},
+            target: {{element.target != null ? element.target : 'N/A'}},
+            targetForRural: {{element.targetForRural != null ? element.targetForRural : 'N/A'}},
+            targetForUrban: {{element.targetForUrban != null ? element.targetForUrban : 'N/A'}},
+            targetMid: {{element.targetMid != null ? element.targetMid : 'N/A'}},
+            targetMidEnable: {{element.targetMidEnable != null ? element.targetMidEnable : 'N/A'}},
+            order: {{element.elementOrder != null ? element.elementOrder : 'N/A'}},
+            isPublic: {{element.isPublic != null ? element.isPublic : 'N/A'}},
+            tabs:{{elementTabs ? JSON.stringify(elementTabs, undefined, 2) : '[]'}}
+        }
+    </code></pre>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Ok</button>
+    <button class="btn btn-secondary" ng-click="cancel()">Cancel</button>
+</div>

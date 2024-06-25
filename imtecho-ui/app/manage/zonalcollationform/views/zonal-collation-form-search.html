@@ -1,0 +1,55 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="no-data-placeholder" ng-if="!ctrl.userDetails || ctrl.userDetails.length == 0">
+          <h5>No Record(s) Found!</h5>
+        </div>
+        <div class="cst-table table-responsive table-set-height" id="user-scroll" ng-if="ctrl.userDetails.length > 0">
+          <table aria-describedby="table"
+            class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed">
+            <thead class="cst-thead"></thead>
+            <tr>
+              <th class="small-col">S.N.</th>
+              <th class="medium-col">Username</th>
+              <th class="medium-col">CHW Name</th>
+              <th class="large-col">Assigned Location(s)</th>
+              <th class="medium-col">Contact Number</th>
+              <th class="small-col">View</i>
+              </th>
+            </tr>
+            </thead>
+            <tbody class="cst-tbody" infinite-scroll-distance="0"
+              infinite-scroll-disabled="ctrl.pagingService.allRetrieved"
+              infinite-scroll="ctrl.retrieveFilteredUsers(false)" infinite-scroll-container='"#user-scroll"'
+              infinite-scroll-immediate-check="false">
+              <tr ng-repeat="user in ctrl.userDetails">
+                <td>{{$index + 1}}</td>
+                <td>{{user.userName?user.userName:"N/A"}}</td>
+                <td>{{user.fullName?user.fullName:"N/A"}}</td>
+                <td ng-bind-html="user.assignedLocations"></td>
+                <td>{{user.contactNumber?user.contactNumber:"N/A"}}</td>
+                <td class="d-flex justify-content-center align-items-center" style="border: none;">
+                  <span><i class="fa fa-eye" aria-hidden="true" style="font-size:1.5rem;"
+                      ng-click="ctrl.previewClicked(user.id)">
+                  </span></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="medium-div filter-div">
+    <span style="left: -66px" class="filter-toggle" ng-click="ctrl.toggleFilter()">Search</span>
+    <div class="row">
+      <div class="col-12">
+        <h5 class="filter-div-title">Search</h5>
+      </div>
+    </div>
+    <div class="filter-div-body">
+      <search terms="ctrl.terms" search-fn="ctrl.retrieveFilteredUsers(reset)" search="ctrl.search"
+        search-form="ctrl.searchForm" selected-location="ctrl.selectedLocation"
+        selected-location-id="ctrl.selectedLocationId" close-fn="ctrl.toggleFilter()"></search>
+    </div>
+  </div>

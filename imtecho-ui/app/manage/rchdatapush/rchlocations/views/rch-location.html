@@ -1,0 +1,132 @@
+<!-- <style>
+    .edit-icon {
+        background-position: -28px 0px !important;
+    }
+
+    .add-icon {
+        font-size: 32px;
+        color: #2b7dce;
+        cursor: pointer;
+    }
+</style>
+<div class="container-fluid fhsr-verification">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <button class="pull-right btn btn-primary" style="margin-bottom: 8px;" ng-if="ctrl.locationId"
+                ng-click="ctrl.showNotAvailableRchLocations()">
+                Not Available RCH Locations
+            </button>
+            <div ng-if="ctrl.rchLocationList.length === 0">
+                <div class="no-data-placeholder">
+                    <h5>No Record Found!</h5>
+                </div>
+            </div>
+            <div class="cst-table table-responsive" style="overflow: auto;max-height: calc(100vh - 200px)"
+                ng-if="ctrl.rchLocationList.length > 0">
+                <table aria-describedby="table"
+                    class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th id="srNo." style="width: 5%;">Sr No.</th>
+                            <th id="locationName" style="width: 20%;">Location Name</th>
+                            <th id="locationEnglishName" style="width: 20%;">Location English Name</th>
+                            <th id="locationType" style="width: 15%;" ng-bind-template="{{ctrl.appName}} Location Type">
+                            </th>
+                            <th id="locationType" style="width: 15%;">RCH Location Type</th>
+                            <th id="locationType" style="width: 10%;">LGD Code</th>
+                            <th id="isLocationAvailableinRCH?" style="width: 10%">
+                                Is Location <br> Available in RCH?
+                            </th>
+                            <th id="remarks" style="width: 10%">Remarks</th>
+                            <th id="action" style="width: 5%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="rchLocation in ctrl.rchLocationList">
+                            <td>{{$index + 1}}</td>
+                            <td>{{rchLocation.name}}</td>
+                            <td>{{rchLocation.englishName}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li ng-if="rchLocation.type === 'C'">Corporation</li>
+                                    <li ng-if="rchLocation.type === 'D'">District</li>
+                                    <li ng-if="rchLocation.type === 'B'">Block</li>
+                                    <li ng-if="rchLocation.type === 'Z'">Zone</li>
+                                    <li ng-if="rchLocation.type === 'P'">PHC</li>
+                                    <li ng-if="rchLocation.type === 'U'">UPHC</li>
+                                    <li ng-if="rchLocation.type === 'SC'">Sub Center</li>
+                                    <li ng-if="rchLocation.type === 'ANM'">ANM Area</li>
+                                    <li ng-if="rchLocation.type === 'V'">Village</li>
+                                    
+                                </ul>
+                            </td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li ng-if="['D', 'C'].includes(rchLocation.type)">District</li>
+                                    <li ng-if="['B', 'Z'].includes(rchLocation.type)">Taluka</li>
+                                    <li ng-if="['P', 'U'].includes(rchLocation.type)">Health Facility</li>
+                                    <li ng-if="['SC', 'ANM'].includes(rchLocation.type)">Health Sub Facility</li>
+                                    <li ng-if="['V'].includes(rchLocation.type)">Village</li>
+                                </ul>
+                            </td>
+                            <td>{{rchLocation.rchCode || '-'}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li ng-if="rchLocation.anmolId && !rchLocation.isParentRchCodeMismatch">
+                                        <em class="fa fa-check fa-2x text-success"></em>
+                                    </li>
+                                    <li ng-if="!rchLocation.anmolId || rchLocation.isParentRchCodeMismatch">
+                                        <em class="fa fa-times fa-2x text-danger"></em>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                {{!rchLocation.anmolId ? 'Location added' : (rchLocation.isParentRchCodeMismatch ? 'Location moved' : '')}}
+                            </td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li ng-if="rchLocation.anmolId">
+                                        <a href="javascript:void(0)" class="action-icon edit-icon"
+                                            ng-click="ctrl.editRchLocation(rchLocation.id, rchLocation)"></a>
+                                    </li>
+                                    <li ng-if="!rchLocation.anmolId">
+                                        <em class="fa fa-plus-circle add-icon"
+                                            ng-click="ctrl.addRchLocation(rchLocation.id, rchLocation)"></em>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="filter-div active">
+        <span class="filter-toggle" ng-click="ctrl.toggleFilter()">Select Location</span>
+        <div class="row">
+            <div class="col-12">
+                <h5 class="filter-div-title">Select Location</h5>
+            </div>
+        </div>
+        <div class="filter-div-body">
+            <div class="row">
+                <div class="col-12">
+                    <ng-form name="ctrl.locationForm">
+                        <location-directive ng-model="ctrl.locationId" selected-location="ctrl.selectedLocation"
+                            required-upto-level="1" fetch-upto-level="6" template-type="'inline'"
+                            fetch-according-to-user-aoi="false"> </location-directive>
+                        <br>
+                    </ng-form>
+                </div>
+                <div class="col-12">
+                    <hr>
+                    <div class="form-group text-right">
+                        <button class="btn btn-secondary close-filter" ng-click="ctrl.toggleFilter()">Close</button>
+                        <button class="btn btn-primary search-filter"
+                            ng-click="ctrl.searchLocations(true)">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

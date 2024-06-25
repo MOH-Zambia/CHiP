@@ -1,0 +1,19 @@
+<form class="inline-form" role="form" name="cpfm.copyFormConfigForm" id="cpfm.copyFormConfigForm" novalidate>
+    <div class="modal-header">
+        <h4 class="text">Copy Form Configuration</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <validate for='version' required-msg="Enter Version">
+                <label for="version" control-label>Version</label>
+                <input type="text" class="form-control cst-form-control" form-control placeholder="Enter Version"
+                    name="version" id="version" ng-model="cpfm.version" required>
+                <placeholder></placeholder>
+            </validate>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="cpfm.ok()">Save</button>
+        <button class="btn btn-secondary" ng-click="cpfm.cancel()">Cancel</button>
+    </div>
+</form>

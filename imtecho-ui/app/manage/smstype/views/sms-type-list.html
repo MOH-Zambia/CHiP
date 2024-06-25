@@ -1,0 +1,75 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="float-right">
+                <button class="btn btn-primary" ui-sref="techo.manage.smstypemanage">Add SMS Type</button>
+            </div>
+            <div class="col-2 inline-form float-right">
+                <div>
+                    <input type="text" class="form-control cst-form-control" id="search"
+                        ng-model="smsTypeListController.searchText" ng-model-options="{debounce: 1000}"
+                        placeholder="Search text">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 md-15">
+            <div class="cst-table table-responsive" style="overflow: auto;max-height: calc(100vh - 169px);">
+                <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <colgroup>
+                        <col style="width: 5%">
+                        <col style="width: 25%">
+                        <col style="width: 30%">
+                        <col style="width: 20%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+
+                    </colgroup>
+                    <thead class="cst-thead">
+                        <tr>
+                            <th>#</th>
+                            <th>Sms Type</th>
+                            <th>Sms Text</th>
+                            <th>Description</th>
+                            <th>State</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="smsTypeDetails in smsTypeListController.smsTypeList | filter : {smsType:smsTypeListController.searchText}"
+                            ng-if="smsTypeListController.smsTypeList.length > 0">
+                            <td>{{$index+1}}</td>
+                            <td>{{smsTypeDetails.smsType}}</td>
+                            <td>{{smsTypeDetails.smsText}}</td>
+                            <td>{{smsTypeDetails.discription}}</td>
+                            <td>{{smsTypeDetails.state}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li>
+                                        <a href="javascript:void(0)" class="action-icon edit-icon"
+                                            ui-sref="techo.manage.smstypemanage({type : smsTypeDetails.smsType})"></a>
+                                    </li>
+                                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <a href="#" class="action-icon more-icon"></a>
+                                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                            aria-labelledby="moreDropdown">
+                                            <li>
+                                                <a href="javascript:void(0)"
+                                                    ng-click="smsTypeListController.toggleActive(smsTypeDetails)">
+                                                    <strong>Mark as </strong>
+                                                    {{smsTypeDetails.state == 'ACTIVE' ? 'Inactive' : 'Active'}}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

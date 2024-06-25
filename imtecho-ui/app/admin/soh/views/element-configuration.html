@@ -1,0 +1,201 @@
+<style>
+    .outer-tabset>.nav.nav-tabs {
+        background: #ffffff;
+        border: 1px solid #dfdfdf;
+        padding-bottom: 1px;
+    }
+
+    .table-heading {
+        background-color: rgb(241, 241, 241);
+        position: relative;
+        top: -1px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <button ng-if="sohElementConfiguration.rights.advanced" class="pull-right btn btn-primary"
+                ng-click="sohElementConfiguration.addConfig()">
+                Add
+            </button>
+            <div class="cst-tab">
+                <uib-tabset active='sohElementConfiguration.selectedTab'>
+                    <!-- member list tab -->
+                    <uib-tab heading="Element Config" index=0 ng-click="sohElementConfiguration.fetchElements(false)">
+                        <div ng-if="sohElementConfiguration.elements.length === 0">
+                            <div class="no-data-placeholder">
+                                <h5>No Record Found!</h5>
+                            </div>
+                        </div>
+                        <div class="cst-table table-responsive" style="overflow: auto; max-height: calc(100vh - 245px);"
+                            id="facility-scroll" ng-if="sohElementConfiguration.elements.length > 0">
+                            <table aria-describedby="list of elements"
+                                class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                style="table-layout: auto;">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="sr-no" style="width: 50px; white-space: pre-line;">#</th>
+                                        <th id="module">Module</th>
+                                        <th id="elementName">Element Name</th>
+                                        <th id="elementDisplayName">Element Display Name</th>
+                                        <th id="target">Target</th>
+                                        <th id="targetMid">Target Mid</th>
+                                        <th ng-if="sohElementConfiguration.rights.normal || sohElementConfiguration.rights.advanced"
+                                            id="action" style="width: 100px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="element in sohElementConfiguration.elements">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{element.module}}</td>
+                                        <td>
+                                            {{element.elementName}}
+                                        </td>
+                                        <td>{{element.elementDisplayName}}</td>
+                                        <td>{{element.target ? element.target : 'N/A'}}</td>
+                                        <td>{{element.targetMid ? element.targetMid : 'N/A'}}</td>
+                                        <td
+                                            ng-if="sohElementConfiguration.rights.normal || sohElementConfiguration.rights.advanced">
+                                            <button class="btn btn-primary"
+                                                ui-sref="techo.manage.manageSohElementConfiguration({ id: element.id })">
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Chart Config" index=1 ng-click="sohElementConfiguration.fetchCharts(false)">
+                        <div ng-if="sohElementConfiguration.charts.length === 0">
+                            <div class="no-data-placeholder">
+                                <h5>No Record Found!</h5>
+                            </div>
+                        </div>
+                        <div class="cst-table table-responsive" style="overflow: auto; max-height: calc(100vh - 245px);"
+                            id="facility-scroll" ng-if="sohElementConfiguration.charts.length > 0">
+                            <table aria-describedby="list of charts"
+                                class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                style="table-layout: auto;">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="sr-no" style="width: 50px; white-space: pre-line;">#</th>
+                                        <th id="module">Name</th>
+                                        <th id="displayName">Display Name</th>
+                                        <th id="fromDate">From Date</th>
+                                        <th id="toDate">To Date</th>
+                                        <th ng-if="sohElementConfiguration.rights.normal || sohElementConfiguration.rights.advanced"
+                                            id="action" style="width: 100px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="chart in sohElementConfiguration.charts">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{chart.name}}</td>
+                                        <td>{{chart.displayName}}</td>
+                                        <td>{{chart.fromDate ? chart.fromDate : 'N/A' | date:'dd/MM/yyyy' }}</td>
+                                        <td>{{chart.toDate ? chart.toDate : 'N/A' | date:'dd/MM/yyyy'}}</td>
+                                        <td
+                                            ng-if="sohElementConfiguration.rights.normal || sohElementConfiguration.rights.advanced">
+                                            <button class="btn btn-primary"
+                                                ui-sref="techo.manage.manageSohChartConfiguration({ id: chart.id })">
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Module Config" index=2
+                        ng-click="sohElementConfiguration.fetchElementModules(false)">
+                        <div ng-if="sohElementConfiguration.elementModules.length === 0">
+                            <div class="no-data-placeholder">
+                                <h5>No Record Found!</h5>
+                            </div>
+                        </div>
+                        <div class="cst-table table-responsive" style="overflow: auto; max-height: calc(100vh - 245px);"
+                            id="facility-scroll" ng-if="sohElementConfiguration.elementModules.length > 0">
+                            <table aria-describedby="list of charts"
+                                class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                style="table-layout: auto;">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="sr-no" style="width: 50px; white-space: pre-line;">#</th>
+                                        <th id="module">Name</th>
+                                        <th id="moduleName">Module Name</th>
+                                        <th id="isPublic">Is Public</th>
+                                        <th id="moduleOrder">Module Order</th>
+                                        <th id="state">State</th>
+                                        <th ng-if="sohElementConfiguration.rights.normal || sohElementConfiguration.rights.advanced"
+                                            id="action" style="width: 100px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="module in sohElementConfiguration.elementModules">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{module.module}}</td>
+                                        <td>{{module.moduleName}}</td>
+                                        <td>{{module.isPublic | yesOrNo}}</td>
+                                        <td>{{module.moduleOrder | emptylabel}}</td>
+                                        <td>{{module.state}}</td>
+                                        <td
+                                            ng-if="sohElementConfiguration.rights.normal || sohElementConfiguration.rights.advanced">
+                                            <button class="btn btn-primary"
+                                                ui-sref="techo.manage.manageSohElementModuleConfiguration({ id: module.id })">
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Location Config" index=3 ng-click="sohElementConfiguration.fetchLocationTypes()">
+                        <div style="margin: 11px;">
+                            <h6>Configure Types</h6>
+                        </div>
+                        <table aria-describedby="list of locations"
+                                class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                style="table-layout: auto;">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="sr-no" style="width: 50px; white-space: pre-line;">#</th>
+                                        <th id="module">Is Soh Enable?</th>
+                                        <th id="moduleName">Type</th>
+                                        <th id="isPublic">Roles</th>
+                                        <th id="action" style="width: 100px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="location in sohElementConfiguration.typesList">
+                                        <td>{{$index + 1}}</td>
+                                        <td><label control-label class="control control-checkbox">
+                                                <input type="checkbox" ng-model="location.is_soh_enable"
+                                                    ng-change="sohElementConfiguration.selectedtType(location)">
+                                                <div class="control_indicator"></div>
+                                            </label></td>
+                                        <td>{{location.name}}</td>
+                                        <td>{{location.roles || '-'}}</td>
+                                        <td>
+                                            <button ng-disabled = "!location.is_soh_enable" class="btn btn-primary" ng-click="sohElementConfiguration.openRoleModel(location)">
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+        <div class="col-12 form-group" style="margin: 1rem 0;">
+            <label style="line-height: 29px;" class="control control-checkbox" control-label>
+                <strong>Is Maintenance Mode Enable?</strong>
+                <input type="checkbox" form-control ng-model="sohElementConfiguration.isMaintenanceModeEnabled"
+                    ng-change="sohElementConfiguration.updateMaintenanceMode()" class="form-control cst-form-control">
+                <div style="top: 6px;" class="control_indicator"></div>
+            </label>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,2617 @@
+{
+	"info": {
+		"_postman_id": "29174f20-98dc-40a1-923b-dd490500e093",
+		"name": "MobileController",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Requests",
+			"item": [
+				{
+					"name": "TECHO_GET_IMEI_BLOCKED_OR_DELETE_DATABASE",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getimeiblockedordeletedatabase?imei={{imei}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getimeiblockedordeletedatabase"
+							],
+							"query": [
+								{
+									"key": "imei",
+									"value": "{{imei}}"
+								}
+							]
+						},
+						"description": "Expected output : \n{\n    \"imei\": \"359932077387786\",\n    \"createdBy\": 5550,\n    \"createdOn\": 1572944405773,\n    \"isBlockDevice\": null,\n    \"isDeleteDatabase\": null\n}\nor\nvoid"
+					},
+					"response": []
+				},
+				{
+					"name": "GET_SERVER_IS_ALIVE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getserverisalive",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getserverisalive"
+							]
+						},
+						"description": "Expected output : boolean(true-false)"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_GET_IMEI_BLOCKED",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getimeiblocked?imei={{imei}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getimeiblocked"
+							],
+							"query": [
+								{
+									"key": "imei",
+									"value": "{{imei}}",
+									"description": "This is optional parameter"
+								}
+							]
+						},
+						"description": "Expected output : boolean value (true/false)"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_REMOVE_IMEI_BLOCKED_ENTRY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/removeimeiblockedentry?imei={{imei}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"removeimeiblockedentry"
+							],
+							"query": [
+								{
+									"key": "imei",
+									"value": "{{imei}}"
+								}
+							]
+						},
+						"description": "Expected output : void"
+					},
+					"response": []
+				},
+				{
+					"name": "GET_FONT_SIZE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/retrieveFontSize?fontSizeType=NORMAL SIZE FONT",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"retrieveFontSize"
+							],
+							"query": [
+								{
+									"key": "fontSizeType",
+									"value": "NORMAL SIZE FONT"
+								}
+							]
+						},
+						"description": "Expected output : numeric font size"
+					},
+					"response": []
+				},
+				{
+					"name": "GET_ANDROID_VERSION",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/retrieveAndroidVersion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"retrieveAndroidVersion"
+							]
+						},
+						"description": "Expected output : 104-101 (range of number)\nNote : please make sure to add application-version in request header.\nexample : application-version:104"
+					},
+					"response": []
+				},
+				{
+					"name": "GET_FILE",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getFile?fileName=test.png&token={{token}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getFile"
+							],
+							"query": [
+								{
+									"key": "fileName",
+									"value": "test.png"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_PLUS_USER_COUNT",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/gettechoplususercount",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"gettechoplususercount"
+							]
+						},
+						"description": "Expected output : \n{\n    \"webActiveUser\": 83102,\n    \"mobileActiveUser\": 22324,\n    \"digitalFormCount\": 12,\n    \"populationEmpanlledCount\": null\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "DOWNLOAD_APPLICATION",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/downloadapk?name=demo",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"downloadapk"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "demo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RUN_PATCH",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/runpatch",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"runpatch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getfileById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getfileById?id=4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getfileById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DOWNLOAD_LIBRARY_FILE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/downloadlibraryfile?fileName=DESIGN_2_Video.mp4&fileId=13",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"downloadlibraryfile"
+							],
+							"query": [
+								{
+									"key": "fileName",
+									"value": "DESIGN_2_Video.mp4",
+									"description": "This is optional parameter.  Use either id or name"
+								},
+								{
+									"key": "fileId",
+									"value": "13",
+									"description": "This is optional parameter.  Use either id or name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testncdpush",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/testncdpush",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"testncdpush"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deployserver",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/deployserver",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"deployserver"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patchForChildEntryNotDone",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/patchForChildEntryNotDone",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"patchForChildEntryNotDone"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patchToUpdateLastServiceDateOfMember",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/patchToUpdateLastServiceDateOfMember",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"patchToUpdateLastServiceDateOfMember"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patchForIDSPFamilyEntry",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/patchForIDSPFamilyEntry",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"patchForIDSPFamilyEntry"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patchToRestoreCovidTravellerInfo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/patchToRestoreCovidTravellerInfo",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"patchToRestoreCovidTravellerInfo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activeCode",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "vjkachhi",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/activeCode?code=142&location=183153",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"activeCode"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "142"
+								},
+								{
+									"key": "location",
+									"value": "183153"
+								}
+							]
+						},
+						"description": "Expected output :\n\n{\n    \"success\": true,\n    \"user\": {\n        \"id\": 142,\n        \"name\": \"Parmar ankita \",\n        \"designation\": \"Fhw\",\n        \"organization\": \"Bamroda\",\n        \"purpose\": \"Yes\",\n        \"state\": \"ACTIVE\",\n        \"mobileNo\": \"7567893606\",\n        \"otp\": null,\n        \"disapprovalReason\": null\n    }\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "inActiveCode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inActiveCode?code=142&reason=Testing purpose",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inActiveCode"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "142"
+								},
+								{
+									"key": "reason",
+									"value": "Testing purpose"
+								}
+							]
+						},
+						"description": "Expected output :\n\n{\n    \"success\": true,\n    \"user\": {\n        \"id\": 142,\n        \"name\": \"Parmar ankita \",\n        \"designation\": \"Fhw\",\n        \"organization\": \"Bamroda\",\n        \"purpose\": \"Yes\",\n        \"state\": \"INACTIVE\",\n        \"mobileNo\": \"7567893606\",\n        \"otp\": null,\n        \"disapprovalReason\": null\n    }\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "patchforbreastfeeding",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/patchforbreastfeeding",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"patchforbreastfeeding"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "downloadmctsdb",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/downloadmctsdb?username=kshah&password=1234567&fileName=testfile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"downloadmctsdb"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "kshah"
+								},
+								{
+									"key": "password",
+									"value": "1234567"
+								},
+								{
+									"key": "fileName",
+									"value": "testfile"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_TEST_RECORD_ENTRY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/testrecordentry",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"testrecordentry"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "build",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/build",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"build"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "runcronformigration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/runcronformigration",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"runcronformigration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resolvemigrationinwithoutphone",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/resolvemigrationinwithoutphone",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"resolvemigrationinwithoutphone"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generateotp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/generateotp?mobilenumber={{mobile_number}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"generateotp"
+							],
+							"query": [
+								{
+									"key": "mobilenumber",
+									"value": "{{mobile_number}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyotp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/verifyotp?mobilenumber=9662508227&otp=123456",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"verifyotp"
+							],
+							"query": [
+								{
+									"key": "mobilenumber",
+									"value": "9662508227"
+								},
+								{
+									"key": "otp",
+									"value": "123456"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "memberbyphonenumber",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/memberbyphonenumber?mobilenumber=9879451325",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"memberbyphonenumber"
+							],
+							"query": [
+								{
+									"key": "mobilenumber",
+									"value": "9879451325"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/checkmobilenumber",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/checkmobilenumber?mobileNumber=9428612421",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"checkmobilenumber"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "9428612421"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "drtecho/checkmobilenumber",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/drtecho/checkmobilenumber?mobileNumber=9428612421",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"drtecho",
+								"checkmobilenumber"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "9428612421"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkusername",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/checkusername?username=kshahhi",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checkusername"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "kshahhi"
+								},
+								{
+									"key": "user_id",
+									"value": null,
+									"description": "This is optional parameter",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getHealthInfraPrivateHospital",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getHealthInfraPrivateHospital?query=અક્ષયદીપ હોસ્પિટલ",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getHealthInfraPrivateHospital"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "અક્ષયદીપ હોસ્પિટલ"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytechominimumversion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/mytechominimumversion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytechominimumversion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getfile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getfile?filename=DESIGN_2_Video.mp4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getfile"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "DESIGN_2_Video.mp4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "retrieveAllStates",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/retrieveAllStates",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"retrieveAllStates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getimmunisationsforchild",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getimmunisationsforchild?dateOfBirth=02022022",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getimmunisationsforchild"
+							],
+							"query": [
+								{
+									"key": "dateOfBirth",
+									"value": "02022022"
+								},
+								{
+									"key": "givenImmunisations",
+									"value": "MEASLES_RUBELLA_1",
+									"description": "This is optional parameter",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTokens",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getTokens?token=fpPMI$LA5lZ",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getTokens"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "fpPMI$LA5lZ"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/elements",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/soh/elements",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"elements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/elementsJson",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/soh/elementsJson?userId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"elementsJson"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/element/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/soh/element/44",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"element",
+								"44"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/chartsJson",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/soh/chartsJson",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"chartsJson"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/chart/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/soh/chart/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"chart",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/elementModules",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/soh/elementModules?retrieveActiveOnly=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"elementModules"
+							],
+							"query": [
+								{
+									"key": "retrieveActiveOnly",
+									"value": "false",
+									"description": "true / false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/elementModule/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/soh/elementModule/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"elementModule",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "covid/pincode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/covid/pincode",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"covid",
+								"pincode"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "systemNotice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/systemNotice",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"systemNotice"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post Requests",
+			"item": [
+				{
+					"name": "TECHO_VALIDATE_USER_NEW",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"token\", '\"'+jsonData.userToken+'\"');",
+									"pm.collectionVariables.set(\"mobile_number\", jsonData.contactNumber);",
+									"pm.collectionVariables.set(\"username\",jsonData.username);",
+									"pm.collectionVariables.set(\"first_time_login\",jsonData.firstTimeLogin);",
+									"pm.collectionVariables.set(\"user_id\",jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techovalidateusernew",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techovalidateusernew"
+							]
+						},
+						"description": "Expected output : \n{\n    \"authenticated\": true,\n    \"contactNumber\": \"7069828789\",\n    \"dob\": null,\n    \"firstTimeLogin\": false,\n    \"languageCode\": \"EN\",\n    \"loginFailureMsg\": null,\n    \"password\": \"dcgWHLXrAETrX+Sst+Ss0XbiqcUxJFcT\",\n    \"userContactId\": null,\n    \"userRole\": \"FHW\",\n    \"username\": \"vjkachhi\",\n    \"fName\": \"Bhanuben JOSHI\",\n    \"phNoOfPM\": null,\n    \"id\": 18917,\n    \"userToken\": \"zuiSAM92C3acI0ZIAI+mluPE7zNScsUg\",\n    \"serverDate\": 1658231342380,\n    \"currentVillageCode\": [\n        183153,\n        183269,\n        183233\n    ],\n    \"currentAssignedVillagesName\": [\n        \"અસલાલી\",\n        \"નવાપુરા\",\n        \"પાલડી-કાંકજ\"\n    ],\n    \"phcNames\": null,\n    \"subcenterNames\": null,\n    \"villageNames\": null,\n    \"isNagarPalikaUser\": true\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_IS_USER_IN_PRODUCTION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techoisuserinproduction",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techoisuserinproduction"
+							]
+						},
+						"description": "Expected output : Boolean (true / false)"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_GET_USER_FORM_ACCESS_DETAIL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techogetuserformaccessdetail",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techogetuserformaccessdetail"
+							]
+						},
+						"description": "Expected output : \n[\n    {\n        \"userId\": 0,\n        \"formCode\": \"ANCHV\",\n        \"form\": \"ANCHomeVisit\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"INCPAY\",\n        \"form\": \"Incentive Payment\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"CCHV\",\n        \"form\": \"ChildCareVisit\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"ANCMORB\",\n        \"form\": \"ANCMorbidity\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"MAMTA\",\n        \"form\": \"Mamta Day\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"BANK\",\n        \"form\": \"BANK WEB\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"COMVIS\",\n        \"form\": \"Compliance visit\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"RYWANC\",\n        \"form\": \"RedYellowWomanANC\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"RYCCC\",\n        \"form\": \"RedYellowChildCare\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"FUCHILD\",\n        \"form\": \"FollowUpChild\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"EDP\",\n        \"form\": \"EnrollmentDuringPregnancy\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"POV\",\n        \"form\": \"PNCOutcomeVisit\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"PNCVF\",\n        \"form\": \"PNCHomeVisit\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"UNSCHEDULE\",\n        \"form\": \"UnscheduleEvents\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"RYWPNC\",\n        \"form\": \"RedYellowWomanPNC\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"RYCPNC\",\n        \"form\": \"RedYellowChildPNC\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"PDW\",\n        \"form\": \"PostDischargeWoman\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"PDC\",\n        \"form\": \"PostDischargeChild\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"PDNB\",\n        \"form\": \"PostDischargeNewBorn\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"FUW\",\n        \"form\": \"FollowUpWoman\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"EAP\",\n        \"form\": \"EnrollmentAfterPregnancy\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"ECR\",\n        \"form\": \"EnrollmentChildRegistration\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"CCHVM\",\n        \"form\": \"ChildCareMorbidity\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"PNCM\",\n        \"form\": \"PNCMorbidity\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"TBA\",\n        \"form\": \"TBATraining\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"ES69\",\n        \"form\": \"Endline Surveyor 6 to 9\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"ES14\",\n        \"form\": \"Endline Surveyor 1 to 4\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"FHW_ANC\",\n        \"form\": \"FHW ANC\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"FHW_WPD\",\n        \"form\": \"FHW WPD\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"LMPFU\",\n        \"form\": \"FHW LMPFU\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"FHW_PNC\",\n        \"form\": \"FHW PNC\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"FHW_CS\",\n        \"form\": \"FHW Child Services\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"FHW_CI\",\n        \"form\": \"FHW Child Immunisation\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"FHS\",\n        \"form\": \"Family Health Survey\",\n        \"state\": \"MOVE_TO_PRODUCTION\",\n        \"isTrainingReq\": true,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"RCH\",\n        \"form\": \"Reproductive Child Health\",\n        \"state\": \"MOVE_TO_PRODUCTION\",\n        \"isTrainingReq\": true,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"NCD\",\n        \"form\": \"Non Communicable Diseases\",\n        \"state\": \"MOVE_TO_PRODUCTION\",\n        \"isTrainingReq\": true,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"WEB_DASHBOARD\",\n        \"form\": \"WEB Dashbord\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"WEB\",\n        \"form\": \"WEB\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"WEB_WPD\",\n        \"form\": \"Institutional WPD\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"CHO\",\n        \"form\": \"CHO Role Form\",\n        \"state\": null,\n        \"isTrainingReq\": true,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"NPCB\",\n        \"form\": \"NPCB Screening Form\",\n        \"state\": null,\n        \"isTrainingReq\": true,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"CORONA_SYMPTOMS\",\n        \"form\": \"Corona Symptoms\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"WEB_NPCB\",\n        \"form\": \"WEB NPCB\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"ASHA_RCH\",\n        \"form\": \"Asha RCH Module\",\n        \"state\": null,\n        \"isTrainingReq\": true,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"MYTECHO\",\n        \"form\": \"MYTECHO\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"ASHA_FHS\",\n        \"form\": \"ASHA FHS Read Only\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"IDSP_2\",\n        \"form\": \"Integrated Disease Surveillance Programme\",\n        \"state\": \"MOVE_TO_PRODUCTION\",\n        \"isTrainingReq\": true,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"DATA_CHANGE_REQUEST_REASON\",\n        \"form\": \"Data Change Request Reason\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    },\n    {\n        \"userId\": 0,\n        \"formCode\": \"WEB_TRAINING\",\n        \"form\": \"WEB Training\",\n        \"state\": null,\n        \"isTrainingReq\": false,\n        \"createdOn\": null\n    }\n]"
+					},
+					"response": []
+				},
+				{
+					"name": "GET_METADATA",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getMetadata",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getMetadata"
+							]
+						},
+						"description": "Expected output : \n{\n    \"MigratedFamilyBean\": false,\n    \"DataQualityBean\": true,\n    \"HealthInfrastructureBean\": true,\n    \"FhwServiceDetailBean\": false,\n    \"PregnancyStatusBean\": true,\n    \"SchoolBean\": true,\n    \"LocationMasterBean\": true,\n    \"ListValueBean\": true,\n    \"FamilyBean\": true,\n    \"CovidTravellersInfoBean\": true,\n    \"NotificationBean\": true,\n    \"LabelBean\": true,\n    \"LocationTypeBean\": true,\n    \"MigratedMembersBean\": true,\n    \"MenuBean\": true\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "SYNC_DATA",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{LogInRequestParamDetailDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/syncData",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"syncData"
+							]
+						},
+						"description": "Please note : Add application-version in header\nAlso, data is generally too long so kindly select \"send&download\""
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_RECORD_ENTRY_MOBILE_TO_DB_SERVER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techorecordentryfrommobiletodbservernew",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techorecordentryfrommobiletodbservernew"
+							]
+						},
+						"description": "Expected output :\n[\n    {\n        \"checksum\": \"vjkachhi1657707116924\",\n        \"status\": \"S\",\n        \"message\": null,\n        \"generatedId\": null\n    }\n]\nor\nnull if android version is not correct\n\nPlease note, kindly set application-version in request header"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_GET_TOKEN_VALIDITY",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techogettokenvalidity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techogettokenvalidity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_REVALIDATE_TOKEN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"token\", '\"'+jsonData.newToken+'\"');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techorevalidatetoken",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techorevalidatetoken"
+							]
+						},
+						"description": "Expected output :\n{\n    \"assignedFamilies\": null,\n    \"retrievedVillageAndChildLocations\": null,\n    \"orphanedAndReverificationFamilies\": null,\n    \"fhwServiceStatusDtos\": null,\n    \"updatedFamilyByDate\": null,\n    \"notifications\": null,\n    \"deletedNotifications\": null,\n    \"retrievedLabels\": null,\n    \"csvCoordinates\": null,\n    \"retrievedXlsData\": null,\n    \"currentSheetVersion\": null,\n    \"currentMobileFormVersion\": null,\n    \"retrievedListValues\": null,\n    \"dataQualityBeans\": null,\n    \"retrievedAnnouncements\": null,\n    \"deletedFamilies\": null,\n    \"rchVillageProfileDtos\": null,\n    \"locationMasterBeans\": null,\n    \"locationsForFamilyDataDeletion\": null,\n    \"newToken\": \"pQvSG+G0rHUiFojU0KtNZgSDsC6gGKPp\",\n    \"memberCbacDetails\": null,\n    \"features\": null,\n    \"mobileLibraryDataBeans\": null,\n    \"migratedMembersDataBeans\": null,\n    \"healthInfrastructures\": null,\n    \"schools\": null,\n    \"pregnancyStatus\": null,\n    \"lastPregnancyStatusDate\": null,\n    \"covidTravellersInfos\": null,\n    \"locationTypeMasters\": null,\n    \"mobileMenus\": null,\n    \"migratedFamilyDataBeans\": null,\n    \"courseDataBeans\": null,\n    \"lmsUserMetaData\": null,\n    \"lmsFileDownloadUrl\": null\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_POST_GENERATE_OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/generateotptecho",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"generateotptecho"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getdata",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\":\"menu_list_by_role_ids\",\n    \"parameters\":{\"rids\":\"96,26,24\"},\n    \"sequence\":0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getdata",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getdata"
+							]
+						},
+						"description": "Expected output :\n{\n    \"code\": \"menu_list_by_role_ids\",\n    \"result\": [\n        {\n            \"menu_name\": \"District Factsheet\"\n        },\n        {\n            \"menu_name\": \"Sync Server Management\"\n        },\n        {\n            \"menu_name\": \"Nutrition Screening Center wise Report - V2\"\n        },\n        {\n            \"menu_name\": \"LMS Dashboard\"\n        },\n        {\n            \"menu_name\": \"Maternal Death Causewise\"\n        },\n        {\n            \"menu_name\": \"60+ age member list\"\n        },\n        {\n            \"menu_name\": \"User GEO Services\"\n        },\n        {\n            \"menu_name\": \"Child Health Services Provided during the year (Monthly)\"\n        },\n        {\n            \"menu_name\": \"Helpdesk Tool - Search\"\n        },\n        {\n            \"menu_name\": \"CMTC/NRC Follow-up Visit - V3\"\n        },\n        {\n            \"menu_name\": \"Manage Feature Syncing\"\n        },\n        {\n            \"menu_name\": \"Manage FAQ\"\n        },\n        {\n            \"menu_name\": \"Infrastructure Wise Component Availability\"\n        },\n        {\n            \"menu_name\": \"RCH TRAINING COUNT REPORT\"\n        },\n        {\n            \"menu_name\": \"Manage Health Infrastructure\"\n        },\n        {\n            \"menu_name\": \"Upload Document\"\n        },\n        {\n            \"menu_name\": \"Age-Wise Detail Report - V2\"\n        },\n        {\n            \"menu_name\": \"Manage Values And Multimedia\"\n        },\n        {\n            \"menu_name\": \"Indradhanush Call Status Report - Location Wise\"\n        },\n        {\n            \"menu_name\": \"National Programme For Control of Blindness\"\n        },\n        {\n            \"menu_name\": \"Manage Translations\"\n        },\n        {\n            \"menu_name\": \"Features\"\n        },\n        {\n            \"menu_name\": \"Hospital Admission\"\n        },\n        {\n            \"menu_name\": \"Infant and Neonatal Deaths Report\"\n        },\n        {\n            \"menu_name\": \"Verified Family Moving\"\n        },\n        {\n            \"menu_name\": \"Configure RBSK defects\"\n        },\n        {\n            \"menu_name\": \"Manage Migrations\"\n        },\n        {\n            \"menu_name\": \"Location Wise Expected Target\"\n        },\n        {\n            \"menu_name\": \"Query Excel Sheet Generator\"\n        },\n        {\n            \"menu_name\": \"Institutional Delivery Reg. Form\"\n        },\n        {\n            \"menu_name\": \"FHS Dashboard\"\n        },\n        {\n            \"menu_name\": \"CM Dashboard DDO KPI\"\n        },\n        {\n            \"menu_name\": \"MO Performance Report\"\n        },\n        {\n            \"menu_name\": \"CMTC/NRC Child Screening\"\n        },\n        {\n            \"menu_name\": \"Referred Patients\"\n        },\n        {\n            \"menu_name\": \"Cluster Management\"\n        },\n        {\n            \"menu_name\": \"Tip Of The Day\"\n        },\n        {\n            \"menu_name\": \"Track 104 Calls\"\n        },\n        {\n            \"menu_name\": \"My Training Dashboard\"\n        },\n        {\n            \"menu_name\": \"IDSP2 Cluster Survey Detail\"\n        },\n        {\n            \"menu_name\": \"Indradhanush Call Report - User Wise\"\n        },\n        {\n            \"menu_name\": \"Location Detail Report\"\n        },\n        {\n            \"menu_name\": \"Child Health Services Provided during the year (Yearly)\"\n        },\n        {\n            \"menu_name\": \"Call Center Verification\"\n        },\n        {\n            \"menu_name\": \"Indradhanush Call Status Report - User Wise\"\n        },\n        {\n            \"menu_name\": \"Services Provided to the Children Registered during the Year ( 0 to 1 Year )\"\n        },\n        {\n            \"menu_name\": \"Child for monitoring of Pentavalent 3 Vaccine as per Date of Birth\"\n        },\n        {\n            \"menu_name\": \"Rapid Response Dashboard\"\n        },\n        {\n            \"menu_name\": \"Mobile Library\"\n        },\n        {\n            \"menu_name\": \"Immunization Services Provided to Children with Date of Birth\"\n        },\n        {\n            \"menu_name\": \"Course\"\n        },\n        {\n            \"menu_name\": \"Reports\"\n        },\n        {\n            \"menu_name\": \"Dr. Techo User Approval\"\n        },\n        {\n            \"menu_name\": \"Locations\"\n        },\n        {\n            \"menu_name\": \"Role\"\n        },\n        {\n            \"menu_name\": \"Child Service Visit\"\n        },\n        {\n            \"menu_name\": \"FHS Call Report - User Wise\"\n        },\n        {\n            \"menu_name\": \"Family Moving\"\n        },\n        {\n            \"menu_name\": \"Child's DOB base report for OPV/DPT booster and 2nd dose of Measles Service\"\n        },\n        {\n            \"menu_name\": \"Sms Count Report\"\n        },\n        {\n            \"menu_name\": \"Pregnant Women Report\"\n        },\n        {\n            \"menu_name\": \"Out-Patient Treatment (OPD)\"\n        },\n        {\n            \"menu_name\": \"Manage Teams\"\n        },\n        {\n            \"menu_name\": \"E-mamta Code Remaining\"\n        },\n        {\n            \"menu_name\": \"ANC Service Visit\"\n        },\n        {\n            \"menu_name\": \"Mobile Management\"\n        },\n        {\n            \"menu_name\": \"CMTC/NRC Facility Monitoring - V3\"\n        },\n        {\n            \"menu_name\": \"FHS Call Report - Location wise\"\n        },\n        {\n            \"menu_name\": \"Manage Anganwadis\"\n        },\n        {\n            \"menu_name\": \"Lab wise Sample Status\"\n        },\n        {\n            \"menu_name\": \"State Of Health User Approval\"\n        },\n        {\n            \"menu_name\": \"CM Dashboard OPD IPD report\"\n        },\n        {\n            \"menu_name\": \"Form S\"\n        },\n        {\n            \"menu_name\": \"Content Preview Config\"\n        },\n        {\n            \"menu_name\": \"MO CHFC Re-Verification\"\n        },\n        {\n            \"menu_name\": \"Family Planning Service Visit\"\n        },\n        {\n            \"menu_name\": \"Age-Wise Detail Report\"\n        },\n        {\n            \"menu_name\": \"Events Configured\"\n        },\n        {\n            \"menu_name\": \"Suspected CP\"\n        },\n        {\n            \"menu_name\": \"PMSMA Services Statistics Report during the year\"\n        },\n        {\n            \"menu_name\": \"Lab\"\n        },\n        {\n            \"menu_name\": \"Place of Service Delivery\"\n        },\n        {\n            \"menu_name\": \"SoH Application\"\n        },\n        {\n            \"menu_name\": \"Contact Tracing\"\n        },\n        {\n            \"menu_name\": \"Question Set Configuration\"\n        },\n        {\n            \"menu_name\": \"FHS Work Progress\"\n        },\n        {\n            \"menu_name\": \"Spatial Distribution Of Cases\"\n        },\n        {\n            \"menu_name\": \"State Of Health - Elements\"\n        },\n        {\n            \"menu_name\": \"Feature Usage Analytics\"\n        },\n        {\n            \"menu_name\": \"Covid2019 Hospitalwise detail\"\n        },\n        {\n            \"menu_name\": \"Manage Lab Infrastructure\"\n        },\n        {\n            \"menu_name\": \"Login Rate(Location-wise)\"\n        },\n        {\n            \"menu_name\": \"Widgets management\"\n        },\n        {\n            \"menu_name\": \"Maternal Health Services Provided During The Year (Monthly)\"\n        },\n        {\n            \"menu_name\": \"CBAC Form Fillup Count User Wise\"\n        },\n        {\n            \"menu_name\": \"LGD Code Remaining\"\n        },\n        {\n            \"menu_name\": \"Program Summary\"\n        },\n        {\n            \"menu_name\": \"Performance Dashboard\"\n        },\n        {\n            \"menu_name\": \"MCTS PHC Not In TeCHO+\"\n        },\n        {\n            \"menu_name\": \"Upload Location\"\n        },\n        {\n            \"menu_name\": \"Monitoring BCG Vaccine as per DOB\"\n        },\n        {\n            \"menu_name\": \"Covid Travellers Screening\"\n        },\n        {\n            \"menu_name\": \"Team Type Config\"\n        },\n        {\n            \"menu_name\": \"Facility Performance\"\n        },\n        {\n            \"menu_name\": \"DTC Interface\"\n        },\n        {\n            \"menu_name\": \"Training Schedule\"\n        },\n        {\n            \"menu_name\": \"Janani Shishu Suraksha Karykram Report\"\n        },\n        {\n            \"menu_name\": \"CFHC Report\"\n        },\n        {\n            \"menu_name\": \"HMIS Report\"\n        },\n        {\n            \"menu_name\": \"MO Re-Verification - Level 2\"\n        },\n        {\n            \"menu_name\": \"FHS Family Report\"\n        },\n        {\n            \"menu_name\": \"Suspect List\"\n        },\n        {\n            \"menu_name\": \"Manage OPD Lab Test\"\n        },\n        {\n            \"menu_name\": \"Cheeranjivi Yojana deliveries Report\"\n        },\n        {\n            \"menu_name\": \"Timeline Configuration\"\n        },\n        {\n            \"menu_name\": \"Location Type\"\n        },\n        {\n            \"menu_name\": \"Urban FHS Count\"\n        },\n        {\n            \"menu_name\": \"Facility Status Report\"\n        },\n        {\n            \"menu_name\": \"Manage Schools\"\n        },\n        {\n            \"menu_name\": \"Web Tasks\"\n        },\n        {\n            \"menu_name\": \"RCH Locations\"\n        },\n        {\n            \"menu_name\": \"TEMP - UPDATE PREGNANCY SERVICE DATE\"\n        },\n        {\n            \"menu_name\": \"Command and Control Center\"\n        },\n        {\n            \"menu_name\": \"RCH Register\"\n        },\n        {\n            \"menu_name\": \"NCD Screening Dashboard\"\n        },\n        {\n            \"menu_name\": \"User Information\"\n        },\n        {\n            \"menu_name\": \"0-5 Years Child Survey Screened by ANM\"\n        },\n        {\n            \"menu_name\": \"System Code Management Tool\"\n        },\n        {\n            \"menu_name\": \"PNC Institution Form\"\n        },\n        {\n            \"menu_name\": \"Manage Location Wards\"\n        },\n        {\n            \"menu_name\": \"Services Provided to the Children Registered during the Year ( 1 to 6 Year )\"\n        },\n        {\n            \"menu_name\": \"Form Configurator\"\n        },\n        {\n            \"menu_name\": \"Concurrent PMSMA Report (Monthly)\"\n        },\n        {\n            \"menu_name\": \"Users\"\n        },\n        {\n            \"menu_name\": \"Health Infrastructure Approval\"\n        },\n        {\n            \"menu_name\": \"Dr techo status detail report\"\n        },\n        {\n            \"menu_name\": \"Mobile App Version Count\"\n        },\n        {\n            \"menu_name\": \"Mobile Feature Management\"\n        },\n        {\n            \"menu_name\": \"IDSP Screening Status Report\"\n        },\n        {\n            \"menu_name\": \"State Level Monthly Compilation Sheet for Screening of Birth Defects\"\n        },\n        {\n            \"menu_name\": \"NCD Progress tracking report\"\n        },\n        {\n            \"menu_name\": \"Manage System Configurations\"\n        },\n        {\n            \"menu_name\": \"Positive Case Detail\"\n        },\n        {\n            \"menu_name\": \"Dynamic Form Builder\"\n        },\n        {\n            \"menu_name\": \"Duplicate Member Verification\"\n        },\n        {\n            \"menu_name\": \"Details of Locations not deleted with delete label\"\n        },\n        {\n            \"menu_name\": \"Call Center Dashboard\"\n        },\n        {\n            \"menu_name\": \"Manage Notification\"\n        },\n        {\n            \"menu_name\": \"Server Management\"\n        },\n        {\n            \"menu_name\": \"Card Configuration\"\n        },\n        {\n            \"menu_name\": \"Query Management Tool\"\n        },\n        {\n            \"menu_name\": \"Sickle Cell Screening\"\n        },\n        {\n            \"menu_name\": \"Health Facility Mapping\"\n        },\n        {\n            \"menu_name\": \"GVK : Call Effectiveness Reports\"\n        },\n        {\n            \"menu_name\": \"Location Wise Task Completion\"\n        },\n        {\n            \"menu_name\": \"Service Register\"\n        },\n        {\n            \"menu_name\": \"Trainee Status\"\n        },\n        {\n            \"menu_name\": \"OPD Lab Test Entry\"\n        },\n        {\n            \"menu_name\": \"NCD Screening Status\"\n        },\n        {\n            \"menu_name\": \"Mobile Menu Management\"\n        },\n        {\n            \"menu_name\": \"Staff Sms Configuration\"\n        },\n        {\n            \"menu_name\": \"LBW Child Registered\"\n        },\n        {\n            \"menu_name\": \"Query Builder\"\n        },\n        {\n            \"menu_name\": \"Element Configuration\"\n        }\n    ],\n    \"parameters\": null,\n    \"sequence\": 0\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_GET_FAMILY_TO_BE_ASSIGNED_BY_SEARCH_STRING",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techogetfamilybysearchstring",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techogetfamilybysearchstring"
+							]
+						},
+						"description": "Expected output : \n{\n    \"Family is already assigned to you\": [FamilyDataBean]\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_POST_ASSIGN_FAMILY_TO_USER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techopostassignfamilytouser",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techopostassignfamilytouser"
+							]
+						},
+						"description": "Expected output :\n{\n    \"id\": 10638130,\n    \"familyId\": \"FM/2016/1405069\",\n    \"houseNumber\": \"એ-5\",\n    \"locationId\": 203943,\n    \"address1\": \"વણકરવાસ\",\n    \"address2\": \"પીરાણા\",\n    \"religion\": \"621\",\n    \"caste\": \"627\",\n    \"bplFlag\": false,\n    \"anganwadiId\": null,\n    \"toiletAvailableFlag\": true,\n    \"isVerifiedFlag\": true,\n    \"members\": [\n        {\n            \"id\": 65149225,\n            \"locationId\": null,\n            \"familyId\": \"FM/2016/1405069\",\n            \"firstName\": \"હર્ષદભાઇ\",\n            \"middleName\": \"અમૃતજી\",\n            \"lastName\": \"પરમાર\",\n            \"gender\": \"M\",\n            \"maritalStatus\": 629,\n            \"aadharNumber\": null,\n            \"isAadharUpdated\": false,\n            \"nameBasedOnAadhar\": null,\n            \"mobileNumber\": \"9712367662\",\n            \"familyHeadFlag\": true,\n            \"dob\": 424377000000,\n            \"dateOfBirth\": null,\n            \"uniqueHealthId\": \"A071351150\",\n            \"ifsc\": null,\n            \"accountNumber\": null,\n            \"maaVatsalyaCardNumber\": null,\n            \"isPregnantFlag\": false,\n            \"lmpDate\": null,\n            \"normalCycleDays\": null,\n            \"familyPlanningMethod\": null,\n            \"fpInsertOperateDate\": null,\n            \"healthIssueIds\": null,\n            \"state\": \"CFHC_MV\",\n            \"createdBy\": null,\n            \"updatedBy\": 80126,\n            \"createdOn\": 1527964200000,\n            \"updatedOn\": 1587037370965,\n            \"grandfatherName\": \"માધવજીભાઈ\",\n            \"educationStatus\": 705,\n            \"congenitalAnomalyIds\": null,\n            \"chronicDiseaseIds\": null,\n            \"currentDiseaseIds\": null,\n            \"eyeIssueIds\": null,\n            \"yearOfWedding\": null,\n            \"dateOfWedding\": null,\n            \"jsyPaymentGiven\": null,\n            \"isEarlyRegistration\": null,\n            \"jsyBeneficiary\": null,\n            \"iayBeneficiary\": null,\n            \"kpsyBeneficiary\": null,\n            \"chiranjeeviYojnaBeneficiary\": null,\n            \"haemoglobin\": null,\n            \"weight\": null,\n            \"edd\": null,\n            \"ancVisitDates\": null,\n            \"immunisationGiven\": null,\n            \"bloodGroup\": null,\n            \"placeOfBirth\": null,\n            \"birthWeight\": null,\n            \"motherId\": null,\n            \"complementaryFeedingStarted\": null,\n            \"lastMethodOfContraception\": null,\n            \"isHighRiskCase\": null,\n            \"curPregRegDetId\": null,\n            \"curPregRegDate\": null,\n            \"menopauseArrived\": null,\n            \"syncStatus\": null,\n            \"isIucdRemoved\": null,\n            \"iucdRemovalDate\": null,\n            \"lastDeliveryDate\": null,\n            \"hysterectomyDone\": null,\n            \"childNrcCmtcStatus\": null,\n            \"lastDeliveryOutcome\": null,\n            \"previousPregnancyComplication\": null,\n            \"additionalInfo\": null,\n            \"npcbScreeningDate\": null,\n            \"fhsrPhoneVerified\": null,\n            \"address\": null,\n            \"lmp\": null,\n            \"menstruationDays\": null,\n            \"mytechoUserId\": null,\n            \"currentGravida\": null,\n            \"currentPara\": null,\n            \"husbandId\": null,\n            \"isMobileNumberVerified\": null,\n            \"relationWithHof\": \"SON\",\n            \"cbacDate\": null,\n            \"hypYear\": null,\n            \"oralYear\": null,\n            \"diabetesYear\": null,\n            \"breastYear\": null,\n            \"cervicalYear\": null,\n            \"mentalHealthYear\": null,\n            \"healthId\": null,\n            \"healthIdNumber\": null,\n            \"vulnerableFlag\": null\n        },\n        {\n            \"id\": 65149226,\n            \"locationId\": null,\n            \"familyId\": \"FM/2016/1405069\",\n            \"firstName\": \" પિનલબેન\",\n            \"middleName\": \"અનિલભાઇ\",\n            \"lastName\": \"અગ્રવાલ\",\n            \"gender\": \"F\",\n            \"maritalStatus\": 629,\n            \"aadharNumber\": null,\n            \"isAadharUpdated\": false,\n            \"nameBasedOnAadhar\": null,\n            \"mobileNumber\": \"9912115107\",\n            \"familyHeadFlag\": false,\n            \"dob\": 477513000000,\n            \"dateOfBirth\": null,\n            \"uniqueHealthId\": \"A071351151\",\n            \"ifsc\": null,\n            \"accountNumber\": null,\n            \"maaVatsalyaCardNumber\": null,\n            \"isPregnantFlag\": false,\n            \"lmpDate\": null,\n            \"normalCycleDays\": null,\n            \"familyPlanningMethod\": \"683\",\n            \"fpInsertOperateDate\": null,\n            \"healthIssueIds\": null,\n            \"state\": \"CFHC_MV\",\n            \"createdBy\": null,\n            \"updatedBy\": 80126,\n            \"createdOn\": 1527964200000,\n            \"updatedOn\": 1587037370964,\n            \"grandfatherName\": null,\n            \"educationStatus\": 704,\n            \"congenitalAnomalyIds\": null,\n            \"chronicDiseaseIds\": null,\n            \"currentDiseaseIds\": null,\n            \"eyeIssueIds\": null,\n            \"yearOfWedding\": null,\n            \"dateOfWedding\": null,\n            \"jsyPaymentGiven\": null,\n            \"isEarlyRegistration\": null,\n            \"jsyBeneficiary\": null,\n            \"iayBeneficiary\": null,\n            \"kpsyBeneficiary\": null,\n            \"chiranjeeviYojnaBeneficiary\": null,\n            \"haemoglobin\": null,\n            \"weight\": null,\n            \"edd\": null,\n            \"ancVisitDates\": null,\n            \"immunisationGiven\": null,\n            \"bloodGroup\": null,\n            \"placeOfBirth\": null,\n            \"birthWeight\": null,\n            \"motherId\": null,\n            \"complementaryFeedingStarted\": null,\n            \"lastMethodOfContraception\": null,\n            \"isHighRiskCase\": null,\n            \"curPregRegDetId\": null,\n            \"curPregRegDate\": null,\n            \"menopauseArrived\": false,\n            \"syncStatus\": null,\n            \"isIucdRemoved\": null,\n            \"iucdRemovalDate\": null,\n            \"lastDeliveryDate\": null,\n            \"hysterectomyDone\": null,\n            \"childNrcCmtcStatus\": null,\n            \"lastDeliveryOutcome\": null,\n            \"previousPregnancyComplication\": null,\n            \"additionalInfo\": null,\n            \"npcbScreeningDate\": null,\n            \"fhsrPhoneVerified\": null,\n            \"address\": null,\n            \"lmp\": null,\n            \"menstruationDays\": null,\n            \"mytechoUserId\": null,\n            \"currentGravida\": null,\n            \"currentPara\": null,\n            \"husbandId\": 65149225,\n            \"isMobileNumberVerified\": null,\n            \"relationWithHof\": \"DAUGHTER-IN-LAW\",\n            \"cbacDate\": null,\n            \"hypYear\": null,\n            \"oralYear\": null,\n            \"diabetesYear\": null,\n            \"breastYear\": null,\n            \"cervicalYear\": null,\n            \"mentalHealthYear\": null,\n            \"healthId\": null,\n            \"healthIdNumber\": null,\n            \"vulnerableFlag\": null\n        },\n        {\n            \"id\": 114615737,\n            \"locationId\": null,\n            \"familyId\": \"FM/2016/1405069\",\n            \"firstName\": \"પૂનમ\",\n            \"middleName\": null,\n            \"lastName\": \"ઠાકોર\",\n            \"gender\": \"M\",\n            \"maritalStatus\": 629,\n            \"aadharNumber\": null,\n            \"isAadharUpdated\": false,\n            \"nameBasedOnAadhar\": null,\n            \"mobileNumber\": \"7698619271\",\n            \"familyHeadFlag\": true,\n            \"dob\": -282547800000,\n            \"dateOfBirth\": null,\n            \"uniqueHealthId\": \"A103080000N\",\n            \"ifsc\": null,\n            \"accountNumber\": null,\n            \"maaVatsalyaCardNumber\": null,\n            \"isPregnantFlag\": false,\n            \"lmpDate\": null,\n            \"normalCycleDays\": null,\n            \"familyPlanningMethod\": null,\n            \"fpInsertOperateDate\": null,\n            \"healthIssueIds\": null,\n            \"state\": \"CFHC_MV\",\n            \"createdBy\": 18385,\n            \"updatedBy\": 80126,\n            \"createdOn\": 1550225177426,\n            \"updatedOn\": 1587037370965,\n            \"grandfatherName\": null,\n            \"educationStatus\": 704,\n            \"congenitalAnomalyIds\": null,\n            \"chronicDiseaseIds\": null,\n            \"currentDiseaseIds\": null,\n            \"eyeIssueIds\": null,\n            \"yearOfWedding\": null,\n            \"dateOfWedding\": null,\n            \"jsyPaymentGiven\": null,\n            \"isEarlyRegistration\": null,\n            \"jsyBeneficiary\": null,\n            \"iayBeneficiary\": null,\n            \"kpsyBeneficiary\": null,\n            \"chiranjeeviYojnaBeneficiary\": null,\n            \"haemoglobin\": null,\n            \"weight\": null,\n            \"edd\": null,\n            \"ancVisitDates\": null,\n            \"immunisationGiven\": null,\n            \"bloodGroup\": null,\n            \"placeOfBirth\": null,\n            \"birthWeight\": null,\n            \"motherId\": null,\n            \"complementaryFeedingStarted\": null,\n            \"lastMethodOfContraception\": null,\n            \"isHighRiskCase\": null,\n            \"curPregRegDetId\": null,\n            \"curPregRegDate\": null,\n            \"menopauseArrived\": null,\n            \"syncStatus\": null,\n            \"isIucdRemoved\": null,\n            \"iucdRemovalDate\": null,\n            \"lastDeliveryDate\": null,\n            \"hysterectomyDone\": null,\n            \"childNrcCmtcStatus\": null,\n            \"lastDeliveryOutcome\": null,\n            \"previousPregnancyComplication\": null,\n            \"additionalInfo\": null,\n            \"npcbScreeningDate\": null,\n            \"fhsrPhoneVerified\": null,\n            \"address\": null,\n            \"lmp\": null,\n            \"menstruationDays\": null,\n            \"mytechoUserId\": null,\n            \"currentGravida\": null,\n            \"currentPara\": null,\n            \"husbandId\": null,\n            \"isMobileNumberVerified\": null,\n            \"relationWithHof\": null,\n            \"cbacDate\": null,\n            \"hypYear\": null,\n            \"oralYear\": null,\n            \"diabetesYear\": null,\n            \"breastYear\": null,\n            \"cervicalYear\": null,\n            \"mentalHealthYear\": null,\n            \"healthId\": null,\n            \"healthIdNumber\": null,\n            \"vulnerableFlag\": null\n        },\n        {\n            \"id\": 65149227,\n            \"locationId\": null,\n            \"familyId\": \"FM/2016/1405069\",\n            \"firstName\": \"પાયલ\",\n            \"middleName\": \"દલપતભાઇ\",\n            \"lastName\": \"ડાભી\",\n            \"gender\": \"F\",\n            \"maritalStatus\": 629,\n            \"aadharNumber\": null,\n            \"isAadharUpdated\": false,\n            \"nameBasedOnAadhar\": null,\n            \"mobileNumber\": null,\n            \"familyHeadFlag\": false,\n            \"dob\": 1171391400000,\n            \"dateOfBirth\": null,\n            \"uniqueHealthId\": \"A071351152\",\n            \"ifsc\": null,\n            \"accountNumber\": null,\n            \"maaVatsalyaCardNumber\": null,\n            \"isPregnantFlag\": false,\n            \"lmpDate\": null,\n            \"normalCycleDays\": null,\n            \"familyPlanningMethod\": null,\n            \"fpInsertOperateDate\": null,\n            \"healthIssueIds\": null,\n            \"state\": \"CFHC_MV\",\n            \"createdBy\": null,\n            \"updatedBy\": 80126,\n            \"createdOn\": 1527964200000,\n            \"updatedOn\": 1587037370964,\n            \"grandfatherName\": null,\n            \"educationStatus\": 704,\n            \"congenitalAnomalyIds\": null,\n            \"chronicDiseaseIds\": null,\n            \"currentDiseaseIds\": null,\n            \"eyeIssueIds\": null,\n            \"yearOfWedding\": null,\n            \"dateOfWedding\": null,\n            \"jsyPaymentGiven\": null,\n            \"isEarlyRegistration\": null,\n            \"jsyBeneficiary\": null,\n            \"iayBeneficiary\": null,\n            \"kpsyBeneficiary\": null,\n            \"chiranjeeviYojnaBeneficiary\": null,\n            \"haemoglobin\": null,\n            \"weight\": null,\n            \"edd\": null,\n            \"ancVisitDates\": null,\n            \"immunisationGiven\": \"OPV_0#17/09/2016,HEPATITIS_B_0#17/09/2016,BCG#17/09/2016,VITAMIN_K#17/09/2016,OPV_1#01/11/2016,PENTA_1#01/11/2016,PENTA_2#13/12/2016,OPV_2#13/12/2016,F_IPV_1_01#06/02/2017,PENTA_3#06/02/2017,OPV_3#06/02/2017,VITAMIN_A#14/06/2017,MEASLES_1#14/06/2017,MEASLES_2#01/02/2018,DPT_BOOSTER#01/02/2018,OPV_BOOSTER#01/02/2018,VITAMIN_A#01/02/2018\",\n            \"bloodGroup\": null,\n            \"placeOfBirth\": null,\n            \"birthWeight\": null,\n            \"motherId\": 65149226,\n            \"complementaryFeedingStarted\": null,\n            \"lastMethodOfContraception\": null,\n            \"isHighRiskCase\": null,\n            \"curPregRegDetId\": null,\n            \"curPregRegDate\": null,\n            \"menopauseArrived\": null,\n            \"syncStatus\": null,\n            \"isIucdRemoved\": null,\n            \"iucdRemovalDate\": null,\n            \"lastDeliveryDate\": null,\n            \"hysterectomyDone\": null,\n            \"childNrcCmtcStatus\": null,\n            \"lastDeliveryOutcome\": null,\n            \"previousPregnancyComplication\": null,\n            \"additionalInfo\": null,\n            \"npcbScreeningDate\": null,\n            \"fhsrPhoneVerified\": null,\n            \"address\": null,\n            \"lmp\": null,\n            \"menstruationDays\": null,\n            \"mytechoUserId\": null,\n            \"currentGravida\": null,\n            \"currentPara\": null,\n            \"husbandId\": null,\n            \"isMobileNumberVerified\": null,\n            \"relationWithHof\": \"DAUGHTER\",\n            \"cbacDate\": null,\n            \"hypYear\": null,\n            \"oralYear\": null,\n            \"diabetesYear\": null,\n            \"breastYear\": null,\n            \"cervicalYear\": null,\n            \"mentalHealthYear\": null,\n            \"healthId\": null,\n            \"healthIdNumber\": null,\n            \"vulnerableFlag\": null\n        },\n        {\n            \"id\": 114615738,\n            \"locationId\": null,\n            \"familyId\": \"FM/2016/1405069\",\n            \"firstName\": \"સવિતાબેન\",\n            \"middleName\": \"અનિલકુમાર\",\n            \"lastName\": \"ભાલાળા\",\n            \"gender\": \"F\",\n            \"maritalStatus\": 630,\n            \"aadharNumber\": null,\n            \"isAadharUpdated\": false,\n            \"nameBasedOnAadhar\": null,\n            \"mobileNumber\": null,\n            \"familyHeadFlag\": false,\n            \"dob\": 1210185000000,\n            \"dateOfBirth\": null,\n            \"uniqueHealthId\": \"A103079998N\",\n            \"ifsc\": null,\n            \"accountNumber\": null,\n            \"maaVatsalyaCardNumber\": null,\n            \"isPregnantFlag\": false,\n            \"lmpDate\": null,\n            \"normalCycleDays\": null,\n            \"familyPlanningMethod\": null,\n            \"fpInsertOperateDate\": null,\n            \"healthIssueIds\": null,\n            \"state\": \"CFHC_MV\",\n            \"createdBy\": 18385,\n            \"updatedBy\": 80126,\n            \"createdOn\": 1550225177435,\n            \"updatedOn\": 1587037370965,\n            \"grandfatherName\": null,\n            \"educationStatus\": 703,\n            \"congenitalAnomalyIds\": null,\n            \"chronicDiseaseIds\": null,\n            \"currentDiseaseIds\": null,\n            \"eyeIssueIds\": null,\n            \"yearOfWedding\": null,\n            \"dateOfWedding\": null,\n            \"jsyPaymentGiven\": null,\n            \"isEarlyRegistration\": null,\n            \"jsyBeneficiary\": null,\n            \"iayBeneficiary\": null,\n            \"kpsyBeneficiary\": null,\n            \"chiranjeeviYojnaBeneficiary\": null,\n            \"haemoglobin\": null,\n            \"weight\": null,\n            \"edd\": null,\n            \"ancVisitDates\": null,\n            \"immunisationGiven\": null,\n            \"bloodGroup\": null,\n            \"placeOfBirth\": null,\n            \"birthWeight\": null,\n            \"motherId\": 65149226,\n            \"complementaryFeedingStarted\": null,\n            \"lastMethodOfContraception\": null,\n            \"isHighRiskCase\": null,\n            \"curPregRegDetId\": null,\n            \"curPregRegDate\": null,\n            \"menopauseArrived\": null,\n            \"syncStatus\": null,\n            \"isIucdRemoved\": null,\n            \"iucdRemovalDate\": null,\n            \"lastDeliveryDate\": null,\n            \"hysterectomyDone\": null,\n            \"childNrcCmtcStatus\": null,\n            \"lastDeliveryOutcome\": null,\n            \"previousPregnancyComplication\": null,\n            \"additionalInfo\": null,\n            \"npcbScreeningDate\": null,\n            \"fhsrPhoneVerified\": null,\n            \"address\": null,\n            \"lmp\": null,\n            \"menstruationDays\": null,\n            \"mytechoUserId\": null,\n            \"currentGravida\": null,\n            \"currentPara\": null,\n            \"husbandId\": null,\n            \"isMobileNumberVerified\": null,\n            \"relationWithHof\": \"DAUGHTER\",\n            \"cbacDate\": null,\n            \"hypYear\": null,\n            \"oralYear\": null,\n            \"diabetesYear\": null,\n            \"breastYear\": null,\n            \"cervicalYear\": null,\n            \"mentalHealthYear\": null,\n            \"healthId\": null,\n            \"healthIdNumber\": null,\n            \"vulnerableFlag\": null\n        },\n        {\n            \"id\": 114615739,\n            \"locationId\": null,\n            \"familyId\": \"FM/2016/1405069\",\n            \"firstName\": \"શોભાબેન\",\n            \"middleName\": \"રાહુલભાઈ\",\n            \"lastName\": \"રફાળિયિ\",\n            \"gender\": \"F\",\n            \"maritalStatus\": 629,\n            \"aadharNumber\": null,\n            \"isAadharUpdated\": false,\n            \"nameBasedOnAadhar\": null,\n            \"mobileNumber\": null,\n            \"familyHeadFlag\": false,\n            \"dob\": -307171800000,\n            \"dateOfBirth\": null,\n            \"uniqueHealthId\": \"A103079999N\",\n            \"ifsc\": null,\n            \"accountNumber\": null,\n            \"maaVatsalyaCardNumber\": null,\n            \"isPregnantFlag\": false,\n            \"lmpDate\": null,\n            \"normalCycleDays\": null,\n            \"familyPlanningMethod\": null,\n            \"fpInsertOperateDate\": null,\n            \"healthIssueIds\": null,\n            \"state\": \"CFHC_MV\",\n            \"createdBy\": 18385,\n            \"updatedBy\": 80126,\n            \"createdOn\": 1550225177438,\n            \"updatedOn\": 1587037370965,\n            \"grandfatherName\": null,\n            \"educationStatus\": 704,\n            \"congenitalAnomalyIds\": null,\n            \"chronicDiseaseIds\": null,\n            \"currentDiseaseIds\": null,\n            \"eyeIssueIds\": null,\n            \"yearOfWedding\": null,\n            \"dateOfWedding\": null,\n            \"jsyPaymentGiven\": null,\n            \"isEarlyRegistration\": null,\n            \"jsyBeneficiary\": null,\n            \"iayBeneficiary\": null,\n            \"kpsyBeneficiary\": null,\n            \"chiranjeeviYojnaBeneficiary\": null,\n            \"haemoglobin\": null,\n            \"weight\": null,\n            \"edd\": null,\n            \"ancVisitDates\": null,\n            \"immunisationGiven\": null,\n            \"bloodGroup\": null,\n            \"placeOfBirth\": null,\n            \"birthWeight\": null,\n            \"motherId\": null,\n            \"complementaryFeedingStarted\": null,\n            \"lastMethodOfContraception\": null,\n            \"isHighRiskCase\": null,\n            \"curPregRegDetId\": null,\n            \"curPregRegDate\": null,\n            \"menopauseArrived\": null,\n            \"syncStatus\": null,\n            \"isIucdRemoved\": null,\n            \"iucdRemovalDate\": null,\n            \"lastDeliveryDate\": null,\n            \"hysterectomyDone\": null,\n            \"childNrcCmtcStatus\": null,\n            \"lastDeliveryOutcome\": null,\n            \"previousPregnancyComplication\": null,\n            \"additionalInfo\": null,\n            \"npcbScreeningDate\": null,\n            \"fhsrPhoneVerified\": null,\n            \"address\": null,\n            \"lmp\": null,\n            \"menstruationDays\": null,\n            \"mytechoUserId\": null,\n            \"currentGravida\": null,\n            \"currentPara\": null,\n            \"husbandId\": 114615737,\n            \"isMobileNumberVerified\": null,\n            \"relationWithHof\": \"WIFE\",\n            \"cbacDate\": null,\n            \"hypYear\": null,\n            \"oralYear\": null,\n            \"diabetesYear\": null,\n            \"breastYear\": null,\n            \"cervicalYear\": null,\n            \"mentalHealthYear\": null,\n            \"healthId\": null,\n            \"healthIdNumber\": null,\n            \"vulnerableFlag\": null\n        }\n    ],\n    \"state\": \"CFHC_FV\",\n    \"createdBy\": null,\n    \"updatedBy\": 18917,\n    \"createdOn\": 1527877800000,\n    \"updatedOn\": 1658130348293,\n    \"assignedTo\": 18917,\n    \"maaVatsalyaNumber\": null,\n    \"rsbyCardNumber\": null,\n    \"comment\": null,\n    \"vulnerableFlag\": false,\n    \"seasonalMigrantFlag\": false,\n    \"areaId\": \"203951\",\n    \"headMemberName\": null,\n    \"contactPersonId\": 114615737,\n    \"anganwadiUpdateFlag\": null,\n    \"anyMemberCbacDone\": null,\n    \"typeOfHouse\": null,\n    \"typeOfToilet\": null,\n    \"electricityAvailability\": null,\n    \"drinkingWaterSource\": null,\n    \"fuelForCooking\": null,\n    \"vehicleDetails\": null,\n    \"houseOwnershipStatus\": null,\n    \"rationCardNumber\": null,\n    \"annualIncome\": null,\n    \"bplCardNumber\": null,\n    \"lastFhsDate\": 1587037370919,\n    \"lastMemberNcdScreeningDate\": null,\n    \"lastIdspScreeningDate\": 1585289129129,\n    \"lastIdsp2ScreeningDate\": 1586682579323,\n    \"vulnerabilityCriteria\": null,\n    \"eligibleForPmjay\": null,\n    \"providingConsent\": null\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_POST_MERGED_FAMILIES_INFORMATION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techopostmergedfamiliesinformation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techopostmergedfamiliesinformation"
+							]
+						},
+						"description": "Expected output : boolean value\n(true / false)"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_POST_USER_READY_TO_MOVE_PRODUCTION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techopostuserreadytomoveproduction",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techopostuserreadytomoveproduction"
+							]
+						},
+						"description": "Expected output : void"
+					},
+					"response": []
+				},
+				{
+					"name": "GET_DETAILS_FHW",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{LogInRequestParamDetailDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getDetails",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getDetails"
+							]
+						},
+						"description": "Please note : Add application-version in header\nAlso, data is generally too long so kindly select \"send&download\""
+					},
+					"response": []
+				},
+				{
+					"name": "GET_DETAILS_ASHA",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{LogInRequestParamDetailDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getdetailsasha",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getdetailsasha"
+							]
+						},
+						"description": "Please note : Add application-version in header\nAlso, data is generally too long so kindly select \"send&download\""
+					},
+					"response": []
+				},
+				{
+					"name": "GET_DETAILS_FHSR",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{LogInRequestParamDetailDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getdetailsfhsr",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getdetailsfhsr"
+							]
+						},
+						"description": "Please note : Add application-version in header\nAlso, data is generally too long so kindly select \"send&download\""
+					},
+					"response": []
+				},
+				{
+					"name": "GET_DETAILS_AWW",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{LogInRequestParamDetailDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getdetailsaww",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getdetailsaww"
+							]
+						},
+						"description": "Please note : Add application-version in header\nAlso, data is generally too long so kindly select \"send&download\""
+					},
+					"response": []
+				},
+				{
+					"name": "GET_DETAILS_RBSK",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "application-version",
+								"value": "104",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{LogInRequestParamDetailDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getdetailsrbsk",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getdetailsrbsk"
+							]
+						},
+						"description": "Please note : Add application-version in header\nAlso, data is generally too long so kindly select \"send&download\""
+					},
+					"response": []
+				},
+				{
+					"name": "GET_FAMILIES_BY_LOCATION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{LogInRequestParamDetailDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getfamiliesbylocation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getfamiliesbylocation"
+							]
+						},
+						"description": "Please note : data is generally too long so kindly select \"send&download\""
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_POST_RBSK_SCREENING_DETAILS",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{RbskScreeningDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/rbskscreeningdetails",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"rbskscreeningdetails"
+							]
+						},
+						"description": "Expected output : string\n\"Screening done successfully.\""
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_GET_USER_FROM_TOKEN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techogetuserfromtoken",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techogetuserfromtoken"
+							]
+						},
+						"description": "Expected output :\n{\n    \"r6mQUGxT2Mpp2tLn1/TLQlHU2gWgiDKM\": [\n        \"18917\",\n        \"73OrwFJDNUJ2uCz6XMpNnbnfD4sGWqB/\"\n    ],\n    \"PCNM/2Sqrc15+gsBH1nu513OLxa1iRyi\": [\n        \"18917\",\n        \"73OrwFJDNUJ2uCz6XMpNnbnfD4sGWqB/\"\n    ]\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_GET_NAME_BASED_ON_AADHAR",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getnamebasedonaadhar",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getnamebasedonaadhar"
+							]
+						},
+						"description": "Expected output :\n{\n    \"119562208\": \"Dodiya Hiraben\",\n    \"20790525\": \"Chauhan Kinjalben Arvindbhai\",\n    \"22297078\": \"Thakor Sonalben Jitendrabhai\",\n    \"119562210\": \"Dodiya Dilipbhai\",\n    \"93397075\": \"Thakor Alkaben Saileshbhai\",\n    \"22033555\": \"Singhal Ramilaben Vijaybhai\",\n    \"22278135\": \"Panara Jagruti Vivekbhai\",\n    \"20613660\": \"Vaghel Sonalben\",\n    \"22128665\": \"Bhoi Jagrutiben Pravinbhai\",\n    \"20790519\": \"Chauhan Minakshiben\",\n    \"120202374\": \"Thakor Nehal\",\n    \"118766437\": \"Thakor Urmilaben\",\n    \"118931585\": \"Thakor Janakben\",\n    \"120770920\": \"Ganesha Ram\",\n    \"92814386\": \"Makwana Soniya Rameshji\",\n    \"22260296\": \"Chunara Hiralben Hitubhai\",\n    \"21899346\": \"Thakor Archanaben\",\n    \"119562206\": \"Shailendrabhai Dilipsinh Dodiya\",\n    \"119562207\": \"Dodiya Nitaben\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_POST_MARK_ATTENDANCE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/markattendance",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"markattendance"
+							]
+						},
+						"description": "Expected output : \nInteger value\n189353"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_POST_STORE_ATTENDANCE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/storeattendance",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"storeattendance"
+							]
+						},
+						"description": "Expected output : void"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_STORE_OPD_LAB_TEST_FORM",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/storeOpdLabTest",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"storeOpdLabTest"
+							]
+						},
+						"description": "Expected output : \"Your form has been saved successfully\""
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_STORE_COVID_SYMPTOM_CHECKER_DUMP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n       {{CovidSymptomCheckerDto}},{{CovidSymptomCheckerDto}}\n    ]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/storeCovidSymtomCheckerDump",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"storeCovidSymtomCheckerDump"
+							]
+						},
+						"description": "Expected output : void"
+					},
+					"response": []
+				},
+				{
+					"name": "/getdata/{code}",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\":\"menu_list_by_role_ids\",\n    \"parameters\":{\"rids\":[96,26,24]}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getdata/mob_work_register_detail",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getdata",
+								"mob_work_register_detail"
+							]
+						},
+						"description": "Expected output : \n{\n    \"code\": \"menu_list_by_role_ids\",\n    \"result\": [\n        {\n            \"menu_name\": \"District Factsheet\"\n        },\n        {\n            \"menu_name\": \"Sync Server Management\"\n        },\n        {\n            \"menu_name\": \"Nutrition Screening Center wise Report - V2\"\n        },\n        {\n            \"menu_name\": \"LMS Dashboard\"\n        },\n        {\n            \"menu_name\": \"Maternal Death Causewise\"\n        },\n        {\n            \"menu_name\": \"60+ age member list\"\n        },\n        {\n            \"menu_name\": \"User GEO Services\"\n        },\n        {\n            \"menu_name\": \"Child Health Services Provided during the year (Monthly)\"\n        },\n        {\n            \"menu_name\": \"Helpdesk Tool - Search\"\n        },\n        {\n            \"menu_name\": \"CMTC/NRC Follow-up Visit - V3\"\n        },\n        {\n            \"menu_name\": \"Manage Feature Syncing\"\n        },\n        {\n            \"menu_name\": \"Manage FAQ\"\n        },\n        {\n            \"menu_name\": \"Infrastructure Wise Component Availability\"\n        },\n        {\n            \"menu_name\": \"RCH TRAINING COUNT REPORT\"\n        },\n        {\n            \"menu_name\": \"Manage Health Infrastructure\"\n        },\n        {\n            \"menu_name\": \"Upload Document\"\n        },\n        {\n            \"menu_name\": \"Age-Wise Detail Report - V2\"\n        },\n        {\n            \"menu_name\": \"Manage Values And Multimedia\"\n        },\n        {\n            \"menu_name\": \"Indradhanush Call Status Report - Location Wise\"\n        },\n        {\n            \"menu_name\": \"National Programme For Control of Blindness\"\n        },\n        {\n            \"menu_name\": \"Manage Translations\"\n        },\n        {\n            \"menu_name\": \"Features\"\n        },\n        {\n            \"menu_name\": \"Hospital Admission\"\n        },\n        {\n            \"menu_name\": \"Infant and Neonatal Deaths Report\"\n        },\n        {\n            \"menu_name\": \"Verified Family Moving\"\n        },\n        {\n            \"menu_name\": \"Configure RBSK defects\"\n        },\n        {\n            \"menu_name\": \"Manage Migrations\"\n        },\n        {\n            \"menu_name\": \"Location Wise Expected Target\"\n        },\n        {\n            \"menu_name\": \"Query Excel Sheet Generator\"\n        },\n        {\n            \"menu_name\": \"Institutional Delivery Reg. Form\"\n        },\n        {\n            \"menu_name\": \"FHS Dashboard\"\n        },\n        {\n            \"menu_name\": \"CM Dashboard DDO KPI\"\n        },\n        {\n            \"menu_name\": \"MO Performance Report\"\n        },\n        {\n            \"menu_name\": \"CMTC/NRC Child Screening\"\n        },\n        {\n            \"menu_name\": \"Referred Patients\"\n        },\n        {\n            \"menu_name\": \"Cluster Management\"\n        },\n        {\n            \"menu_name\": \"Tip Of The Day\"\n        },\n        {\n            \"menu_name\": \"Track 104 Calls\"\n        },\n        {\n            \"menu_name\": \"My Training Dashboard\"\n        },\n        {\n            \"menu_name\": \"IDSP2 Cluster Survey Detail\"\n        },\n        {\n            \"menu_name\": \"Indradhanush Call Report - User Wise\"\n        },\n        {\n            \"menu_name\": \"Location Detail Report\"\n        },\n        {\n            \"menu_name\": \"Child Health Services Provided during the year (Yearly)\"\n        },\n        {\n            \"menu_name\": \"Call Center Verification\"\n        },\n        {\n            \"menu_name\": \"Indradhanush Call Status Report - User Wise\"\n        },\n        {\n            \"menu_name\": \"Services Provided to the Children Registered during the Year ( 0 to 1 Year )\"\n        },\n        {\n            \"menu_name\": \"Child for monitoring of Pentavalent 3 Vaccine as per Date of Birth\"\n        },\n        {\n            \"menu_name\": \"Rapid Response Dashboard\"\n        },\n        {\n            \"menu_name\": \"Mobile Library\"\n        },\n        {\n            \"menu_name\": \"Immunization Services Provided to Children with Date of Birth\"\n        },\n        {\n            \"menu_name\": \"Course\"\n        },\n        {\n            \"menu_name\": \"Reports\"\n        },\n        {\n            \"menu_name\": \"Dr. Techo User Approval\"\n        },\n        {\n            \"menu_name\": \"Locations\"\n        },\n        {\n            \"menu_name\": \"Role\"\n        },\n        {\n            \"menu_name\": \"Child Service Visit\"\n        },\n        {\n            \"menu_name\": \"FHS Call Report - User Wise\"\n        },\n        {\n            \"menu_name\": \"Family Moving\"\n        },\n        {\n            \"menu_name\": \"Child's DOB base report for OPV/DPT booster and 2nd dose of Measles Service\"\n        },\n        {\n            \"menu_name\": \"Sms Count Report\"\n        },\n        {\n            \"menu_name\": \"Pregnant Women Report\"\n        },\n        {\n            \"menu_name\": \"Out-Patient Treatment (OPD)\"\n        },\n        {\n            \"menu_name\": \"Manage Teams\"\n        },\n        {\n            \"menu_name\": \"E-mamta Code Remaining\"\n        },\n        {\n            \"menu_name\": \"ANC Service Visit\"\n        },\n        {\n            \"menu_name\": \"Mobile Management\"\n        },\n        {\n            \"menu_name\": \"CMTC/NRC Facility Monitoring - V3\"\n        },\n        {\n            \"menu_name\": \"FHS Call Report - Location wise\"\n        },\n        {\n            \"menu_name\": \"Manage Anganwadis\"\n        },\n        {\n            \"menu_name\": \"Lab wise Sample Status\"\n        },\n        {\n            \"menu_name\": \"State Of Health User Approval\"\n        },\n        {\n            \"menu_name\": \"CM Dashboard OPD IPD report\"\n        },\n        {\n            \"menu_name\": \"Form S\"\n        },\n        {\n            \"menu_name\": \"Content Preview Config\"\n        },\n        {\n            \"menu_name\": \"MO CHFC Re-Verification\"\n        },\n        {\n            \"menu_name\": \"Family Planning Service Visit\"\n        },\n        {\n            \"menu_name\": \"Age-Wise Detail Report\"\n        },\n        {\n            \"menu_name\": \"Events Configured\"\n        },\n        {\n            \"menu_name\": \"Suspected CP\"\n        },\n        {\n            \"menu_name\": \"PMSMA Services Statistics Report during the year\"\n        },\n        {\n            \"menu_name\": \"Lab\"\n        },\n        {\n            \"menu_name\": \"Place of Service Delivery\"\n        },\n        {\n            \"menu_name\": \"SoH Application\"\n        },\n        {\n            \"menu_name\": \"Contact Tracing\"\n        },\n        {\n            \"menu_name\": \"Question Set Configuration\"\n        },\n        {\n            \"menu_name\": \"FHS Work Progress\"\n        },\n        {\n            \"menu_name\": \"Spatial Distribution Of Cases\"\n        },\n        {\n            \"menu_name\": \"State Of Health - Elements\"\n        },\n        {\n            \"menu_name\": \"Feature Usage Analytics\"\n        },\n        {\n            \"menu_name\": \"Covid2019 Hospitalwise detail\"\n        },\n        {\n            \"menu_name\": \"Manage Lab Infrastructure\"\n        },\n        {\n            \"menu_name\": \"Login Rate(Location-wise)\"\n        },\n        {\n            \"menu_name\": \"Widgets management\"\n        },\n        {\n            \"menu_name\": \"Maternal Health Services Provided During The Year (Monthly)\"\n        },\n        {\n            \"menu_name\": \"CBAC Form Fillup Count User Wise\"\n        },\n        {\n            \"menu_name\": \"LGD Code Remaining\"\n        },\n        {\n            \"menu_name\": \"Program Summary\"\n        },\n        {\n            \"menu_name\": \"Performance Dashboard\"\n        },\n        {\n            \"menu_name\": \"MCTS PHC Not In TeCHO+\"\n        },\n        {\n            \"menu_name\": \"Upload Location\"\n        },\n        {\n            \"menu_name\": \"Monitoring BCG Vaccine as per DOB\"\n        },\n        {\n            \"menu_name\": \"Covid Travellers Screening\"\n        },\n        {\n            \"menu_name\": \"Team Type Config\"\n        },\n        {\n            \"menu_name\": \"Facility Performance\"\n        },\n        {\n            \"menu_name\": \"DTC Interface\"\n        },\n        {\n            \"menu_name\": \"Training Schedule\"\n        },\n        {\n            \"menu_name\": \"Janani Shishu Suraksha Karykram Report\"\n        },\n        {\n            \"menu_name\": \"CFHC Report\"\n        },\n        {\n            \"menu_name\": \"HMIS Report\"\n        },\n        {\n            \"menu_name\": \"MO Re-Verification - Level 2\"\n        },\n        {\n            \"menu_name\": \"FHS Family Report\"\n        },\n        {\n            \"menu_name\": \"Suspect List\"\n        },\n        {\n            \"menu_name\": \"Manage OPD Lab Test\"\n        },\n        {\n            \"menu_name\": \"Cheeranjivi Yojana deliveries Report\"\n        },\n        {\n            \"menu_name\": \"Timeline Configuration\"\n        },\n        {\n            \"menu_name\": \"Location Type\"\n        },\n        {\n            \"menu_name\": \"Urban FHS Count\"\n        },\n        {\n            \"menu_name\": \"Facility Status Report\"\n        },\n        {\n            \"menu_name\": \"Manage Schools\"\n        },\n        {\n            \"menu_name\": \"Web Tasks\"\n        },\n        {\n            \"menu_name\": \"RCH Locations\"\n        },\n        {\n            \"menu_name\": \"TEMP - UPDATE PREGNANCY SERVICE DATE\"\n        },\n        {\n            \"menu_name\": \"Command and Control Center\"\n        },\n        {\n            \"menu_name\": \"RCH Register\"\n        },\n        {\n            \"menu_name\": \"NCD Screening Dashboard\"\n        },\n        {\n            \"menu_name\": \"User Information\"\n        },\n        {\n            \"menu_name\": \"0-5 Years Child Survey Screened by ANM\"\n        },\n        {\n            \"menu_name\": \"System Code Management Tool\"\n        },\n        {\n            \"menu_name\": \"PNC Institution Form\"\n        },\n        {\n            \"menu_name\": \"Manage Location Wards\"\n        },\n        {\n            \"menu_name\": \"Services Provided to the Children Registered during the Year ( 1 to 6 Year )\"\n        },\n        {\n            \"menu_name\": \"Form Configurator\"\n        },\n        {\n            \"menu_name\": \"Concurrent PMSMA Report (Monthly)\"\n        },\n        {\n            \"menu_name\": \"Users\"\n        },\n        {\n            \"menu_name\": \"Health Infrastructure Approval\"\n        },\n        {\n            \"menu_name\": \"Dr techo status detail report\"\n        },\n        {\n            \"menu_name\": \"Mobile App Version Count\"\n        },\n        {\n            \"menu_name\": \"Mobile Feature Management\"\n        },\n        {\n            \"menu_name\": \"IDSP Screening Status Report\"\n        },\n        {\n            \"menu_name\": \"State Level Monthly Compilation Sheet for Screening of Birth Defects\"\n        },\n        {\n            \"menu_name\": \"NCD Progress tracking report\"\n        },\n        {\n            \"menu_name\": \"Manage System Configurations\"\n        },\n        {\n            \"menu_name\": \"Positive Case Detail\"\n        },\n        {\n            \"menu_name\": \"Dynamic Form Builder\"\n        },\n        {\n            \"menu_name\": \"Duplicate Member Verification\"\n        },\n        {\n            \"menu_name\": \"Details of Locations not deleted with delete label\"\n        },\n        {\n            \"menu_name\": \"Call Center Dashboard\"\n        },\n        {\n            \"menu_name\": \"Manage Notification\"\n        },\n        {\n            \"menu_name\": \"Server Management\"\n        },\n        {\n            \"menu_name\": \"Card Configuration\"\n        },\n        {\n            \"menu_name\": \"Query Management Tool\"\n        },\n        {\n            \"menu_name\": \"Sickle Cell Screening\"\n        },\n        {\n            \"menu_name\": \"Health Facility Mapping\"\n        },\n        {\n            \"menu_name\": \"GVK : Call Effectiveness Reports\"\n        },\n        {\n            \"menu_name\": \"Location Wise Task Completion\"\n        },\n        {\n            \"menu_name\": \"Service Register\"\n        },\n        {\n            \"menu_name\": \"Trainee Status\"\n        },\n        {\n            \"menu_name\": \"OPD Lab Test Entry\"\n        },\n        {\n            \"menu_name\": \"NCD Screening Status\"\n        },\n        {\n            \"menu_name\": \"Mobile Menu Management\"\n        },\n        {\n            \"menu_name\": \"Staff Sms Configuration\"\n        },\n        {\n            \"menu_name\": \"LBW Child Registered\"\n        },\n        {\n            \"menu_name\": \"Query Builder\"\n        },\n        {\n            \"menu_name\": \"Element Configuration\"\n        }\n    ],\n    \"parameters\": null,\n    \"sequence\": null\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "testsms",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/testsms?mobile=9662508227&message=Testing sms",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"testsms"
+							],
+							"query": [
+								{
+									"key": "mobile",
+									"value": "9662508227"
+								},
+								{
+									"key": "message",
+									"value": "Testing sms"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sohRegisterSendOTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{SohUserDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/sohRegisterSendOTP",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"sohRegisterSendOTP"
+							]
+						},
+						"description": "Expected output :\n{\n    \"id\": 3176,\n    \"name\": \"Subhash\",\n    \"designation\": \"Software engineer\",\n    \"organization\": \"Argusoft\",\n    \"purpose\": \"Development\",\n    \"state\": \"OTP_SEND\",\n    \"mobileNo\": \"9662508227\",\n    \"otp\": null,\n    \"disapprovalReason\": null\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "sohRegister",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{SohUserDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/sohRegister",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"sohRegister"
+							]
+						},
+						"description": "Expected output :\n\n{\n    \"id\": 121,\n    \"name\": \"Subhash\",\n    \"designation\": \"Software engineer\",\n    \"organization\": \"Argusoft\",\n    \"purpose\": \"Development\",\n    \"state\": \"PENDING\",\n    \"mobileNo\": \"9727227889\",\n    \"otp\": null,\n    \"disapprovalReason\": null\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "TECHO_POST_VERIFY_OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/verifyotptecho",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"verifyotptecho"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "memberbyphonenumber",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/memberbyphonenumber",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"memberbyphonenumber"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createmytechouser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoUserMasterDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/createmytechouser",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"createmytechouser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createdrtechouser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{DrTechoUserDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/createdrtechouser",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"createdrtechouser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/verifyMemberDetailByFamilyId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/verifyMemberDetailByFamilyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"verifyMemberDetailByFamilyId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/verifyFamilyById",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/verifyFamilyById",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"verifyFamilyById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/removeMobileNumbeExceptVerifiedFamily",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/removeMobileNumbeExceptVerifiedFamily",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"removeMobileNumbeExceptVerifiedFamily"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/retrieveImtechoFamilyDataByMemberId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/retrieveImtechoFamilyDataByMemberId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"retrieveImtechoFamilyDataByMemberId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/retrieveFamilyIdByFamilyId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/retrieveFamilyIdByFamilyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"retrieveFamilyIdByFamilyId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/isUserAllowToRegisterInMyTecho",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/isUserAllowToRegisterInMyTecho",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"isUserAllowToRegisterInMyTecho"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/getequaldobmembers",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MyTechoRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/getequaldobmembers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"getequaldobmembers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/element",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{SohElementConfigurationDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/soh/element",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"element"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/chart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{SohChartConfigurationDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/soh/chart",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"chart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soh/elementModule",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\": null, \"module\": \"test\", \"moduleName\": \"test\", \"isPublic\": false, \"moduleOrder\": \"4\", \"state\": \"ACTIVE\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/soh/elementModule",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"soh",
+								"elementModule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lmsevententry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/lmsevententry",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"lmsevententry"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "failedHealthIdData",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{FailedHealthIdDataEntity}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/failedHealthIdData",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"failedHealthIdData"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Put Requests",
+			"item": [
+				{
+					"name": "TECHO_UPLOAD_UNCAUGHT_EXCEPTION_DETAIL",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{MobileRequestParamDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techouploaduncaughtexceptiondetail",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techouploaduncaughtexceptiondetail"
+							]
+						},
+						"description": "Expected output : string value\nlike \"SUCCESS\""
+					},
+					"response": []
+				},
+				{
+					"name": "mytecho/forgotpassword",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{UserPasswordDto}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mytecho/forgotpassword",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mytecho",
+								"forgotpassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "imei",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "MobileRequestParamDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "LogInRequestParamDetailDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "RbskScreeningDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "CovidSymptomCheckerDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "SohUserDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "MyTechoRequestParamDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "MyTechoUserMasterDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "DrTechoUserDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "SohElementConfigurationDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "SohChartConfigurationDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "SohElementModuleMasterDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "UserPasswordDto",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "FailedHealthIdDataEntity",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "mobile_number",
+			"value": ""
+		},
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "first_time_login",
+			"value": ""
+		},
+		{
+			"key": "user_id",
+			"value": ""
+		}
+	]
+}

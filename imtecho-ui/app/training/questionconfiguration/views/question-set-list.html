@@ -1,0 +1,157 @@
+<style>
+    th {
+        white-space: initial !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="float-right">
+                <button class="btn btn-primary"
+                    ui-sref="techo.training.questionset({id:null, refId : questionSetListController.questionSetObj.referenceId, refType: questionSetListController.questionSetObj.referenceType})">Add
+                    Question Set</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 md-15">
+            <div class="cst-table table-responsive" style="overflow: auto;max-height: calc(100vh - 169px);">
+                <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <colgroup>
+                        <col style="width: 5%">
+                        <col style="width: 15%">
+                        <col style="width: 15%">
+                        <col style="width: 15%">
+                        <col style="width: 15%">
+                        <col style="width: 15%">
+                        <col style="width: 7%">
+                        <col style="width: 7%">
+                        <col style="width: 8%">
+                    </colgroup>
+                    <thead class="cst-thead">
+                        <tr>
+                            <th>#</th>
+                            <th>Question Set Name</th>
+                            <th>Question Set Type</th>
+                            <th>Course Name</th>
+                            <th>Module Name</th>
+                            <th>Lesson Name</th>
+                            <th>Status</th>
+                            <th>Minimum Marks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="questionSet in questionSetListController.questionSets"
+                            ng-if="questionSetListController.questionSets.length > 0">
+                            <td>{{$index+1}}</td>
+                            <td>{{questionSet.questionSetName}}</td>
+                            <td>{{questionSet.questionSetTypeName | emptylabel : '-'}}</td>
+                            <td>{{questionSet.courseName ? questionSet.courseName : '-'}}</td>
+                            <td>{{questionSet.topicName ? questionSet.topicName : '-'}}</td>
+                            <td>{{questionSet.mediaName ? questionSet.mediaName : '-'}}</td>
+                            <td>{{questionSet.status | titlecase}}</td>
+                            <td>{{questionSet.minimumMarks | emptylabel : '-'}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li>
+                                        <a href="javascript:void(0)" class="action-icon edit-icon"
+                                            ui-sref="techo.training.questionset({id : questionSet.id, refId : questionSetListController.questionSetObj.referenceId, refType: questionSetListController.questionSetObj.referenceType})"></a>
+                                    </li>
+                                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <a href="#" class="action-icon more-icon"></a>
+                                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                            aria-labelledby="moreDropdown">
+                                            <li>
+                                                <a href="javascript:void(0)"
+                                                    ui-sref="techo.training.question({id : questionSet.id, refId : questionSetListController.questionSetObj.referenceId, refType: questionSetListController.questionSetObj.referenceType})">
+                                                    Configure <strong>Question</strong>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr ng-if="questionSetListController.questionSets.length === 0">
+                            <td colspan="9" style="text-align: center;">
+                                No record found
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="filter-div">
+        <span style="left:-66px" class="filter-toggle" ng-click="questionSetListController.toggleFilter()">Search</span>
+        <div class="row">
+            <div class="col-12">
+                <h5 class="filter-div-title">Search</h5>
+            </div>
+        </div>
+        <div class="filter-div-body">
+            <form name="questionSetListController.searchForm" novalidate>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <validate for="courseId" required-msg="Select Course">
+                                <label for="courseId" class="control-label" control-label>Select Course</label>
+                                <select chosen-directive="questionSetListController.courseList"
+                                    class="form-control cst-form-control" form-control
+                                    ng-model="questionSetListController.questionSetObj.courseId"
+                                    ng-change="questionSetListController.getTopicDetails()" id="courseId"
+                                    name="courseId"
+                                    ng-options="course.courseId as course.courseName for course in questionSetListController.courseList| orderBy :'courseName' | filter : course.courseType ='ONLINE'"
+                                    required>
+                                    <option value="">--Select--</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group"
+                            ng-if="questionSetListController.questionSetObj.topicId || questionSetListController.topicList.length > 0">
+                            <validate for="topicId">
+                                <label for="topicId" class="control-label" control-label>Select Module</label>
+                                <select chosen-directive="questionSetListController.topicList"
+                                    class="form-control cst-form-control" form-control
+                                    ng-model="questionSetListController.questionSetObj.topicId"
+                                    ng-change="questionSetListController.getMediaDetails()" id="topicId" name="topicId"
+                                    ng-options="topic.topicId as topic.topicName for topic in questionSetListController.topicList| orderBy :'topicOrder'">
+                                    <option value="">--Select--</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="questionSetListController.mediaList.length > 0">
+                            <validate for="mediaId">
+                                <label for="mediaId" class="control-label" control-label>Select Lesson</label>
+                                <select chosen-directive="questionSetListController.mediaList"
+                                    class="form-control cst-form-control" form-control
+                                    ng-model="questionSetListController.questionSetObj.mediaId" id="mediaId"
+                                    name="mediaId"
+                                    ng-options="media.id as media.title for media in questionSetListController.mediaList | orderBy :'mediaOrder'">
+                                    <option value="">--Select--</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <hr>
+                        <div class="form-group text-right">
+                            <button class="btn btn-secondary close-filter" ng-click="questionSetListController.close()">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary search-filter"
+                                ng-click="questionSetListController.retrieveAllQuestionSets(false)">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

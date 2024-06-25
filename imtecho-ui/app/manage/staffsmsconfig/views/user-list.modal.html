@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <h3 class="text">View {{!!isRoleBased ? 'Users' :'Mobile Numbers'}}</h3>
+</div>
+<div class="modal-body">
+    <div class="col-12 mb-15 mt-15">
+        <div class="cst-table table-responsive" style="max-height: none;">
+
+            <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                <colgroup>
+                    <col style="width: 40px;">
+                    <col class="medium-col">
+                    <col class="medium-col">
+                    <col class="medium-col">
+                </colgroup>
+                <thead class="cst-thead">
+                    <tr>
+                        <th id="actions">Sr No.</th>
+                        <th id="description" class="filter-col" ng-if="!!isRoleBased">User Name</th>
+                        <th id="description" class="filter-col">Mobile Number</th>
+                        <th id="description" class="filter-col">SMS Status </th>
+                    </tr>
+                </thead>
+                <tbody class="cst-tbody">
+                    <tr ng-repeat="staffSmsUser in staffSmsUserList" ng-if="(staffSmsUserList.length > 0)">
+                        <td> {{$index+1}}</td>
+                        <td ng-if="!!isRoleBased" data-test="{{staffSmsUser.userName}}"> {{staffSmsUser.userName}} </td>
+                        <td data-test="{{staffSmsUser.mobileNumber}}"> {{staffSmsUser.mobileNumber}} </td>
+                        <td data-test="{{staffSmsUser.smsStatus}}">
+                            {{staffSmsUser.smsStatus== 'DELIVRD'?'Delivered':
+                            staffSmsUser.smsStatus== 'UNDELIVRD'? 'Undelivered' : staffSmsUser.smsStatus}}</td> 
+                    </tr>
+                    <tr ng-if="staffSmsUserList.length === 0">
+                        <td colspan="{{!!isRoleBased ? 4 : 3}}">
+                            No {{!!isRoleBased ? 'Users' :'Mobile Numbers'}} are available </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-secondary"  ng-click="close()">Close</button>
+</div>

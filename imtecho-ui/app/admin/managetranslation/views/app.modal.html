@@ -1,0 +1,86 @@
+<div class="modal-header" ng-if="!appController.showFields">
+    Manage Apps
+    <button type="button" class="close" aria-label="Close" ng-click="appController.close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-header" ng-if="appController.showFields">
+    {{appController.editFlag?'Edit app':'Add app'}}
+    <button type="button" class="close" aria-label="Close" ng-click="appController.close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="container-fluid">
+    <button type="button" class="btn btn-primary float-right mt-2" ng-if="!appController.showFields"
+        ng-click="appController.addApp()">Add App</button>
+</div>
+<ng-container ng-if="appController.showFields">
+    <div class="modal-body">
+        <form role="form" name="appController.form" novalidate>
+            <div class="inline-form">
+                <div class="form-group">
+                    <validate for='appValue' required-msg="Enter App name">
+                        <label for="appValue" class="control-label" control-label>App</label>
+                        <input type="text" class="form-control cst-form-control" value="" form-control name="appValue"
+                            ng-model="appController.appForm.appValue" maxlength="250" required ng-pattern="/.*/" />
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <div class="form-group">
+                    <validate for="appKey" required-msg="Enter app key" pattern-msg="Only alphabets and _ allowed">
+                        <label for="appKey" class="control-label" control-label>App Key</label>
+                        <input class="form-control cst-form-control" ng-disabled="appController.editFlag" form-control
+                            rows="6" name="appKey" ng-model="appController.appForm.appKey" maxlength="20"
+                            ng-pattern="/^[a-z_]+$/i" required></input>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+            </div>
+        </form>
+        <button type="button" class="btn btn-primary"
+            ng-click="appController.saveApp(appController.appForm)">Save</button>
+        <button type="button" class="btn btn-secondary" ng-click="appController.toggleFields()">Cancel</button>
+    </div>
+</ng-container>
+<div class="table-section m-3">
+    <div class="cst-table-responsive cst-table">
+        <table aria-describedby="table"
+            class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+            <colgroup>
+                <col style="width: 8%;">
+            </colgroup>
+            <thead class="cst-thead">
+                <tr>
+                    <th class="white-space-unset">Sr. no.</th>
+                    <th class="white-space-unset">App name</th>
+                    <th class="white-space-unset">State</th>
+                    <th class="white-space-unset" id="action">Action</th>
+                </tr>
+            </thead>
+            <tbody class="cst-tbody" ng-repeat="app in appController.appList">
+                <tr>
+                    <td>{{$index+1}}</td>
+                    <td>{{app.appValue}}</td>
+                    <td>{{app.isActive?'Active':'Inactive'| emptylabel}}</td>
+                    <td class="action-cell">
+                        <ul class="action-item">
+                            <li><a href="#" class="action-icon edit-icon" ng-click="appController.edit(app)"></a>
+                            </li>
+                            <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <a href="#" class="action-icon more-icon"></a>
+                                <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                    aria-labelledby="moreDropdown">
+                                    <li>
+                                        <a href="javascript:void(0)" ng-click="appController.toggleActive(app)">
+                                            <strong>Mark as </strong>{{app.isActive===true ? 'Inactive': 'Active'}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

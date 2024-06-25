@@ -1,0 +1,587 @@
+<div class="container-fluid child-form">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">CHILD DETAIL</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">Child Id : </span>
+                                            <span
+                                                class="data">{{laboratorytests.currentChild.uniqueHealthId}}({{laboratorytests.currentChild.familyId}})</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Child Name :</span>
+                                            <span
+                                                class="data">{{laboratorytests.currentChild.childName}}({{laboratorytests.currentChild.motherName}})</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Location :</span>
+                                            <span class="data">{{laboratorytests.currentChild.locationHierarchy}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> DOB / Age / Gender : </span>
+                                            <span class="data"> {{laboratorytests.currentChild.dob}} /
+                                                {{laboratorytests.currentChild.age}} months /
+                                                {{laboratorytests.currentChild.gender}} </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">Screening Date : </span>
+                                            <span class="data">{{laboratorytests.currentChild.screenedOn}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Contact Number :</span>
+                                            <span
+                                                class="data">{{laboratorytests.currentChild.mobileNumber|emptylabel}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">BPL : </span>
+                                            <span class="data">{{laboratorytests.currentChild.bpl}} </span>
+
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Caste : </span>
+                                            <span class="data">{{laboratorytests.currentChild.caste}} </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Child Referred By : </span>
+                                            <span class="data"> {{laboratorytests.currentChild.referredBy|emptylabel}}
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card cst-card" ng-if="laboratorytests.laboratoryList.length > 0">
+        <div id="car13" role="tab" class="card-title collapse-link d-block" data-toggle="collapse" href="#collapse13"
+            ng-click="toggle13 = !toggle13" style="cursor: pointer">
+            <h4 class="text">
+                <span data-toggle="tooltip" title="FSAM Laboratory test Information">Laboratory Tests History</span>
+                <ul class="control-list">
+                    <li>
+                        <span>
+                            <em ng-class="{'ion-plus':!toggle13,'ion-minus':toggle13}"></em>
+                        </span>
+                    </li>
+                </ul>
+            </h4>
+        </div>
+        <div class="collapse" id="collapse13">
+            <div class="table-section">
+                <div class="card-body col-12 col-md-12">
+                    <div class="cst-table-responsive">
+                        <form name="fsam_laboratory_test_information-form" id="fsam_laboratory_test_information-form">
+                            <table aria-describedby="table"
+                                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="labTestDate">Lab test date</th>
+                                        <th id="isHaemoglobinChecked">Is haemoglobin tested?</th>
+                                        <th id="haemoglobin">Haemoglobin</th>
+                                        <th id="isUrineRMTested">Is urine R/M tested?</th>
+                                        <th id="urinePusCells">Urine pus cells</th>
+                                        <th id="isUrineAlbuminTested">Is urine albumin tested?</th>
+                                        <th id="urineAlbumin">Urine albumin</th>
+                                        <th id="isHivTested">Is HIV tested?</th>
+                                        <th id="hiv">HIV</th>
+                                        <th id="isSickleCellTested">Is sickle cell tested?</th>
+                                        <th id="sickleCell">Sickle cell</th>
+                                        <th id="isPsForMpTested">Is PS for MP tested?</th>
+                                        <th id="psForMp">PS for MP</th>
+                                        <th id="isMantouxTestDone">Is Mantoux test done</th>
+                                        <th id="mantouxTest">Mantoux test</th>
+                                        <th id="isXrayDone">Is X-ray done?</th>
+                                        <th id="xray">X-ray</th>
+                                        <th id="bloodGroup">Blood group</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="test in laboratorytests.laboratoryList">
+                                        <td>{{test.laboratoryDate|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                        <td>{{test.hemoglobinChecked|yesOrNo}}</td>
+                                        <td>{{test.hemoglobin|emptylabel}}</td>
+                                        <td>{{test.urinePusCellsChecked|yesOrNo}}</td>
+                                        <td>{{test.urinePusCells|emptylabel}}</td>
+                                        <td>{{test.urineAlbuminChecked|yesOrNo}}</td>
+                                        <td>{{test.urineAlbumin|emptylabel}}</td>
+                                        <td>{{test.hivChecked|yesOrNo}}</td>
+                                        <td>{{test.hiv|emptylabel}}</td>
+                                        <td>{{test.sickleChecked|yesOrNo}}</td>
+                                        <td>{{test.sickle|emptylabel}}</td>
+                                        <td>{{test.psForMpChecked|yesOrNo}}</td>
+                                        <td>{{test.psForMp|emptylabel}}</td>
+                                        <td>{{test.monotouxTestChecked|yesOrNo}}</td>
+                                        <td>{{test.monotouxTest|emptylabel}}</td>
+                                        <td>{{test.xrayChestChecked|yesOrNo}}</td>
+                                        <td>{{test.xrayChest|emptylabel}}</td>
+                                        <td>{{test.bloodGroup|emptylabel}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form role="form" name="laboratorytests.laboratoryTestsForm" id="laboratoryTestsForm" novalidate>
+        <div class="row">
+            <div class="col-12 mb-15">
+                <div class="card cst-card">
+                    <div class="card-title">
+                        <div class="col-6 float-left nopadding">
+                            <h4 class="text">Laboratory Tests</h4>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <div class="col-md-6 col-sm-12 nopadding float-left">
+                            <div class="card-body ">
+                                <div class="inline-form info">
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='laboratoryDate' required-msg="Select Date">
+                                            <label style="vertical-align: middle;white-space: initial"
+                                                for="laboratoryDate"><span class="info_type" control-label> Laboratory
+                                                    Test Date </span></label>
+                                            <input type="text" style="float: inherit" datepicker tabindex="8"
+                                                name="laboratoryDate" form-control
+                                                min-date="laboratorytests.currentChild.admissionDate"
+                                                max-date="laboratorytests.currentChild.maxLaboratoryDate"
+                                                ng-change='laboratorytests.calculateDays()'
+                                                ng-model="laboratorytests.childScreeningObject.laboratoryDate" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING'">
+                                        <label style="vertical-align: middle;white-space: initial"
+                                            for="laboratoryDate"><span class="info_type" control-label> Laboratory Test
+                                                Date </span></label>
+                                        <label ng-if="laboratorytests.previousTest.testOutputState === 'PENDING'"
+                                            for="laboratoryDate"><span class="info_type" control-label>
+                                                {{laboratorytests.previousTest.laboratoryDisplayDate}} </span></label>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='hemoglobinChecked' required-msg=" Select a value">
+                                            <label style="margin-top: 1%;width: auto" for="hemoglobinChecked"
+                                                name="hemoglobinChecked" id="hemoglobinChecked"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    haemoglobin tested?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="hemoglobinChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.hemoglobinChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="hemoglobinChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.hemoglobinChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.hemoglobinChecked">
+                                        <validate for='hemoglobin' required-msg="Enter Haemoglobin">
+                                            <label><span class="info_type" control-label>Haemoglobin
+                                                    (g/dl)</span></label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                min="1" max="18" name="hemoglobin" id="hemoglobin"
+                                                ng-model="laboratorytests.childScreeningObject.hemoglobin" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='urinePusCellsChecked' required-msg=" Select a value">
+                                            <label style="margin-top: 1%" for="urinePusCellsChecked"
+                                                name="urinePusCellsChecked" id="urinePusCellsChecked"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    Urine R/M tested?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="urinePusCellsChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.urinePusCellsChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="urinePusCellsChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.urinePusCellsChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.urinePusCellsChecked">
+                                        <validate for='urinePusCells' required-msg="Select a value">
+                                            <label for="urinePusCells" control-label><span class="info_type"> Urine Pus
+                                                    cells </span></label>
+                                            <input type="number" max="99" class="form-control cst-form-control"
+                                                form-control name="urinePusCells" id="urinePusCells"
+                                                ng-model="laboratorytests.childScreeningObject.urinePusCells">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='urineAlbuminChecked' required-msg=" Select a value">
+                                            <label style="margin-top: 1%" for="urineAlbuminChecked"
+                                                name="urineAlbuminChecked" id="urineAlbuminChecked"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    Urine Albumin tested?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="urineAlbuminChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.urineAlbuminChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="urineAlbuminChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.urineAlbuminChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.urineAlbuminChecked">
+                                        <validate for='urinealbumin' required-msg="Select a value">
+                                            <label for="urinealbumin" control-label><span class="info_type"> Urine
+                                                    Albumin </span></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="laboratorytests.childScreeningObject.urineAlbumin"
+                                                name="urinealbumin" id="urinealbumin" required>
+                                                <option value="">--Select--</option>
+                                                <option value="+">+</option>
+                                                <option value="++">++</option>
+                                                <option value="+++">+++</option>
+                                                <option value="NOT_PRESENT">Not present</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='hivChecked' required-msg=" Select a value">
+                                            <label style="margin-top: 1%" for="hivChecked" name="hivChecked"
+                                                id="hivChecked" class="long control-label" control-label><span
+                                                    class="info_type">Is HIV tested?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="hivChecked" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.hivChecked" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="hivChecked" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.hivChecked" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.hivChecked">
+                                        <validate for='hiv' required-msg=" Select a value">
+                                            <label for="hiv" name="hiv" id="hiv" class="long control-label"
+                                                control-label><span class="info_type">HIV</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Reactive
+                                                <input value="REACTIVE" name="hiv" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.hiv">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">Non-reactive
+                                                <input value="NON_REACTIVE" name="hiv" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.hiv">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='sickleChecked' required-msg=" Select a value">
+                                            <label style="margin-top: 1%" for="sickleChecked" name="sickleChecked"
+                                                id="sickleChecked" class="long control-label" control-label><span
+                                                    class="info_type">Is Sickle tested?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="sickleChecked" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.sickleChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="sickleChecked" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.sickleChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.sickleChecked">
+                                        <validate for='sickle' required-msg=" Select a value">
+                                            <label for="sickle" name="sickle" id="sickle" class="long control-label"
+                                                control-label><span class="info_type">Sickle</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Positive
+                                                <input value="POSITIVE" name="sickle" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.sickle">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">Negative
+                                                <input value="NEGATIVE" name="sickle" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.sickle">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" col-md-6 pl-60 col-sm-12 nopadding float-right ">
+                            <div class="card-body pl-60">
+                                <div class="inline-form info">
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='psForMpChecked' required-msg=" Select a value">
+                                            <label style="margin-top: 1%" for="psForMpChecked" name="psForMpChecked"
+                                                id="psForMpChecked" class="long control-label" control-label><span
+                                                    class="info_type">Is PS For MP tested?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="psForMpChecked" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.psForMpChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="psForMpChecked" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.psForMpChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.psForMpChecked">
+                                        <validate for='psForMp' required-msg=" Select a value">
+                                            <label for="psForMp" name="psForMp" id="psForMp" class="long control-label"
+                                                control-label><span class="info_type">PS For MP (Malaria)</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Positive
+                                                <input value="POSITIVE" name="psForMp" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.psForMp" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">Negative
+                                                <input value="NEGATIVE" name="psForMp" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.psForMp" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.psForMpChecked && laboratorytests.childScreeningObject.psForMp === 'POSITIVE'">
+                                        <validate for='psForMpValue' required-msg="Select a value">
+                                            <label for="psForMpValue" control-label><span class="info_type"> PS For Mp
+                                                    Type </span></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="laboratorytests.childScreeningObject.psForMpValue"
+                                                name="psForMpValue" id="psForMpValue" required>
+                                                <option value="">--Select--</option>
+                                                <option value="PF">PF</option>
+                                                <option value="PV">PV</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='monotouxTestChecked' required-msg=" Select a value">
+                                            <label style="margin-top: 1%" for="monotouxTestChecked"
+                                                name="monotouxTestChecked" id="monotouxTestChecked"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    Mantoux Test done?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="monotouxTestChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.monotouxTestChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="monotouxTestChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.monotouxTestChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.monotouxTestChecked">
+                                        <validate for='monotouxTest' required-msg=" Select a value">
+                                            <label for="monotouxTest" name="monotouxTest" id="monotouxTest"
+                                                class="long control-label" control-label><span class="info_type">Mantoux
+                                                    Test</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Positive
+                                                <input value="POSITIVE" name="monotouxTest" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.monotouxTest"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width:auto" class="control control-radio mt-10">Negative
+                                                <input value="NEGATIVE" name="monotouxTest" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.monotouxTest"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState !== 'PENDING'">
+                                        <validate for='xrayChestChecked' required-msg=" Select a value">
+                                            <label style="margin-top: 1%" for="xrayChestChecked" name="xrayChestChecked"
+                                                id="xrayChestChecked" class="long control-label" control-label><span
+                                                    class="info_type">Is X-ray tested?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="xrayChestChecked" form-control type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.xrayChestChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="xrayChestChecked" form-control
+                                                    type="radio"
+                                                    ng-model="laboratorytests.childScreeningObject.xrayChestChecked"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.testOutputState === 'PENDING' && laboratorytests.previousTest.xrayChestChecked">
+                                        <validate for='xrayChest' required-msg="Enter xrayChest">
+                                            <label><span class="info_type" control-label>Xray Chest (PA
+                                                    View)</span></label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                name="xrayChest" id="xrayChest"
+                                                ng-model="laboratorytests.childScreeningObject.xrayChest">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.bloodGroup == null || laboratorytests.previousTest.bloodGroup === 'NOT_AVAILABLE'">
+                                        <validate for='bloodGroup' required-msg="Select a value">
+                                            <label for="bloodGroup" control-label><span class="info_type"> Blood Group
+                                                </span></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="laboratorytests.childScreeningObject.bloodGroup"
+                                                name="bloodGroup" id="bloodGroup" required>
+                                                <option value="">--Select--</option>
+                                                <option value="A+">A+</option>
+                                                <option value="A-">A-</option>
+                                                <option value="B+">B+</option>
+                                                <option value="B-">B-</option>
+                                                <option value="AB+">AB+</option>
+                                                <option value="AB-">AB-</option>
+                                                <option value="O+">O+</option>
+                                                <option value="O-">O-</option>
+                                                <option value="NOT_AVAILABLE">Not available</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="laboratorytests.previousTest.bloodGroup != null && laboratorytests.previousTest.bloodGroup != 'NOT_AVAILABLE'">
+                                        <label for="bloodGroup" control-label><span class="info_type"> Blood Group
+                                            </span></label>
+                                        <label for="bloodGroup" control-label><span class="info_type">
+                                                {{laboratorytests.previousTest.bloodGroup}} </span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button class="btn btn-primary" ng-click="laboratorytests.saveForm()">Save & Continue</button>
+                        <button type='button' class="btn btn-secondary" ng-click="laboratorytests.back()">Back</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

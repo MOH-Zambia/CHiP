@@ -1,0 +1,2 @@
+ALTER TABLE location_hierchy_closer_det DROP CONSTRAINT if exists location_hierchy_closer_det_parent_id_child_id_key;
+ALTER TABLE location_hierchy_closer_det ADD CONSTRAINT location_hierchy_closer_det_parent_id_child_id_key UNIQUE (parent_id, child_id);

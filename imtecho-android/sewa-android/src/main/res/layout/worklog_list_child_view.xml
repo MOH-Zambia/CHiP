@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="20dp"
+    android:elevation="10dp"
+    app:contentPadding="@dimen/default_tooltip_arrow_height"
+    android:layout_margin="@dimen/default_tooltip_arrow_height">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/work_log_file_status_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/description"
+        android:src="@drawable/ic_image"
+        app:tint="@color/colorPrimary"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/work_log_file_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/description"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/listTextColor"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+        <TextView
+            android:id="@+id/work_log_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Synced"
+            android:textColor="@color/white"
+            android:paddingTop="@dimen/default_tooltip_padding"
+            android:paddingBottom="@dimen/default_tooltip_padding"
+            android:paddingEnd="@dimen/default_tooltip_arrow_height"
+            android:paddingStart="@dimen/default_tooltip_arrow_height"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center_vertical"
+        />
+
+    <ImageView
+        android:id="@+id/work_log_file_retry"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/default_tooltip_arrow_width"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/description"
+        android:src="@drawable/refresh"
+        android:visibility="gone"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

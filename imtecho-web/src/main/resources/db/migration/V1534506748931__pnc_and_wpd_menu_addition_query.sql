@@ -1,0 +1,2 @@
+insert into menu_config(active,menu_name,navigation_state,menu_type) values('TRUE','Manage PNC visit','techo.manage.pnc','manage');
+insert into menu_config(active,menu_name,navigation_state,menu_type) values('TRUE','Manage WPD visit','techo.manage.wpd','manage');

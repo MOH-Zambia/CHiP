@@ -1,0 +1,267 @@
+<style>
+    .display {
+        width: auto !important;
+    }
+
+    .mb-8 {
+        margin-bottom: 8px !important;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="text" style="line-height: 1.5;">
+        Update Location of Traveller
+    </h4>
+</div>
+<div class="modal-body" style="overflow: inherit; overflow-y: auto;">
+    <div class="card cst-card">
+        <div class="card-title">
+            <div class="float-left">
+                <h4 class="text">Traveller Detail</h4>
+            </div>
+        </div>
+        <div class="card-body inline-form">
+            <div class="row">
+                <div class="col-6" style="margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Name :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.name | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Flight No :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.flight_no | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Age :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.age | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Gender :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.gender | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Mobile Number :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.mobile_number | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Country :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.country | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Is From Immigration :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.is_from_immigration | yesOrNo}}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6" style="margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Current Location :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.districtHierarchy | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Date of Departure :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.date_of_departure | date:'dd/MM/yyyy'  | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Date of Receipt :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.date_of_receipt | date:'dd/MM/yyyy' | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Health Status :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.health_status | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Observation :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.observation | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Signs/Symptoms :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.symptoms | emptylabel}}
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Last Screening Date :</strong>
+                        </label>
+                        <label class="display">
+                            {{(ctrl.traveller.lastScreeningDate | date:'dd/MM/yyyy HH:mm:ss') || '-'}}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label class="display">
+                            <strong>Address :</strong>
+                        </label>
+                        <label class="display">
+                            {{ctrl.traveller.address | emptylabel}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-form name="ctrl.updateLocationForm">
+        <div class="col-12" ng-if="ctrl.selectedTab === 0">
+            <div class="form-group">
+                <label class="control control-radio mb-8"> Is traveller's location found
+                    <input type="radio" name="locationFound" icheck ng-model="ctrl.isLocationFound" ng-value="true" />
+                    <div class="control_indicator"></div>
+                </label>
+                <label class="control control-radio mb-8"> Is traveller's location not found
+                    <input type="radio" name="locationFound" icheck ng-model="ctrl.isLocationFound" ng-value="false" />
+                    <div class="control_indicator"></div>
+                </label>
+            </div>
+        </div>
+        <div class="col-12" ng-if="ctrl.selectedTab === 2">
+            <div class="form-group">
+                <label class="display">
+                    <strong>Reason of unable to contact :</strong>
+                </label>
+                <label class="display">
+                    <span ng-if="ctrl.traveller.update_location_reason === 'DIFF_AREA'">
+                        Not in my area
+                    </span>
+                    <span ng-if="ctrl.traveller.update_location_reason === 'OTHER'">
+                        Others
+                    </span>
+                    <span ng-if="!ctrl.traveller.update_location_reason">
+                        N/A
+                    </span>
+                </label>
+            </div>
+            <div class="form-group mb-8" ng-if="ctrl.traveller.update_location_reason === 'OTHER'">
+                <label class="display">
+                    <strong>Other reasons of unable to contact :</strong>
+                </label>
+                <label class="display">
+                    {{ctrl.traveller.other_update_location_reason | emptylabel}}
+                </label>
+            </div>
+        </div>
+        <div class="col-12" ng-if="(ctrl.selectedTab === 0 && ctrl.isLocationFound === true) || ctrl.selectedTab === 2">
+            <div class="form-group">
+                <validate for='address' required-msg="Enter address">
+                    <label for="address" control-label>Address</label>
+                    <textarea form-control class="form-control cst-form-control" maxlength="1024" rows="4" cols="47"
+                        ng-model="ctrl.updateAddress" name="address">
+                    </textarea>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="form-group">
+                <label class="control control-radio mb-8"> Search by Location
+                    <input type="radio" name="search" icheck ng-model="ctrl.searchBy"
+                        ng-change="ctrl.updateLocationId = null; ctrl.isOutOfState = false; ctrl.updateDistrictId = null;"
+                        value="organizationUnit" />
+                    <div class="control_indicator"></div>
+                </label>
+                <label class="control control-radio mb-8"> Search by Area/Asha Area Name
+                    <input type="radio" name="search" icheck ng-model="ctrl.searchBy"
+                        ng-change="ctrl.updateLocationId = null; ctrl.isOutOfState = false; ctrl.updateDistrictId = null;"
+                        value="areaName" />
+                    <div class="control_indicator"></div>
+                </label>
+                <label class="control control-radio mb-8"> Is Out Of State
+                    <input type="radio" name="search" icheck ng-model="ctrl.searchBy"
+                        ng-change="ctrl.updateLocationId = -2; ctrl.isOutOfState = true; ctrl.updateDistrictId = null;"
+                        value="isOutOfState" />
+                    <div class="control_indicator"></div>
+                </label>
+                <label class="control control-radio mb-8"> Update District
+                    <input type="radio" name="search" icheck ng-model="ctrl.searchBy"
+                        ng-change="ctrl.updateLocationId = null; ctrl.isOutOfState = false; ctrl.updateDistrictId = null;"
+                        value="district" />
+                    <div class="control_indicator"></div>
+                </label>
+            </div>
+            <div class="form-group" ng-if="ctrl.searchBy == 'organizationUnit'">
+                <location-directive template-type="'twoPart'" ng-model="ctrl.updateLocationId"
+                    fetch-according-to-user-aoi="false" fetch-upto-level="8" required-upto-level="8">
+                </location-directive>
+            </div>
+            <div class="form-group" ng-if="ctrl.searchBy == 'areaName'">
+                <validate for='searchArea' required-msg="Select Area/Asha Area">
+                    <label control-label for='searchArea' uib-tooltip="Search Area/Asha Area">Search Area/Asha
+                        Area</label>
+                    <selectize class="form-control cst-form-control disabled-input" form-control name="searchArea"
+                        id="searchArea" ng-model='ctrl.updateLocationId' config='ctrl.locationSelectizeConfig' required>
+                        <option value=''>Select</option>
+                    </selectize>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="form-group" ng-if="ctrl.searchBy == 'district'">
+                <location-directive template-type="'twoPart'" ng-model="ctrl.updateDistrictId"
+                    fetch-according-to-user-aoi="false" fetch-upto-level="3" required-upto-level="3">
+                </location-directive>
+            </div>
+        </div>
+        <div class="col-12" ng-if="(ctrl.selectedTab === 0 && ctrl.isLocationFound === false)">
+            <div class="form-group">
+                <validate for='reason' required-msg="Enter reason">
+                    <label for="reason" control-label>Reason</label>
+                    <textarea form-control class="form-control cst-form-control" maxlength="1024" rows="4" cols="47"
+                        ng-model="ctrl.locationNotFoundReason" name="reason" required>
+                    </textarea>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+        </div>
+    </ng-form>
+</div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" ng-click="ctrl.submit()">Submit</button>
+    <button type="button" class="btn btn-secondary" ng-click="ctrl.cancel()">Cancel</button>
+</div>

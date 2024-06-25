@@ -1,0 +1,212 @@
+<div class="container-fluid">
+    <div>
+        <div class="form-group float-left mx-2" style="width: 10rem;">
+            <label for="app">App</label>
+            <select class="form-control cst-form-control" id="app" name="app" form-control
+                ng-options="app as app.appValue for app in translator.apps"
+                ng-change="translator.searchTranslations(true)" ng-model="translator.filterApp">
+                <option value="">Select</option>
+            </select>
+        </div>
+        <div class="form-group float-left mx-2 ">
+            <label for="searchValue">Search for:</label>
+            <input type="text" id="searchValue" name="searchValue" style="width: 150px;" form-control
+                ng-change="translator.searchTranslations(true)" ng-model="translator.searchString"
+                ng-model-options="{ debounce: 500 }" placeholder="Enter search value"
+                class="form-control cst-form-control" />
+        </div>
+        <div class="float-right mx-2">
+            <button class="btn btn-primary btn-md" ng-click="translator.addLabel()">
+                Add label
+            </button>
+        </div>
+        <div class="btn btn-primary float-right btn-md" ng-if="translator.rights.canManage"
+            ng-click="translator.manageLanguages()">
+            Manage Language
+        </div>
+        <div class="btn btn-primary btn-md float-right mx-2" ng-if="translator.rights.canManage"
+            ng-click="translator.manageApps()">
+            Manage Apps
+        </div>
+        <div class="float-right m-2">
+            <label control-label style="transform: scale(1.2); " class="control control-checkbox">Show Inactive
+                <input checked="checked" ng-click="translator.searchTranslations(true)"
+                    ng-model="translator.showInactive" form-control type="checkbox">
+                <div class="control_indicator"></div>
+            </label>
+        </div>
+    </div>
+
+    <div>
+        <span class="ml-2">Starts With : </span>
+        <div style="line-height: 29px;">
+            <a class="ml-2" href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'A'}" ng-click="translator.startsWith = 'A';
+                                    translator.searchTranslations(true)">
+                <span>A </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'B'}" ng-click="translator.startsWith = 'B';
+                                    translator.searchTranslations(true)">
+                <span>B </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'C'}" ng-click="translator.startsWith = 'C';
+                                        translator.searchTranslations(true)">
+                <span>C </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'D'}" href="javascript:void(0)" ng-click="translator.startsWith = 'D';
+                                            translator.searchTranslations(true)">
+                <span>D </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'E'}" ng-click="translator.startsWith = 'E';
+                                    translator.searchTranslations(true)">
+                <span>E </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'F'}" ng-click="translator.startsWith = 'F';
+                                        translator.searchTranslations(true)">
+                <span>F </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'G'}" href="javascript:void(0)" ng-click="translator.startsWith = 'G';
+                                            translator.searchTranslations(true)">
+                <span>G </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'H'}" href="javascript:void(0)" ng-click="translator.startsWith = 'H';
+                                                translator.searchTranslations(true)">
+                <span>H </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'I'}" href="javascript:void(0)" ng-click="translator.startsWith = 'I';
+                                                    translator.searchTranslations(true)">
+                <span>I </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'J'}" href="javascript:void(0)" ng-click="translator.startsWith = 'J';
+                                                        translator.searchTranslations(true)">
+                <span>J </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'K'}" ng-click="translator.startsWith = 'K';
+                                    translator.searchTranslations(true)">
+                <span>K </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'L'}" href="javascript:void(0)" ng-click="translator.startsWith = 'L';
+                                        translator.searchTranslations(true)">
+                <span>L </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'M'}" ng-click="translator.startsWith = 'M';
+                                            translator.searchTranslations(true)">
+                <span>M </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'N'}" ng-click="translator.startsWith = 'N';
+                                                translator.searchTranslations(true)">
+                <span>N </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'O'}" ng-click="translator.startsWith = 'O';
+                                                    translator.searchTranslations(true)">
+                <span>O </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'P'}" ng-click="translator.startsWith = 'P';
+                                    translator.searchTranslations(true)">
+                <span>P </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'Q'}" ng-click="translator.startsWith = 'Q';
+                                        translator.searchTranslations(true)">
+                <span>Q </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'R'}" href="javascript:void(0)" ng-click="translator.startsWith = 'R';
+                                            translator.searchTranslations(true)">
+                <span>R </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'S'}" ng-click="translator.startsWith = 'S';
+                                        translator.searchTranslations(true)">
+                <span>S </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'T'}" href="javascript:void(0)" ng-click="translator.startsWith = 'T';
+                                            translator.searchTranslations(true)">
+                <span>T </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'U'}" href="javascript:void(0)" ng-click="translator.startsWith = 'U';
+                                                translator.searchTranslations(true)">
+                <span>U </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'V'}" ng-click="translator.startsWith = 'V';
+                                        translator.searchTranslations(true)">
+                <span>V </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'W'}" href="javascript:void(0)" ng-click="translator.startsWith = 'W';
+                                            translator.searchTranslations(true)">
+                <span>W </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'X'}" href="javascript:void(0)" ng-click="translator.startsWith = 'X';
+                                                translator.searchTranslations(true)">
+                <span>X </span>
+            </a>
+            <a ng-class="{'selected-letter':translator.startsWith  == 'Y'}" href="javascript:void(0)" ng-click="translator.startsWith = 'Y';
+                                                    translator.searchTranslations(true)">
+                <span>Y </span>
+            </a>
+            <a href="javascript:void(0)" ng-class="{'selected-letter':translator.startsWith  == 'Z'}" ng-click="translator.startsWith = 'Z';
+                                                        translator.searchTranslations(true)">
+                <span>Z </span>
+            </a>
+            <span type="button" style="cursor: pointer;" class="btn-danger btn-sm px-1 py-0" ng-click="translator.startsWith='';translator.searchTranslations(true)">
+                <span>×</span>
+            </span>
+        </div>
+        
+    </div>
+
+    <div class="cst-table table-responsive table-set-height" style="margin-top : 15px;" id="label-scroll">
+        <table class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+            <colgroup>
+                <col style="width: 3%;">
+                <col style="width: 6%;">
+                <col style="width: 7%;">
+                <col style="width: 7%;">
+                <col ng-if="translator.rights.canViewKey" style="width: 10%;">
+                <col ng-repeat="language in translator.languages" style="width: 10%;">
+            </colgroup>
+            <thead class="cst-thead">
+                <tr>
+                    <th>Sr.no.</th>
+                    <th>Actions</th>
+                    <th>App</th>
+                    <th>State</th>
+                    <th ng-if="translator.rights.canViewKey">Key</th>
+                    <th ng-repeat="language in translator.languages">{{language.languageValue}}</th>
+
+                </tr>
+            </thead>
+            <tbody class="cst-tbody" infinite-scroll='translator.searchTranslations(false);'
+                infinite-scroll-distance="0" infinite-scroll-container='"#label-scroll"'>
+                <tr ng-if="!translator.searchData.length>0">
+                    <td style="text-align: center;" colspan="{{translator.languages.length + 5}}">No labels to show</td>
+                </tr>
+                <tr ng-repeat="label in translator.searchResult">
+                    <td>{{$index+1}}</td>
+                    <td class="action-cell">
+                        <ul class="action-item">
+                            <li ng-if="label[0].is_active || label[1].is_active">
+                                <a href="#" onclick="return false;" class="action-icon edit-icon"
+                                    ng-click="translator.selectedApps(label[0])"></a>
+                            </li>
+                            <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <a href="#" class="action-icon more-icon"></a>
+                                <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                    aria-labelledby="moreDropdown" x-placement="bottom-end">
+                                    <li>
+                                        <a href="javascript:void(0)" ng-click="translator.toggleState(label)">
+                                            <strong>Mark as </strong>{{label[1].is_active || label[0].is_active?'Inactive':'Active'}}</a>
+                                    </li>
+                                    <li ng-if="label[0].is_active || label[1].is_active" ng-click="translator.addAppFlag = true;translator.selectedApps(label[0]);"> 
+                                        Add app
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>{{label[0].app}}</td>
+                    <td>{{label[1].is_active || label[0].is_active?'Active':'Inactive'}}</td>
+                    <td ng-if="translator.rights.canViewKey"style=" word-break: break-all; ">{{label[0].key}}</td>
+                    <td ng-repeat="translation in label">{{translation.value}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

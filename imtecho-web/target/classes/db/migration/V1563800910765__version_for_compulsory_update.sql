@@ -1,0 +1,1 @@
+update system_configuration set key_value  = '66M-52' where system_key =  'ANDROID_VERSION';

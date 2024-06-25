@@ -1,0 +1,122 @@
+<!-- <style>
+    .red-border {
+        border-color: #dc3545;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ ctrl.editMode ? 'Edit Location Ward' : 'Add Location Ward' }}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form name="ctrl.manageWardForm" id="manageWardForm" novalidate>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <validate for="name" required-msg="Enter Ward Name">
+                                        <label uib-tooltip="Ward Name*" for="name" control-label>Ward Name</label>
+                                        <input type="text" id="name" required form-control
+                                            class="form-control cst-form-control" name="name"
+                                            ng-model="ctrl.ward.wardName" maxlength="255">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="englishName" required-msg="Enter Ward English Name">
+                                        <label uib-tooltip="Ward English Name*" for="englishName" control-label>
+                                            Ward English Name
+                                        </label>
+                                        <input type="text" id="englishName" required form-control
+                                            class="form-control cst-form-control" name="englishName"
+                                            ng-model="ctrl.ward.wardNameEnglish" maxlength="255">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="code" required-msg="Enter LGD Code">
+                                        <label uib-tooltip="LGD Code*" for="code" control-label>LGD Code</label>
+                                        <input type="text" id="code" required form-control
+                                            class="form-control cst-form-control" name="code"
+                                            ng-model="ctrl.ward.lgdCode" maxlength="255"
+                                            ng-class="{'red-border': ctrl.ward.lgdCode && !ctrl.isLgdCodeUnique}">
+                                        <span class="alert alert-danger valid-feedback"
+                                            ng-if="ctrl.ward.lgdCode && !ctrl.isLgdCodeUnique">
+                                            Ward with same LGD code already exists. Please add another code.
+                                        </span>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="card cst-card">
+                                    <div class="card-body">
+                                        <div class="form-group row" style="margin-left: 0; margin-right: 0;">
+                                            <label uib-tooltip="Location" control-label
+                                                ng-class="{'required': !ctrl.editMode}"
+                                                style="font-size: 15px;">Location</label>
+                                            <div style="line-height: 29px;">{{ctrl.ward.locationHierarchy}}</div>
+                                        </div>
+                                        <div ng-if="ctrl.editMode" class="form-group row"
+                                            style="margin-left: 0; margin-right: 0;">
+                                            <label uib-tooltip="Location" control-label
+                                                style="font-size: 15px;">Assigned
+                                                UPHCs</label>
+                                            <div style="line-height: 29px;">{{ctrl.ward.assignedUPHCs.join(', ')}}</div>
+                                        </div>
+                                        <div class="form-group" ng-if="ctrl.editMode">
+                                            <label style="line-height: 29px;" class="control control-checkbox"
+                                                control-label>Update Location
+                                                <input type="checkbox" ng-model="ctrl.updateLocation">
+                                                <div style="top: 6px;" class="control_indicator"></div>
+                                            </label>
+                                        </div>
+                                        <div ng-if="ctrl.updateLocation || !ctrl.editMode">
+                                            <div class="form-group">
+                                                <location-directive ng-model="ctrl.selectedLocationId"
+                                                    template-type="'twoPart'" fetch-upto-level="3"
+                                                    fetch-according-to-user-aoi="true" required-upto-level="3"
+                                                    selected-location="ctrl.selectedLocation"
+                                                    on-change="ctrl.fetchUPHCs();">
+                                                </location-directive>
+                                            </div>
+                                            <div class="form-group"
+                                                ng-if="ctrl.selectedLocation.finalSelected.level == 3">
+                                                <validate for="selectUPHs" required-msg="Select Grant Type">
+                                                    <label uib-tooltip="Grant Type" for="selectUPHs" control-label>
+                                                        Select UPHCs
+                                                    </label>
+                                                    <select form-control required class="form-control cst-form-control"
+                                                        name="selectUPHs" id="selectUPHs" ng-model="ctrl.selectedUPHCs"
+                                                        multiple chosen-directive="ctrl.districtLevelUPHCs"
+                                                        ng-options="uphc.id as uphc.name for uphc in ctrl.districtLevelUPHCs">
+                                                    </select>
+                                                    <placeholder></placeholder>
+                                                </validate>
+                                            </div>
+                                            <div
+                                                ng-if="ctrl.selectedLocation.finalSelected.level == 3 && ctrl.editMode">
+                                                <div class="text-danger" style="line-height: 29px;">
+                                                    * Please again select all UPHCs you want to keep as old ones will be
+                                                    deleted and replaced by new ones.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer mt-5">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary" ng-click="ctrl.save()">
+                                    <em class="fa fa-floppy-o"></em> Save</button>
+                                <button class="btn btn-secondary" ui-sref="techo.manage.wards">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

@@ -1,0 +1,91 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12 ">
+            <div class="cst-table table-responsive" style="overflow: auto;" id="member-scroll"
+                ng-if="pregreg.memberDetails.length > 0">
+                <table class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                    style="table-layout: auto">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th style="width: 50px; white-space: pre-line">#
+                            </th>
+                            <th style="white-space: pre-line;width: 20%">Member Name (Unique Health ID)</th>
+                            <th style="white-space: pre-line;width: 10%">FHW Name</th>
+                            <th style="white-space: pre-line;width: 20%">Location</th>
+                            <th style="white-space: pre-line;width: 10%">LMP Date</th>
+                            <th style="white-space: pre-line;width: 10%">Registration Date</th>
+                            <th style="white-space: pre-line;width: 10%">1st ANC Visit Date</th>
+                            <th style="white-space: pre-line;width: 30%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll='pregreg.searchData()'
+                        infinite-scroll-disabled='pregreg.pagingService.pagingRetrivalOn'
+                        infinite-scroll-container='"#member-scroll"'>
+                        <tr ng-repeat="member in pregreg.memberDetails">
+                            <td>
+                                {{$index + 1}}
+                            </td>
+                            <td>{{member.memberNameId}}</td>
+                            <td>{{member.fhwName}}</td>
+                            <td>{{member.locationHierarchy}}</td>
+                            <td>{{member.lmpDate| date:'dd/MM/yyyy'}}</td>
+                            <td>{{member.regDate| date:'dd/MM/yyyy'}}</td>
+                            <td>{{member.ancVisitDate| emptylabel}}</td>
+                            <td>
+                                <button class="btn btn-primary"
+                                    ng-click="pregreg.markDateAsCorrect(member.pregId)">Correct</button>
+                                <button class="btn btn-danger"
+                                    ng-click="pregreg.markDateAsIncorrect(member.pregId, member.lmpDate, member.regDate, member.ancVisitDate)">Incorrect</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="large-div filter-div">
+    <span style="left:-66px" class="filter-toggle" ng-click="pregreg.toggleFilter()">Search</span>
+    <div class="row">
+        <div class="col-12">
+            <h5 class="filter-div-title">Search Members</h5>
+        </div>
+    </div>
+    <div class="filter-div-body">
+        <form name="pregreg.searchForm" novalidate>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <validate for='fromDate' required-msg="Select Date">
+                            <label for="fromDate" control-label>From Date</label>
+                            <input type="text" datepicker tabindex="8" name="fromDate" form-control
+                                ng-model="pregreg.fromDate" required>
+                        </validate>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <validate for='toDate' required-msg="Select Date">
+                            <label for="toDate" control-label>To Date</label>
+                            <input type="text" datepicker tabindex="8" name="toDate" form-control
+                                ng-model="pregreg.toDate" required>
+                        </validate>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 2%">
+                <location-directive template-type="'twoPart'" ng-model="pregreg.selectedLocationId"
+                    selected-location="pregreg.selectedLocation" required-upto-level="4" template-type="'inline'"
+                    fetch-according-to-user-aoi="false"> </location-directive>
+            </div>
+        </form>
+        <div class="col-12" style="margin-top: 2%">
+            <div class="form-group text-right">
+                <button class="btn btn-secondary close-filter" ng-click="pregreg.toggleFilter()">Close</button>
+                <button type="submit" class="btn btn-primary search-filter"
+                    ng-click="pregreg.searchData(true)">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cst-backdrop"></div> -->

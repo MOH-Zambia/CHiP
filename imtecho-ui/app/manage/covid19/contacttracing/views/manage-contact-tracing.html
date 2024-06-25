@@ -1,0 +1,132 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ manageCovidCasesCtrl.headerText}}</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="manageCovidCasesCtrl.mangeCovid19CaseForm" id="mangeCovid19CaseForm"
+                        novalidate>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="card-sub-title">
+                                    COVID19 Case Details
+                                </h5>
+                                <div>
+                                    <div class="form-group">
+                                        <validate for='name' required-msg="Enter Name">
+                                            <label for="name" control-label>Name</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter name" name="name" id="name" maxlength="99"
+                                                ng-model="manageCovidCasesCtrl.covid19Case.name" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='age' required-msg="Enter age">
+                                            <label for="age" control-label>Age</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                max="150" min="1" onkeypress="return !(event.charCode == 46)"
+                                                placeholder="Enter age" name="age" id="age"
+                                                ng-model="manageCovidCasesCtrl.covid19Case.age" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='gender' required-msg="Select Gender">
+                                            <label for="gender" control-label>Gender</label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="manageCovidCasesCtrl.covid19Case.gender" name="gender"
+                                                id="gender" required>
+                                                <option value="" selected>--Select--</option>
+                                                <option value="M">Male</option>
+                                                <option value="F">Female</option>
+                                                <option value="T">Transgender</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='contact_no' required-msg="Enter contact no"
+                                            minLength-msg="Please enter valid 10 digit contact no">
+                                            <label for="contact_no" control-label>Contact No</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter contact no" numbers-only min-length="10" limit-to="10" name="contact_no" id="contact_no"
+                                                ng-model="manageCovidCasesCtrl.covid19Case.contact_no" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='address' required-msg="Enter address">
+                                            <label for="address" control-label>Address</label>
+                                            <textarea form-control maxlength="1024" rows="4" cols="47"
+                                                ng-model="manageCovidCasesCtrl.covid19Case.address" name="address"
+                                                required>
+                                            </textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='locationId' required-msg="Select District">
+                                            <label for="locationId" control-label>District</label>
+                                            <select class="form-control cst-form-control" chosen-directive form-control
+                                                ng-model="manageCovidCasesCtrl.districtlocationId" name="locationId"
+                                                id="locationId"
+                                                ng-options="location.id as location.english_name for location in manageCovidCasesCtrl.districtLocations"
+                                                ng-change="manageCovidCasesCtrl.getChildLocation(manageCovidCasesCtrl.districtlocationId)"
+                                                required>
+                                                <option value="" selected>--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="!!manageCovidCasesCtrl.districtlocationId">
+                                        <validate for='locationId' required-msg="Select Status">
+                                            <label for="locationId" control-label>Taluka</label>
+                                            <select class="form-control cst-form-control" form-control
+                                                chosen-directive="manageCovidCasesCtrl.talukaLocation"
+                                                ng-model="manageCovidCasesCtrl.covid19Case.locationId" name="locationId"
+                                                id="locationId" ng-options="taluka.id as taluka.englishName for taluka in
+                                                     manageCovidCasesCtrl.talukaLocation" required>
+                                                <option value="" selected>--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='status' required-msg="Select Status">
+                                            <label for="status" control-label>Status</label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="manageCovidCasesCtrl.covid19Case.state" name="status"
+                                                id="gender" required>
+                                                <option value="" selected>--Select--</option>
+                                                <option value="Referred">Referred</option>
+                                                <option value="Suspected">Suspected</option>
+                                                <option value="Testing Pending">Testing Pending</option>
+                                                <option value="Positive">Positive</option>
+                                                <option value="Negative">Negative</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer mt-5">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary" ng-click="manageCovidCasesCtrl.save()">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    Save & Continue
+                                </button>
+                                <button class="btn btn-secondary" ng-click="manageCovidCasesCtrl.cancel()">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

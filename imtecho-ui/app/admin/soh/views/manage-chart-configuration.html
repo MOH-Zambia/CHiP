@@ -1,0 +1,365 @@
+<style>
+    .card-sub-title {
+        font-size: 15px;
+        color: black;
+    }
+
+    .mt-10 {
+        margin-top: 10px;
+    }
+
+    .pl-0 {
+        padding-left: 0;
+    }
+
+    label {
+        white-space: initial !important;
+    }
+</style>
+
+<div class="container-fluid" ng-if="(ctrl.isEditMode && (ctrl.rights.normal || ctrl.rights.advanced))
+    || (!ctrl.isEditMode && ctrl.rights.advanced)">
+    <div class="row">
+        <div class="col-12 ">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Manage SOH Chart Configuration</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <form role="form" name="ctrl.manageSohChartConfigurationForm" id="manageSohChartConfigurationForm"
+                        novalidate>
+                        <div class="row form-group">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <validate for='module' required-msg="Enter module">
+                                        <label for='module' control-label>
+                                            Module
+                                        </label>
+                                        <select class="form-control cst-form-control" form-control name="module"
+                                            id="module" ng-model="ctrl.chartObj.module"
+                                            ng-required="ctrl.rights.advanced"
+                                            ng-disabled="ctrl.rights.normal && !ctrl.rights.advanced"
+                                            ng-options="module.module as (module.module + ' (' + module.moduleName + ')') for module in ctrl.elementModuleList">
+                                            <option value="">--Select--</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for='chartName' required-msg="Enter name">
+                                        <label for='chartName' control-label>Name</label>
+                                        <input type="text" class="form-control cst-form-control" form-control
+                                            name="chartName" id="chartName" ng-model="ctrl.chartObj.name"
+                                            ng-required="ctrl.rights.advanced"
+                                            ng-disabled="ctrl.rights.normal && !ctrl.rights.advanced">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for='chartDisplayName'>
+                                        <label for='chartDisplayName' control-label>
+                                            Display Name
+                                        </label>
+                                        <input type="text" class="form-control cst-form-control" form-control
+                                            name="chartDisplayName" id="chartDisplayName"
+                                            ng-model="ctrl.chartObj.displayName"
+                                            ng-disabled="ctrl.rights.normal && !ctrl.rights.advanced">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for='chartType' required-msg="Enter Chart Type">
+                                        <label for='chartType' control-label>
+                                            Chart Type
+                                        </label>
+                                        <select class="form-control cst-form-control" form-control name="chartType"
+                                            id="chartType" ng-model="ctrl.chartObj.chartType"
+                                            ng-required="ctrl.rights.advanced"
+                                            ng-disabled="ctrl.rights.normal && !ctrl.rights.advanced">
+                                            <option value="">--Select--</option>
+                                            <option value="LINE">Line Chart</option>
+                                            <option value="BAR_STATE">State Bar Chart</option>
+                                        </select>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <validate for="from_date" required-msg="Enter from date">
+                                        <label style="float: left;" for="from_date" control-label>From Date</label>
+                                        <input name="from_date" type="text" datepicker class="disabled-input"
+                                            id="from_date" ng-model="ctrl.chartObj.fromDate" form-control>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <validate for="to_date" required-msg="Enter to date">
+                                        <label style="float: left;" for="to_date" control-label>To Date</label>
+                                        <input name="to_date" type="text" datepicker class="disabled-input" id="to_date"
+                                            ng-model="ctrl.chartObj.toDate" min-date-month="ctrl.chartObj.fromDate"
+                                            form-control ng-disabled="!ctrl.chartObj.fromDate">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <validate for='chartQueryName'>
+                                        <label for='chartQueryName' control-label>
+                                            Query Name
+                                        </label>
+                                        <input type="text" class="form-control cst-form-control" form-control
+                                            name="chartQueryName" id="chartQueryName" ng-model="ctrl.chartObj.queryName"
+                                            ng-disabled="ctrl.rights.normal && !ctrl.rights.advanced">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                                <div class="form-group">
+                                    <validate for='chartOrder'>
+                                        <label for='chartOrder' control-label>
+                                            Order
+                                        </label>
+                                        <input type="number" class="form-control cst-form-control" form-control
+                                            name="chartOrder" id="chartOrder" ng-model="ctrl.chartObj.chartOrder"
+                                            ng-disabled="ctrl.rights.normal && !ctrl.rights.advanced">
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configuration -->
+                        <div class="form-group" class="tabclass" ng-if="ctrl.rights.advanced">
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class="form-group">
+                                        <label class="card-sub-title">
+                                            Configurations
+                                        </label>
+                                        <button type="button" class="btn btn-primary"
+                                            ng-click="ctrl.addConfigurationObj()">
+                                            Add Configuration
+                                        </button>
+                                    </div>
+                                    <div class="accordion" id="configurationsAccordion">
+                                        <div ng-repeat="(parentIndex, configuration) in ctrl.configurationArray">
+                                            <div class="card">
+                                                <div class="card-header pl-0" style="cursor: pointer;"
+                                                    data-toggle="collapse"
+                                                    data-target="#collapseConfiguration{{parentIndex}}"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapseConfiguration{{parentIndex}}"
+                                                    id="configurationHeading{{parentIndex}}">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" style="text-decoration: none;"
+                                                            type="button">
+                                                            Configuration #{{parentIndex + 1}}
+                                                            {{configuration.elementName ? ' (' + configuration.elementName + ')' : ''}}
+                                                        </button>
+                                                    </h5>
+                                                </div>
+
+                                                <div id="collapseConfiguration{{parentIndex}}" class="collapse"
+                                                    aria-labelledby="configurationHeading{{parentIndex}}"
+                                                    data-parent="#configurationsAccordion">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <validate for='elementName{{parentIndex}}'>
+                                                                        <label for='elementName{{parentIndex}}'
+                                                                            control-label>
+                                                                            Element Name
+                                                                        </label>
+                                                                        <input type="text"
+                                                                            class="form-control cst-form-control"
+                                                                            form-control
+                                                                            name="elementName{{parentIndex}}"
+                                                                            id="elementName{{parentIndex}}"
+                                                                            ng-model="configuration.elementName">
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <validate for='displayName{{parentIndex}}'>
+                                                                        <label for='displayName{{parentIndex}}'
+                                                                            control-label>
+                                                                            Display Name
+                                                                        </label>
+                                                                        <input type="text"
+                                                                            class="form-control cst-form-control"
+                                                                            form-control
+                                                                            name="displayName{{parentIndex}}"
+                                                                            id="displayName{{parentIndex}}"
+                                                                            ng-model="configuration.displayName">
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <validate for='color{{parentIndex}}'>
+                                                                        <label for='color{{parentIndex}}' control-label>
+                                                                            Color
+                                                                        </label>
+                                                                        <input type="text"
+                                                                            class="form-control cst-form-control"
+                                                                            form-control name="color{{parentIndex}}"
+                                                                            id="color{{parentIndex}}"
+                                                                            ng-model="configuration.color">
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <!-- Element Fields -->
+                                                                <div class="form-group">
+                                                                    <label class="card-sub-title">
+                                                                        Fields
+                                                                    </label>
+                                                                    <button type="button" class="btn btn-primary"
+                                                                        ng-click="ctrl.addConfigurationFieldObj(parentIndex)">
+                                                                        Add Field
+                                                                    </button>
+                                                                </div>
+
+                                                                <div class="accordion"
+                                                                    id="fieldsAccordion{{parentIndex}}">
+                                                                    <div
+                                                                        ng-repeat="(index, field) in ctrl.configurationArray[parentIndex].fields">
+                                                                        <div class="card">
+                                                                            <div class="card-header pl-0"
+                                                                                style="cursor: pointer;"
+                                                                                data-toggle="collapse"
+                                                                                data-target="#collapseField{{parentIndex}}{{index}}"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="collapseField{{parentIndex}}{{index}}"
+                                                                                id="fieldHeading{{parentIndex}}{{index}}">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link"
+                                                                                        style="text-decoration: none;"
+                                                                                        type="button">
+                                                                                        Field #{{index + 1}}
+                                                                                        of
+                                                                                        Configuration
+                                                                                        #{{parentIndex + 1}}
+                                                                                        {{field.name ? ' (' + field.name + ')' : ''}}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+
+                                                                            <div id="collapseField{{parentIndex}}{{index}}"
+                                                                                class="collapse"
+                                                                                aria-labelledby="fieldHeading{{parentIndex}}{{index}}"
+                                                                                data-parent="#fieldsAccordion{{parentIndex}}">
+                                                                                <div class="card-body">
+                                                                                    <div class="form-group">
+                                                                                        <validate
+                                                                                            for='fieldName{{parentIndex}}{{index}}'>
+                                                                                            <label
+                                                                                                for='fieldName{{parentIndex}}{{index}}'
+                                                                                                control-label
+                                                                                                class="control-label">
+                                                                                                Name
+                                                                                            </label>
+                                                                                            <input type="text"
+                                                                                                class="form-control cst-form-control"
+                                                                                                form-control
+                                                                                                ng-pattern="/^[^\$\^]*$/"
+                                                                                                name="fieldName{{parentIndex}}{{index}}"
+                                                                                                id="fieldName{{parentIndex}}{{index}}"
+                                                                                                ng-model="field.name">
+                                                                                            <placeholder>
+                                                                                            </placeholder>
+                                                                                        </validate>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <validate
+                                                                                            for='fieldField{{parentIndex}}{{index}}'>
+                                                                                            <label
+                                                                                                for='fieldField{{parentIndex}}{{index}}'
+                                                                                                control-label
+                                                                                                class="control-label">
+                                                                                                Field
+                                                                                            </label>
+                                                                                            <input type="text"
+                                                                                                class="form-control cst-form-control"
+                                                                                                form-control
+                                                                                                name="fieldField{{parentIndex}}{{index}}"
+                                                                                                id="fieldField{{parentIndex}}{{index}}"
+                                                                                                ng-model="field.field">
+                                                                                            <placeholder>
+                                                                                            </placeholder>
+                                                                                        </validate>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <validate
+                                                                                            for='fieldType{{parentIndex}}{{index}}'>
+                                                                                            <label
+                                                                                                for='fieldType{{parentIndex}}{{index}}'
+                                                                                                control-label
+                                                                                                class="control-label">
+                                                                                                Type
+                                                                                            </label>
+                                                                                            <input type="text"
+                                                                                                class="form-control cst-form-control"
+                                                                                                form-control
+                                                                                                name="fieldType{{parentIndex}}{{index}}"
+                                                                                                id="fieldType{{parentIndex}}{{index}}"
+                                                                                                ng-model="field.type"
+                                                                                                disabled="true">
+                                                                                            <placeholder>
+                                                                                            </placeholder>
+                                                                                        </validate>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label></label>
+                                                                                        <button type="button"
+                                                                                            class="btn btn-danger"
+                                                                                            ng-click="ctrl.removeConfigurationFieldObj(index, parentIndex)">
+                                                                                            Remove Field
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group" style="margin-top: 16px;">
+                                                                <label></label>
+                                                                <button style="margin-left: 15px;" type="button"
+                                                                    class="btn btn-danger"
+                                                                    ng-click="ctrl.removeConfigurationObj(parentIndex)">
+                                                                    Remove Configuration
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer mt-3">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary" ng-click="ctrl.addOrEditChartDetails()">
+                                    <i aria-hidden="true" class="fa fa-floppy-o"></i>
+                                    {{ ctrl.isEditMode? 'Update' : 'Save' }}
+                                </button>
+                                <button class="btn btn-secondary"
+                                    ui-sref="techo.manage.sohElementConfiguration({ selectedTab: '1' })">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

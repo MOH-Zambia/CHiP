@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="16dp">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/box_background"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="5dp">
+
+        <LinearLayout
+            android:id="@+id/dosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="3dp"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:id="@+id/layer1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statusLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:text="Status : "
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/roboto_bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:inputType="number"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="3dp"
+                    android:textColor="@color/listTextColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/roboto_bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layer2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/approvedOnLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:text="Date : "
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/roboto_bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/approvedOn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:inputType="number"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="3dp"
+                    android:textColor="@color/listTextColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/roboto_bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/inventory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="3dp"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:id="@+id/layer3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/requestedQtyLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="Requested : "
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/roboto_bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/requestedQty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:enabled="false"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/listTextColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/roboto_bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layer4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/approvedQtyLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="Approved : "
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/roboto_bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/approvedQty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/listTextColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/roboto_bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="3dp"
+            android:paddingBottom="5dp"
+            android:weightSum="1">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/medicineNameLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="0.4"
+                android:ellipsize="end"
+                android:text="Medicine name : "
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/roboto_bold" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/medicineName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="0.6"
+                android:ellipsize="end"
+                android:paddingTop="5dp"
+                android:paddingBottom="3dp"
+                android:textColor="@color/listTextColor"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/roboto_bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/infoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp">
+
+            <ImageView
+                android:id="@+id/infoIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/about"
+                android:contentDescription="Information"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp" />
+
+            <TextView
+                android:id="@+id/infoText"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Click here to provide your consent"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="8dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

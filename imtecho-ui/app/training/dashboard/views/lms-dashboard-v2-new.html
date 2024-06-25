@@ -1,0 +1,783 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="app/training/dashboard/views/lms-dashboard-v2-new.css">
+</head>
+<div class="content-wrapper mt-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="dashboard-header">Location - {{lms.displayLocationName}}
+            </div>
+        </div>
+        <div class="row" ng-if="lms.assignedLocations.length > 0">
+            <!-- creating Header -->
+            <div class="col-12">
+                <div ng-repeat="data in lms.headerSectionDataForCol" class="box-wrapper"
+                    style="cursor: pointer; text-align: center;" ng-click="lms.onHeaderSelection(data.key)">
+                    <div ng-class="data.color" uib-tooltip={{data.tooltip}}>
+                        <div class="row align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold mb-1">{{data.key}}</div>
+                                <div class="text-xs font-weight-bold">{{data.value}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7">
+                <div class="row">
+                    <!-- User statistics -->
+                    <div class="col-12">
+                        <div class="card lms_cst-card" style="min-height: 340px;" id="user-statistics">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                User statistics</div>
+                            <div class="card-body" style="padding-top: 0; min-height: 340px;">
+                                <canvas id="base" class="chart chart-line" chart-labels="lms.userStatisticsLabel"
+                                    chart-series="lms.userStatisticsSeries" chart-colors="lms.userStatisticsColors"
+                                    chart-options="lms.userStatisticsOptions" chart-data="lms.userStatisticsData2">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- All courses overview -->
+                    <div class="col-12">
+                        <div class="card lms_cst-card" style="min-height: 340px;" id="all-course-overview">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span
+                                    uib-tooltip="**Note : The completion rate is calculated based on the Total registered members who have the application installed">All
+                                    courses overview</span>
+                            </div>
+                            <div class="card-body" style="padding-top: 0; min-height: 340px;">
+                                <canvas id="base" class="chart chart-bar" chart-labels="lms.courseOverviewLabels"
+                                    chart-series="lms.courseOverviewSeries" chart-colors="lms.courseOverviewColors"
+                                    chart-options="lms.courseOverviewOptions" chart-data="lms.courseOverviewData">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <!-- District performance -->
+                    <div class="col-12" style="padding-left: 0;">
+                        <div class="card lms_cst-card" id="district-performance">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="col-5"
+                                    uib-tooltip="**Note : The completion rate is calculated based on the Total registered members who have the application installed">
+                                    {{lms.displayChildLocation}} performance
+                                </div>
+                                <div class="col-4" style="padding: 0;">
+                                    <div class="form-group">
+                                        <select chosen-directive="lms.courses" name="courseId"
+                                            class="form-control cst-form-control" form-control
+                                            ng-model='lms.districtPerformanceCourseId.courseId'
+                                            ng-change="lms.setDistrictPerformanceData(lms.districtPerformanceCourseId.courseId)"
+                                            ng-options="course.courseId as course.courseName for course in lms.courses">
+                                            <option value=''>All courses</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row"
+                                style="margin: 5px; background: #4da6ff; border-radius: 5px; color: white; font-size: medium;">
+                                <div class="col-4">
+                                    <span uib-tooltip="Location with completion rate >= 80"><strong>Best
+                                            Performance</strong></span>
+                                </div>
+                                <div class="col-4">
+                                    <span uib-tooltip="Location with completion rate between 79 and 26"><strong>Average
+                                            Performance</strong></span>
+                                </div>
+                                <div class="col-4">
+                                    <span uib-tooltip="Location with completion rate <= 25"><strong>Poor
+                                            Performance</strong></span>
+                                </div>
+                            </div>
+                            <div class="card-body" style="padding-top: 0;">
+                                <div class="row" style="height: 180px; overflow: auto;">
+                                    <div class="col-4" style="padding: 0;border-right: 1px solid black;">
+                                        <table style="width: 100%;text-align: center; font-size: 12px;">
+                                            <thead>
+                                                <th>Location name</th>
+                                                <th>Completion rate</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in lms.districtPerformanceData"
+                                                    ng-if="item.completion_rate >= 80">
+                                                    <td style="word-break: break-all;">{{item.name}}</td>
+                                                    <td style="color: #006600;">
+                                                        <strong>{{item.completion_rate}}%</strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4" style="padding: 0;border-right: 1px solid black;">
+                                        <table style="width: 100%;text-align: center; font-size: 12px;">
+                                            <thead>
+                                                <th>Location name</th>
+                                                <th>Completion rate</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in lms.districtPerformanceData"
+                                                    ng-if="item.completion_rate >25 && item.completion_rate <80">
+                                                    <td style="word-break: break-all;">{{item.name}}</td>
+                                                    <td style="color: #006600;">
+                                                        <strong>{{item.completion_rate}}%</strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4" style="padding: 0;">
+                                        <table style="width: 100%;text-align: center; font-size: 12px;">
+                                            <thead>
+                                                <th>Location name</th>
+                                                <th>Completion rate</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in lms.districtPerformanceData"
+                                                    ng-if="item.completion_rate <= 25">
+                                                    <td style="word-break: break-all;">{{item.name}}</td>
+                                                    <td style="color: red;"><strong>{{item.completion_rate}}%</strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Courses list -->
+                    <div class="col-12">
+                        <div class="card lms_cst-card" id="course">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="col-4"
+                                    uib-tooltip="**Note : The completion rate is calculated based on the Total registered members who have the application installed">
+                                    Courses {{lms.courseWiseData.length}}
+                                </div>
+                                <div class="col4"></div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <select chosen-directive="lms.childLocations" name="locationId"
+                                            class="form-control cst-form-control" form-control
+                                            ng-model='lms.courseGraph.locationId'
+                                            ng-change="lms.setCourseWiseGraph(lms.courseGraph.locationId)"
+                                            ng-options="location.id as location.name for location in lms.childLocations">
+                                            <option value=''>All Locations</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" style="padding-top: 0;">
+                                <div class="row" style="height: 300px; overflow-y: auto;">
+                                    <div class="col-12">
+                                        <div ng-repeat="item in lms.courseWiseData">
+                                            <div style="min-height: 80px; background-color: #e1eaea;"
+                                                class="card lms_cst-card">
+                                                <div style="padding: 10px;">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            {{item.courseName}} : {{item.enrolled}} - <span
+                                                                style="color: #006600;">Total registered</span>/
+                                                            {{item.appInstalled}} - <span
+                                                                style="color: #ffbb00;">Installed</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <div style="font-size: smaller;">Not Started</div>
+                                                                    <div>{{item.notStarted}}</div>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <div style="font-size: smaller;">In Progress</div>
+                                                                    <div>{{item.inProgress}}</div>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <div style="font-size: smaller;">Completed</div>
+                                                                    <div>{{item.completed}}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2" style="padding: 0;">
+                                                            <div class="progress-circle"
+                                                                ng-style="{'background': 
+                                                        'radial-gradient(closest-side, white 79%, transparent 80% 100%),
+                                                        conic-gradient(#3333cc ' + (item.appInstalled == 0 ? 0:item.completed * 100 / item.appInstalled | number : 0) + '%, lightblue 0)'}">
+                                                                <span
+                                                                    style="position: absolute;padding-left: 15px;padding-top: 15px; font-size: 10px;">{{item.appInstalled
+                                                                    == 0 ? 0:item.completed
+                                                                    * 100 / item.appInstalled | number : 0}}
+                                                                    %</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Learning App usage -->
+            <div class="col-10">
+                <div class="card lms_cst-card" style="min-height: 340px;">
+                    <!-- <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="col-4">
+                            Learning App usage
+                        </div>
+                    </div> -->
+                    <div class="card-body" style="padding-top: 0;">
+                        <div class="row">
+                            <div class="col-12" style="text-align: right; font-size: 15px;">
+                                <span><strong>Total Registered Members :
+                                        {{lms.headerData.totalEnrolled}}</strong></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="pie-chart-container">
+                                    <canvas id="pie" class="chart chart-pie" chart-data="lms.pieChartData"
+                                        chart-labels="lms.pieChartLabels" chart-options="lms.pieChartOptions"
+                                        chart-colors="lms.pieChartColors"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="pie-chart-container">
+                                    <canvas id="pie" class="chart chart-pie" chart-data="lms.pieChartData2"
+                                        chart-labels="lms.pieChartLabels2" chart-options="lms.pieChartOptions2"
+                                        chart-colors="lms.pieChartColors2"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Weekly/Monthy count of users -->
+            <div class="col-7">
+                <div class="card lms_cst-card" style="min-height: 340px;" id="user-activity">
+                    <div class="card-header d-flex justify-content-between align-items-center"
+                        style="padding-bottom: 0;">
+                        <div class="col-7" style="display: contents;">
+                            Weekly/Monthy count of users
+                            <ul id="myTabs" class="nav nav-tabs" data-tabs="tabs"
+                                style="margin-bottom: 15px;border: none;">
+                                <li class="nav-item">
+                                    <a class="nav-link cursor-ptr" ng-class="{'active':lms.showWeeklyGraph}"
+                                        ng-click="lms.showWeeklyGraph = true">
+                                        Weekly
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link cursor-ptr" ng-class="{'active':!lms.showWeeklyGraph}"
+                                        ng-click="lms.showWeeklyGraph = false">
+                                        Monthly
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-2" style="padding: 0;">
+                            <div class="form-group">
+                                <select chosen-directive="lms.districts" name="locationId"
+                                    class="form-control cst-form-control" form-control ng-model='lms.activeGraph.user'
+                                    ng-change="lms.setUserStatusGraph(lms.activeGraph.locationId)">
+                                    <option value='active'>Active users</option>
+                                    <option value='inactive'>Inactive users</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3" style="padding: 0;">
+                            <div class="form-group">
+                                <select chosen-directive="lms.childLocations" name="locationId"
+                                    class="form-control cst-form-control" form-control
+                                    ng-model='lms.activeGraph.locationId'
+                                    ng-change="lms.setUserStatusGraph(lms.activeGraph.locationId)"
+                                    ng-options="location.id as location.name for location in lms.childLocations">
+                                    <option value=''>All Locations</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding-top: 0; min-height: 340px;">
+                        <!-- <div class="row">
+                            <div class="col-12" style="text-align: right; font-size: 15px;">
+                                <span><strong>Total count : {{lms.totalUsersForActiveGraph}}</strong></span>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-12" ng-if="lms.showWeeklyGraph">
+                                <canvas id="base" class="chart chart-bar" chart-labels="lms.barChartLabels"
+                                    chart-series="lms.barChartSeries" chart-colors="lms.barChartColors"
+                                    chart-options="lms.barChartOptions" chart-data="lms.barChartData">
+                                </canvas>
+                            </div>
+                            <div class="col-12" ng-if="!lms.showWeeklyGraph">
+                                <canvas id="base" class="chart chart-bar" chart-labels="lms.barChartLabels2"
+                                    chart-series="lms.barChartSeries2" chart-colors="lms.barChartColors2"
+                                    chart-options="lms.barChartOptions2" chart-data="lms.barChartData2">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- State level course completed rate -->
+            <div class="col-5" ng-if="lms.user.minLocationLevel == 1">
+                <div class="card lms_cst-card" style="min-height: 340px;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="col-12"
+                            uib-tooltip="**Note : The completion rate is calculated based on the Total registered members who have the application installed">
+                            State level course completed rate
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding-top: 0;">
+                        <div class="row">
+                            <div class="col-8" style="padding: 0; text-align: center;">
+                                <div id="chart1234"></div>
+                            </div>
+                            <div class="col-4" style="padding: 0;">
+                                <div class="call-div" style="font-size: 11px;">
+                                    <div>
+                                        <span class="col-2" style="padding: 0;">
+                                            <em class="fa fa-square" style="color:#006600;  padding: 5px;"> </em>
+                                            100% course completed
+                                        </span>
+                                        <br />
+                                        <span class="col-2" style="padding: 0;">
+                                            <em class="fa fa-square" style="color:#3399ff;  padding: 5px;"> </em>
+                                            76-99% course completed
+                                        </span>
+                                        <br />
+                                        <span class="col-2" style="padding: 0;">
+                                            <em class="fa fa-square" style="color:#ffbb00;padding: 5px;"></em>
+                                            51-75% course completed
+                                        </span>
+                                        <br />
+                                        <span class="col-2" style="padding: 0;">
+                                            <em class="fa fa-square" style="color:#ff6600;padding: 5px;"></em>
+                                            26-50% course completed
+                                        </span>
+                                        <br />
+                                        <span class="col-2" style="padding: 0;">
+                                            <em class="fa fa-square" style="color:#cc0000; padding: 5px;"></em>
+                                            Less than or equal to 25%
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Leadership board -->
+            <div class="col-12">
+                <div class="card lms_cst-card" style="min-height: 340px;" id="user-activity">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="col-3">
+                            Leadership Board
+                        </div>
+                        <div class="col-3" style="padding: 0;">
+                            <div class="form-group">
+                                <select chosen-directive="lms.courses" name="courseId"
+                                    class="form-control cst-form-control" form-control
+                                    ng-model='lms.leadershipBoard.courseId'
+                                    ng-change="lms.setLeadershipBoard(lms.leadershipBoard.courseId)"
+                                    ng-options="course.courseId as course.courseName for course in lms.courses">
+                                    <option value=''>All courses</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <ul id="myTabs" class="nav nav-tabs" data-tabs="tabs"
+                                style="margin-bottom: 15px;border: none;">
+                                <li class="nav-item active top-score">
+                                    <a class="nav-link active cursor-ptr" data-toggle="tab" data-target="#user"
+                                        role="tab">
+                                        Top Scorer
+                                    </a>
+                                </li>
+                                <li class="nav-item completor">
+                                    <a class="nav-link cursor-ptr" data-toggle="tab" data-target="#bounce" role="tab">
+                                        Fastest Completed
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body" style="height: 250px; overflow: auto; padding-top: 0;">
+                        <div class="">
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active show" id="user">
+                                    <table class="table">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col" style="color: black;">#</th>
+                                                <th scope="col" style="color: black;">Name of the participant</th>
+                                                <th scope="col" style="color: black;">Average score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="scorer in lms.topScorerData | limitTo:10">
+                                                <th scope="row">{{ $index +1 }}</th>
+                                                <td>{{scorer.userName}}</td>
+                                                <td>
+                                                    <ul class="daily-task" style="margin: 0;">
+                                                        <li style="padding: 0;">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="progress">
+                                                                    <div class="bar"
+                                                                        ng-style="{ 'width': scorer.score + '%' , 'background' : lms.getColor(scorer.score)}">
+                                                                    </div>
+                                                                </div>
+                                                                <p style="margin: 0;">{{scorer.score}}%</p>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="no-data-placeholder" style="padding: 70px;"
+                                        ng-show="lms.topScorerData.length === 0">
+                                        <p>
+                                            NO RECORD FOUND
+                                        </p>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="bounce">
+                                    <table class="table">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col" style="color: black;">#</th>
+                                                <th scope="col" style="color: black;">Name of the participant</th>
+                                                <th scope="col" style="color: black;">Spent Time / Total time to
+                                                    complete the course</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="courseData in lms.courseCompletorData | limitTo:10">
+                                                <th scope="row">{{ $index +1 }}</th>
+                                                <td>{{courseData.userName}}</td>
+                                                <td>
+                                                    <p class="mb-0">{{courseData.spentTime}} /
+                                                        {{courseData.finishedIn}}</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="no-data-placeholder" style="padding: 70px;"
+                                        ng-show="lms.courseCompletorData.length === 0">
+                                        <p>
+                                            NO RECORD FOUND
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- course statistics -->
+            <div class="col-12">
+                <div class="card lms_cst-card" style="min-height: 340px;" id="user-activity">
+                    <div class="card-header d-flex align-items-center">
+                        <div class="col-4">
+                            Course Statistics
+                        </div>
+                        <div class="col-6">
+                            <ul id="myTabs" class="nav nav-tabs" data-tabs="tabs"
+                                style="margin-bottom: 15px;border: none;">
+                                <li class="nav-item active top-score">
+                                    <a class="nav-link active cursor-ptr" data-toggle="tab"
+                                        data-target="#popular_modules" role="tab">
+                                        Popular Modules
+                                    </a>
+                                </li>
+                                <li class="nav-item completor">
+                                    <a class="nav-link cursor-ptr" data-toggle="tab" data-target="#popular_lessons"
+                                        role="tab">
+                                        Popular Lessons
+                                    </a>
+                                </li>
+                                <li class="nav-item completor">
+                                    <a class="nav-link cursor-ptr" data-toggle="tab" data-target="#popular_quizzes"
+                                        role="tab">
+                                        Popular Quizzes
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body" style="height: 250px; overflow: auto; padding-top: 0;">
+                        <div class="">
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active show" id="popular_modules">
+                                    <table class="table" style="text-align: center;">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col" style="color: black;">#</th>
+                                                <th scope="col" style="color: black;">Module name</th>
+                                                <th scope="col" style="color: black;">No. of times opened / Hours Spent
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="module in lms.modules | limitTo:10">
+                                                <th scope="row">{{ $index +1 }}</th>
+                                                <td>{{module.moduleName}}</td>
+                                                <td>
+                                                    <p class="mb-0">{{module.frequency}} /
+                                                        {{module.hoursSpent|emptylabel}}</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="no-data-placeholder" style="padding: 70px;"
+                                        ng-show="lms.modules.length === 0">
+                                        <p>
+                                            NO RECORD FOUND
+                                        </p>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="popular_lessons">
+                                    <table class="table" style="text-align: center;">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col" style="color: black;">#</th>
+                                                <th scope="col" style="color: black;">Lesson name</th>
+                                                <th scope="col" style="color: black;">No. of times opened / Hours Spent
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="lesson in lms.lessons | limitTo:10">
+                                                <th scope="row">{{ $index +1 }}</th>
+                                                <td>{{lesson.lessonName}}</td>
+                                                <td>
+                                                    <p class="mb-0">{{lesson.frequency}} /
+                                                        {{lesson.hoursSpent|emptylabel}}</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="no-data-placeholder" style="padding: 70px;"
+                                        ng-show="lms.lessons.length === 0">
+                                        <p>
+                                            NO RECORD FOUND
+                                        </p>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="popular_quizzes">
+                                    <table class="table" style="text-align: center;">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col" style="color: black;">#</th>
+                                                <th scope="col" style="color: black;">Quiz name</th>
+                                                <th scope="col" style="color: black;">No. of times opened</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="quiz in lms.quizzes | limitTo:10">
+                                                <th scope="row">{{ $index +1 }}</th>
+                                                <td>{{quiz.quizName}}</td>
+                                                <td>
+                                                    <p class="mb-0">{{quiz.frequency}}</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="no-data-placeholder" style="padding: 70px;"
+                                        ng-show="lms.quizzes.length === 0">
+                                        <p>
+                                            NO RECORD FOUND
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="enrolled_details" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="text">{{lms.key}} Details</h4>
+                <div class="pull-right" ng-if="lms.headerDataList.enrolled.length"
+                    style="margin-right: 10px;font-size: 20px;">
+                    <em uib-tooltip="Download excel" class="fa fa-file-excel-o" style="cursor: pointer;"
+                        ng-click="lms.printExcelForEnrolledMembers()"></em>
+                </div>
+            </div>
+            <div ng-if="lms.headerDataList.enrolled.length===0">
+                <div class="no-data-placeholder">
+                    <h5>No Record Found!</h5>
+                </div>
+            </div>
+            <div class="modal-body" ng-if="lms.headerDataList.enrolled.length">
+                <div class="cst-table table-responsive" style="overflow: auto;" id="enrolled-scroll">
+                    <table aria-describedby="enrolled" class="table table-sm table-striped table-bordered header-fixed">
+                        <thead>
+                            <tr>
+                                <th class="white-space-unset" id="sr_no">Sr No.</th>
+                                <th class="white-space-unset" id="name">Participant Name</th>
+                                <th class="white-space-unset" id="userName">User name</th>
+                                <th class="white-space-unset" id="roleName">Role Name</th>
+                                <th class="white-space-unset" id="contactNumber">Contact Number</th>
+                                <th class="white-space-unset" id="courseStatus">App installed?</th>
+                                <th class="white-space-unset" id="district">District</th>
+                                <th class="white-space-unset" id="division">Division</th>
+                                <th class="white-space-unset" id="mandal">Mandal</th>
+                                <th class="white-space-unset" id="phc">PHC</th>
+                                <th class="white-space-unset" id="sc">SC</th>
+                            </tr>
+                        </thead>
+                        <tbody infinite-scroll-distance="0" infinite-scroll='lms.retrieveEnrolledList()'
+                            infinite-scroll-container='"#enrolled-scroll"' infinite-scroll-immediate-check="true">
+                            <tr ng-repeat="participant in lms.headerDataList.enrolled">
+                                <td>
+                                    {{$index +1 }}
+                                </td>
+                                <td>{{participant.participantName }}</td>
+                                <td>{{participant.userName }}</td>
+                                <td>{{participant.roleName}} </td>
+                                <td>{{participant.contactNumber}} </td>
+                                <td>{{participant.appInstalled}}</td>
+                                <td>{{participant.district}} </td>
+                                <td>{{participant.division}} </td>
+                                <td>{{participant.mandal}} </td>
+                                <td>{{participant.phc}} </td>
+                                <td>{{participant.sc}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" ng-click="lms.modalClose(lms.key)">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="app_details" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="text">{{lms.key}} Details</h4>
+                <div class="pull-right " style="margin-right: 10px;font-size: 20px;"
+                    ng-if="lms.headerDataList.appInstalled.length">
+                    <em uib-tooltip="Download excel" class="fa fa-file-excel-o" style="cursor: pointer;"
+                        ng-click="lms.printExcelForAppInstalledMembers()"></em>
+                </div>
+            </div>
+            <div ng-if="lms.headerDataList.appInstalled.length===0">
+                <div class="no-data-placeholder">
+                    <h5>No Record Found!</h5>
+                </div>
+            </div>
+            <div class="modal-body" ng-if="lms.headerDataList.appInstalled.length">
+                <div class="cst-table table-responsive" style="overflow: auto;" id="appInstalled-scroll">
+                    <table aria-describedby="enrolled" class="table table-sm table-striped table-bordered header-fixed">
+                        <thead>
+                            <tr>
+                                <th class="white-space-unset" id="sr_no">Sr No.</th>
+                                <th class="white-space-unset" id="name">Participant Name</th>
+                                <th class="white-space-unset" id="userName">User name</th>
+                                <th class="white-space-unset" id="roleName">Role Name</th>
+                                <th class="white-space-unset" id="roleName">District</th>
+                                <th class="white-space-unset" id="roleName">Last login</th>
+                            </tr>
+                        </thead>
+                        <tbody infinite-scroll-distance="0" infinite-scroll='lms.retrieveAppInstalledList()'
+                            infinite-scroll-container='"#appInstalled-scroll"' infinite-scroll-immediate-check="true">
+                            <tr ng-repeat="participant in lms.headerDataList.appInstalled">
+                                <td>
+                                    {{$index +1 }}
+                                </td>
+                                <td>{{participant.participantName }}</td>
+                                <td>{{participant.userName }}</td>
+                                <td>{{participant.roleName}} </td>
+                                <td>{{participant.district}} </td>
+                                <td>{{ participant.last_login }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" ng-click="lms.modalClose(lms.key)">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="active_details" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="text">{{lms.key}} Details</h4>
+                <div class="pull-right " style="margin-right: 10px;font-size: 20px;"
+                    ng-if="lms.headerDataList.activeUsers.length">
+                    <em uib-tooltip="Download excel" class="fa fa-file-excel-o" style="cursor: pointer;"
+                        ng-click="lms.printExcelForActiveMembers()"></em>
+                </div>
+            </div>
+            <div ng-if="lms.headerDataList.activeUsers.length===0">
+                <div class="no-data-placeholder">
+                    <h5>No Record Found!</h5>
+                </div>
+            </div>
+            <div class="modal-body" ng-if="lms.headerDataList.activeUsers.length">
+                <div class="cst-table table-responsive" style="overflow: auto;" id="active-scroll">
+                    <table aria-describedby="enrolled" class="table table-sm table-striped table-bordered header-fixed">
+                        <thead>
+                            <tr>
+                                <th class="white-space-unset" id="sr_no">Sr No.</th>
+                                <th class="white-space-unset" id="name">Participant Name</th>
+                                <th class="white-space-unset" id="userName">User name</th>
+                                <th class="white-space-unset" id="roleName">Role Name</th>
+                                <th class="white-space-unset" id="roleName">District</th>
+                                <!-- <th class="white-space-unset" id="courseStart">Course Started On</th>
+                                <th class="white-space-unset" id="courseEnd">Course Completed On</th>
+                                <th class="white-space-unset" id="averageTimeSpentOnLession">Avg Time Spent On Lesson
+                                </th>
+                                <th class="white-space-unset" id="courseStatus">Course Status</th> -->
+                            </tr>
+                        </thead>
+                        <tbody infinite-scroll-distance="0" infinite-scroll='lms.retrieveActiveUsersList()'
+                            infinite-scroll-container='"#active-scroll"' infinite-scroll-immediate-check="true">
+                            <tr ng-repeat="participant in lms.headerDataList.activeUsers">
+                                <td>
+                                    {{$index +1 }}
+                                </td>
+                                <td>{{participant.participantName }}</td>
+                                <td>{{participant.userName }}</td>
+                                <td>{{participant.roleName}} </td>
+                                <td>{{participant.district}} </td>
+                                <!-- <td>{{participant.courseStartedOn ? participant.courseStartedOn : '-'}} </td>
+                                <td>{{participant.courseStatus === 'COMPLETED' ? participant.courseEndedOn ?
+                                    participant.courseEndedOn:'-' :
+                                    '-' }} </td>
+                                <td>{{participant.averageTimeSpentOnLession / 60 ===0 ? '-' :
+                                    (participant.averageTimeSpentOnLession / 60).toFixed(2) + ' Minutes'}}</td>
+                                <td>{{participant.courseStatus}}
+                                </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" ng-click="lms.modalClose(lms.key)">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

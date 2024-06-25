@@ -1,0 +1,2 @@
+ALTER TABLE gvk_immunisation_verification_response 
+ADD COLUMN date_known_checkbox boolean;

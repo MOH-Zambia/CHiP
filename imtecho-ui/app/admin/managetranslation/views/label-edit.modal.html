@@ -1,0 +1,32 @@
+<div class="modal-header">
+    Edit labels
+</div>
+<div>
+    <ul class="nav nav-tabs ">
+        <li ng-repeat="app in ctrl.apps" class="nav-item " ng-click="ctrl.selectedTab = app">
+            <div class="nav-link " ng-class="{'active bg-primary text-light': ctrl.selectedTab.appvalue===app.appvalue}"> {{app.appvalue}}</div>
+        </li>
+    </ul>
+    <div class="card card-body">
+        <form role="form" name="ctrl.languageEditForm" novalidate>
+            <div class="inline-form"  ng-repeat="lang in ctrl.data">
+                <div class="form-group" ng-if="lang.appvalue === ctrl.selectedTab.appvalue">
+                    <validate for='labelValue' required-msg="Enter Value" class="pt-1">
+                        <label for="labelValue" class="control-label" control-label>{{lang.languagevalue}}</label>
+                        <input type="text" class="form-control cst-form-control col-8" value="" form-control
+                            name="labelValue" ng-pattern="/.*/" ng-model="lang.value" maxlength="250"
+                            ng-blur="ctrl.valuesChanged(lang.id,ctrl.selectedTab.app,lang.language,lang.value)" required />
+                        <button class="btn btn-primary fa fa-refresh" ng-click="ctrl.translate(lang,ctrl.selectedTab.app)" ng-if="lang.languagevalue != 'English'"></button>
+                        <button class="btn btn-primary" ng-click="ctrl.translateAll()" ng-if="lang.languagevalue === 'English'">Translate all</button>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-footer">
+     <button type="button" class="btn btn-primary " ng-click="ctrl.update()">Update</button>
+    <button type="button" class="btn btn-primary " ng-click="ctrl.close()">Close</button>
+</div>

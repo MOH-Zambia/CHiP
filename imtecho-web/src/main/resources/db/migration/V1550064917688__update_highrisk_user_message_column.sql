@@ -1,0 +1,1 @@
+alter table gvk_high_risk_follow_up_usr_info alter column call_response_message type varchar(1000) ;

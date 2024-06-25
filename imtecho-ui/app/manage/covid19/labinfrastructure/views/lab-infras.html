@@ -1,0 +1,43 @@
+<div class="container-fluid users">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group pull-right col-2">
+                <input type="text" ng-model="search" class="form-control cst-form-control" id="search"
+                    placeholder="Search text" style="width:100%">
+            </div>
+            <div class="cst-table table-responsive" style="overflow: auto;" id="infrastructure-scroll"
+                ng-if="labinfrastructures.healthInfrastructuresList.length > 0">
+                <table aria-describedby="table"
+                    class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th id="id" class="white-space-unset">Sr.No</th>
+                            <th id="id" class="white-space-unset">Name</th>
+                            <th id="id" class="white-space-unset">Location</th>
+                            <th id="id" class="white-space-unset">Type of Hospital</th>
+                            <th id="id" class="white-space-unset">Address</th>
+                            <th id="id">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr
+                            ng-repeat="healthInfrastructure in labinfrastructures.healthInfrastructuresList | filter : search">
+                            <td ng-bind="$index + 1"></td>
+                            <td ng-bind-html="healthInfrastructure.details | emptylabel"></td>
+                            <td ng-bind-html="healthInfrastructure.healthInfraLocation | emptylabel"></td>
+                            <td ng-bind-html="healthInfrastructure.typeOfHosiptalName | emptylabel"></td>
+                            <td ng-bind-html="healthInfrastructure.address | emptylabel"></td>
+                            <td>
+                                <button class="btn btn-primary"
+                                    ng-click="labinfrastructures.update(healthInfrastructure)">Update</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-if="labinfrastructures.healthInfrastructuresList.length == 0">
+                <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No Health Infrastructures Found</h3>
+            </div>
+        </div>
+    </div>
+</div>

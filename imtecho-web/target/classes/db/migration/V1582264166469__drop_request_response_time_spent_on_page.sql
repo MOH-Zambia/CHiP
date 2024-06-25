@@ -1,0 +1,1 @@
+Drop table if exists request_response_time_spent_on_page;

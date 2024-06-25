@@ -1,0 +1,69 @@
+<!-- <div class="modal-header">
+    <h4 class="text" style="line-height: 1.5;">
+        {{ctrl.isAdd ? 'Add RCH Location' : 'Edit RCH Location'}}
+    </h4>
+</div>
+<div class="modal-body" style="overflow: inherit; overflow-y: auto;">
+    <div class="col-12" ng-if="ctrl.rchLocation.parentRchCode">
+        <ng-form name="{{ctrl.isAdd ? 'ctrl.addRchLocationForm': 'ctrl.editRchLocationForm'}}">
+            <div class="form-group">
+                <label uib-tooltip="TeCHO Location Hierarchy">
+                    <strong>TeCHO Location Hierarchy</strong>
+                </label>
+                <input type="text" class="form-control cst-form-control"
+                    ng-model="ctrl.rchLocation.techoLocationHierarchy" disabled>
+            </div>
+            <div class="form-group" ng-if="!ctrl.isAdd">
+                <label uib-tooltip="TeCHO Location Hierarchy">
+                    <strong>RCH Location Hierarchy</strong>
+                </label>
+                <input type="text" class="form-control cst-form-control" ng-model="ctrl.rchLocationHierarchy" disabled>
+            </div>
+            <label uib-tooltip="Select Current Location Hierarchy" control-label>
+                <strong>Select Current Location Hierarchy</strong>
+            </label>
+            <location-directive ng-model="ctrl.selectedRchLocationId" selected-location="ctrl.selectedRchLocation"
+                required-upto-level="ctrl.rchLocation.level" fetch-upto-level="ctrl.rchLocation.level"
+                template-type="'twoPart'" fetch-according-to-user-aoi="false" />
+            <br>
+            <div class="form-group">
+                <validate for="lgdCode" required-msg="Enter LGD Code">
+                    <label uib-tooltip="LGD Code" for="lgdCode" control-label>
+                        LGD Code <span class="text-danger">(Please enter LGD Code given by RCH)</span>
+                    </label>
+                    <input form-control numbers-only type="text" name="lgdCode" id="lgdCode"
+                        class="form-control cst-form-control" ng-model="ctrl.lgdCode" required>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="form-group" ng-if="ctrl.rchLocation.level == 7">
+                <validate for="ashaId" required-msg="Enter Asha ID">
+                    <label uib-tooltip="Asha ID" for="ashaId" control-label>
+                        Asha ID <span class="text-danger">(Please enter Asha ID given by RCH)</span>
+                    </label>
+                    <input form-control numbers-only type="text" name="ashaId" id="ashaId"
+                        class="form-control cst-form-control" ng-model="ctrl.ashaId" required>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+            <div class="form-group" ng-if="ctrl.rchLocation.level == 7">
+                <validate for="anmId" required-msg="Enter ANM ID">
+                    <label uib-tooltip="ANM ID" for="anmId" control-label>
+                        ANM ID <span class="text-danger">(Please enter ANM ID given by RCH)</span>
+                    </label>
+                    <input form-control numbers-only type="text" name="anmId" id="anmId"
+                        class="form-control cst-form-control" ng-model="ctrl.anmId" required>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+        </ng-form>
+    </div>
+    <div class="text-danger" ng-if="!ctrl.rchLocation.parentRchCode" style="text-align: center;">
+        Parent location of this location does not exist in RCH. Please create parent location first.
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" ng-if="ctrl.rchLocation.parentRchCode"
+        ng-click="ctrl.submit()">Submit</button>
+    <button type="button" class="btn btn-secondary" ng-click="ctrl.cancel()">Cancel</button>
+</div> -->

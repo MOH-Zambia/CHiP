@@ -1,0 +1,244 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ mdFormCtrl.form.id ? 'Update' : 'Add'}} Form</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form role="form" name="mdFormCtrl.dynamicFormBuilder" id="manageTimelineConfigForm" novalidate>
+                        <div class="row mb-15 inline-form">
+                            <div class="col-12 col-lg-5 bottom-spacer-10">
+                                <div class="form-group">
+                                    <validate for='form_name' required-msg="Enter Form Name">
+                                        <label for="form_name" control-label>Form Name</label>
+                                        <input type="text" class="form-control cst-form-control col-5" form-control
+                                            placeholder="Enter Form Name" name="form_name" id="form_name"
+                                            ng-model="mdFormCtrl.form.form_name" required>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-5 bottom-spacer-10">
+                                <div class="form-group">
+                                    <validate for='form_code' required-msg="Enter Form Code">
+                                        <label for="form_code" control-label>Form Code</label>
+                                        <input type="text" class="form-control cst-form-control col-5" form-control
+                                            placeholder="Enter Form Code" name="form_code" id="form_code"
+                                            ng-change="mdFormCtrl.getFormByCode(mdFormCtrl.form.form_code)"
+                                            ng-model="mdFormCtrl.form.form_code" required>
+                                        <small class="alert alert-danger valid-feedback checkbox-padding"
+                                            ng-if="!!mdFormCtrl.isNotUniqueCode">
+                                            Form Code is not unique</small>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-secondary"
+                                ng-click="mdFormCtrl.cancel()">Cancel</button>
+                            <button type="submit" class="btn btn-primary" ng-disabled="!!mdFormCtrl.isNotUniqueCode"
+                                ng-click="mdFormCtrl.saveForm()">
+                                {{ !!mdFormCtrl.form.id ? 'Update':'Save'}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="!!mdFormCtrl.form.id">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">{{ mdFormCtrl.formConfig.id ? 'Update' : 'Add'}} Form Configuration</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form role="form" name="mdFormCtrl.dynamicFormConfigBuilder" id="manageTimelineConfigForm"
+                        novalidate>
+                        <div class="row mb-15 inline-form">
+                            <div class="col-12 col-lg-4 bottom-spacer-10">
+                                <div class="form-group">
+                                    <validate for='version' required-msg="Enter Version">
+                                        <label for="version" control-label>Version</label>
+                                        <input type="text" class="form-control cst-form-control" form-control
+                                            placeholder="Enter Version" name="version" id="version"
+                                            ng-change="mdFormCtrl.checkUniqueVersion()"
+                                            ng-model="mdFormCtrl.formConfig.version" required>
+                                        <small class="alert alert-danger valid-feedback checkbox-padding"
+                                            ng-if="!!mdFormCtrl.isNotUniqueVersion">
+                                            Version is not unique</small>
+                                        <placeholder></placeholder>
+                                    </validate>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div ng-repeat="control in mdFormCtrl.controls track by control.id">
+                            <div class="row mb-15">
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='type{{$index}}' required-msg="Select Type">
+                                            <label for="type{{$index}}" control-label data-toggle="tooltip">Type</label>
+                                            <select class="form-control cst-form-control" form-control
+                                                name="type{{$index}}" id="type{{$index}}" ng-model="control.type"
+                                                required>
+                                                <option value="">--Select--</option>
+                                                <option value="TB">Text</option>
+                                                <option value="TA">Textarea</option>
+                                                <option value="NUB">Number</option>
+                                                <option value="L">Label</option>
+                                                <option value="SCB">Checkbox</option>
+                                                <option value="RB">Radio Button</option>
+                                                <option value="CB">Combo Box</option>
+                                                <option value="MS">Multi Select</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='question{{$index}}' required-msg="Enter Label">
+                                            <label for="question{{$index}}" control-label>Label</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Label" ng-blur="mdFormCtrl.labelTextChanged(control)"
+                                                name="question{{$index}}" id="question{{$index}}"
+                                                ng-model="control.question" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20" ng-if="!!control.type && (control.type === 'TB'
+                                                 || control.type === 'NUB' || control.type === 'TA')">
+                                    <div class="form-group">
+                                        <validate for='length' required-msg="Enter Length">
+                                            <label for="length" control-label>Length</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Length" name="length" id="length"
+                                                ng-model="control.length">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='hint' required-msg="Enter hint">
+                                            <label for="hint" control-label>Hint</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Hint" name="hint" id="hint" ng-model="control.hint">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="!!control.type && (control.type !== 'L')">
+                                    <div class="form-group">
+                                        <label>Is Mandatory</label>
+                                        <label control-label class="control control-checkbox">
+                                            <input checked="checked" type="checkbox" ng-model="control.ismandatory">
+                                            <div class="control_indicator"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20" ng-if="!!control.ismandatory">
+                                    <div class="form-group">
+                                        <validate for='mandatorymessage' required-msg="Enter Message">
+                                            <label for="mandatorymessage" control-label>Mandatory Message</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Mandatory Message" ng-required="true"
+                                                name="mandatorymessage" id="mandatorymessage"
+                                                ng-model="control.mandatorymessage">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='instruction' required-msg="Enter Instruction">
+                                            <label for="instruction" control-label>Instruction</label>
+                                            <textarea type="instruction" class="form-control cst-form-control"
+                                                form-control placeholder="Enter Instruction" rows="1" cols="47"
+                                                name="instruction" id="instruction" ng-model="control.instruction">
+                                            </textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='next' required-msg="Select Next">
+                                            <label for="next" control-label data-toggle="tooltip">Next</label>
+                                            <select class="form-control cst-form-control" form-control name="next"
+                                                id="next" ng-model="control.next"
+                                                ng-options="nextElement.id as nextElement.label for nextElement in
+                                                                mdFormCtrl.nextElements | filter:mdFormCtrl.skipValues(control)">
+                                                <option value="">--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="!!control.type && (control.type === 'CBDS')">
+                                    <div class="form-group">
+                                        <validate for='datamap' required-msg="Enter Data Map">
+                                            <label for="datamap" control-label>Data Map</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Data Map" name="datamap" id="datamap"
+                                                ng-model="control.datamap">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-4 bottom-spacer-20" ng-if="!!control.type && (control.type === 'CB'
+                                                 || control.type === 'RB' || control.type === 'MS')">
+                                    <div class="form-group">
+                                        <label for="options" control-label>Options</label>
+                                        <div ng-repeat="option in control.options" class="mb-2">
+                                            <input type="text" class="form-control col-5 cst-form-control
+                                                   display-inline-block mr-1" form-control placeholder="key"
+                                                name="key{{$index}}" id="key{{$index}}" ng-model="option.key">
+                                            <input type="text" class="form-control col-5 cst-form-control
+                                                   display-inline-block" form-control placeholder="value"
+                                                name="value{{$index}}" id="value{{$index}}" ng-model="option.value">
+                                            <span class="text-center btn-primary fs-15 p-2 mr-1" ng-if="!$first"
+                                                ng-click="mdFormCtrl.addOptions(control, $index, true);">
+                                                <i aria-hidden="true" class="fa fa-remove fa-1x"></i>
+                                            </span>
+                                            <span class="text-center btn-primary fs-12 p-2 pull-right"
+                                                ng-if="$last && !!option.key && !!option.value"
+                                                ng-click="mdFormCtrl.addOptions(control, $index, false);">
+                                                <i aria-hidden="true" class="fa fa-plus fa-1x"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer border-none">
+                                <button type="button" ng-if="mdFormCtrl.controls.length !== 1" class="btn btn-secondary"
+                                    ng-click="mdFormCtrl.removeControl(control, $index)">
+                                    Remove</button>
+                                <button ng-if="!!$last" type="submit" class="btn btn-primary"
+                                    ng-click="mdFormCtrl.addControl($index + 2)">
+                                    Add</button>
+                            </div>
+                            <hr ng-if="!$last">
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-secondary" ng-click="mdFormCtrl.cancel()">Cancel</button>
+                            <button type="submit" class="btn btn-primary" ng-disabled="!!mdFormCtrl.isNotUniqueVersion"
+                                ng-click="mdFormCtrl.save()">
+                                {{ mdFormCtrl.formConfig.id ? 'Update':'Save'}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

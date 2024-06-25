@@ -1,0 +1,236 @@
+<div class="container-fluid users">
+    <div class="row">
+        <div class="col-12">
+            <div class="col-2 inline-form float-right">
+                <div class="form-group">
+                    <input type="text" ng-model="emo.searchText" class="form-control cst-form-control" id="search"
+                        ng-change="emo.performSearch();" ng-model-options="{debounce: 1000}" placeholder="Search text"
+                        style="width:100%">
+                </div>
+            </div>
+            <div class="cst-tab">
+                <uib-tabset active='emo.selectedTab'>
+                    <uib-tab index="'referred-for-covid-lab-test-tab'" heading="Referred For Covid Lab Test"
+                        select="emo.referredForCovidLabTestTabSelected(true)"
+                        ng-if="emo.rights.canAccessReferredForCovidLabTest">
+                        <div class="tab-pane fade show" id="referred-for-covid-lab-test" role="tabpanel"
+                            aria-labelledby="referred-for-covid-lab-test" aria-expanded="true">
+                            <div class="tab-pane fade show" id="referred-for-covid-lab-test" role="tabpanel"
+                                aria-labelledby="referred-for-covid-lab-test" aria-expanded="true">
+                                <div class="cst-table table-responsive" style="overflow: auto;"
+                                    id="referred-for-covid-lab-test-scroll"
+                                    ng-if="emo.referredForCovidLabTest.length > 0">
+                                    <table
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th class="white-space-unset">Sr.No</th>
+                                                <th class="white-space-unset">Member Detail</th>
+                                                <th class="white-space-unset">Source</th>
+                                                <th class="white-space-unset">Refer by</th>
+                                                <th class="white-space-unset">Location</th>
+                                                <th class="white-space-unset">DOB</th>
+                                                <th class="white-space-unset">Contact No.</th>
+                                                <th class="white-space-unset">Address</th>
+                                                <th class="white-space-unset">Symptoms</th>
+                                                <th class="white-space-unset">Travel History</th>
+                                                <th colspan="2" style='text-align: center'>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='emo.getReferredForCovidLabTest(true)'
+                                            infinite-scroll-container='"#referred-for-covid-lab-test-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr
+                                                ng-repeat="member in emo.referredForCovidLabTest | filter :emo.searchText">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td ng-bind-html="member.memberDetails|emptylabel"></td>
+                                                <td ng-bind-html="member.source"></td>
+                                                <td ng-bind-html="member.refferBy|emptylabel"></td>
+                                                <td ng-bind-html="member.location|emptylabel"></td>
+                                                <td ng-bind-html="member.dob|emptylabel"></td>
+                                                <td ng-bind-html="member.contactPersonMobileNo|emptylabel"></td>
+                                                <td ng-bind-html="member.address|emptylabel"></td>
+                                                <td ng-bind-html="member.symptoms|emptylabel"></td>
+                                                <td ng-bind-html="member.hasTravelHistory"></td>
+                                                <td>
+                                                    <button class="btn btn-primary"
+                                                        ng-click="emo.updateResultOfLabTest(member,'APPROVE')">Approve</button>
+                                                </td>
+                                                <td><button class="btn btn-primary"
+                                                        ng-click="emo.updateResultOfLabTest(member,'DISAPPROVE')">Disapprove</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div ng-if="emo.referredForCovidLabTest.length == 0">
+                                    <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No Members Found</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'approved-for-covid-lab-test-tab'" heading="Pending For Covid Lab Test"
+                        select="emo.approvedForCovidLabTestTabSelected(true)"
+                        ng-if="emo.rights.canAccessApprovedForCovidLabTest">
+                        <div class="tab-pane fade show" id="approved-for-covid-lab-test" role="tabpanel"
+                            aria-labelledby="approved-for-covid-lab-test" aria-expanded="true">
+                            <div class="tab-pane fade show" id="approved-for-covid-lab-test" role="tabpanel"
+                                aria-labelledby="approved-for-covid-lab-test" aria-expanded="true">
+                                <div class="cst-table table-responsive" style="overflow: auto;"
+                                    id="approved-for-covid-lab-test-scroll"
+                                    ng-if="emo.approvedForCovidLabTest.length > 0">
+                                    <table
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th class="white-space-unset">Sr.No</th>
+                                                <th class="white-space-unset">Member Detail</th>
+                                                <th class="white-space-unset">Source</th>
+                                                <th class="white-space-unset">Refer by</th>
+                                                <th class="white-space-unset">Location</th>
+                                                <th class="white-space-unset">DOB</th>
+                                                <th class="white-space-unset">Contact No.</th>
+                                                <th class="white-space-unset">Address</th>
+                                                <th class="white-space-unset">Symptoms</th>
+                                                <th class="white-space-unset">Travel History</th>
+                                                <th class="white-space-unset">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='emo.getApprovedForCovidLabTest(true)'
+                                            infinite-scroll-container='"#approved-for-covid-lab-test-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr
+                                                ng-repeat="member in emo.approvedForCovidLabTest | filter :emo.searchText">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td ng-bind-html="member.memberDetails|emptylabel"></td>
+                                                <td ng-bind-html="member.source"></td>
+                                                <td ng-bind-html="member.refferBy|emptylabel"></td>
+                                                <td ng-bind-html="member.location|emptylabel"></td>
+                                                <td ng-bind-html="member.dob|emptylabel"></td>
+                                                <td ng-bind-html="member.contactPersonMobileNo|emptylabel"></td>
+                                                <td ng-bind-html="member.address|emptylabel"></td>
+                                                <td ng-bind-html="member.symptoms|emptylabel"></td>
+                                                <td ng-bind-html="member.hasTravelHistory"></td>
+                                                <td>
+                                                    <button class="btn btn-primary"
+                                                        ng-click="emo.referPatient(member)">Refer</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div ng-if="emo.approvedForCovidLabTest.length == 0">
+                                    <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No Members Found</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'referred-patient-status-tab'" heading="Referred Patient Status"
+                        select="emo.referredPatientStatusTabSelected(true)"
+                        ng-if="emo.rights.canAccessReferredPatientsStatus">
+                        <div class="tab-pane fade show" id="referred-patient-status" role="tabpanel"
+                            aria-labelledby="referred-patient-status" aria-expanded="true">
+                            <div class="tab-pane fade show" id="referred-patient-status" role="tabpanel"
+                                aria-labelledby="referred-patient-status" aria-expanded="true">
+                                <div class="cst-table table-responsive" style="overflow: auto;"
+                                    id="referred-patient-status-scroll"
+                                    ng-if="emo.referredPatientStatusList.length > 0">
+                                    <table
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th class="white-space-unset">Sr.No</th>
+                                                <th class="white-space-unset">Member Detail</th>
+                                                <th class="white-space-unset">Source</th>
+                                                <th class="white-space-unset">Refer by</th>
+                                                <th class="white-space-unset">Location</th>
+                                                <th class="white-space-unset">DOB</th>
+                                                <th class="white-space-unset">Contact No.</th>
+                                                <th class="white-space-unset">Address</th>
+                                                <th class="white-space-unset">Symptoms</th>
+                                                <th class="white-space-unset">Travel History</th>
+                                                <th class="white-space-unset">Referred By</th>
+                                                <th class="white-space-unset">Lab test status</th>
+                                                <th class="white-space-unset">Referred Health Infrastructure</th>
+                                                <th class="white-space-unset">Admission Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='emo.getReferredPatientStatusList(true)'
+                                            infinite-scroll-container='"#referred-patient-status-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr
+                                                ng-repeat="member in emo.referredPatientStatusList | filter :emo.searchText">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td ng-bind-html="member.memberDetails|emptylabel"></td>
+                                                <td ng-bind-html="member.source"></td>
+                                                <td ng-bind-html="member.refferBy|emptylabel"></td>
+                                                <td ng-bind-html="member.location|emptylabel"></td>
+                                                <td ng-bind-html="member.dob|emptylabel"></td>
+                                                <td ng-bind-html="member.contactPersonMobileNo|emptylabel"></td>
+                                                <td ng-bind-html="member.address|emptylabel"></td>
+                                                <td ng-bind-html="member.symptoms|emptylabel"></td>
+                                                <td ng-bind-html="member.hasTravelHistory"></td>
+                                                <td ng-bind-html="member.refferBy"></td>
+                                                <td ng-bind-html="member.labTestStatus"></td>
+                                                <td ng-bind-html="member.referHealthInfra"></td>
+                                                <td ng-bind-html="member.addmissionStatus"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div ng-if="emo.referredPatientStatusList.length == 0">
+                                    <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No Members Found</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="referHealthInfrastructureModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Refer Patient</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="inline-form" name="emo.referHealthInfrastructureForm">
+                        <div class="form-group">
+                            <validate for='districtlocationId' required-msg="Select District">
+                                <label for="districtlocationId" control-label>District</label>
+                                <select class="form-control cst-form-control" chosen-directive form-control
+                                    ng-model="emo.districtlocationId" name="locationId" id="districtlocationId"
+                                    ng-options="location.id as location.english_name for location in emo.districtLocations"
+                                    ng-change="emo.referLocationChanged()">
+                                    <option value="" selected>--Select--</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <validate for='healthInfrastructure' required-msg="Select health infrastructure">
+                                <label for="healthInfrastructure" control-label>Health Infrastructure</label>
+                                <select class="form-control cst-form-control" chosen-directive form-control
+                                    ng-model="emo.healthInfraId" name="healthInfrastructure" id="healthInfrastructure"
+                                    ng-options="healthInfra.id as healthInfra.name for healthInfra in emo.healthInfrastructureList"
+                                    required>
+                                    <option value="" selected>--Select--</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" ng-click="emo.saveReferralDetails()">Save</button>
+                    <button type="submit" class="btn btn-secondary" ng-click="emo.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

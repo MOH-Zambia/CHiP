@@ -1,0 +1,346 @@
+<style>
+    label {
+        vertical-align: middle !important;
+    }
+
+    .display {
+        width: 100px !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Lab Details</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="display" for="name" control-label><strong>Name :</strong></label>
+                                <label>{{labinfrastructure.healthInfraDisplayDetails.name|emptylabel}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display" for="name" control-label><strong>Location :</strong></label>
+                                <label
+                                    style="width: auto;">{{labinfrastructure.healthInfraDisplayDetails.locationname|emptylabel}}</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="name" control-label><strong>Type of hospital
+                                        :</strong></label>
+                                <label
+                                    style="width: auto;">{{labinfrastructure.healthInfraDisplayDetails.typeOfHospitalName|emptylabel}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" control-label><strong>Address :</strong></label>
+                                <label>{{labinfrastructure.healthInfraDisplayDetails.address|emptylabel}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div id="card1" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                    href="#collapse1" ng-click="toggle1 = !toggle1" style="cursor: pointer" ng-init="toggle1 = true">
+                    <h4 class="text">
+                        <span data-toggle="tooltip" title="Testing Kits Received">Testing Kits Received</span>
+                        <ul class="control-list">
+                            <li>
+                                <span>
+                                    <em ng-class="{'ion-plus':!toggle1,'ion-minus':toggle1}"></em>
+                                </span>
+                            </li>
+                        </ul>
+                    </h4>
+                </div>
+                <div class="collapse show" id="collapse1">
+                    <div class="card-body">
+                        <form name="labinfrastructure.testingKitsReceivedForm" id="testingKitsReceivedForm" novalidate>
+                            <div class="row mb-15">
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='receiptDate' required-msg="Enter Receipt Date">
+                                            <label for="receiptDate" control-label>Receipt Date</label>
+                                            <input name="receiptDate" type="text" datepicker id="receiptDate"
+                                                max-date='labinfrastructure.today' placeholder="Select Receipt Date"
+                                                ng-model="labinfrastructure.testingKitObject.receiptDate" form-control
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='receivedFrom' required-msg="Select received from">
+                                            <label for="receivedFrom" control-label data-toggle="tooltip">Received
+                                                From</label>
+                                            <select class="form-control cst-form-control" form-control
+                                                name="receivedFrom" id="receivedFrom"
+                                                ng-model="labinfrastructure.testingKitObject.receivedFrom" required>
+                                                <option value="">--Select--</option>
+                                                <option value="{{sender.id}}" ng-repeat="sender in labinfrastructure.senderList">{{sender.value}}</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='kitsList' required-msg="Enter No. of kits">
+                                            <label for="kitsList" control-label>No. of kits received</label>
+                                            <input type="number" onkeypress="return !(event.charCode == 46)"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter No. of kits" name="kitsList" id="kitsList"
+                                                ng-model="labinfrastructure.testingKitObject.kitsList" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div style="margin-top:2%">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-large btn-primary"
+                                            ng-click="labinfrastructure.saveKit()"><span class="fa fa-floppy-o"></i>
+                                                Save </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="table-section"
+                            ng-if="labinfrastructure.testingKitsList != null && labinfrastructure.testingKitsList.length > 0">
+                            <div class="card-body col-12 col-md-12">
+                                <div class="cst-table-responsive">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="receiptDate">Receipt Date</th>
+                                                <th id="receivedFrom">Received From</th>
+                                                <th id="kitsList">List of Kits</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody">
+                                            <tr ng-repeat="kit in labinfrastructure.testingKitsList">
+                                                <td ng-bind-html="kit.receiptDate|date:'dd/MM/yyyy'|emptylabel">
+                                                </td>
+                                                <td ng-bind-html="kit.receivedFrom|emptylabel"></td>
+                                                <td ng-bind-html="kit.kitsList|emptylabel"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div id="card2" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                    href="#collapse2" ng-click="toggle2 = !toggle2" style="cursor: pointer" ng-init="toggle2 = true">
+                    <h4 class="text">
+                        <span data-toggle="tooltip" title="Contact History">Component Availability</span>
+                        <ul class="control-list">
+                            <li>
+                                <span>
+                                    <em ng-class="{'ion-plus':!toggle2,'ion-minus':toggle2}"></em>
+                                </span>
+                            </li>
+                        </ul>
+                    </h4>
+                </div>
+                <div class="collapse show" id="collapse2">
+                    <div class="card-body">
+                        <form name="labinfrastructure.componentAvailabilityForm" id="componentAvailabilityForm"
+                            novalidate>
+                            <div class="row">
+                                <div class="col-12 col-lg-6 col-xl-2">
+                                    <div class="form-group">
+                                        <validate for='receiptDate' required-msg="Enter Reporting Date">
+                                            <label for="receiptDate" control-label>Reporting Date</label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2">
+                                    <div class="form-group">
+                                        <validate for='rnaExtraction' required-msg="Enter RNA Extraction">
+                                            <label for="rnaExtraction" control-label>No. of RNA Extraction Available
+                                                (Test)</label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 ">
+                                    <div class="form-group">
+                                        <validate for='eg' required-msg="Enter EG Available">
+                                            <label for="eg" control-label>No. of test available-NIV primer &
+                                                Probe (EG)</label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 ">
+                                    <div class="form-group">
+                                        <validate for='confirmatoryAssay' required-msg="Enter Confirmatory assay">
+                                            <label for="confirmatoryAssay" control-label>No. of test available-NIV
+                                                primer & probe (Confirmatory assay)</label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2">
+                                    <div class="form-group">
+                                        <validate for='agPath' required-msg="Enter Ag-Path">
+                                            <label for="agPath" control-label>Ag-Path no. of reactions
+                                                available</label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2">
+                                    <div class="form-group">
+                                        <validate for='testCapacity' required-msg="Enter Test Capacity">
+                                            <label for="testCapacity" control-label>No. of test can be performed
+                                                with available resources as on today</label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-15">
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='receiptDate' required-msg="Enter Reporting Date">
+                                            <input name="receiptDate" type="text" datepicker id="receiptDate"
+                                                max-date='labinfrastructure.today' placeholder="Select Receipt Date"
+                                                ng-model="labinfrastructure.componentObject.receiptDate"
+                                                ng-change="labinfrastructure.checkComponentDateValidity()" form-control
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='rnaExtraction' required-msg="Enter RNA Extraction">
+                                            <input type="number" onkeypress="return !(event.charCode == 46)"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter RNA Extraction" name="rnaExtraction"
+                                                id="rnaExtraction"
+                                                ng-model="labinfrastructure.componentObject.rnaExtraction" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='eg' required-msg="Enter EG Available">
+                                            <input type="number" onkeypress="return !(event.charCode == 46)"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter EG Available" name="eg" id="eg"
+                                                ng-model="labinfrastructure.componentObject.eg" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='confirmatoryAssay' required-msg="Enter Confirmatory assay">
+                                            <input type="number" onkeypress="return !(event.charCode == 46)"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter Confirmatory assay" name="confirmatoryAssay"
+                                                id="confirmatoryAssay"
+                                                ng-model="labinfrastructure.componentObject.confirmatoryAssay" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='agPath' required-msg="Enter Ag-Path">
+                                            <input type="number" onkeypress="return !(event.charCode == 46)"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter Ag-Path" name="agPath" id="agPath"
+                                                ng-model="labinfrastructure.componentObject.agPath" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='testCapacity' required-msg="Enter Test Capacity">
+                                            <input type="number" onkeypress="return !(event.charCode == 46)"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter Test Capacity" name="testCapacity" id="testCapacity"
+                                                ng-model="labinfrastructure.componentObject.testCapacity" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-large btn-primary"
+                                            ng-click="labinfrastructure.saveComponent()"><span
+                                                class="fa fa-floppy-o"></i> Save </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="table-section"
+                            ng-if="labinfrastructure.componentList != null && labinfrastructure.componentList.length > 0">
+                            <div class="card-body col-12 col-md-12">
+                                <div class="cst-table-responsive">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="receiptDate">Reporting Date</th>
+                                                <th id="rnaExtraction">No. of RNA extraction available (Test)</th>
+                                                <th id="eg">No. of test available-NIV primer & Probe (EG)</th>
+                                                <th id="confirmatoryAssay">No. of test available-NIV primer & probe
+                                                    (Confirmatory assay)</th>
+                                                <th id="agPath">Ag-Path no. of reactions available</th>
+                                                <th id="testCapacity">No. of test can be performed with available
+                                                    resources as on today</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody">
+                                            <tr ng-repeat="component in labinfrastructure.componentList">
+                                                <td ng-bind-html="component.receiptDate|date:'dd/MM/yyyy'|emptylabel">
+                                                </td>
+                                                <td ng-bind-html="component.rnaExtraction|emptylabel"></td>
+                                                <td ng-bind-html="component.eg|emptylabel"></td>
+                                                <td ng-bind-html="component.confirmatoryAssay|emptylabel"></td>
+                                                <td ng-bind-html="component.agPath|emptylabel"></td>
+                                                <td ng-bind-html="component.testCapacity|emptylabel"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-secondary" ng-click="labinfrastructure.goBack()">Back</button>
+    </div>
+</div>
+<br />

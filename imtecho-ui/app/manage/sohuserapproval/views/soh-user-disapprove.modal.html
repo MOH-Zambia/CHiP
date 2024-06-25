@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h4 class="text">Reason for Disapproval</h4>
+</div>
+<div class="modal-body">
+    <div class="card-body inline-form">
+        <form role="form" name="disApprovedUser.disApprovedUserForm" id="disApprovedUserForm">
+            <div class="form-group">
+                <validate for="reasonForDisApproval" required-msg="Enter the reason for disApproval">
+                    <label control-label>
+                        Reason:
+                    </label>
+                    <textarea form-control class="form-control cst-form-control" name="query"
+                        ng-model="disApprovedUser.reasonForDisApproval" required ng-pattern="" rows="5"></textarea>
+                    <placeholder></placeholder>
+                </validate>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer mt-2">
+        <div class="float-right">
+            <button type="submit" ng-disabled="disApprovedUser.reasonForDisApproval == null" class="btn btn-primary"
+                ng-click="disApprovedUser.submitDisApprovalReason(disApprovedUser.reasonForDisApproval)">
+                <em class="fa fa-floppy-o"></em> Submit</button>
+            <button class="btn btn-secondary" ng-click="disApprovedUser.cancel()">Cancel</button>
+        </div>
+    </div>
+</div>

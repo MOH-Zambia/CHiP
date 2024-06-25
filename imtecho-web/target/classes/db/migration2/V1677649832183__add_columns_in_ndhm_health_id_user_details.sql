@@ -1,0 +1,15 @@
+alter table ndhm_health_id_user_details
+drop COLUMN IF EXISTS is_aadhaar_sharing_consent_given,
+add COLUMN is_aadhaar_sharing_consent_given boolean,
+drop COLUMN IF EXISTS is_doc_other_than_aadhaar_consent_given,
+add COLUMN is_doc_other_than_aadhaar_consent_given boolean,
+drop COLUMN IF EXISTS is_abha_usage_consent_given,
+add COLUMN is_abha_usage_consent_given boolean,
+drop COLUMN IF EXISTS is_sharing_health_records_consent_given,
+add COLUMN is_sharing_health_records_consent_given boolean,
+drop COLUMN IF EXISTS is_anonymization_consent_given,
+add COLUMN is_anonymization_consent_given boolean,
+drop COLUMN IF EXISTS is_health_worker_consent_given,
+add COLUMN is_health_worker_consent_given boolean,
+drop COLUMN IF EXISTS is_beneficiary_consent_given,
+add COLUMN is_beneficiary_consent_given boolean;

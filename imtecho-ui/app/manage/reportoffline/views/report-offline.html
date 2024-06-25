@@ -1,0 +1,65 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="section-title">
+                <h4 class="text">Offline Reports</h4>
+                <button class="pull-right btn btn-primary m-1" ng-click="reportOfflineCtrl.onRefreshClick()">
+                    Refresh
+                </button>
+                <div class="col-2 inline-form float-right mb-15">
+                    <div class="form-group">
+                        <input type="text" ng-model="search" class="form-control cst-form-control" id="search"
+                            placeholder="Search text" style="width:100%">
+                    </div>
+                </div>
+            </div>
+            <div class="text-muted">
+                <p>(The reports will be removed after {{ reportOfflineCtrl.noOfDays | emptylabel}} days)</p>
+            </div>
+        </div>
+        <div class="col-12 mb-15">
+            <div class="cst-table table-responsive" style="overflow: auto">
+                <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th style="width:60px" class="white-space-unset">Sr. No</th>
+                            <th class="white-space-unset">Report Name</th>
+                            <th class="white-space-unset">Report Parameters</th>
+                            <th style="width:150px" class="white-space-unset">Requested Date</th>
+                            <th style="width:150px" class="white-space-unset">File Type</th>
+                            <th class="white-space-unset">Status</th>
+                            <th class="white-space-unset medium-col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="offlineReport in reportOfflineCtrl.offlineReports| filter : search"
+                            ng-if="(reportOfflineCtrl.offlineReports.length > 0)">
+                            <td>{{$index + 1}}</td>
+                            <td ng-bind-html="offlineReport.reportName|emptylabel"></td>
+                            <td>
+                                <p ng-repeat="filterObj in offlineReport.reportParameters.filterObj| filter : search"
+                                    ng-if="(offlineReport.reportParameters.filterObj.length > 0)">
+                                    <strong>{{filterObj.displayName}}</strong> : {{filterObj.value}}
+                                </p>
+                            </td>
+                            <td ng-bind-html="offlineReport.createdOn|date :'dd-MM-yyyy HH:MM'"></td>
+                            <td ng-bind-html="offlineReport.fileType"></td>
+                            <td ng-bind-html="reportOfflineCtrl.offlineReportStatus[offlineReport.status]|emptylabel">
+                            </td>
+                            <td class="action-cell">
+                                <button class="btn btn-primary m-1"
+                                    ng-if="offlineReport.status === 'READY_FOR_DOWNLOAD'"
+                                    ng-click="reportOfflineCtrl.onDownloadClick(offlineReport)">
+                                    Download</button>
+                            </td>
+                        </tr>
+                        <tr ng-if="(!reportOfflineCtrl.offlineReports ||
+                                    (reportOfflineCtrl.offlineReports | filter : search).length == 0)">
+                            <td colspan="6"> No offline reports are available </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

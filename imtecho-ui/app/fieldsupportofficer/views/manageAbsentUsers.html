@@ -1,0 +1,83 @@
+<!-- <div class="container-fluid users">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="cst-table table-responsive" style="overflow: auto;" id="user-scroll"
+                ng-if="manageabsentuserscontroller.absentUsersList.length !== 0">
+                <table class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th>#</th>
+                            <th>Name(Username)</th>
+                            <th>Absent From</th>
+                            <th>Absent To</th>
+                            <th>Total absent days</th>
+                            <th>Contact No</th>
+                            <th>Response</th>
+                            <th>Other Response</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                        infinite-scroll='manageabsentuserscontroller.getAbsentUsersByCriteria(true)'
+                        infinite-scroll-container='"#user-scroll"' infinite-scroll-immediate-check="true">
+                        <tr ng-repeat="user in manageabsentuserscontroller.absentUsersList">
+                            <td>{{$index + 1}}</td>
+                            <td>{{user.userFullName}}({{user.userName}})</td>
+                            <td>{{user.absentFrom|date}}</td>
+                            <td>{{user.absentTo|date}}</td>
+                            <td>{{user.totalAbsentDays}}</td>
+                            <td>{{user.contactNumber}}</td>
+                            <td colspan="3">
+                                <form role="form" name="{{'manageabsentuserscontroller.absentUserForm' + $index}}"
+                                    novalidate>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <validate for="{{'absentResponse' + $index}}"
+                                                    required-msg=" Select response">
+                                                    <select style="margin-left: -10px"
+                                                        class="form-control cst-form-control" form-control
+                                                        ng-model="user.absentResponse"
+                                                        name="{{'absentResponse' + $index}}"
+                                                        id="{{'absentResponse' + $index}}" required>
+                                                        <option value="{{null}}">--Select--</option>
+                                                        <option value="abc">abc</option>
+                                                        <option value="def">def</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                    <br>
+                                                </validate>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <validate for="{{'absentResponseOther' + $index}}"
+                                                    required-msg="Enter other response">
+                                                    <input style="margin-left: -12px;width:130%" class="form-control"
+                                                        form-control name="{{'absentResponseOther' + $index}}"
+                                                        id="{{'absentResponseOther' + $index}}" type="text"
+                                                        placeholder="Enter other response"
+                                                        ng-model="user.absentResponseOther"
+                                                        ng-disabled="user.absentResponse !== 'Other'"
+                                                        ng-required="user.absentResponse==='Other'">
+                                                </validate>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button style="margin-left: 65px;margin-top: 5px" type="submit"
+                                                    class="btn btn-primary btn-sm"
+                                                    ng-click="manageabsentuserscontroller.saveUserResponse(user, $index)">
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-if="manageabsentuserscontroller.absentUsersList.length === 0">
+                <h3 style="position: fixed;top: 50%;left: 50%;color: grey">No users found</h3>
+            </div>
+        </div>
+    </div>
+</div> -->

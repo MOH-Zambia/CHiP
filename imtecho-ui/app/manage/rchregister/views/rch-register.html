@@ -1,0 +1,107 @@
+<div class="container-fluid report-view">
+    <div class="row">
+        <div class="col-12 mb-15 ">
+            <div class="section-title">
+                <h4 class="text">{{rchRegister.pageTitle}}
+                    <span ng-if="!!rchRegister.filteredTypeService">({{rchRegister.filteredTypeService}})</span>
+                </h4>
+                <ul class="control-list" style="padding-right: 40px">
+                    <li ng-click="rchRegister.printExcel()">
+                        <span>
+                            <em class="fa fa-file-excel-o" uib-tooltip="Download excel"></em>
+                        </span>
+                    </li>
+                    <li ng-click="rchRegister.printPdf()">
+                        <span>
+                            <em class="fa fa-print" uib-tooltip="Print pdf"></em>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 mb-15"
+            ng-if="!rchRegister.memberserviceDtoList || rchRegister.memberserviceDtoList.length === 0">
+            <div class="no-data-placeholder">
+                <h5>Sorry No Data available!</h5>
+            </div>
+        </div>
+        <div class="col-12  mb-15" ng-if="rchRegister.memberserviceDtoList.length > 0">
+            <div ng-if="rchRegister.isEligibleCoupleServiceSelected">
+                <ng-include src='"app/manage/rchregister/views/rch-register-eligible-couple-service.html"'></ng-include>
+            </div>
+            <div ng-if="rchRegister.isChildServiceSelected">
+                <ng-include src='"app/manage/rchregister/views/rch-register-child-service.html"'></ng-include>
+            </div>
+            <div ng-if="rchRegister.isMotherServiceSelected">
+                <ng-include src='"app/manage/rchregister/views/rch-register-mother-service.html"'></ng-include>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="filter-div">
+    <span class="filter-toggle" style="left:-108px" ng-click="rchRegister.toggleFilter()">RCH Register Filter</span>
+    <div class="row">
+        <div class="col-12">
+            <h5 class="filter-div-title">RCH Register</h5>
+        </div>
+    </div>
+    <div class="filter-div-body">
+        <form name="rchRegister.searchForm" novalidate>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <location-directive ng-model="rchRegister.selectedLocation"
+                            required-upto-level="rchRegister.requiredUptoLevel"
+                            fetch-upto-level="rchRegister.fetchUptoLevel"></location-directive>
+                    </div>
+                    <div class="form-group">
+                        <validate for="serviceType" required-msg="Select service type">
+                            <label for="serviceType" class="control-label" control-label>Service Type</label>
+                            <select class="form-control cst-form-control" id="serviceType" name="serviceType"
+                                form-control required ng-model="rchRegister.selectedServiceType"
+                                ng-options="key as value for (key,value) in  rchRegister.serviceType">
+                                <option value="">Select</option>
+                            </select>
+                            <placeholder></placeholder>
+                        </validate>
+                    </div>
+                    <div class="form-group">
+                        <validate for="from_date" required-msg="Enter from date">
+                            <label style="margin-top: 4%" for="from_date" control-label>From Date</label>
+                            <div class="{{::inputClass}} form-group" style="margin-bottom: 0px">
+                                <input name="from_date" type="text" datepicker class="disabled-input" id="from_date"
+                                    ng-model="rchRegister.dateFrom" max-date-month="rchRegister.todayDate"
+                                    ng-required="true" form-control
+                                    ng-change="rchRegister.minDateFieldValidation(rchRegister.dateFrom)">
+                                <placeholder></placeholder>
+                            </div>
+                        </validate>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <validate for="to_date" required-msg="Enter to date">
+                            <label for="data[dateTo]" control-label>To Date</label>
+                            <div class="{{::inputClass}} form-group">
+                                <input name="to_date" type="text" datepicker class="disabled-input" id="to_date"
+                                    ng-model="rchRegister.dateTo" min-date-month="rchRegister.dateFrom"
+                                    max-date-month="rchRegister.todayDate" ng-required="true" form-control
+                                    ng-change="rchRegister.maxDateFieldValidation(rchRegister.dateTo)">
+                                <placeholder></placeholder>
+                            </div>
+                        </validate>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                    <div class="form-group text-right">
+                        <button class="btn btn-secondary close-filter"
+                            ng-click="rchRegister.toggleFilter()">Close</button>
+                        <button class="btn btn-primary search-filter"
+                            ng-click="rchRegister.searchMemberInfo()">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

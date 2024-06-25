@@ -1,0 +1,2 @@
+alter table rch_child_service_master
+add column death_infra_id bigint;

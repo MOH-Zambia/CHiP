@@ -1,0 +1,739 @@
+<!-- <style>
+    .align-center-h {
+        text-align: center;
+    }
+
+    .align-center-v {
+        vertical-align: middle !important;
+    }
+
+    .mb-8 {
+        margin-bottom: 8px;
+    }
+
+    .mb-12 {
+        margin-bottom: 12px;
+    }
+
+    .fs-16 {
+        font-size: 16px;
+    }
+
+    .fs-18 {
+        font-size: 18px;
+    }
+
+    .dark-background {
+        background-color: rgba(0, 0, 0, .10);
+    }
+</style>
+<div class="container-fluid">
+    <div ng-if="!ctrl.formSData">
+        <div class="no-data-placeholder">
+            <h5>No Data Found!</h5>
+        </div>
+    </div>
+    <div ng-if="ctrl.formSData">
+        <div class="row justify-content-end">
+            <div style="padding-right: 15px;">
+                <button type="button" style="float: right; margin-bottom: 12px;" class="btn btn-primary"
+                    ng-click="ctrl.downloadExcel()">
+                    Download Excel
+                </button>
+            </div>
+            <div style="padding-right: 15px;">
+                <button type="button" style="float: right; margin-bottom: 12px;" class="btn btn-primary"
+                    ng-click="ctrl.downloadPdf()" ng-disabled="ctrl.isPrintClicked">
+                    Download PDF
+                </button>
+            </div>
+        </div>
+        <div class="mb-15" id="printableBlock">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div>
+                        <h4 class="text align-center-h fs-18">
+                            FORM S
+                        </h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="align-center-h mb-12 fs-16">
+                        <strong>Reporting Format for Syndromic Surveillance</strong>
+                    </div>
+                    <div class="row col-12 mb-8">
+                        <div class="col-3">
+                            <strong>State (રાજ્ય) : </strong><span>{{ctrl.formSOtherDetails.state | emptylabel}}</span>
+                        </div>
+                        <div class="col-3">
+                            <strong>District (જીલ્લો) :
+                            </strong><span>{{ctrl.formSOtherDetails.district | emptylabel}}</span>
+                        </div>
+                        <div class="col-3">
+                            <strong>Block (તાલુકો) : </strong><span>{{ctrl.formSOtherDetails.block | emptylabel}}</span>
+                        </div>
+                        <div class="col-3">
+                            <strong>Year (વર્ષ) : </strong>
+                            <span>
+                                {{ctrl.reportFromDate | date: 'yyyy'}} - {{ctrl.reportToDate | date: 'yyyy'}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="cst-table table-responsive" style="overflow: auto;">
+                        <table aria-describedby="table"
+                            class="table table-sm  table-bordered filter-table table-fixed header-fixed"
+                            style="table-layout: auto">
+                            <tbody class="cst-tbody">
+                                <tr>
+                                    <td class="white-space-unset align-center-h" id="id" style="width: 40%;">
+                                        <strong>Name of Health Worker/Volunteer/Practitioner<br />
+                                            (આરોગ્ય કાર્યકરનું નામ)</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" colspan="2" id="id"
+                                        style="width: 30%;">
+                                        <strong>Name of Supervisor<br />
+                                            (સુપરવાઇઝરનું નામ)</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" id="id" style="width: 30%;">
+                                        <strong>Name of Reporting Unit<br />
+                                            (રિપોર્ટીંગ યુનિટનું નામ)</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset align-center-h" id="id" style="width: 40%;">
+                                    </td>
+                                    <td class="white-space-unset align-center-h" colspan="2" id="id"
+                                        style="width: 30%;">
+                                    </td>
+                                    <td class="white-space-unset align-center-h" id="id" style="width: 30%;">
+                                        {{ctrl.formSOtherDetails.reporting_unit | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset align-center-h" id="id" style="width: 40%;">
+                                        <strong>ID No./Unique Identifier (To be filled by DSU)<br />
+                                            (જિલ્લા સર્વેલન્સ યુનિટે ભરવું)</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" id="id" style="width: 15%;">
+                                        <strong>Reporting Week No.<br />
+                                            (અઠવાડીયું)</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h align-center-v" id="id"
+                                        style="width: 15%;">
+                                        <strong>
+                                            From <br />
+                                            (dd/mm/yyyy)<br />
+                                            (તારીખ થી)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h align-center-v" id="id"
+                                        style="width: 30%;">
+                                        {{ctrl.reportFromDate | date:'dd/MM/yyyy' | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset align-center-h align-center-v" id="id"
+                                        style="width: 40%;">
+                                    </td>
+                                    <td class="white-space-unset align-center-h align-center-v" id="id"
+                                        style="width: 15%;">
+                                    </td>
+                                    <td class="white-space-unset align-center-h align-center-v" id="id"
+                                        style="width: 15%;">
+                                        <strong>
+                                            To <br />
+                                            (dd/mm/yyyy)<br />
+                                            (તારીખ સુધી)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h align-center-v" id="id"
+                                        style="width: 30%;">
+                                        {{ctrl.reportToDate | date:'dd/MM/yyyy' | emptylabel}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table aria-describedby="table"
+                            class="table table-sm  table-bordered filter-table table-fixed header-fixed"
+                            style="table-layout: auto">
+                            <tbody class="cst-tbody">
+                                <tr>
+                                    <td class="white-space-unset align-center-h" rowspan="3" id="id"
+                                        style="width: 40%;">
+                                    </td>
+                                    <td class="white-space-unset align-center-h" colspan="6" id="id"
+                                        style="width: 50%;">
+                                        <strong>Cases (કેસ)</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h align-center-v" rowspan="3" id="id"
+                                        style="width: 10%;">
+                                        <strong>
+                                            Total<br />
+                                            (M + F)<br />
+                                            (કુલ)<br />
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset align-center-h" colspan="3" id="id">
+                                        <strong>Male (પુરુષ)</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" colspan="3" id="id">
+                                        <strong>Female (સ્ત્રી)</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset align-center-h" id="id">
+                                        <strong>
+                                            &lt; 5 yr </strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" id="id">
+                                        <strong>&gt;= 5 yr</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" id="id">
+                                        <strong>Total M</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" id="id">
+                                        <strong>
+                                            &lt; 5 yr </strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" id="id">
+                                        <strong>&gt;= 5 yr</strong>
+                                    </td>
+                                    <td class="white-space-unset align-center-h" id="id">
+                                        <strong>Total F</strong>
+                                    </td>
+                                </tr>
+                                <tr class="dark-background">
+                                    <td class="white-space-unset" colspan="8" id="id">
+                                        <strong>
+                                            1. Fever <br />
+                                            (તાવ)
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            Fever &lt; 7 Days <br />
+                                            (સાત દિવસથી ઓછો તાવ)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverLessThan7Days].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverLessThan7Days].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverLessThan7Days].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverLessThan7Days].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverLessThan7Days].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverLessThan7Days].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverLessThan7Days].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            1. Only Fever <br />
+                                            (ફક્ત તાવ)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.onlyFever].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.onlyFever].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.onlyFever].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.onlyFever].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.onlyFever].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.onlyFever].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.onlyFever].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            2. With Rash <br />
+                                            (શીળસ સાથે તાવ)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withRash].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withRash].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withRash].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withRash].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withRash].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withRash].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withRash].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            3. With Severe Joint Pains & Swelling <br />
+                                            (સતત સાંધાના દુઃખાવા અને સોજા સાથે તાવ)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSevereJointPainsAndSwelling].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSevereJointPainsAndSwelling].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSevereJointPainsAndSwelling].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSevereJointPainsAndSwelling].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSevereJointPainsAndSwelling].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSevereJointPainsAndSwelling].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSevereJointPainsAndSwelling].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            4. With Bleeding <br />
+                                            (તાવ સાથે રકતસ્ત્રાવ)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBleeding].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBleeding].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBleeding].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBleeding].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBleeding].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBleeding].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBleeding].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            5. With Daze/Semi or unconsciousness <br />
+                                            (તાવ સાથે અર્ધ અથવા સંપૂર્ણ બેભાન અવસ્થા)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withDazeOrSemiOrUnconciousness].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withDazeOrSemiOrUnconciousness].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withDazeOrSemiOrUnconciousness].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withDazeOrSemiOrUnconciousness].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withDazeOrSemiOrUnconciousness].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withDazeOrSemiOrUnconciousness].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withDazeOrSemiOrUnconciousness].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            Fever &gt; 7 Days <br />
+                                            (સાત દિવસથી વધારે તાવ)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverGreaterThan7Days].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverGreaterThan7Days].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverGreaterThan7Days].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverGreaterThan7Days].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverGreaterThan7Days].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverGreaterThan7Days].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.feverGreaterThan7Days].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr class="dark-background">
+                                    <td class="white-space-unset" colspan="8" id="id">
+                                        <strong>
+                                            2. Cough with or without fever <br />
+                                            (ખાંસી તાવ સાથે અથવા તાવ વગર)
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            &lt;2 Weeks <br />
+                                            (ખાંસી 2 અઠવાડીયાથી ઓછી)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.lessThan2Weeks].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.lessThan2Weeks].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.lessThan2Weeks].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.lessThan2Weeks].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.lessThan2Weeks].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.lessThan2Weeks].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.lessThan2Weeks].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            &gt;2 Weeks <br />
+                                            (ખાંસી 2 અઠવાડીયાથી વધારે)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.greaterThan2Weeks].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.greaterThan2Weeks].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.greaterThan2Weeks].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.greaterThan2Weeks].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.greaterThan2Weeks].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.greaterThan2Weeks].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.greaterThan2Weeks].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr class="dark-background">
+                                    <td class="white-space-unset" colspan="8" id="id">
+                                        <strong>
+                                            3. Loose watery stool of less than 2 weeks duration <br />
+                                            (2 અઠવાડીયા કરતાં ઓછા સમયથી પાણી જેવા ઝાડા)
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            With small/much dehydration <br />
+                                            (ઓછી અથવા વધારે જળશુષ્કતા સાથે)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSmallMuchDehydration].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSmallMuchDehydration].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSmallMuchDehydration].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSmallMuchDehydration].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSmallMuchDehydration].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSmallMuchDehydration].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withSmallMuchDehydration].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            With no dehydration <br />
+                                            (જળશુષ્કતા વગર)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withNoDehydration].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withNoDehydration].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withNoDehydration].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withNoDehydration].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withNoDehydration].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withNoDehydration].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withNoDehydration].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>With blood in stool <br />
+                                            (લોહી સાથે ઝાડા)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBloodInStool].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBloodInStool].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBloodInStool].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBloodInStool].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBloodInStool].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBloodInStool].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.withBloodInStool].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr class="dark-background">
+                                    <td class="white-space-unset" colspan="8" id="id">
+                                        <strong>
+                                            4. Jaundice case of less than 4 weeks duration <br />
+                                            (4 અઠવાડીયાથી ઓછા સમયથી કમળો)
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            Case of Acute Jaundice <br />
+                                            (કમળાના કેસો)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteJaundice].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteJaundice].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteJaundice].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteJaundice].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteJaundice].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteJaundice].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteJaundice].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr class="dark-background">
+                                    <td class="white-space-unset" colspan="8" id="id">
+                                        <strong>
+                                            5. Acute Flaccid Paralysis in less than 15 years of Age <br />
+                                            (15 વર્ષની નીચેના વયમાં થતો એક્યુટ ફલેસીડ પેરાલીસીસ)
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong>
+                                            Cases of Acute Flaccid Paralysis <br />
+                                            (એક્યુટ ફલેસીડ પેરાલીસીસ કેસો)
+                                        </strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteFlacidParalysis].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteFlacidParalysis].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteFlacidParalysis].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteFlacidParalysis].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteFlacidParalysis].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteFlacidParalysis].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.caseOfAcuteFlacidParalysis].total | emptylabel}}
+                                    </td>
+                                </tr>
+                                <tr class="dark-background">
+                                    <td class="white-space-unset" colspan="8" id="id">
+                                        <strong>
+                                            6. Unusual symptoms leading to death of hospitalization that do not fit in
+                                            to the above <br />
+                                            (ઉપરના કોઈ પણ રોગમાં લાગુ ન પડતાં કારણોથી મરણ અથવા હોસ્પિટલાઈઝેશન)
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="white-space-unset" id="id">
+                                        <strong></strong>
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.unusualSymptomsLeadingToDeathOfHospitalization].male_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.unusualSymptomsLeadingToDeathOfHospitalization].male_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.unusualSymptomsLeadingToDeathOfHospitalization].male_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.unusualSymptomsLeadingToDeathOfHospitalization].female_less_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.unusualSymptomsLeadingToDeathOfHospitalization].female_more_than_5_year | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.unusualSymptomsLeadingToDeathOfHospitalization].female_total | emptylabel}}
+                                    </td>
+                                    <td class="white-space-unset" id="id">
+                                        {{ctrl.formSDataMap[ctrl.constants.unusualSymptomsLeadingToDeathOfHospitalization].total | emptylabel}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="filter-div">
+        <span class="filter-toggle" ng-click="ctrl.toggleFilter()">Filter</span>
+        <div class="row">
+            <div class="col-12">
+                <h5 class="filter-div-title">Search</h5>
+            </div>
+        </div>
+        <div class="filter-div-body">
+            <div class="row">
+                <div class="col-12" ng-form="ctrl.searchForm">
+                    <div class="form-group">
+                        <location-directive template-type="'inline'" ng-model="ctrl.searchLocationId"
+                            fetch-according-to-user-aoi="false" fetch-upto-level="8" required-upto-level="3">
+                        </location-directive>
+                    </div>
+                    <div class="form-group">
+                        <validate for='reportFromDate' required-msg="Select Date">
+                            <label for="reportFromDate" uib-tooltip="Report Date*" control-label>Report From
+                                Date</label>
+                            <input type="text" style="float: inherit;" datepicker tabindex="8" name="reportFromDate"
+                                max-date='ctrl.today' id="reportFromDate" form-control ng-model="ctrl.reportFromDate"
+                                required>
+                            <placeholder></placeholder>
+                        </validate>
+                    </div>
+                    <div class="form-group">
+                        <validate for='reportToDate' required-msg="Select Date">
+                            <label for="reportToDate" uib-tooltip="Report Date*" control-label>Report To Date</label>
+                            <input type="text" style="float: inherit;" datepicker tabindex="8" name="reportToDate"
+                                min-date='ctrl.reportFromDate' max-date='ctrl.today' id="reportToDate" form-control
+                                ng-model="ctrl.reportToDate" required ng-disabled="!ctrl.reportFromDate">
+                            <placeholder></placeholder>
+                        </validate>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary close-filter" ng-click="ctrl.close()">Close</button>
+                    <button class="btn btn-primary search-filter" ng-click="ctrl.searchData();">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

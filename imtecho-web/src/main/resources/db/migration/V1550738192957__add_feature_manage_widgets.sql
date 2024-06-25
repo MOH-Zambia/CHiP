@@ -1,0 +1,1 @@
+insert into menu_config(active,menu_name,navigation_state,menu_type,only_admin) values(true,'Widgets management','techo.manage.manage-widgets','admin',true);

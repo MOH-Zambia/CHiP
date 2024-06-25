@@ -1,0 +1,94 @@
+<div class="modal-header">
+    <h4 class="text">Day {{$ctrl.topicForUpdate.topicDay}}</h4>
+</div>
+<ng-container ng-if="$ctrl.isShowControls">
+    <div>
+        <h5 class="text" ng-if="$ctrl.addFlag">Topic: {{$ctrl.topicForUpdate.topicOrder}}</h5>
+        <h5 class="text" ng-if="!$ctrl.addFlag">Edit Topic: <strong>{{$ctrl.topicForUpdate.topicOrder}}</strong></h5>
+    </div>
+    <div class="modal-body">
+        <form role="form" name="$ctrl.topicUpdateForm" id="$ctrl.topicUpdateForm" novalidate>
+            <div class="inline-form">
+                <div class="form-group">
+                    <validate for='topicName' required-msg="Enter topic name">
+                        <label for="topicName" class="control-label" control-label>Topic Name</label>
+                        <input type="text" class="form-control cst-form-control" form-control name="topicName"
+                            ng-model="$ctrl.topicForUpdate.topicName" maxlength="250" required />
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <div class="form-group">
+                    <validate for="topicDescription" required-msg="Enter topic description">
+                        <label for="topicDescription" class="control-label" control-label>Topic Description</label>
+                        <textarea class="form-control cst-form-control" form-control rows="6" name="topicDescription"
+                            ng-model="$ctrl.topicForUpdate.topicDescription" maxlength="1000"></textarea>
+                        <small class="placeholder">{{1000 - $ctrl.topicForUpdate.topicDescription.length}} characters
+                            available</small>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+            </div>
+</ng-container>
+</form>
+<ng-container ng-if="$ctrl.isShowControls">
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-if="$ctrl.addFlag" ng-click="$ctrl.ok()">Save Topic</button>
+        <button class="btn btn-primary" ng-if="!$ctrl.addFlag" ng-click="$ctrl.ok()">Update Topic</button>
+        <button class="btn btn-secondary" ng-if="$ctrl.addFlag" ng-click="$ctrl.cancel()">Cancel</button>
+    </div>
+</ng-container>
+</div>
+</ng-container>
+<div class="table-section" style="padding-top: 0px;"
+    ng-if="!!$ctrl.topicsList && $ctrl.topicsList.length>0 && $ctrl.isShowTable">
+    <div class="card-body col-12 col-md-12">
+        <div class="cst-table-responsive cst-table">
+            <table aria-describedby="table"
+                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                <colgroup>
+                    <col style="width: 10%;">
+                    <col style="width: 30%;">
+                    <col style="width: 30%;">
+                    <col style="width: 20%;">
+                </colgroup>
+                <thead class="cst-thead">
+                    <tr>
+                        <th class="white-space-unset" id="#">Sr.no</th>
+                        <th class="white-space-unset" id="topicName">Topic Name</th>
+                        <th class="white-space-unset" id="topicDescription">Topic Description</th>
+                        <th class="white-space-unset" id="action">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="cst-tbody" ng-repeat="topic in $ctrl.topicsList">
+                    <tr ng-if="topic.topicDay===$ctrl.topicForUpdate.topicDay">
+                        <td>{{topic.topicOrder}}</td>
+                        <td>
+                            {{topic.topicName| emptylabel}}
+                        </td>
+
+                        <td>
+                            {{topic.topicDescription| emptylabel}}
+                        </td>
+                        <td class="action-cell">
+                            <ul class="action-item">
+                                <li><a href="#" class="action-icon edit-icon" ng-click="$ctrl.editTopic(topic)"></a>
+                                </li>
+                                <li><a href="#" class="action-icon delete-icon" ng-click="$ctrl.deleteTopic(topic)"></a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div ng-if="$ctrl.isShowAdd" class="modal-footer">
+    <button type="button" class="btn btn-primary mr-auto"
+        ng-click="$ctrl.addTopic()">Add
+        Topic</button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.save()">Save</button>
+    <button type="button" class="btn btn-secondary" ng-click="$ctrl.close()">Cancel</button>
+
+</div>

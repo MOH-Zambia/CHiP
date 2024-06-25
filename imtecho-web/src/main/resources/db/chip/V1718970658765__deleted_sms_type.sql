@@ -1,0 +1,1 @@
+Truncate table public.sms_type_master;

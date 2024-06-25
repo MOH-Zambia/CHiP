@@ -1,0 +1,176 @@
+<div class="modal-header">
+    <h4 class="text">COVID Refer Admission Form</h4>
+</div>
+<form role="form" name="mdctrl.admissionform" novalidate id="mangeCovid19CaseForm">
+    <div class="modal-body" style="overflow: inherit;max-height: none">
+        <div class="inline-form">
+            <div class="row">
+                <div class="form-group col-10">
+                    <label for="name" control-label>Name</label>
+                    <strong style="font-size: medium;">
+                        <label style="white-space: initial;" for="name"
+                            ng-bind-html="mdctrl.selectedRecord[0].memberDetail"></label>
+                    </strong>
+                </div>
+                <div class="form-group col-10">
+                    <validate for='travelHistory' required-msg="Select Travel History">
+                        <label for="travelHistory" control-label>Have Travel History</label>
+                        <select class="form-control cst-form-control" form-control
+                            ng-model="mdctrl.selectedRecord[0].travelHistory" name="travelHistory" id="travelHistory"
+                            ng-required="true" form-control>
+                            <option value="" selected>--Select--</option>
+                            <option value="no">No</option>
+                            <option value="international">International</option>
+                            <option value="interstate">inter State</option>
+                        </select>
+                        <placeholder></placeholder>
+                    </validate>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-10" ng-if="mdctrl.selectedRecord[0].travelHistory === 'international'">
+                    <validate for="country" required-msg="Please select country of travel">
+                        <label for="country" control-label>Country Travelled</label>
+                        <select class="form-control cst-form-control" form-control chosen-directive="mdctrl.countryList"
+                            ng-model="mdctrl.selectedRecord[0].travelledPlace" id="country" name="country"
+                            ng-options="country.value as country.value for country in mdctrl.countryList" required>
+                            <option value="" selected>--Select--</option>
+                        </select>
+                        <placeholder></placeholder>
+                    </validate>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-10" ng-if="mdctrl.selectedRecord[0].travelHistory === 'international'">
+                    <validate for="flightno." required-msg="Please flight no.">
+                        <label for="flightno." control-label>Flight No.</label>
+                        <input type="text" class="form-control cst-form-control" form-control
+                            placeholder="Enter Flight No." name="flightno" id="flightno"
+                            ng-model="mdctrl.selectedRecord[0].flightno" form-control>
+                        <placeholder></placeholder>
+                    </validate>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-10" ng-if="mdctrl.selectedRecord[0].travelHistory === 'interstate'">
+                    <validate for="state" required-msg="Please enter state/UT Travelled">
+                        <label for="state" control-label>State/UT Travelled</label>
+                        <input type="text" class="form-control cst-form-control" form-control
+                            placeholder="Enter State/UT name" name="state" id="state"
+                            ng-model="mdctrl.selectedRecord[0].travelledPlace" ng-required="true" form-control>
+                        <placeholder></placeholder>
+                    </validate>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-10">
+                    <validate for='is_abroad_in_contact' required-msg="Select the answer">
+                        <label for="is_abroad_in_contact" control-label style="white-space: initial">
+                            H/O contact with international traveller?</label>
+                        <select class="form-control cst-form-control" form-control
+                            ng-model="mdctrl.selectedRecord[0].is_abroad_in_contact" name="is_abroad_in_contact"
+                            id="is_abroad_in_contact" ng-required="true" form-control>
+                            <option value="" selected>--Select--</option>
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                            <option value="Do not know">Don’t know</option>
+                        </select>
+                        <placeholder></placeholder>
+                    </validate>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-10">
+                    <validate for='is_covid_in_contact' required-msg="Select the answer">
+                        <label for="is_covid_in_contact" control-label style="white-space: initial">
+                            H/O contact with COVID-19 positive case?</label>
+                        <select class="form-control cst-form-control" form-control
+                            ng-model="mdctrl.selectedRecord[0].inContactWithCovid19Paitent" name="is_covid_in_contact"
+                            id="is_covid_in_contact" ng-required="true" form-control>
+                            <option value="" selected>--Select--</option>
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                            <option value="Do not know">Don’t know</option>
+                        </select>
+                        <placeholder></placeholder>
+                    </validate>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-10"
+                    ng-if="mdctrl.selectedRecord[0].is_abroad_in_contact === 'yes' || mdctrl.selectedRecord[0].inContactWithCovid19Paitent === 'yes' ">
+                    <validate for="abroad_contact_details" required-msg="Please enter Contact Person Details">
+                        <label for="abroad_contact_details" control-label style="white-space: initial">
+                            Contact Person Details</label>
+                        <textarea rows="2" type="text" class="form-control cst-form-control" form-control
+                            placeholder="Enter Person details" name="abroad_contact_details" id="abroad_contact_details"
+                            ng-model="mdctrl.selectedRecord[0].abroad_contact_details" form-control></textarea>
+                        <placeholder></placeholder>
+                    </validate>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-10">
+                    <validate for="admissionDate" required-msg="Please select date">
+                        <label for="admissionDate" style="float: left;" control-label>Admission Date</label>
+                        <input name="admissionDate" type="text" datepicker id="admissionDate"
+                            ng-model="mdctrl.selectedRecord[0].admissionDate" ng-required="true" form-control>
+                        <placeholder></placeholder>
+                    </validate>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-10">
+                    <validate for='caseno' required-msg="Please indoor case no.">
+                        <label for="caseno" control-label>Indoor Case No.</label>
+                        <input type="text" class="form-control cst-form-control" form-control
+                            placeholder="Enter enter case no" name="caseno" id="caseno"
+                            ng-model="mdctrl.selectedRecord[0].caseNo" required form-control
+                            ng-blur="mdctrl.checkCaseNo()">
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <div class="form-group col-10" ng-if="mdctrl.isDuplicateCaseNo" style="margin-left: 160px;">
+                    <span class="alert alert-danger" style="display: inline-block;width: calc(100% - 162px);">
+                        {{mdctrl.caseMsg}}
+                    </span>
+                </div>
+                <div class="form-group col-10">
+                    <validate for='opdcaseno' required-msg="Please OPD case no">
+                        <label for="opdcaseno" control-label>OPD Case No.</label>
+                        <input type="text" class="form-control cst-form-control" form-control
+                            placeholder="Enter enter opd case no" name="opdCaseNo" id="opdcaseno"
+                            ng-model="mdctrl.selectedRecord[0].opdCaseNo" form-control>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <div class="form-group col-10">
+                    <validate for='selectWard' required-msg="Please select Ward ">
+                        <label for="selectWard" control-label>Select Ward</label>
+                        <select class="form-control cst-form-control" form-control name="selectWard" id="selectWard"
+                            required ng-model="mdctrl.selectedRecord[0].ward">
+                            <option value="" selected>--Select--</option>
+                            <option value="{{ward.id}}" ng-repeat="ward in mdctrl.wardList">
+                                {{ward.ward_name}}
+                            </option>
+                        </select>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <div class="form-group col-10">
+                    <validate for='bedno' required-msg="Please Enter bed no ">
+                        <label for="bedno" control-label>Enter Bed No.</label>
+                        <input type="text" ng-model="mdctrl.selectedRecord[0].bedno"
+                            class="form-control cst-form-control" form-control name="bedno" id="bedno" required>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <div class="form-group col-10">
+                    <validate for='unitno' required-msg="Please enter unit no ">
+                        <label for="unitno" control-label>Unit No.</label>
+                        <input type="text" class="form-control cst-form-control" form-control
+                            placeholder="Enter enter unit no" name="unitno" id="unitno"
+                            ng-model="mdctrl.selectedRecord[0].unitno" form-control>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="mdctrl.admit()">Submit</button>
+        <button type="button" class="btn btn-secondary" ng-click="mdctrl.cancel()">Cancel</button>
+    </div>
+</form>

@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h4 class="text">Flyway Query</h4>
+</div>
+<div class="modal-body">
+    <form role="form" name="featureFlywayForm" id="featureFlywayForm" novalidate>
+        <div><span style="white-space: pre-wrap;">{{mdctrl.text}}</span></div>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="float-right">
+        <button type="submit" class="btn btn-primary" ng-click="mdctrl.download()">
+            <em class="fa fa-floppy-o"></em> Download</button>
+        <button type="submit" class="btn btn-primary" ng-click="mdctrl.copyQuery()">
+            <em class="fa fa-floppy-o"></em> Copy</button>
+        <button class="btn btn-secondary" ng-click="mdctrl.cancel()">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="section-title bottom-spacer-20 inline-form">
+                <div class="form-group">
+                    <strong><label for="next" control-label data-toggle="tooltip">Select Form</label></strong>
+                    <select class="form-control col-3 cst-form-control" form-control name="next" id="next"
+                        ng-model="dFormCtrl.selectedFormId" ng-change="dFormCtrl.getFormConfigs()"
+                        ng-options="form.id as form.form_name for form in dFormCtrl.forms| orderBy : form_name">
+                        <option value="">--Select--</option>
+                    </select>
+                    <div class="pull-right">
+                        <input type="text" ng-model="search" class="form-control cst-form-control col-4 mr-15 pr-15"
+                            id="search" placeholder="Search text" style="width:100%">
+                        <button class=" btn btn-primary" ng-click="dFormCtrl.onAddEditClick()">
+                            Add Form
+                        </button>
+                        <button class=" btn btn-primary" ng-click="dFormCtrl.onAddEditClick(dFormCtrl.selectedFormId)"
+                            ng-if="dFormCtrl.selectedFormId">
+                            Add Form Configuration
+                        </button>
+                    </div>
+                    <div class="col-2 inline-form float-right">
+                        <div class="form-group">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-15">
+            <div class="cst-table table-responsive" style="overflow: auto">
+                <table class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                    <colgroup>
+                        <col class="medium-col">
+                        <col class="medium-col">
+                        <col style="width:38px">
+                    </colgroup>
+                    <thead class="cst-thead">
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th id="baseDate" class="filter-col">Version
+                            </th>
+                            <th id="actions"> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="formConfig in dFormCtrl.formConfigs| filter : search | orderBy:'version'"
+                            ng-if="(dFormCtrl.formConfigs.length > 0)">
+                            <td>{{$index + 1}}</td>
+                            <td> {{formConfig.version}}</td>
+                            <td class="action-cell">
+                                <ul class="action-item">
+                                    <li><a href="#" class="action-icon edit-icon"
+                                            ng-click="dFormCtrl.onAddEditClick(dFormCtrl.selectedFormId, formConfig.id)"></a>
+                                    </li>
+                                    <li class="copy-icon">
+                                        <a href="#" class="fa fa-copy  fs-20" style="text-decoration: none;"
+                                            title="Copy Form Configuration"
+                                            ng-click="dFormCtrl.copyFormConfig(formConfig)">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr ng-if="(!dFormCtrl.formConfigs || (dFormCtrl.formConfigs | filter : search).length == 0)">
+                            <td colspan="3"> No Form Configurations are available </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

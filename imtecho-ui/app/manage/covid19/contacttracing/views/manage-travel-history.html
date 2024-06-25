@@ -1,0 +1,556 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Person Detail</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="card-body inline-form">
+                        <form aria-labelledby="form" role="form" name="manageCovidCasesCtrl.mangeCovid19CaseForm"
+                            id="mangeCovid19CaseForm" novalidate>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <strong>
+                                            <label for="name" control-label>Name :</label>
+                                        </strong>
+                                        <span class="form-control cst-form-control col-5 box-shadow-none border-none">
+                                            {{manageCovidTravelHistoryCtrl.contactPerson.name|emptylabel}}
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <strong>
+                                            <label for="name" control-label>Gender :</label>
+                                        </strong>
+                                        <span class="form-control cst-form-control col-5 box-shadow-none border-none">
+                                            {{manageCovidTravelHistoryCtrl.contactPerson.gender|emptylabel}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <strong>
+                                            <label for="name" control-label>Contact No :</label>
+                                        </strong>
+                                        <span class="form-control cst-form-control col-5 box-shadow-none border-none">
+                                            {{manageCovidTravelHistoryCtrl.contactPerson.contact_no|emptylabel}}
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <strong>
+                                            <label for="name" control-label>Address :</label>
+                                        </strong>
+                                        <span class="form-control cst-form-control col-5 box-shadow-none border-none">
+                                            {{manageCovidTravelHistoryCtrl.contactPerson.address|emptylabel}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <strong>
+                                            <label for="name" control-label>Age :</label>
+                                        </strong>
+                                        <span class="form-control cst-form-control col-5 box-shadow-none border-none">
+                                            {{manageCovidTravelHistoryCtrl.contactPerson.age|emptylabel}}
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <strong>
+                                            <label for="name" control-label>Location :</label>
+                                        </strong>
+                                        <span class="form-control cst-form-control col-5 box-shadow-none border-none">
+                                            {{manageCovidTravelHistoryCtrl.contactPerson.location|emptylabel}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <strong>
+                                            <label for="name" control-label>State :</label>
+                                        </strong>
+                                        <span class="form-control cst-form-control col-5 box-shadow-none border-none">
+                                            {{manageCovidTravelHistoryCtrl.contactPerson.state|emptylabel}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div id="card1" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                    href="#collapse1" ng-click="toggle1 = !toggle1" style="cursor: pointer">
+                    <h4 class="text">
+                        <span data-toggle="tooltip"
+                            title="Travel History">{{ manageCovidTravelHistoryCtrl.formConfig.id ? 'Update' : 'Add'}}
+                            Travel History</span>
+                        <ul class="control-list">
+                            <li>
+                                <span>
+                                    <em ng-class="{'ion-plus':!toggle1,'ion-minus':toggle1}"></em>
+                                </span>
+                            </li>
+                        </ul>
+                    </h4>
+                </div>
+                <div class="collapse" id="collapse1">
+                    <div class="card-body">
+                        <form aria-labelledby="form" role="form"
+                            name="manageCovidTravelHistoryCtrl.manageCovidTravelHistoryForm"
+                            id="manageTimelineConfigForm" novalidate>
+                            <div class="row mb-15">
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='travelDate' required-msg="Enter Travel Date">
+                                            <label for="travelDate" control-label>Travel Date</label>
+                                            <input name="travelDate" type="text" datepicker id="travelDate"
+                                                max-date='staffSmsConfig.today' placeholder="Select Travel Date"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.travelDate"
+                                                form-control required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='placeOfOrigin{{$index}}' required-msg="Enter Place Of Origin">
+                                            <label for="placeOfOrigin{{$index}}" control-label>Place Of Origin</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Place Of Origin" name="placeOfOrigin{{$index}}"
+                                                id="placeOfOrigin{{$index}}"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.placeOfOrigin"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='destination' required-msg="Enter destination">
+                                            <label for="destination" control-label>Destination</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Destination" name="destination" id="destination"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.destination"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='modeOfTransport{{$index}}'
+                                            required-msg="Select mode of transport">
+                                            <label for="modeOfTransport{{$index}}" control-label
+                                                data-toggle="tooltip">Mode
+                                                of transport</label>
+                                            <select class="form-control cst-form-control" form-control
+                                                name="modeOfTransport{{$index}}" id="modeOfTransport{{$index}}"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.modeOfTransport"
+                                                required>
+                                                <option value="">--Select--</option>
+                                                <option value="FLIGHT">Flight</option>
+                                                <option value="TRAIN">Train</option>
+                                                <option value="BUS">Bus</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="manageCovidTravelHistoryCtrl.travelHistoryObject.modeOfTransport === 'FLIGHT'">
+                                    <div class="form-group">
+                                        <validate for='flightNo' required-msg="Enter Flight No">
+                                            <label for="flightNo" control-label>Flight No</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Flight No" name="flightNo" id="flightNo"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.flightNo">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="manageCovidTravelHistoryCtrl.travelHistoryObject.modeOfTransport === 'FLIGHT'">
+                                    <div class="form-group">
+                                        <validate for='flightSeatNo' required-msg="Enter Flight Seat No">
+                                            <label for="flightSeatNo" control-label>Flight Seat No</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Seat No" name="flightSeatNo" id="flightSeatNo"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.flightSeatNo">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="manageCovidTravelHistoryCtrl.travelHistoryObject.modeOfTransport === 'FLIGHT'">
+                                    <div class="form-group">
+                                        <label class="form-group control control-checkbox">Is from another country?
+                                            <input type="checkbox"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.isFromOtherCountry">
+                                            <div class="control_indicator checkbox-success"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="manageCovidTravelHistoryCtrl.travelHistoryObject.modeOfTransport === 'TRAIN'">
+                                    <div class="form-group">
+                                        <validate for='trainNo' required-msg="Enter Train No">
+                                            <label for="trainNo" control-label>Train No</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Train No" name="trainNo" id="trainNo"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.trainNo">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="manageCovidTravelHistoryCtrl.travelHistoryObject.modeOfTransport === 'TRAIN'">
+                                    <div class="form-group">
+                                        <validate for='trainSeatNo' required-msg="Enter Train Seat No">
+                                            <label for="trainSeatNo" control-label>Train Seat No</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Train Seat No" name="trainSeatNo" id="trainSeatNo"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.trainSeatNo">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="manageCovidTravelHistoryCtrl.travelHistoryObject.modeOfTransport === 'BUS'">
+                                    <div class="form-group">
+                                        <validate for='busDetail' required-msg="Enter Bus Detail">
+                                            <label for="busDetail" control-label>Bus Detail</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Bus Detail" name="busDetail" id="busDetail"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.busDetail">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='travelAgencyDetail' required-msg="Enter Travel Agency Detail">
+                                            <label for="travelAgencyDetail" control-label>Travel Agency Detail</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Travel Agency Detail" name="travelAgencyDetail"
+                                                id="travelAgencyDetail"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.travelAgencyDetail">
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='otherTransportDetails'
+                                            required-msg="Enter Other Transport Details">
+                                            <label for="otherTransportDetails" control-label>Other Transport
+                                                Details</label>
+                                            <textarea modeOfTransport="otherTransportDetails"
+                                                maxlength="99"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter Other Details" rows="1" cols="47"
+                                                name="otherTransportDetails" id="otherTransportDetails"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.otherTransportDetails">
+                                        </textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='purposeOfTravel' required-msg="Enter Purpose Of Travel">
+                                            <label for="purposeOfTravel" control-label>Purpose Of Travel</label>
+                                            <textarea modeOfTransport="purposeOfTravel"
+                                                maxlength="99"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter Purpose Of Travel" rows="1" cols="47"
+                                                name="purposeOfTravel" id="purposeOfTravel"
+                                                ng-model="manageCovidTravelHistoryCtrl.travelHistoryObject.purposeOfTravel">
+                                        </textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div style="margin-top:2%">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-large btn-primary"
+                                            ng-click="manageCovidTravelHistoryCtrl.saveTravelHistory()">
+                                            <em class="fa fa-floppy-o"></em> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="table-section"
+                            ng-if="manageCovidTravelHistoryCtrl.travelHistoryList != null && manageCovidTravelHistoryCtrl.travelHistoryList.length > 0">
+                            <div class="card-body col-12 col-md-12">
+                                <div class="cst-table-responsive">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="travelDate">Travel Date</th>
+                                                <th id="placeOfOrigin">Place of origin</th>
+                                                <th id="destination">Destination</th>
+                                                <th id="modeOfTransport">Mode of Transport</th>
+                                                <th id="flightNo">Flight No.</th>
+                                                <th id="flightSeatNo">Flight Seat No.</th>
+                                                <th id="isFromOtherCountry">Is from other country</th>
+                                                <th id="trainNo">Train No.</th>
+                                                <th id="trainSeatNo">Train Seat No.</th>
+                                                <th id="busDetail">Bus Detail</th>
+                                                <th id="travelAgencyDetail">Travel Agency Detail</th>
+                                                <th id="otherTransportDetails">Other Transport Details</th>
+                                                <th id="purposeOfTravel">Purpose of Travel</th>
+                                                <th id="travelaction">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody">
+                                            <tr ng-repeat="travel in manageCovidTravelHistoryCtrl.travelHistoryList">
+                                                <td>
+                                                    {{travel.travelDate == null ? 'Not Available' : travel.travelDate}}
+                                                </td>
+                                                <td>
+                                                    {{travel.placeOfOrigin == null ? 'Not Available' : travel.placeOfOrigin}}
+                                                </td>
+                                                <td>
+                                                    {{travel.destination == null ? 'Not Available' : travel.destination}}
+                                                </td>
+                                                <td>
+                                                    {{travel.modeOfTransport == null ? 'Not Available' : travel.modeOfTransport}}
+                                                </td>
+                                                <td>
+                                                    {{travel.flightNo == null ? 'Not Available' : travel.flightNo}}
+                                                </td>
+                                                <td>
+                                                    {{travel.flightSeatNo == null ? 'Not Available' : travel.flightSeatNo}}
+                                                </td>
+                                                <td>
+                                                    {{travel.isFromOtherCountry ? 'Yes' : 'No'}}
+                                                </td>
+                                                <td>
+                                                    {{travel.trainNo == null ? 'Not Available' : travel.trainNo}}
+                                                </td>
+                                                <td>
+                                                    {{travel.trainSeatNo == null ? 'Not Available' : travel.trainSeatNo}}
+                                                </td>
+                                                <td>
+                                                    {{travel.busDetail == null ? 'Not Available' : travel.busDetail}}
+                                                </td>
+                                                <td>
+                                                    {{travel.travelAgencyDetail == null ? 'Not Available' : travel.travelAgencyDetail}}
+                                                </td>
+                                                <td>
+                                                    {{travel.otherTransportDetails == null ? 'Not Available' : travel.otherTransportDetails}}
+                                                </td>
+                                                <td>
+                                                    {{travel.purposeOfTravel == null ? 'Not Available' : travel.purposeOfTravel}}
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <span style="cursor: pointer;" class="fa fa-trash"
+                                                        ng-click="manageCovidTravelHistoryCtrl.deleteTravelHistory(travel)"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div id="card2" role="tab" class="card-title collapse-link d-block" data-toggle="collapse"
+                    href="#collapse2" ng-click="toggle2 = !toggle2" style="cursor: pointer">
+                    <h4 class="text">
+                        <span data-toggle="tooltip" title="Contact History">Contact History</span>
+                        <ul class="control-list">
+                            <li>
+                                <span>
+                                    <em ng-class="{'ion-plus':!toggle1,'ion-minus':toggle1}"></em>
+                                </span>
+                            </li>
+                        </ul>
+                    </h4>
+                </div>
+                <div class="collapse" id="collapse2">
+                    <div class="card-body">
+                        <form aria-labelledby="form" role="form"
+                            name="manageCovidTravelHistoryCtrl.manageContatDetailForm" id="manageContatDetailForm"
+                            novalidate>
+                            <div class="row mb-15">
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='contactDate' required-msg="Enter Contact Date">
+                                            <label for="contactDate" control-label>Contact Date</label>
+                                            <input name="contactDate" type="text" datepicker id="contactDate"
+                                                max-date='staffSmsConfig.today' placeholder="Select Contact Date"
+                                                ng-model="manageCovidTravelHistoryCtrl.contactHistoryObject.contactDate"
+                                                form-control required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='personName{{$index}}' required-msg="Enter Person Name">
+                                            <label for="personName{{$index}}" control-label>Person Name</label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Person Name" name="personName{{$index}}"
+                                                id="placeOfOrigin{{$index}}"
+                                                ng-model="manageCovidTravelHistoryCtrl.contactHistoryObject.name"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='contactNo' required-msg="Enter Contact No"
+                                                  pattern-msg="Invalid Contact Number">
+                                            <label for="contactNo" control-label>Contact No</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                placeholder="Enter Contact No" pattern="^[0-9]{10}$"
+                                                name="contactNo" id="contactNo"
+                                                ng-model="manageCovidTravelHistoryCtrl.contactHistoryObject.contactNo"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='address' required-msg="Enter address">
+                                            <label for="address" control-label>Address</label>
+                                            <textarea modeOfTransport="Address" class="form-control cst-form-control"
+                                                form-control placeholder="Enter Address" rows="1" cols="47"
+                                                name="Address" id="Address"
+                                                ng-model="manageCovidTravelHistoryCtrl.contactHistoryObject.address">
+                                                </textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='otherDetails' required-msg="Enter other details">
+                                            <label for="otherDetails" control-label>Other Details</label>
+                                            <textarea modeOfTransport="otherDetails"
+                                                maxlength="99"
+                                                class="form-control cst-form-control" form-control
+                                                placeholder="Enter other details" rows="1" cols="47" name="otherDetails"
+                                                id="otherDetails"
+                                                ng-model="manageCovidTravelHistoryCtrl.contactHistoryObject.otherDetails">
+                                                </textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20">
+                                    <div class="form-group">
+                                        <validate for='locationId' required-msg="Select District">
+                                            <label for="locationId" control-label>District</label>
+                                            <select class="form-control cst-form-control" chosen-directive form-control
+                                                ng-model="manageCovidTravelHistoryCtrl.districtlocationId"
+                                                name="locationId" id="locationId"
+                                                ng-options="location.id as location.english_name for location in manageCovidTravelHistoryCtrl.districtLocations"
+                                                ng-change="manageCovidTravelHistoryCtrl.getChildLocation(manageCovidTravelHistoryCtrl.districtlocationId)"
+                                                required>
+                                                <option value="" selected>--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xl-2 bottom-spacer-20"
+                                    ng-if="!!manageCovidTravelHistoryCtrl.districtlocationId">
+                                    <div class="form-group">
+                                        <validate for='locationId' required-msg="Select Location">
+                                            <label for="locationId" control-label>Taluka</label>
+                                            <select class="form-control cst-form-control"
+                                                chosen-directive="manageCovidTravelHistoryCtrl.talukaLocation"
+                                                form-control
+                                                ng-model="manageCovidTravelHistoryCtrl.contactHistoryObject.locationId"
+                                                name="locationId" id="locationId" ng-options="taluka.id as taluka.englishName for taluka in
+                                                     manageCovidTravelHistoryCtrl.talukaLocation" required>
+                                                <option value="" selected>--Select--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-large btn-primary"
+                                            ng-click="manageCovidTravelHistoryCtrl.saveContactHistory()">
+                                            <em class="fa fa-floppy-o"></em> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="table-section"
+                            ng-if="manageCovidTravelHistoryCtrl.contactHistoryList != null && manageCovidTravelHistoryCtrl.contactHistoryList.length > 0">
+                            <div class="card-body col-12 col-md-12">
+                                <div class="cst-table-responsive">
+                                    <table aria-describedby="table"
+                                        class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th id="contactDate">Contact Date</th>
+                                                <th id="personName">Person Name</th>
+                                                <th id="contactNo">Contact No.</th>
+                                                <th id="address">Address</th>
+                                                <th id="otherDetails">Other Details</th>
+                                                <th id="contactaction">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody">
+                                            <tr ng-repeat="contact in manageCovidTravelHistoryCtrl.contactHistoryList">
+                                                <td>
+                                                    {{contact.contactDate == null ? 'Not Available' : contact.contactDate}}
+                                                </td>
+                                                <td>
+                                                    {{contact.name == null ? 'Not Available' : contact.name}}
+                                                </td>
+                                                <td>
+                                                    {{contact.contactNo == null ? 'Not Available' : contact.contactNo}}
+                                                </td>
+                                                <td>
+                                                    {{contact.address == null ? 'Not Available' : contact.address}}
+                                                </td>
+                                                <td>
+                                                    {{contact.otherDetails == null ? 'Not Available' : contact.otherDetails}}
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <span style="cursor: pointer;" class="fa fa-trash"
+                                                        ng-click="manageCovidTravelHistoryCtrl.deleteContactHistory(contact)"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pull-right">
+        <button class="btn btn-secondary" ng-click="manageCovidTravelHistoryCtrl.cancel()">Back</button>
+    </div>
+</div>

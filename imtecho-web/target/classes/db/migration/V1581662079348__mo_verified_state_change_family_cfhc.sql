@@ -1,0 +1,1 @@
+update imt_family set state = 'CFHC_MO_FV' where state = 'CFHC_FMOV';

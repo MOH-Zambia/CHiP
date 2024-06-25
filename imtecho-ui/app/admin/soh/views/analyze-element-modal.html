@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h4 class="text" style="line-height: 1.5;">
+        Analyze SoH Element
+    </h4>
+    <button type="button" class="close" ng-click="analyzeCtrl.cancel()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body" style="overflow: inherit; overflow-y: auto;">
+    <form role="form" name="analyzeCtrl.analyzeElementForm" id="analyzeElementForm" novalidate>
+        <div class="form-group">
+            <validate for='timelineType' required-msg="">
+                <div class="row" style="margin: 16px 0 16px 0;">
+                    <div class="col-3">
+                        <label for='timelineType' style="float: right;" control-label>
+                            Timeline Type
+                        </label></div>
+                    <div class="col-6">
+                        <select form-control required class="form-control cst-form-control" name="timelineType"
+                            id="timelineType" ng-model="analyzeCtrl.selectedTimelineType"
+                            ng-options="type.key as type.value for type in analyzeCtrl.timelineTypes" required>
+                            <option value=''>--Select--</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-primary" ng-click="analyzeCtrl.submit()">
+                            Submit
+                        </button>
+                    </div>
+            </validate>
+        </div>
+    </form>
+    <table aria-describedby="table" ng-if="analyzeCtrl.analyzedData.length"
+        class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+        style="table-layout: auto;">
+        <thead class="cst-thead">
+            <tr>
+                <th id="sr_no" style="width: 35px; white-space: pre-line;">#</th>
+                <th id="elementName">Element Name</th>
+                <th id="location">Location</th>
+                <th id="color">Color</th>
+                <th id="reporting">Reporting</th>
+                <th id="percentage">Percentage</th>
+                <th id="calculatedTarget">Calculated Target</th>
+            </tr>
+        </thead>
+        <tbody class="cst-tbody">
+            <tr ng-repeat="row in analyzeCtrl.analyzedData">
+                <td>{{$index + 1}}</td>
+                <td>{{row.elementName}}</td>
+                <td>{{row.locationName}}</td>
+                <td>{{row.color}}</td>
+                <td>{{row.reporting}}</td>
+                <td>{{row.percentage ? row.percentage.toFixed(2) : 'N/A'}}</td>
+                <td>{{row.calculatedTarget ? row.calculatedTarget.toFixed(2) : 'N/A'}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="text-danger" style="text-align: center; margin-bottom: 16px;"
+        ng-if="analyzeCtrl.analyzedData.length === 0">
+        No analyzed data found for selected element!
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="analyzeCtrl.ok()">Ok</button>
+    <button class="btn btn-secondary" ng-click="analyzeCtrl.cancel()">Cancel</button>
+</div>

@@ -1,0 +1,93 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 bottom-spacer-10">
+            <div class="section-title">
+                <h4 class="text">Lab Tests</h4>
+                <div class="float-right">
+                    <div class="form-group">
+                        <input type="text" ng-model="lbtCtrl.searchText" class="form-control cst-form-control"
+                            id="search" ng-change="lbtCtrl.searchChanged()" ng-model-options="{debounce: 500}"
+                            placeholder="Search text" style="width:100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-15">
+            <div class="cst-table table-responsive" style="overflow: auto;" id="sample-collection-scroll">
+                <table class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                    <thead class="cst-thead">
+                        <tr>
+                            <th class="white-space-unset">Sr.No</th>
+                            <th class="white-space-unset">Patient Name</th>
+                            <th class="white-space-unset">Admission Id</th>
+                            <th class="white-space-unset">Lab Collection Id</th>
+                            <th class="white-space-unset">Admission Date</th>
+                            <th class="white-space-unset">Admission From</th>
+                            <th class="white-space-unset">Suggested Hospital</th>
+                            <th class="white-space-unset">Current State</th>
+                            <th class="white-space-unset">Transfer Hospital Name</th>
+                            <th class="white-space-unset">Hospital</th>
+                            <th class="white-space-unset">Lab Collection On</th>
+                            <th class="white-space-unset">Lab Collection Status</th>
+                            <th class="white-space-unset">Lab Result On</th>
+                            <th class="white-space-unset">Lab Result</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                        infinite-scroll='lbtCtrl.retrieveAdminLabList(true)'
+                        infinite-scroll-container='"#sample-collection-scroll"' infinite-scroll-immediate-check="false">
+                        <tr ng-repeat="member in lbtCtrl.adminLabList" ng-if="lbtCtrl.adminLabList.length > 0">
+                            <td ng-bind="$index + 1"></td>
+                            <td class="pseudolink" ng-bind-html="member.memberDetail | emptylabel"
+                                ng-click="lbtCtrl.openAdmissionDetailsModal(member)">
+                            </td>
+                            <td ng-bind-html="member.admissionId | emptylabel"></td>
+                            <td ng-bind-html="member.labCollectionId | emptylabel"></td>
+                            <td ng-bind-html="member.admissionDate | emptylabel"></td>
+                            <td ng-bind-html="member.admissionFrom | emptylabel"></td>
+                            <td ng-bind-html="member.suggestedHealthInfraName | emptylabel"></td>
+                            <td ng-bind-html="member.admissionStatus | emptylabel"></td>
+                            <td ng-bind-html="member.trasferHospitalName | emptylabel"></td>
+                            <td ng-bind-html="member.healthInfraName | emptylabel"></td>
+                            <td ng-bind-html="member.labCollectionOn | emptylabel"></td>
+                            <td ng-bind-html="member.labCollectionStatus | emptylabel"></td>
+                            <td ng-bind-html="member.labResultEntryOn | emptylabel"></td>
+                            <td ng-bind-html="member.labResult | emptylabel"></td>
+                            <td>
+                                <div class="dropdown" style="padding-left: 3px;">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Action
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" ng-if="member.admissionFrom !== 'OPD_ADMIT'"
+                                            ng-click="lbtCtrl.editAmission(member)">
+                                            Edit</a>
+                                        <a class="dropdown-item" ng-if="member.admissionFrom === 'OPD_ADMIT'"
+                                            ng-click="lbtCtrl.editOpdLabTest(member)">
+                                            Edit OPD Lab Test</a>
+                                        <a class="dropdown-item" ng-click="lbtCtrl.transfer(member, true)">
+                                            Transfer</a>
+                                        <a class="dropdown-item" ng-click="lbtCtrl.transfer(member, false)">
+                                            Change Suggested Hospital</a>
+                                        <a class="dropdown-item" ng-click="lbtCtrl.delete(member)">
+                                            Delete</a>
+                                        <a class="dropdown-item"
+                                            ng-if="member.admissionStatus === 'DEATH' || member.admissionStatus === 'DISCHARGE'
+                                           || member.admissionStatus === 'REFER' || member.admissionStatus === 'DAMA/LAMA'"
+                                            ng-click="lbtCtrl.revertOutCome(member)">
+                                            Revert Outcome</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-if="lbtCtrl.adminLabList.length === 0">
+                            <td colspan="14">No Lab Test Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

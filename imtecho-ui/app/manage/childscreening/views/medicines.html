@@ -1,0 +1,740 @@
+<div class="container-fluid child-form">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">CHILD DETAIL</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">Child Id : </span>
+                                            <span
+                                                class="data">{{medicinescontroller.currentChild.uniqueHealthId}}({{medicinescontroller.currentChild.familyId}})</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Child Name :</span>
+                                            <span
+                                                class="data">{{medicinescontroller.currentChild.childName}}({{medicinescontroller.currentChild.motherName}})</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Location :</span>
+                                            <span
+                                                class="data">{{medicinescontroller.currentChild.locationHierarchy}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> DOB / Age / Gender : </span>
+                                            <span class="data"> {{medicinescontroller.currentChild.dob}} /
+                                                {{medicinescontroller.currentChild.age}} months /
+                                                {{medicinescontroller.currentChild.gender}} </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">Screening Date : </span>
+                                            <span class="data">{{medicinescontroller.currentChild.screenedOn}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Contact Number :</span>
+                                            <span
+                                                class="data">{{medicinescontroller.currentChild.mobileNumber|emptylabel}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type">BPL : </span>
+                                            <span class="data">{{medicinescontroller.currentChild.bpl}} </span>
+
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Caste : </span>
+                                            <span class="data">{{medicinescontroller.currentChild.caste}} </span>
+                                        </label>
+                                    </div>
+                                    <div class="info">
+                                        <label>
+                                            <span class="info_type"> Child Referred By : </span>
+                                            <span class="data"> {{medicinescontroller.currentChild.referredBy}} </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card cst-card" ng-if="medicinescontroller.weightList.length > 0">
+        <div id="car13" role="tab" class="card-title collapse-link d-block" data-toggle="collapse" href="#collapse13"
+            ng-click="toggle13 = !toggle13" style="cursor: pointer">
+            <h4 class="text">
+                <span data-toggle="tooltip" title="FSAM Weight Information">Daily Weight History</span>
+                <ul class="control-list">
+                    <li>
+                        <span>
+                            <em ng-class="{'ion-plus':!toggle13,'ion-minus':toggle13}"></em>
+                        </span>
+                    </li>
+                </ul>
+            </h4>
+        </div>
+        <div class="collapse" id="collapse13">
+            <div class="table-section">
+                <div class="card-body col-12 col-md-12">
+                    <div class="cst-table-responsive">
+                        <form name="fsam_weight_information-form" id="fsam_weight_information-form">
+                            <table aria-describedby="table"
+                                class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                                <thead class="cst-thead">
+                                    <tr>
+                                        <th id="weightDate">Weight Date</th>
+                                        <th id="weight">Weight</th>
+                                        <th id="height">Height</th>
+                                        <th id="oedema">Oedema</th>
+                                        <th id="formulaGiven">Formula Given</th>
+                                        <th id="motherCouncelling">Mother Councelling Done</th>
+                                        <th id="amoxicillin">Amoxicillin Given</th>
+                                        <th id="vitaminA">Vitamin A Given</th>
+                                        <th id="albendazole">Albendazole Given</th>
+                                        <th id="folicAcid">Folic Acid Given</th>
+                                        <th id="potassium">Potassium Given</th>
+                                        <th id="magnesium">Magnesium Given</th>
+                                        <th id="zinc">Zinc Given</th>
+                                        <th id="iron">Iron Given</th>
+                                        <th id="otherHigherNutrients">Other Higher Nutrients Given</th>
+                                        <th id="multiVitaminSyrup">Multi Vitamin Syrup Given</th>
+                                        <th id="sugarSolution">Sugar Solution Given</th>
+                                        <th id="nightStay">Night Stay</th>
+                                        <th id="kmcProvided">KMC Provided</th>
+                                        <th id="noOfTimesKmcDone">No. of times KMC done</th>
+                                        <th id="createdOn">Entry Done on</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cst-tbody">
+                                    <tr ng-repeat="weight in medicinescontroller.weightList">
+                                        <td>{{weight.weightDate|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                        <td>{{weight.weight|emptylabel}}</td>
+                                        <td>{{weight.height|emptylabel}}</td>
+                                        <td>{{weight.bilateralPittingOedema|emptylabel}}</td>
+                                        <td>{{weight.formulaGiven|emptylabel}}</td>
+                                        <td>{{weight.isMotherCouncelling|yesOrNo}}</td>
+                                        <td>{{weight.isAmoxicillin|yesOrNo}}</td>
+                                        <td>{{weight.isVitaminA|yesOrNo}}</td>
+                                        <td>{{weight.isAlbendazole|yesOrNo}}</td>
+                                        <td>{{weight.isFolicAcid|yesOrNo}}</td>
+                                        <td>{{weight.isPotassium|yesOrNo}}</td>
+                                        <td>{{weight.isMagnesium|yesOrNo}}</td>
+                                        <td>{{weight.isZinc|yesOrNo}}</td>
+                                        <td>{{weight.isIron|yesOrNo}}</td>
+                                        <td>{{weight.otherHigherNutrientsGiven|yesOrNo}}</td>
+                                        <td>{{weight.multiVitaminSyrup|yesOrNo}}</td>
+                                        <td>{{weight.isSugarSolution|yesOrNo}}</td>
+                                        <td>{{weight.nightStay|yesOrNo}}</td>
+                                        <td>{{weight.kmcProvided|yesOrNo}}</td>
+                                        <td>{{weight.noOfTimesKmcDone|emptylabel}}</td>
+                                        <td>{{weight.createdOn|date:'dd/MM/yyyy'|emptylabel}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form role="form" name="medicinescontroller.medicinesForm" id="medicinesForm" novalidate>
+        <div class="row">
+            <div class="col-12 mb-15">
+                <div class="card cst-card">
+                    <div class="card-title">
+                        <div class="col-6 float-left nopadding">
+                            <h4 class="text">Medicines Given</h4>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <div class="col-md-6 col-sm-12 nopadding float-left">
+                            <div class="card-body ">
+                                <div class="inline-form info">
+                                    <div class="form-group ">
+                                        <validate for='weightDate' required-msg="Select Date">
+                                            <label for="weightDate"><span class="info_type" control-label> Date of
+                                                    Submission </span></label>
+                                            <input type="text" style="float: inherit" datepicker tabindex="8"
+                                                name="weightDate" form-control
+                                                ng-model="medicinescontroller.childScreeningObject.weightDate" required
+                                                max-date='medicinescontroller.maxSubmissionDate'
+                                                ng-change='medicinescontroller.calculateDays()'
+                                                min-date='medicinescontroller.currentChild.admissionDate'>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='weight' required-msg="Enter current weight">
+                                            <label><span class="info_type" control-label>Weight</span></label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                name="weight" id="childStayDuration" min="1" max="15"
+                                                ng-model="medicinescontroller.childScreeningObject.weight" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='bilateralPittingOedema' required-msg="Select a value">
+                                            <label><span class="info_type" control-label>Bilateral Pitting
+                                                    Oedema</span></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="medicinescontroller.childScreeningObject.bilateralPittingOedema"
+                                                name="bilateralPittingOedema" id="bilateralPittingOedema" required>
+                                                <option value="">--Select--</option>
+                                                <option value="+">+</option>
+                                                <option value="++">++</option>
+                                                <option value="+++">+++</option>
+                                                <option value="NOTPRESENT">Not present</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.diffBetweenAdmissionDateAndWeightDate === 6 && medicinescontroller.above6Months">
+                                        <validate for='midUpperArmCircumference' required-msg="Enter MUAC">
+                                            <label><span class="info_type" control-label>MUAC (in cm)</span></label>
+                                            <input type="number" max="26" min="6" class="form-control cst-form-control"
+                                                form-control name="midUpperArmCircumference"
+                                                id="midUpperArmCircumference"
+                                                ng-model="medicinescontroller.childScreeningObject.midUpperArmCircumference"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.diffBetweenAdmissionDateAndWeightDate === 14">
+                                        <validate for='height' required-msg="Enter height">
+                                            <label><span class="info_type" control-label>Height (in cm)</span></label>
+                                            <input type="number" max="120" min="45"
+                                                class="form-control cst-form-control" form-control
+                                                onkeypress="return !(event.charCode == 46)" name="height" id="height"
+                                                ng-model="medicinescontroller.childScreeningObject.height" required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='isMotherCouncelling' required-msg=" Select a value">
+                                            <label for="isMotherCouncelling" name="isMotherCouncelling"
+                                                id="isMotherCouncelling" class="long control-label" control-label><span
+                                                    class="info_type">Mother Councelling</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="isMotherCouncelling" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isMotherCouncelling"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="isMotherCouncelling" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isMotherCouncelling"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='nightStay' required-msg=" Select a value">
+                                            <label for="nightStay" name="nightStay" id="nightStay"
+                                                class="long control-label" control-label><span class="info_type">Night
+                                                    Stay</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="nightStay" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.nightStay"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="nightStay" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.nightStay"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="medicinescontroller.below6Months" class="form-group">
+                                        <validate for='kmcProvided' required-msg=" Select a value">
+                                            <label for="kmcProvided" name="kmcProvided" id="kmcProvided"
+                                                class="long control-label" control-label><span class="info_type">KMC
+                                                    provided?</span></label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="kmcProvided" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.kmcProvided"
+                                                    ng-change="medicinescontroller.kmcProvidedChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style='margin-top: 0%' class="control control-radio mt-10">No
+                                                <input ng-value="false" name="kmcProvided" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.kmcProvided"
+                                                    ng-change="medicinescontroller.kmcProvidedChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.below6Months && medicinescontroller.childScreeningObject.kmcProvided">
+                                        <validate for='noOfTimesKmcDone' required-msg="Enter no of times KMC done">
+                                            <label><span class="info_type" control-label>No. of times KMC done</label>
+                                            <input type="number" min="1" class="form-control cst-form-control"
+                                                form-control name="noOfTimesKmcDone" id="noOfTimesKmcDone"
+                                                onkeypress="return !(event.charCode == 46)"
+                                                ng-model="medicinescontroller.childScreeningObject.noOfTimesKmcDone"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='institutionType' required-msg="Select a value">
+                                            <label for="institutionType" control-label><span class="info_type">Higher
+                                                    Facility Referral</span></label>
+                                            <select class="form-control cst-form-control" form-control
+                                                ng-model="medicinescontroller.childScreeningObject.institutionType"
+                                                ng-change="medicinescontroller.retrieveHospitalsByInstitutionType()"
+                                                name="institutionType" id="institutionType">
+                                                <option value="" selected>--Select--</option>
+                                                <option value="{{institutionType.id}}"
+                                                    ng-repeat="institutionType in medicinescontroller.institutionTypes">
+                                                    {{institutionType.value}}</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.childScreeningObject.institutionType != null && medicinescontroller.showOtherInstitutes">
+                                        <validate for='hospital' required-msg="Select a value">
+                                            <label style="vertical-align: middle;white-space: initial"
+                                                control-label><span class="info_type">Hospital</span></label>
+                                            <select class="form-control cst-form-control" form-control chosen-directive
+                                                name="hospital"
+                                                ng-model="medicinescontroller.childScreeningObject.higherFacilityReferralPlace"
+                                                required>
+                                                <option value="" selected>--Select--</option>
+                                                <option ng-repeat="institute in medicinescontroller.otherInstitutes"
+                                                    value="{{institute.id}}">{{institute.name}}</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div ng-if="medicinescontroller.childScreeningObject.higherFacilityReferralPlace != null"
+                                        class="form-group">
+                                        <validate for='referralReason' required-msg="Enter referral reason">
+                                            <label><span class="info_type" control-label>Referral Reason</span></label>
+                                            <input type="text" class="form-control cst-form-control" form-control
+                                                name="referralReason" id="referralReason"
+                                                ng-model="medicinescontroller.childScreeningObject.referralReason"
+                                                required>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" col-md-6 pl-60 col-sm-12 nopadding float-right ">
+                            <div class="card-body pl-60">
+                                <div class="inline-form info">
+                                    <div class="form-group">
+                                        <validate for='isAmoxicillin' required-msg=" Select a value">
+                                            <label for="isAmoxicillin" name="isAmoxicillin" id="isAmoxicillin"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    child given amoxicillin today</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="isAmoxicillin" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isAmoxicillin"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="isAmoxicillin" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isAmoxicillin"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='otherHigherNutrientsGiven' required-msg=" Select a value"
+                                            ng-if="medicinescontroller.childScreeningObject.isAmoxicillin == false">
+                                            <label for="otherHigherNutrientsGiven" name="otherHigherNutrientsGiven"
+                                                id="otherHigherNutrientsGiven" class="long control-label"
+                                                control-label><span class="info_type">Any other high nutrient
+                                                    given?</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="otherHigherNutrientsGiven" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.otherHigherNutrientsGiven"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="otherHigherNutrientsGiven" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.otherHigherNutrientsGiven"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="long control-label" control-label><span class="info_type">Vitamin
+                                                A last given Date : </span></label>
+                                        <label class="long control-label"
+                                            control-label>{{medicinescontroller.currentChild.vitaminADisplayDate}}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='isVitaminA' required-msg=" Select a value">
+                                            <label for="isVitaminA" name="isVitaminA" id="isVitaminA"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    child given Vit A on 1st Day</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input
+                                                    ng-disabled="medicinescontroller.diffBetweenAdmissionDateAndWeightDate !== 0 || medicinescontroller.childScreeningObject.bilateralPittingOedema !== 'NOTPRESENT' || medicinescontroller.vitaminAAlreadyGiven || medicinescontroller.below2Months"
+                                                    ng-value="true" name="isVitaminA" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isVitaminA"
+                                                    ng-required="medicinescontroller.diffBetweenAdmissionDateAndWeightDate === 0 && medicinescontroller.childScreeningObject.bilateralPittingOedema === 'NOTPRESENT' && !medicinescontroller.vitaminAAlreadyGiven && !medicinescontroller.below2Months">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input
+                                                    ng-disabled="medicinescontroller.diffBetweenAdmissionDateAndWeightDate !== 0 || medicinescontroller.childScreeningObject.bilateralPittingOedema !== 'NOTPRESENT' || medicinescontroller.vitaminAAlreadyGiven || medicinescontroller.below2Months"
+                                                    ng-value="false" name="isVitaminA" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isVitaminA"
+                                                    ng-required="medicinescontroller.diffBetweenAdmissionDateAndWeightDate === 0 && medicinescontroller.childScreeningObject.bilateralPittingOedema === 'NOTPRESENT' && !medicinescontroller.vitaminAAlreadyGiven && !medicinescontroller.below2Months">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="medicinescontroller.above6Months">
+                                        <validate for='isSugarSolution' required-msg=" Select a value">
+                                            <label for="isSugarSolution" name="isSugarSolution" id="isSugarSolution"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    child given Sugar Solution on 1st Day</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input
+                                                    ng-disabled="medicinescontroller.diffBetweenAdmissionDateAndWeightDate !== 0"
+                                                    ng-value="true" name="isSugarSolution" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isSugarSolution"
+                                                    ng-required="medicinescontroller.diffBetweenAdmissionDateAndWeightDate === 0">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input
+                                                    ng-disabled="medicinescontroller.diffBetweenAdmissionDateAndWeightDate !== 0"
+                                                    ng-value="false" name="isSugarSolution" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isSugarSolution"
+                                                    ng-required="medicinescontroller.diffBetweenAdmissionDateAndWeightDate === 0">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="medicinescontroller.above6Months">
+                                        <validate for='isAlbendazole' required-msg=" Select a value">
+                                            <label for="isAlbendazole" name="isAlbendazole" id="isAlbendazole"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    child given Albendazole on 7th day</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input
+                                                    ng-disabled="medicinescontroller.diffBetweenAdmissionDateAndWeightDate !== 6"
+                                                    ng-value="true" name="isAlbendazole" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isAlbendazole"
+                                                    ng-required="medicinescontroller.diffBetweenAdmissionDateAndWeightDate === 6">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input
+                                                    ng-disabled="medicinescontroller.diffBetweenAdmissionDateAndWeightDate !== 6"
+                                                    ng-value="false" name="isAlbendazole" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isAlbendazole"
+                                                    ng-required="medicinescontroller.diffBetweenAdmissionDateAndWeightDate === 6">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group">
+                                        <validate for='isFolicAcid' required-msg=" Select a value">
+                                            <label for="isFolicAcid" name="isFolicAcid" id="isFolicAcid"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    child given Folic acid today</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="isFolicAcid" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isFolicAcid"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="isFolicAcid" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isFolicAcid"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-15">
+                <div class="card cst-card">
+                    <div class="card-title">
+                        <div class="col-6 float-left nopadding">
+                            <h4 class="text">Medicines Given as per Phases</h4>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="col-md-6 col-sm-12 nopadding float-left">
+                            <div class="card-body ">
+                                <div class="inline-form info">
+                                    <div class="form-group" ng-if="medicinescontroller.above6Months">
+                                        <validate for='formulaGiven' required-msg=" Select a value">
+                                            <label for="formulaGiven" name="formulaGiven" id="formulaGiven"
+                                                class="long control-label" control-label><span class="info_type">Select
+                                                    Formula Given</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Phase 1 (F75)
+                                                <input value="F75" name="F75" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.formulaGiven"
+                                                    ng-change="medicinescontroller.formulaGivenChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">Transition
+                                                Phase (F100)
+                                                <input value="F100" name="F100" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.formulaGiven"
+                                                    ng-change="medicinescontroller.formulaGivenChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <br>
+                                            <label style="width: auto;margin-left: 30%"
+                                                class="control control-radio mt-10">Phase 2 (F100+EPD)
+                                                <input value="F100+EPD" name="EPD" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.formulaGiven"
+                                                    ng-change="medicinescontroller.formulaGivenChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">Phase 2
+                                                (F100+RUTF)
+                                                <input value="F100+RUTF" name="RUTF" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.formulaGiven"
+                                                    ng-change="medicinescontroller.formulaGivenChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group" ng-if="medicinescontroller.below6Months">
+                                        <validate for='formulaGiven' required-msg=" Select a value">
+                                            <label for="formulaGiven" name="formulaGiven" id="formulaGiven"
+                                                class="long control-label" control-label><span class="info_type">Select
+                                                    Formula Given</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">SST Technique
+                                                <input value="SST_TECHNIQUE" name="SST_TECHNIQUE" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.formulaGiven"
+                                                    ng-change="medicinescontroller.formulaGivenChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">Only Diluted
+                                                F100
+                                                <input value="ONLY_DILUTED_F100" name="ONLY_DILUTED_F100" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.formulaGiven"
+                                                    ng-change="medicinescontroller.formulaGivenChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <br>
+                                            <label style="width: auto;margin-left: 30%"
+                                                class="control control-radio mt-10">IYCF positioning
+                                                <input value="IYCF_POSITIONING" name="IYCF_POSITIONING" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.formulaGiven"
+                                                    ng-change="medicinescontroller.formulaGivenChanged()" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.childScreeningObject.formulaGiven != 'F100+RUTF' && medicinescontroller.childScreeningObject.formulaGiven != 'IYCF_POSITIONING'">
+                                        <validate for='isPotassium' required-msg=" Select a value">
+                                            <label for="isPotassium" name="isPotassium" id="isPotassium"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    child given Potassium today</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="isPotassium" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isPotassium"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="isPotassium" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isPotassium"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.childScreeningObject.formulaGiven != 'F100+RUTF' && medicinescontroller.childScreeningObject.formulaGiven != 'IYCF_POSITIONING'">
+                                        <validate for='isMagnesium' required-msg=" Select a value">
+                                            <label for="isMagnesium" name="isMagnesium" id="isMagnesium"
+                                                class="long control-label" control-label><span class="info_type">Is
+                                                    child given Magnesium today</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="isMagnesium" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isMagnesium"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="isMagnesium" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isMagnesium"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" col-md-6 pl-60 col-sm-12 nopadding float-right ">
+                            <div class="card-body pl-60">
+                                <div class="inline-form info">
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.childScreeningObject.formulaGiven != 'F100+RUTF' && medicinescontroller.childScreeningObject.formulaGiven != 'IYCF_POSITIONING'">
+                                        <validate for='isZinc' required-msg=" Select a value">
+                                            <label for="isZinc" name="isZinc" id="isZinc" class="long control-label"
+                                                control-label><span class="info_type">Is child given Zinc
+                                                    today</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="isZinc" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isZinc" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="isZinc" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isZinc" required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.childScreeningObject.formulaGiven != 'F100+RUTF'">
+                                        <validate for='multiVitaminSyrup' required-msg=" Select a value">
+                                            <label for="multiVitaminSyrup" name="multiVitaminSyrup"
+                                                id="multiVitaminSyrup" class="long control-label" control-label><span
+                                                    class="info_type">Is child given Multi-vitamin Syrup</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input ng-value="true" name="multiVitaminSyrup" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.multiVitaminSyrup"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input ng-value="false" name="multiVitaminSyrup" form-control
+                                                    type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.multiVitaminSyrup"
+                                                    required>
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="medicinescontroller.childScreeningObject.formulaGiven != 'F100+RUTF' && medicinescontroller.childScreeningObject.formulaGiven != 'SST_TECHNIQUE' && medicinescontroller.childScreeningObject.formulaGiven != 'ONLY_DILUTED_F100'">
+                                        <validate for='isIron' required-msg=" Select a value">
+                                            <label for="isIron" name="isIron" id="isIron" class="long control-label"
+                                                control-label><span class="info_type">Is child given iron from 7th
+                                                    Day</span></label>
+                                            <label style="width:auto" class="control control-radio mt-10">Yes
+                                                <input
+                                                    ng-disabled="medicinescontroller.diffBetweenAdmissionDateAndWeightDate < 6"
+                                                    ng-value="true" name="isIron" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isIron"
+                                                    ng-required="medicinescontroller.diffBetweenAdmissionDateAndWeightDate >= 6">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <label style="width: auto" class="control control-radio mt-10">No
+                                                <input
+                                                    ng-disabled="medicinescontroller.diffBetweenAdmissionDateAndWeightDate < 6"
+                                                    ng-value="false" name="isIron" form-control type="radio"
+                                                    ng-model="medicinescontroller.childScreeningObject.isIron"
+                                                    ng-required="medicinescontroller.diffBetweenAdmissionDateAndWeightDate >= 6">
+                                                <div class="control_indicator"></div>
+                                            </label>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" ng-click="medicinescontroller.saveForm()">Save &
+                            Continue</button>
+                        <button type='button' class="btn btn-secondary"
+                            ng-click="medicinescontroller.back()">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

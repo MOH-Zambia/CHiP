@@ -1,0 +1,45 @@
+
+-- Inserting new keys
+insert into internationalization_label_master(country, key, language, created_by, created_on, custom3b, text, translation_pending) VALUES
+-- English Language
+('US', 'IsPregnant_web', 'EN', 'Administrator', now(), false, 'Is Pregnant', false),
+('US', 'JSYBeneficiary_web', 'EN', 'Administrator', now(), false, 'JSY Beneficiary', false),
+('US', 'KPSYBeneficiary_web', 'EN', 'Administrator', now(), false, 'KPSY Beneficiary', false),
+('US', 'IAYBeneficiary_web', 'EN', 'Administrator', now(), false, 'IAY Beneficiary', false),
+('US', 'MarriageYear_web', 'EN', 'Administrator', now(), false, 'Marriage Year', false),
+('US', 'FamilyId_web', 'EN', 'Administrator', now(), false, 'Family Id', false),
+('US', 'AlbendanzoleGiven_web', 'EN', 'Administrator', now(), false, 'Albendanzole Given', false),
+('US', 'HBsAgTest_web', 'EN', 'Administrator', now(), false, 'HBsAg Test', false),
+('US', 'SickleCellTest_web', 'EN', 'Administrator', now(), false, 'Sickle Cell Test', false),
+('US', 'CalciumTabletsGiven_web', 'EN', 'Administrator', now(), false, 'Calcium Tablets Given', false),
+('US', 'IsHighRiskCase_web', 'EN', 'Administrator', now(), false, 'Is High Risk Case', false),
+('US', 'HasDeliveryHappened_web', 'EN', 'Administrator', now(), false, 'Has Delivery Happened', false),
+('US', 'PregnancyOutcome_web', 'EN', 'Administrator', now(), false, 'Pregnancy Outcome', false),
+('US', 'IsMotherAlive_web', 'EN', 'Administrator', now(), false, 'Is Mother Alive', false),
+('US', 'MemberName_web', 'EN', 'Administrator', now(), false, 'Member Name', false),
+('US', 'IfaSyrupGiven_web', 'EN', 'Administrator', now(), false, 'Ifa Syrup Given', false),
+('US', 'Height_web', 'EN', 'Administrator', now(), false, 'Height', false),
+('US', 'HavePedalEdema_web', 'EN', 'Administrator', now(), false, 'Have Pedal Edema', false),
+('US', 'MidArmCircumference_web', 'EN', 'Administrator', now(), false, 'Mid Arm Circumference', false),
+-- Gujarati Language
+('IN', 'IsPregnant_web', 'GU', 'Administrator', now(), false, 'ગર્ભવતી છે', false),
+('IN', 'JSYBeneficiary_web', 'GU', 'Administrator', now(), false, 'જેએસવાય લાભાર્થી', false),
+('IN', 'KPSYBeneficiary_web', 'GU', 'Administrator', now(), false, 'કેપીએસવાય લાભાર્થી', false),
+('IN', 'IAYBeneficiary_web', 'GU', 'Administrator', now(), false, 'આઈએસવાય લાભાર્થી', false),
+('IN', 'MarriageYear_web', 'GU', 'Administrator', now(), false, 'લગ્ન વર્ષ', false),
+('IN', 'FamilyId_web', 'GU', 'Administrator', now(), false, 'ફેમિલી આઈ.ડી.', false),
+('IN', 'AlbendanzoleGiven_web', 'GU', 'Administrator', now(), false, 'અલ્બેંડનઝોલ આપ્યો', false),
+('IN', 'HBsAgTest_web', 'GU', 'Administrator', now(), false, 'એચબીએસએગ ટેસ્ટ', false),
+('IN', 'SickleCellTest_web', 'GU', 'Administrator', now(), false, 'સિકલ સેલ ટેસ્ટ', false),
+('IN', 'CalciumTabletsGiven_web', 'GU', 'Administrator', now(), false, 'આપેલ કેલ્શિયમ ગોળીઓ', false),
+('IN', 'IsHighRiskCase_web', 'GU', 'Administrator', now(), false, 'હાઇ રિસ્ક કેસ છે', false),
+('IN', 'HasDeliveryHappened_web', 'GU', 'Administrator', now(), false, 'ડિલિવરી થઈ છે', false),
+('IN', 'PregnancyOutcome_web', 'GU', 'Administrator', now(), false, 'ગર્ભાવસ્થા પરિણામ', false),
+('IN', 'IsMotherAlive_web', 'GU', 'Administrator', now(), false, 'મધર એલાઇવ છે', false),
+('IN', 'MemberName_web', 'GU', 'Administrator', now(), false, 'સભ્ય નામ', false),
+('IN', 'IfaSyrupGiven_web', 'GU', 'Administrator', now(), false, 'આઇએફએ સીરપ આપ્યો', false),
+('IN', 'Height_web', 'GU', 'Administrator', now(), false, 'ઊંચાઈ', false),
+('IN', 'HavePedalEdema_web', 'GU', 'Administrator', now(), false, 'પેડલ એડીમા છે', false),
+('IN', 'MidArmCircumference_web', 'GU', 'Administrator', now(), false, 'મધ્ય આર્મ પરિધિ', false)
+ON conflict on constraint internationalization_label_master_pkey
+DO NOTHING;

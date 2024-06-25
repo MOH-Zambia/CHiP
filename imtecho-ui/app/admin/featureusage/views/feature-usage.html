@@ -1,0 +1,281 @@
+<div class="container-fluid">
+    <div class="row">
+        <form role="form" class="d-flex mb-15 w-100 justify-content-end" name="ctrl.featureUsage"
+            id="manageTimelineConfigForm" novalidate>
+            <div class="col-md-2 ">
+                <validate for='role' required-msg="Select Role">
+                    <select id="role" name="role" class="form-control cst-form-control" chosen-directive="ctrl.roleList"
+                        form-control data-placeholder='Select Role' ng-model="ctrl.selectedRoleId"
+                        ng-change="ctrl.onChangeRole()" ng-options="role.name as role.name for role in ctrl.roleList">
+                        <option value="All">select All</option>
+                    </select>
+                </validate>
+            </div>
+            <div class="col-md-2">
+                <validate for='range' required-msg="Select Range">
+                    <select id="range" name="range" class="form-control cst-form-control" form-control
+                        data-placeholder='Select Range' ng-model="ctrl.selectedRange" ng-change="ctrl.onChangeRange()"
+                        ng-options="range.value as range.name for range in ctrl.rangeList">
+                        <option value="week">Select Range</option>
+                    </select>
+                </validate>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Top usage feature</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="cst-table table-responsive" style="max-height: 275px; overflow: auto">
+                        <table
+                            class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                            <colgroup>
+                                <col style="width:60px">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                            </colgroup>
+                            <thead class="cst-thead">
+                                <tr>
+                                    <th id="index" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Sr. No.</th>
+                                    <th id="name" style="white-space: unset;vertical-align: middle;" class="filter-col">
+                                        Page Title</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Curr. {{ctrl.selectedRange | titlecase}} No Of Clicks</th>
+                                    <th id="description" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Prev. {{ctrl.selectedRange | titlecase}} No Of Clicks</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Diff. in Clicks</th>
+                                    <th id="smsTemplate" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Curr. {{ctrl.selectedRange | titlecase}} Avg Time</th>
+                                    <th id="description" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Prev. {{ctrl.selectedRange | titlecase}} Avg. Time</th>
+                                </tr>
+                            </thead>
+                            <tbody class="cst-tbody">
+                                <tr ng-repeat="page in ctrl.topUsage" ng-if="(ctrl.topUsage.length > 0)">
+                                    <td> {{$index + 1}}</td>
+                                    <td data-test="{{page.pageTitle}}"> {{page.pageTitle}}</td>
+                                    <td data-test="{{page.currClicks}}"> {{page.currClicks}}</td>
+                                    <td data-test="{{page.prevClicks}}">{{page.prevClicks}}</td>
+                                    <td data-test="{{page.diffOfClicks}}">{{page.diffOfClicks}}</td>
+                                    <td data-test="{{page.currAvgTime}}"> {{page.currAvgTime}}</td>
+                                    <td data-test="{{page.prevAvgTime}}"> {{page.prevAvgTime}}</td>
+                                </tr>
+                                <tr ng-if="!ctrl.topUsage || ctrl.topUsage.length == 0" data-test="noTimeline">
+                                    <td colspan="6">No Data available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Features Not Used in last {{ctrl.selectedRange}}</h4>
+                    </div>
+                </div>
+                <div class="card-body ">
+                    <div class="cst-table table-responsive" style="max-height: 275px; overflow: auto">
+                        <table
+                            class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                            <colgroup>
+                                <col style="width:60px">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                            </colgroup>
+                            <thead class="cst-thead">
+                                <tr>
+                                    <th id="index" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Sr. No.</th>
+                                    <th id="pageTitle" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Page Title</th>
+                                    <th id="currClick" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Curr {{ctrl.selectedRange | titlecase}} No Of Clicks</th>
+                                    <th id="prevClick" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Prev. {{ctrl.selectedRange | titlecase}} No Of Clicks</th>
+                                    <th id="diffClicks" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Diff. in Clicks</th>
+                                    <th id="currAvgTime" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Curr {{ctrl.selectedRange | titlecase}} Avg Time</th>
+                                    <th id="description" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Prev. {{ctrl.selectedRange | titlecase}} Avg. Time</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Diff. Avg. time</th>
+                                </tr>
+                            </thead>
+                            <tbody class="cst-tbody">
+                                <tr ng-repeat="page in ctrl.notUsedInCurrentWeek"
+                                    ng-if="(ctrl.notUsedInCurrentWeek.length > 0)">
+                                    <td data-test="{{page.pageTitle}}"> {{$index + 1}}</td>
+                                    <td data-test="{{page.pageTitle}}"> {{page.pageTitle}}</td>
+                                    <td data-test="{{page.currClicks}}"> {{page.currClicks}}</td>
+                                    <td data-test="{{page.prevClicks}}">{{page.prevClicks}}</td>
+                                    <td data-test="{{page.diffInClicks}}">{{page.diffInClicks}}</td>
+                                    <td data-test="{{page.currAvgTime}}"> {{page.currAvgTime}} </td>
+                                    <td data-test="{{page.prevAvgTime}}"> {{page.prevAvgTime}}</td>
+                                    <td data-test="{{page.diffTime}}">{{page.diffTime}}</td>
+                                </tr>
+                                <tr ng-if="!ctrl.notUsedInCurrentWeek || ctrl.notUsedInCurrentWeek.length == 0"
+                                    data-test="noTimeline">
+                                    <td colspan="7">No Data available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Top increase in usage</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="cst-table table-responsive" style="max-height: 275px; overflow: auto">
+                        <table
+                            class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                            <colgroup>
+                                <col style="width:60px">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                            </colgroup>
+                            <thead class="cst-thead">
+                                <tr>
+                                    <th id="index" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Sr. No.</th>
+                                    <th id="name" style="white-space: unset;vertical-align: middle;" class="filter-col">
+                                        Page Title</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Curr {{ctrl.selectedRange | titlecase}} No Of Clicks</th>
+                                    <th id="description" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Prev. {{ctrl.selectedRange | titlecase}} No Of Clicks</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Diff. in Clicks</th>
+                                    <th id="description" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Percentage (%)</th>
+                                    <th id="smsTemplate" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Curr {{ctrl.selectedRange | titlecase}} Avg Time</th>
+                                    <th id="description" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Prev. {{ctrl.selectedRange | titlecase}} Avg. Time</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Diff. of Avg. time</th>
+                                </tr>
+                            </thead>
+                            <tbody class="cst-tbody">
+                                <tr ng-repeat="page in ctrl.topIncrease" ng-if="(ctrl.topIncrease.length > 0)">
+                                    <td data-test="{{page.pageTitle}}"> {{$index + 1}}</td>
+                                    <td data-test="{{page.pageTitle}}"> {{page.pageTitle}}</td>
+                                    <td data-test="{{page.currClicks}}"> {{page.currClicks}}</td>
+                                    <td data-test="{{page.currAvgTime}}">{{page.prevClicks}}</td>
+                                    <td data-test="{{page.diffInClicks}}"> {{page.diffInClicks}}</td>
+                                    <td data-test="{{page.percentColTopIncreaseInFeatureusage}}">
+                                        {{page.percentColTopIncreaseInFeatureusage}}%</td>
+                                    <td data-test="{{page.currAvgTime}}"> {{page.currAvgTime}} </td>
+                                    <td data-test="{{page.prevAvgTime}}"> {{page.prevAvgTime}}</td>
+                                    <td data-test="{{page.diffofAvgTime}}">{{page.diffOfAvgTime}}</td>
+                                </tr>
+                                <tr ng-if="!ctrl.topIncrease || ctrl.topIncrease.length == 0" data-test="noTimeline">
+                                    <td colspan="7">No Data available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-15">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Top decrease in usage</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="cst-table table-responsive" style="max-height: 275px; overflow: auto">
+                        <table
+                            class="table table-sm table-striped filter-table table-fixed table-bordered header-fixed">
+                            <colgroup>
+                                <col style="width:60px">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                                <col class="medium-col">
+                            </colgroup>
+                            <thead class="cst-thead">
+                                <tr>
+                                    <th id="index" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Sr. No.</th>
+                                    <th id="name" style="white-space: unset;vertical-align: middle;" class="filter-col">
+                                        Page Title</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Curr {{ctrl.selectedRange | titlecase}} No Of Clicks</th>
+                                    <th id="description" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Prev. {{ctrl.selectedRange | titlecase}} No Of Clicks</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Diff. in Clicks</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Percentage (%)</th>
+                                    <th id="smsTemplate" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Curr {{ctrl.selectedRange | titlecase}} Avg Time</th>
+                                    <th id="description" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Prev. {{ctrl.selectedRange | titlecase}} Avg. Time</th>
+                                    <th id="triggerType" style="white-space: unset;vertical-align: middle;"
+                                        class="filter-col">Diff. of Avg. time</th>
+                                </tr>
+                            </thead>
+                            <tbody class="cst-tbody">
+                                <tr ng-repeat="page in ctrl.topDecrease" ng-if="(ctrl.topDecrease.length > 0)">
+                                    <td data-test="{{page.pageTitle}}"> {{$index + 1}}</td>
+                                    <td data-test="{{page.pageTitle}}">{{page.pageTitle}}</td>
+                                    <td data-test="{{page.currClicks}}"> {{page.currClicks}}</td>
+                                    <td data-test="{{page.currAvgTime}}">{{page.prevClicks}}</td>
+                                    <td data-test="{{page.diffInClicks}}">{{page.diffInClicks}}</td>
+                                    <td data-test="{{page.percentColTopDecreaseInFeatureUsage}}">
+                                        {{page.percentColTopDecreaseInFeatureUsage}}%
+                                    </td>
+                                    <td data-test="{{page.currAvgTime}}"> {{page.currAvgTime}} </td>
+                                    <td data-test="{{page.prevAvgTime}}"> {{page.prevAvgTime}}</td>
+                                    <td data-test="{{page.diffOfAvgTime}}"> {{page.diffOfAvgTime}}</td>
+                                </tr>
+                                <tr ng-if="!ctrl.topDecrease || ctrl.topDecrease.length == 0" data-test="noTimeline">
+                                    <td colspan="7">No Data available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

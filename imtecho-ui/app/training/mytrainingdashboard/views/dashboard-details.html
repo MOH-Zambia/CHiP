@@ -1,0 +1,373 @@
+<div class="container-fluid">
+    <!-- Data & Day Row -->
+    <div class="row mb-15 align-items-center">
+        <div class="col-8">
+            <ul class="date-list">
+                <li>
+                    <button class="btn btn-prev"
+                        ng-if="dashboardDetails.hasPrevious(dashboardDetails.currentTrainingDay)"
+                        ng-click="dashboardDetails.goToPreviousDay()"><em class="ion-ios-arrow-left"></em></button>
+                </li>
+                <li class="align-items-center">
+                    <div class="icon-group">
+                        <img alt="image" src="img/calendar.png" class="img-fluid">
+                    </div>
+                    <div class="date-group">
+                        <h6 class="day text text-muted">{{dashboardDetails.getDay(dashboardDetails.date)}}</h6>
+                        <h5 class="date text">{{dashboardDetails.date| date : "d MMM yyyy"}}</h5>
+                    </div>
+                </li>
+                <li>
+                    <button class="btn btn-next" ng-if="dashboardDetails.hasNext(dashboardDetails.currentTrainingDay)"
+                        ng-click="dashboardDetails.goToNextDay()"><em class="ion-ios-arrow-right"></em></button>
+                </li>
+            </ul>
+        </div>
+        <div class="col-4">
+            <h4 class="card-sub-title">Status</h4>
+            <h6 class="status-text mt-3" ng-if="dashboardDetails.currentTrainingTopicsSubmitted"><em
+                    class="iconmoon-submit-icon text-success icon-big"></em><span class="text-success">Submitted</span>
+            </h6>
+            <h6 class="status-text mt-3"
+                ng-if="dashboardDetails.status === 0 && !(dashboardDetails.currentTrainingTopicsSubmitted)"><em
+                    class="iconmoon-clock-icon text-info icon-big"></em><span class="text-info">Due Today</span></h6>
+            <h6 class="status-text mt-3"
+                ng-if="dashboardDetails.status === -1 && !(dashboardDetails.currentTrainingTopicsSubmitted)"><em
+                    class="fa fa-hourglass-end text-warning icon-medium"></em><span class="text-warning">Submit
+                    Pending</span></h6>
+            <h6 class="status-text mt-3" ng-if="dashboardDetails.status === 1"><em
+                    class="fa fa-exclamation-triangle text-danger icon-medium"></em><span
+                    class="text-danger">Pending</span></h6>
+        </div>
+    </div>
+    <!-- Data & Day Row -->
+    <!-- Current Training Programs Row -->
+    <div class="row mb-15">
+        <div class="col-12">
+            <div class="cst-tab">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="participants-attendance-tab" data-toggle="tab"
+                            href="#participants-attendance" role="tab" aria-controls="participants-attendance"
+                            aria-selected="true">Participants Attendance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="topic-coverage-tab" data-toggle="tab" href="#topic-coverage" role="tab"
+                            aria-controls="topic-coverage" aria-selected="false">Topic Coverage</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="participants-attendance" role="tabpanel"
+                        aria-labelledby="participants-attendance-tab">
+                        <div class="row mt-15">
+                            <fieldset ng-disabled="!dashboardDetails.isAttendanceDetailsEditable">
+                                <div class="col-12 mb-15">
+                                    <h4 class="card-sub-title">
+                                        Trainees for this session from {{dashboardDetails.organizationUnits[0]}}
+                                    </h4>
+                                </div>
+                                <div class="col-12">
+                                    <div class="cst-table table-responsive">
+                                        <table
+                                            class="table table-sm table-fixed table-striped table-bordered header-fixed">
+                                            <colgroup>
+                                                <col style="width: 15px;">
+                                                <col style="width: 150px;">
+                                                <col style="width: 75px;">
+                                                <col style="width: 200px;">
+                                                <col style="width: 200px;">
+                                            </colgroup>
+                                            <thead class="cst-thead">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Participant Name</th>
+                                                    <th style="z-index: 1;">Present</th>
+                                                    <th>Reason</th>
+                                                    <th>Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="cst-tbody">
+                                                <tr ng-repeat="participantAttendance in dashboardDetails.participants">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{participantAttendance.name}}</td>
+                                                    <td>
+                                                        <label class="control control-checkbox">
+                                                            <input type="checkbox"
+                                                                ng-model="participantAttendance.present"
+                                                                ng-click="dashboardDetails.attendanceCheckBoxClick(participantAttendance)" />
+                                                            <div class="control_indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-if="!dashboardDetails.isSaveClicked"
+                                                            ng-show="!participantAttendance.present && (participantAttendance.reason) !== null"
+                                                            class="text-overflow" data-trigger="hover"
+                                                            data-toggle="popover" data-placement="top" title="Reason"
+                                                            data-content='{{participantAttendance.reason}}'>{{participantAttendance.reason}}</span>
+                                                        <span ng-if="dashboardDetails.isSaveClicked"
+                                                            ng-show="!participantAttendance.present"
+                                                            class="text-overflow">
+                                                            <span ng-if="(participantAttendance.reason) !== null">
+                                                                {{participantAttendance.reason}}
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-if="!dashboardDetails.isSaveClicked"
+                                                            ng-show="!participantAttendance.present && (participantAttendance.remarks) !== null"
+                                                            class="text-overflow" data-trigger="hover"
+                                                            data-toggle="popover" data-placement="top" title="Remarks"
+                                                            data-content='{{participantAttendance.remarks}}'>{{participantAttendance.remarks}}</span>
+                                                        <span ng-if="dashboardDetails.isSaveClicked"
+                                                            ng-show="!participantAttendance.present"
+                                                            class="text-overflow">
+                                                            <span ng-if="(participantAttendance.remarks) !== null">
+                                                                {{participantAttendance.remarks}}
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-15 mt-15"
+                                    ng-if="dashboardDetails.additionalParticipants.length > 0">
+                                    <h4 class="card-sub-title">Additional Trainees</h4>
+                                </div>
+                                <div class="col-12" ng-if="dashboardDetails.additionalParticipants.length > 0">
+                                    <div class="cst-table table-responsive">
+                                        <table class="table table-sm table-striped table-bordered header-fixed">
+                                            <colgroup>
+                                                <col style="width: 15px;">
+                                                <col style="width: 150px;">
+                                                <col style="width: 75px;">
+                                                <col style="width: 200px;">
+                                                <col style="width: 200px;">
+                                            </colgroup>
+                                            <thead class="cst-thead">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Participant Name</th>
+                                                    <th style="display: none">OU Name</th>
+                                                    <th>Present</th>
+                                                    <th>Reason</th>
+                                                    <th>Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="cst-tbody">
+                                                <tr
+                                                    ng-repeat="additionalParticipantAttendance in dashboardDetails.additionalParticipants">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{additionalParticipantAttendance.name}}</td>
+                                                    <td style="display: none"></td>
+                                                    <td>
+                                                        <label class="control control-checkbox">
+                                                            <input type="checkbox"
+                                                                ng-model="additionalParticipantAttendance.present"
+                                                                ng-click="dashboardDetails.attendanceCheckBoxClick(additionalParticipantAttendance)" />
+                                                            <div class="control_indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            ng-show="!additionalParticipantAttendance.present && (additionalParticipantAttendance.reason) !== null"
+                                                            class="text-overflow" data-toggle="popover"
+                                                            data-trigger="hover" data-placement="top" title="Reason"
+                                                            data-content='{{additionalParticipantAttendance.reason}}'>{{additionalParticipantAttendance.reason}}</span>
+                                                        <span ng-if="dashboardDetails.isSaveClicked"
+                                                            ng-show="!additionalParticipantAttendance.present"
+                                                            class="text-overflow">
+                                                            <span
+                                                                ng-if="(additionalParticipantAttendance.reason) !== null">
+                                                                {{additionalParticipantAttendance.reason}}
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            ng-show="!additionalParticipantAttendance.present && (additionalParticipantAttendance.remarks) !== null"
+                                                            class="text-overflow" data-toggle="popover"
+                                                            data-trigger="hover" data-placement="top" title="Remarks"
+                                                            data-content='{{additionalParticipantAttendance.remarks}}'>{{additionalParticipantAttendance.remarks}}</span>
+                                                        <span ng-if="dashboardDetails.isSaveClicked"
+                                                            ng-show="!additionalParticipantAttendance.present"
+                                                            class="text-overflow">
+                                                            <span
+                                                                ng-if="(additionalParticipantAttendance.remarks) !== null">
+                                                                {{additionalParticipantAttendance.remarks}}
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="topic-coverage" role="tabpanel" aria-labelledby="topic-coverage-tab">
+                        <div class="row mt-15">
+                            <fieldset ng-disabled="!dashboardDetails.isTopicsDetailsEditable">
+                                <div class="col-12 mb-15">
+                                    <h4 class="card-sub-title">Topic Coverage</h4>
+                                </div>
+                                <div class="col-12">
+                                    <div class="cst-table table-responsive">
+                                        <table
+                                            class="table table-sm table-fixed table-striped table-bordered header-fixed">
+                                            <colgroup>
+                                                <col style="width: 15px;">
+                                                <col style="width: 150px;">
+                                                <col style="width: 75px;">
+                                                <col style="width: 200px;">
+                                                <col style="width: 200px;">
+                                            </colgroup>
+                                            <thead class="cst-thead">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Topic</th>
+                                                    <th style="z-index: 1;">Completed</th>
+                                                    <th>Reason</th>
+                                                    <th>Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="cst-tbody">
+                                                <tr ng-repeat="topic in dashboardDetails.currentTopicsCovered">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{topic.topicCoverageName}}</td>
+                                                    <td>
+                                                        <label class="control control-checkbox">
+                                                            <input type="checkbox" checked="checked"
+                                                                ng-model="topic.completed"
+                                                                ng-click="dashboardDetails.topicCheckBoxClick(topic)" />
+                                                            <div class="control_indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-if="!dashboardDetails.isSaveClicked"
+                                                            ng-show="!topic.completed && (topic.reason) !== null"
+                                                            class="text-overflow" data-toggle="popover"
+                                                            data-trigger="hover" data-placement="top" title="Reason"
+                                                            data-content='{{topic.reason}}'>{{topic.reason}}</span>
+                                                        <span ng-if="dashboardDetails.isSaveClicked"
+                                                            ng-show="!topic.completed" class="text-overflow">
+                                                            <span ng-if="(topic.reason) !== null">
+                                                                {{topic.reason}}
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-if="!dashboardDetails.isSaveClicked"
+                                                            ng-show="!topic.completed && (topic.remarks !== null)"
+                                                            class="text-overflow" data-toggle="popover"
+                                                            data-trigger="hover" data-placement="top" title="Remarks"
+                                                            data-content='{{topic.remarks}}'>{{topic.remarks}}</span>
+                                                        <span ng-if="dashboardDetails.isSaveClicked"
+                                                            ng-show="!topic.completed" class="text-overflow">
+                                                            <span ng-if="(topic.remarks) !== null">
+                                                                {{topic.remarks}}
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-15 mt-15" ng-if="dashboardDetails.otherTopicsCovered.length > 1">
+                                    <h4 class="card-sub-title">Other Topics Completed Today</h4>
+                                </div>
+                                <div class="col-12" ng-if="dashboardDetails.otherTopicsCovered.length > 1">
+                                    <div class="cst-table table-responsive">
+                                        <table
+                                            class="table table-sm table-fixed table-striped table-bordered header-fixed">
+                                            <colgroup>
+                                                <col style="width: 15px;">
+                                                <col style="width: 150px;">
+                                                <col style="width: 75px;">
+                                                <col style="width: 75px;">
+                                                <col style="width: 200px;">
+                                                <col style="width: 200px;">
+                                            </colgroup>
+                                            <thead class="cst-thead">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Topic</th>
+                                                    <th>Original Schedule</th>
+                                                    <th>Completed</th>
+                                                    <th>Reason</th>
+                                                    <th>Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="cst-tbody">
+                                                <tr ng-repeat="topic in dashboardDetails.otherTopicsCovered">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{topic.topicCoverageName}}</td>
+                                                    <td>{{topic.effectiveDate|dateSuffix}}</td>
+                                                    <td>
+                                                        <label class="control control-checkbox">
+                                                            <input type="checkbox" checked="checked"
+                                                                ng-model="topic.completed"
+                                                                ng-click="dashboardDetails.topicCheckBoxClick(topic)" />
+                                                            <div class="control_indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-show="!topic.completed && (topic.reason) !== null"
+                                                            class="text-overflow" data-toggle="popover"
+                                                            data-trigger="hover" data-placement="top" title="Reason"
+                                                            data-content='{{topic.reason}}'>{{topic.reason}}</span>
+                                                        <span ng-if="dashboardDetails.isSaveClicked"
+                                                            ng-show="!topic.completed" class="text-overflow">
+                                                            <span ng-if=" (topic.reason) !== null">
+                                                                {{topic.reason}}
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-show="!topic.completed && (topic.remarks) !== null"
+                                                            class="text-overflow" data-toggle="popover"
+                                                            data-trigger="hover" data-placement="top" title="Remarks"
+                                                            data-content='{{topic.remarks}}'>{{topic.remarks}}</span>
+                                                        <span ng-if="dashboardDetails.isSaveClicked"
+                                                            ng-show="!topic.completed" class="text-overflow">
+                                                            <span ng-if=" (topic.reason) !== null">
+                                                                {{topic.remarks}}
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-12">
+            <div class="row mt-15">
+                <div class="col-12">
+                    <div class="button-footer">
+                        <button class="btn btn-secondary" title="Dashboard Page" ui-sref="techo.training.dashboard">
+                            Cancel</button>
+                        <button class="btn btn-primary"
+                            ng-disabled="!dashboardDetails.isTopicsDetailsEditable || dashboardDetails.isDisable"
+                            ng-show="dashboardDetails.hasNext(dashboardDetails.currentTrainingDay)"
+                            ng-click="dashboardDetails.openConfirmationModal('topics')"><em class="fa fa-hdd-o"></em>
+                            Submit</button>
+                        <button class="btn btn-primary" title="Submit & Update"
+                            ng-disabled="!dashboardDetails.isTopicsDetailsEditable || dashboardDetails.isDisable"
+                            ng-show="!dashboardDetails.hasNext(dashboardDetails.currentTrainingDay)"
+                            ng-click="dashboardDetails.openConfirmationModal('topics')"><em class="fa fa-hdd-o"></em>
+                            Submit & Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

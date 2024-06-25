@@ -1,0 +1,586 @@
+<!-- <style>
+    .form-modal {
+        padding: 10px;
+    }
+
+    .grid-box {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: minmax(100px, auto);
+    }
+
+    .form-group {
+        border-bottom: 1px solid #e4e4e4;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    form {
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Member Details</h4>
+                    </div>
+                </div>
+                <div class="card-body inline-form">
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>Unique Health ID : {{bcgForm.memberDetails.unique_health_id | emptylabel}}</h6>
+                            <h6>Family ID : {{bcgForm.memberDetails.family_id | emptylabel}}</h6>
+                            <h6>Age : {{bcgForm.memberDetails.age | emptylabel}}</h6>
+                            <h6>Mobile Number : {{bcgForm.memberDetails.mobile_number | emptylabel}}</h6>
+                        </div>
+                        <div class="col-6">
+                            <h6>Full Name : {{bcgForm.memberDetails.full_name | emptylabel}}</h6>
+                            <h6>Date of Birth : {{bcgForm.memberDetails.dob | dateSuffix}}</h6>
+                            <h6>Gender : {{bcgForm.memberDetails.gender | gender}}</h6>
+                            <h6>Aadhar Status : {{bcgForm.memberDetails.aadhar_status | emptylabel}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card cst-card">
+                <div class="card-title">
+                    <div class="float-left">
+                        <h4 class="text">Survey Form</h4>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col-12">
+                        <form class="mt-4 grid-box" role="form" name="bcgForm.bcgSurveyFormManage" id="bcgSurveyForm"
+                            novalidate>
+
+                            <div class="form-group">
+                                <validate for="tb_treatment" required-msg="Select a value">
+                                    <label for="tb_treatment" control-label>Are you currently taking treatment for
+                                        Tuberculosis?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="tb_treatment" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.tb_treatment" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="tb_treatment" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.tb_treatment" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group" ng-if="bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="tb_prevent_therapy" required-msg="Select a value">
+                                    <label for="tb_prevent_therapy" control-label>Are you currently taking Tuberculosis
+                                        prevent therapy?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="tb_prevent_therapy" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.tb_prevent_therapy" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="tb_prevent_therapy" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.tb_prevent_therapy" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.tb_prevent_therapy == true || bcgForm.bcgSurveyForm.tb_treatment == true">
+                                <validate for="nikshay_id" required-msg="Enter NIKSHAY ID" nikshayduplicate-msg="NIKSHAY ID Not Available">
+                                    <label for="nikshay_id" control-label>Please enter person's NIKSHAY ID</label>
+                                    <br>
+                                    <div>
+                                        <input type="text" class="form-control cst-form-control" ng-pattern="/^[0-9]*$/"
+                                            form-control placeholder="Please enter person's NIKSHAY ID" digits-only
+                                            ng-trim="false" name="nikshay_id" remove-spaces id="nikshay_id"
+                                            maxlength="8" form-control ng-model="bcgForm.bcgSurveyForm.nikshay_id"
+                                            required ng-change="bcgForm.validateNikshayId()" ng-model-options="{debounce: 400}">
+                                    </div>
+                                    <!-- <small class="alert alert-danger checkbox-padding valid-feedback" ng-if="bcgForm.checkNikshayId === 'false' && bcgForm.bcgSurveyForm.nikshay_id">NIKSHAY ID Not Available</small> -->
+                                    <!-- <small class="alert alert-success valid-feedback checkbox-padding" ng-if="bcgForm.checkNikshayId === 'true' && bcgForm.bcgSurveyForm.nikshay_id">NIKSHAY ID Available</small> -->
+                                    <!-- <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="tb_diagnosed" required-msg="Select a value">
+                                    <label for="tb_diagnosed" control-label>Have you been recently diagnosed with
+                                        Tuberculosis and stopped taking medicine (Defaulter/lost to followup)?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="tb_diagnosed" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.tb_diagnosed" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="tb_diagnosed" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.tb_diagnosed" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="cough_for_two_weeks" required-msg="Select a value">
+                                    <label for="cough_for_two_weeks" control-label>Cough more than 2 weeks?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="cough_for_two_weeks" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.cough_for_two_weeks" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="cough_for_two_weeks" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.cough_for_two_weeks" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="fever_for_two_weeks" required-msg="Select a value">
+                                    <label for="fever_for_two_weeks" control-label>Fever more than 2 weeks?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="fever_for_two_weeks" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.fever_for_two_weeks" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="fever_for_two_weeks" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.fever_for_two_weeks" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="significant_weight_loss" required-msg="Select a value">
+                                    <label for="significant_weight_loss" control-label>Significant weight loss?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="significant_weight_loss" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.significant_weight_loss" form-control
+                                            required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="significant_weight_loss" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.significant_weight_loss" form-control
+                                            required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="blood_in_sputum" required-msg="Select a value">
+                                    <label for="blood_in_sputum" control-label>Blood in sputum?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="blood_in_sputum" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.blood_in_sputum" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="blood_in_sputum" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.blood_in_sputum" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="consent_unavailable" required-msg="Select a value">
+                                    <label for="consent_unavailable" control-label>Unable to give concent?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="consent_unavailable" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.consent_unavailable" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="consent_unavailable" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.consent_unavailable" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="bed_ridden" required-msg="Select a value">
+                                    <label for="bed_ridden" control-label>Seriously ill/bed ridden</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="bed_ridden" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.bed_ridden" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="bed_ridden" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.bed_ridden" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="is_pregnant" required-msg="Select a value">
+                                    <label for="is_pregnant" control-label>Currently pregnant/lactating</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="is_pregnant" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.is_pregnant" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="is_pregnant" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.is_pregnant" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="is_hiv" required-msg="Select a value">
+                                    <label for="is_hiv" control-label>Known case of HIV</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="is_hiv" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.is_hiv" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="is_hiv" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.is_hiv" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="is_cancer" required-msg="Select a value">
+                                    <label for="is_cancer" control-label>Known case of Cancer</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="is_cancer" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.is_cancer" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="is_cancer" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.is_cancer" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="on_medication" required-msg="Select a value">
+                                    <label for="on_medication" control-label>On immunosuppresent medications (Steroids,
+                                        chemotherapy, methotrexate)</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="on_medication" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.on_medication" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="on_medication" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.on_medication" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="organ_transplant" required-msg="Select a value">
+                                    <label for="organ_transplant" control-label>Known case of organ transplant?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="organ_transplant" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.organ_transplant" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="organ_transplant" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.organ_transplant" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.organ_transplant === false && bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="blood_transfusion" required-msg="Select a value">
+                                    <label for="blood_transfusion" control-label>Recieved Blood transfusion in last 3
+                                        months ?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="blood_transfusion" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.blood_transfusion" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="blood_transfusion" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.blood_transfusion" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.blood_transfusion === false && bcgForm.bcgSurveyForm.organ_transplant === false && bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="bcg_allergy" required-msg="Select a value">
+                                    <label for="bcg_allergy" control-label>Allergic to BCG vaccine ?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="bcg_allergy" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.bcg_allergy" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="bcg_allergy" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.bcg_allergy" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.bcg_allergy === false && bcgForm.bcgSurveyForm.blood_transfusion === false && bcgForm.bcgSurveyForm.organ_transplant === false && bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="is_high_risk" required-msg="Select a value">
+                                    <label for="is_high_risk" control-label>Belongs to high risk group (MSM, TGS,
+                                        Hijaras, CSW, IDU) ?</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="is_high_risk" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.is_high_risk" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="is_high_risk" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.is_high_risk" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.is_high_risk === false && bcgForm.bcgSurveyForm.bcg_allergy === false && bcgForm.bcgSurveyForm.blood_transfusion === false && bcgForm.bcgSurveyForm.organ_transplant === false && bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="beneficiary_type" required-msg="Select a value">
+                                    <label for="beneficiary_type" control-label>Beneficiary Type <span
+                                            class="required-asterisk">*</span></label>
+                                    <br>
+                                    <label class="control control-checkbox">TB (Last 5 years)
+                                        <input ng-value="TB_LAST_5_YR" name="TB_LAST_5_YR" type="checkbox"
+                                            ng-model="bcgForm.bcgSurveyForm.TB_LAST_5_YR"
+                                            ng-click="bcgForm.setBeneficiaryType('TB_LAST_5_YR')" form-control>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-checkbox">Contact of TB (Last 3 years)
+                                        <input ng-value="TB_CONTACT_LAST_3_YR" name="TB_CONTACT_LAST_3_YR"
+                                            ng-click="bcgForm.setBeneficiaryType('TB_CONTACT_LAST_3_YR')"
+                                            type="checkbox" ng-model="bcgForm.bcgSurveyForm.TB_CONTACT_LAST_3_YR"
+                                            form-control>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-checkbox">Greater than 60yr population
+                                        <input ng-value="GT_60_YR_POPULATION" name="GT_60_YR_POPULATION"
+                                            ng-click="bcgForm.setBeneficiaryType('GT_60_YR_POPULATION')" type="checkbox"
+                                            ng-model="bcgForm.bcgSurveyForm.GT_60_YR_POPULATION" form-control>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-checkbox">Self reported smoker
+                                        <input ng-value="SELF_REPORTED_SMOKER" name="SELF_REPORTED_SMOKER"
+                                            ng-click="bcgForm.setBeneficiaryType('SELF_REPORTED_SMOKER')"
+                                            type="checkbox" ng-model="bcgForm.bcgSurveyForm.SELF_REPORTED_SMOKER"
+                                            form-control>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-checkbox">Self reported diabetes
+                                        <input ng-value="SELF_REPORTED_DIABETES" name="SELF_REPORTED_DIABETES"
+                                            ng-click="bcgForm.setBeneficiaryType('SELF_REPORTED_DIABETES')"
+                                            type="checkbox" ng-model="bcgForm.bcgSurveyForm.SELF_REPORTED_DIABETES"
+                                            form-control>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-checkbox">None
+                                        <input ng-value="NONE" name="NONE" ng-click="bcgForm.noneBeneficiaryType()"
+                                            type="checkbox" ng-model="bcgForm.bcgSurveyForm.NONE" form-control>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group"
+                                ng-if="bcgForm.beneficiary_type && bcgForm.bcgSurveyForm.is_high_risk === false && bcgForm.bcgSurveyForm.bcg_allergy === false && bcgForm.bcgSurveyForm.blood_transfusion === false && bcgForm.bcgSurveyForm.organ_transplant === false && bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                    <label for="bmi" control-label>Body Mass Index (B.M.I)</label>
+                                    <br>
+                                    <div>
+                                        <div class="form-group">
+                                            <validate for="height" required-msg="Enter Height">
+                                            <label for="height" control-label>Height (in cms)</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                placeholder="Height" digits-only ng-trim="false" name="height"
+                                                remove-spaces id="height" maxlength="3"
+                                                ng-model="bcgForm.bcgSurveyForm.height" max="250" min="60"
+                                                ng-change="bcgForm.setBmi(bcgForm.bcgSurveyForm.height, bcgForm.bcgSurveyForm.weight)"
+                                                required>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                        <div class="form-group">
+                                            <validate for="weight" required-msg="Enter Weight">
+                                            <label for="weight" control-label>Weight (in Kgs)</label>
+                                            <input type="number" class="form-control cst-form-control" form-control
+                                                placeholder="Weight" digits-only ng-trim="false" name="weight"
+                                                remove-spaces id="weight" maxlength="3" max="150" min="10"
+                                                ng-change="bcgForm.setBmi(bcgForm.bcgSurveyForm.height, bcgForm.bcgSurveyForm.weight)"
+                                                ng-model="bcgForm.bcgSurveyForm.weight" required>
+                                                <placeholder></placeholder>
+                                            </validate>
+                                        </div>
+                                    </div>
+                                BMI : {{bcgForm.bmi}}
+                                <p ng-if="bcgForm.bmi >= 18" class="text-success">NORMAL WEIGHT</p>
+                                <p ng-if="bcgForm.bmi < 18 && bcgForm.bmi > 0" class="text-danger">UNDER WEIGHT</p>
+                            </div>
+
+
+                            <div class="form-group"
+                                ng-if="bcgForm.beneficiary_type && bcgForm.bcgSurveyForm.is_high_risk === false && bcgForm.bcgSurveyForm.bcg_allergy === false && bcgForm.bcgSurveyForm.blood_transfusion === false && bcgForm.bcgSurveyForm.organ_transplant === false && bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="bcg_willing" required-msg="Select a value">
+                                    <label for="bcg_willing" control-label>Is the individual willing to take BCG
+                                        vaccine</label>
+                                    <br>
+                                    <label class="control control-radio">YES
+                                        <input ng-value="true" name="bcg_willing" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.bcg_willing" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <label class="control control-radio">NO
+                                        <input ng-value="false" name="bcg_willing" type="radio"
+                                            ng-model="bcgForm.bcgSurveyForm.bcg_willing" form-control required>
+                                        <div class="control_indicator"></div>
+                                    </label>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group"
+                                ng-if="bcgForm.bcgSurveyForm.bcg_willing === false && bcgForm.beneficiary_type && bcgForm.bcgSurveyForm.is_high_risk === false && bcgForm.bcgSurveyForm.bcg_allergy === false && bcgForm.bcgSurveyForm.blood_transfusion === false && bcgForm.bcgSurveyForm.organ_transplant === false && bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="reason_for_not_willing" required-msg="Select a reason">
+                                    <label for="reason_for_not_willing" control-label>Reason for not taking
+                                        vaccine</label>
+                                    <select chosen-directive class="form-control cst-form-control" form-control
+                                        ng-model="bcgForm.bcgSurveyForm.reason_for_not_willing"
+                                        name="reason_for_not_willing" id="reason_for_not_willing" required>
+                                        <option value="NOT_AWARE_ABOUT_BCG">Not aware of adult BCG vaccine</option>
+                                        <option value="INCONVENIENT_SESSION_SITE">Inconvinient session site (location)
+                                        </option>
+                                        <option value="SESSION_TIME_NOT_SUITABLE">Session timings not suitable</option>
+                                        <option value="DO_NOT_FEEL_THE_NEED">Don't feel the need</option>
+                                        <option value="NOT_AVAILABLE_ON_DAYS">Not available on the days (travelling)
+                                        </option>
+                                        <option value="WORRIED_ABOUT_SIDE_EFFECTS">Worried about the side effects /
+                                            Scared of injection</option>
+                                        <option value="WAGE_LOSS_CONCERNED">Concerened for wage loss</option>
+                                        <option value="HEARD_ABOUT_SIDE_EFFECTS_FROM_COMMUNITY">Have heard someone in
+                                            the community having side effects after vaccination</option>
+                                        <option value="NEGATIVE_NEWSNEGATIVE_NEWS">Negative news is media/newspaper
+                                        </option>
+                                        <option value="OTHER">Other</option>
+                                    </select>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+                            <div class="form-group" ng-if="bcgForm.bcgSurveyForm.reason_for_not_willing === 'OTHER' && bcgForm.bcgSurveyForm.bcg_willing === false && bcgForm.beneficiary_type && bcgForm.bcgSurveyForm.is_high_risk === false && bcgForm.bcgSurveyForm.bcg_allergy === false && bcgForm.bcgSurveyForm.blood_transfusion === false && bcgForm.bcgSurveyForm.organ_transplant === false && bcgForm.bcgSurveyForm.on_medication === false && bcgForm.bcgSurveyForm.is_cancer === false && bcgForm.bcgSurveyForm.is_hiv === false && bcgForm.bcgSurveyForm.is_pregnant === false && bcgForm.bcgSurveyForm.bed_ridden === false && bcgForm.bcgSurveyForm.consent_unavailable === false && bcgForm.bcgSurveyForm.blood_in_sputum === false && bcgForm.bcgSurveyForm.significant_weight_loss === false && bcgForm.bcgSurveyForm.fever_for_two_weeks === false && bcgForm.bcgSurveyForm.cough_for_two_weeks === false && bcgForm.bcgSurveyForm.tb_diagnosed === false && bcgForm.bcgSurveyForm.tb_prevent_therapy === false && bcgForm.bcgSurveyForm.tb_treatment === false">
+                                <validate for="other_reason_if_any" required-msg="Enter other reason">
+                                    <label for="other_reason_if_any" control-label>Please specify other reason if any</label>
+                                    <br>
+                                    <div>
+                                        <input type="text" class="form-control cst-form-control"
+                                            form-control placeholder="Please specify other reason if any"
+                                            ng-trim="true" name="other_reason_if_any" id="other_reason_if_any"
+                                            maxlength="100" form-control ng-model="bcgForm.bcgSurveyForm.other_reason_if_any"
+                                            required>
+                                    </div>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer mt-1">
+                    <div class="float-right">
+                        <button type="submit" class="btn btn-primary" ng-click="bcgForm.saveBcgData()"><span
+                                class="fa fa-floppy-o"></i> Save &
+                                Continue</button>
+                        <button class="btn btn-secondary" ng-click="bcgForm.goBack()">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --> -->

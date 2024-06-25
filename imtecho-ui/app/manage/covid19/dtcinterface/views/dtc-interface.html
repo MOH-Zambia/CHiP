@@ -1,0 +1,311 @@
+<style>
+    .display {
+        width: auto !important;
+    }
+
+    .text-align-center {
+        text-align: center;
+    }
+
+    .text-align-right {
+        text-align: right;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-15">
+            <div class="cst-tab">
+                <uib-tabset active='ctrl.selectedTab'>
+                    <!-- Pending Travellers List tab -->
+                    <uib-tab heading="Pending Travellers List" index=0 ng-click="ctrl.searchData(true, false, true)">
+                        <div ng-if="ctrl.selectedTab === 0">
+                            <div class="card cst-card" style="margin-bottom: 0;" ng-if="ctrl.travellersCount">
+                                <div class="card-title">
+                                    <div>
+                                        <h4 class="text">
+                                            Travellers Count
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="card-body inline-form" style="margin-bottom: 0;">
+                                    <div class="row">
+                                        <div class="col-4 form-group">
+                                            <label class="display">
+                                                <strong>Total Travellers in {{ctrl.travellersCount.locationName}}
+                                                    :</strong>
+                                            </label>
+                                            <label class="display">
+                                                {{ctrl.travellersCount.totalCount}}
+                                            </label>
+                                        </div>
+                                        <div class="col-4 form-group text-align-center">
+                                            <label class="display">
+                                                <strong>Location / Field Worker Assigned :</strong>
+                                            </label>
+                                            <label class="display">
+                                                {{ctrl.travellersCount.completedCount}}
+                                            </label>
+                                        </div>
+                                        <div class="col-4 form-group text-align-right">
+                                            <label class="display">
+                                                <strong>Location Update Pending :</strong>
+                                            </label>
+                                            <label class="display">
+                                                {{ctrl.travellersCount.pendingCount}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cst-table table-responsive"
+                                style="overflow: auto; max-height: calc(100vh - 285px);" id="first-tab-scroll">
+                                <table aria-describedby="table"
+                                    class="table table-sm table-striped table-bordered header-fixed">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th id="th" class="white-space-unset">Sr. No.</th>
+                                            <th id="th" class="white-space-unset">Name</th>
+                                            <th id="th" class="white-space-unset">Mobile Number</th>
+                                            <th id="th" class="white-space-unset">Country</th>
+                                            <th id="th" class="white-space-unset">Date of Receipt</th>
+                                            <th id="th" class="white-space-unset">Health Status</th>
+                                            <th id="th" class="white-space-unset">Current Location</th>
+                                            <th id="th" class="white-space-unset">Last Screening Date</th>
+                                            <th id="th" class="white-space-unset" style="width: 10%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                        infinite-scroll='ctrl.searchData(false, false, true)'
+                                        infinite-scroll-disabled='ctrl.pagingService.pagingRetrivalOn'
+                                        infinite-scroll-container='"#first-tab-scroll"'>
+                                        <tr ng-repeat="traveller in ctrl.travellers" ng-if="ctrl.travellers.length > 0">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{traveller.name | emptylabel}}</td>
+                                            <td>
+                                                <a href="" style="text-decoration: none;"
+                                                    ng-click="ctrl.showDetail(traveller)">
+                                                    {{traveller.mobile_number | emptylabel}}
+                                                </a>
+                                            </td>
+                                            <td>{{traveller.country | emptylabel}}</td>
+                                            <td>{{traveller.date_of_receipt | date:'dd/MM/yyyy' | emptylabel}}</td>
+                                            <td>{{traveller.health_status | emptylabel}}</td>
+                                            <td>{{traveller.districtHierarchy | emptylabel}}</td>
+                                            <td>
+                                                {{(traveller.lastScreeningDate | date:'dd/MM/yyyy HH:mm:ss') || '-'}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary"
+                                                    ng-click="ctrl.updateLocation(traveller)">
+                                                    Update Location
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="no-data-placeholder" ng-if="ctrl.travellers.length === 0">
+                                            <td colspan="9">No Record Found!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <!-- Updated Travellers List tab -->
+                    <uib-tab heading="Updated Travellers List" index=1 ng-click="ctrl.searchData(true, false, true)">
+                        <div ng-if="ctrl.selectedTab === 1">
+                            <div class="card cst-card" style="margin-bottom: 0;" ng-if="ctrl.travellersCount">
+                                <div class="card-title">
+                                    <div>
+                                        <h4 class="text">
+                                            Travellers Count
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="card-body inline-form" style="margin-bottom: 0;">
+                                    <div class="row">
+                                        <div class="col-4 form-group">
+                                            <label class="display">
+                                                <strong>Total Travellers in {{ctrl.travellersCount.locationName}}
+                                                    :</strong>
+                                            </label>
+                                            <label class="display">
+                                                {{ctrl.travellersCount.totalCount}}
+                                            </label>
+                                        </div>
+                                        <div class="col-4 form-group text-align-center">
+                                            <label class="display">
+                                                <strong>Location / Field Worker Assigned :</strong>
+                                            </label>
+                                            <label class="display">
+                                                {{ctrl.travellersCount.completedCount}}
+                                            </label>
+                                        </div>
+                                        <div class="col-4 form-group text-align-right">
+                                            <label class="display">
+                                                <strong>Location Update Pending :</strong>
+                                            </label>
+                                            <label class="display">
+                                                {{ctrl.travellersCount.pendingCount}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cst-table table-responsive"
+                                style="overflow: auto; max-height: calc(100vh - 285px);" id="second-tab-scroll">
+                                <table aria-describedby="table"
+                                    class="table table-sm table-striped table-bordered header-fixed">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th id="th" class="white-space-unset">Sr. No.</th>
+                                            <th id="th" class="white-space-unset">Name</th>
+                                            <th id="th" class="white-space-unset">Mobile Number</th>
+                                            <th id="th" class="white-space-unset">Country</th>
+                                            <th id="th" class="white-space-unset">Date of Receipt</th>
+                                            <th id="th" class="white-space-unset">Health Status</th>
+                                            <th id="th" class="white-space-unset">Current Location</th>
+                                            <th id="th" class="white-space-unset">Last Screening Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                        infinite-scroll='ctrl.searchData(false, false, true)'
+                                        infinite-scroll-disabled='ctrl.pagingService.pagingRetrivalOn'
+                                        infinite-scroll-container='"#second-tab-scroll"'>
+                                        <tr ng-repeat="traveller in ctrl.travellers" ng-if="ctrl.travellers.length > 0">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{traveller.name | emptylabel}}</td>
+                                            <td>
+                                                <a href="" style="text-decoration: none;"
+                                                    ng-click="ctrl.showDetail(traveller)">
+                                                    {{traveller.mobile_number | emptylabel}}
+                                                </a>
+                                            </td>
+                                            <td>{{traveller.country | emptylabel}}</td>
+                                            <td>{{traveller.date_of_receipt | date:'dd/MM/yyyy' | emptylabel}}</td>
+                                            <td>{{traveller.health_status | emptylabel}}</td>
+                                            <td>{{traveller.districtHierarchy | emptylabel}}</td>
+                                            <td>
+                                                {{(traveller.lastScreeningDate | date:'dd/MM/yyyy HH:mm:ss') || '-'}}
+                                            </td>
+                                        </tr>
+                                        <tr class="no-data-placeholder" ng-if="ctrl.travellers.length === 0">
+                                            <td colspan="8">No Record Found!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <!-- Unable To Contact Travellers List -->
+                    <uib-tab heading="Unable To Contact Travellers List" index=2
+                        ng-click="ctrl.searchData(true, false, true)">
+                        <div ng-if="ctrl.selectedTab === 2">
+                            <div class="cst-table table-responsive"
+                                style="overflow: auto; max-height: calc(100vh - 185px);" id="first-tab-scroll">
+                                <table aria-describedby="table"
+                                    class="table table-sm table-striped table-bordered header-fixed">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th id="th" class="white-space-unset">Sr. No.</th>
+                                            <th id="th" class="white-space-unset">Name</th>
+                                            <th id="th" class="white-space-unset">Mobile Number</th>
+                                            <th id="th" class="white-space-unset">Country</th>
+                                            <th id="th" class="white-space-unset">Date of Receipt</th>
+                                            <th id="th" class="white-space-unset">Health Status</th>
+                                            <th id="th" class="white-space-unset">Current Location</th>
+                                            <th id="th" class="white-space-unset">Last Screening Date</th>
+                                            <th id="th" class="white-space-unset">Source Type</th>
+                                            <th id="th" class="white-space-unset" style="width: 10%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                        infinite-scroll='ctrl.searchData(false, false, true)'
+                                        infinite-scroll-disabled='ctrl.pagingService.pagingRetrivalOn'
+                                        infinite-scroll-container='"#first-tab-scroll"'>
+                                        <tr ng-repeat="traveller in ctrl.travellers" ng-if="ctrl.travellers.length > 0">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{traveller.name | emptylabel}}</td>
+                                            <td>
+                                                <a href="" style="text-decoration: none;"
+                                                    ng-click="ctrl.showDetail(traveller)">
+                                                    {{traveller.mobile_number | emptylabel}}
+                                                </a>
+                                            </td>
+                                            <td>{{traveller.country | emptylabel}}</td>
+                                            <td>{{traveller.date_of_receipt | date:'dd/MM/yyyy' | emptylabel}}</td>
+                                            <td>{{traveller.health_status | emptylabel}}</td>
+                                            <td>{{traveller.districtHierarchy | emptylabel}}</td>
+                                            <td>
+                                                {{(traveller.lastScreeningDate | date:'dd/MM/yyyy HH:mm:ss') || '-'}}
+                                            </td>
+                                            <td>
+                                                <span ng-if="traveller.update_location_source_type === 'WEB'">
+                                                    Web user
+                                                </span>
+                                                <span ng-if="traveller.update_location_source_type !== 'WEB'">
+                                                    ANM
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary"
+                                                    ng-click="ctrl.updateLocation(traveller)">
+                                                    Update Location
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="no-data-placeholder" ng-if="ctrl.travellers.length === 0">
+                                            <td colspan="10">No Record Found!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+    <div class="filter-div">
+        <span class="filter-toggle" ng-click="ctrl.toggleFilter()">Filter</span>
+        <div class="row">
+            <div class="col-12">
+                <h5 class="filter-div-title">Search</h5>
+            </div>
+        </div>
+        <div class="filter-div-body">
+            <div class="row">
+                <div class="col-12" ng-form="ctrl.searchForm">
+                    <div class="form-group">
+                        <location-directive template-type="'inline'" ng-model="ctrl.searchLocationId"
+                            fetch-according-to-user-aoi="false" fetch-upto-level="8" required-upto-level="3">
+                        </location-directive>
+                    </div>
+                    <div class="form-group">
+                        <validate for="isFromImmigration">
+                            <label style="line-height: 29px; display: inherit;" class="control control-checkbox"
+                                for="isFromImmigration" control-label>
+                                <input type="checkbox" form-control class="form-control cst-form-control"
+                                    id="isFromImmigration" name="isFromImmigration"
+                                    ng-model="ctrl.searchIsFromImmigration">
+                                <div style="top: 2px;" class="control_indicator">
+                                </div>
+                            </label>
+                            <label>
+                                Only From Immigration?
+                            </label>
+                            <placeholder>
+                            </placeholder>
+                        </validate>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <hr>
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary close-filter" ng-click="ctrl.close()">Close</button>
+                    <button class="btn btn-primary search-filter"
+                        ng-click="ctrl.searchData(true, true);">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

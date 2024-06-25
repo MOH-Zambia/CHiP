@@ -1,0 +1,1151 @@
+<style>
+    .pseudolink {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .display {
+        width: auto !important;
+    }
+
+    .mb-r1 {
+        margin-bottom: 1rem;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .table-style {
+        overflow: auto;
+        height: calc(100vh - 185px) !important;
+        max-height: calc(100vh - 185px) !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="float-right">
+                <div class="form-group">
+                    <input type="text" ng-model="labtest.search" class="form-control cst-form-control" id="search"
+                        ng-change="labtest.searchChanged()" ng-model-options="{debounce: 500}" placeholder="Search text"
+                        style="width:100%">
+                </div>
+            </div>
+            <i class="fa fa-print pull-right" aria-hidden="true" uib-tooltip="Print"
+                style="cursor: pointer;font-size: 20px;margin-right: 2%;margin-top: 5px;"
+                ng-if="labtest.selectedTab === 'sample-receive-tab'" ng-click="labtest.drillDown()"></i>
+            <div class="pull-right" ng-if="labtest.selectedTab === 'sample-collection-tab'">
+                <button class="btn btn-primary m-1" ng-click="labtest.getCollection()">
+                    Print Collection List </button>
+            </div>
+            <div class="dropdown pull-right" style="margin-right: 2%;"
+                ng-if="labtest.selectedTab === 'sample-receive-tab' || labtest.selectedTab === 'result-confirmed-tab' || labtest.selectedTab === 'result-tab' || labtest.selectedTab === 'sample-collection-tab' ">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" ng-click="labtest.acceptMembers()"
+                        ng-if="labtest.selectedTab === 'sample-receive-tab'">Accept</a>
+                    <a class="dropdown-item" href="#" ng-click="labtest.rejectMembers()"
+                        ng-if="labtest.selectedTab === 'sample-receive-tab'">Reject</a>
+                    <a class="dropdown-item" href="#" ng-click="labtest.transferMembers()"
+                        ng-if="labtest.selectedTab === 'sample-receive-tab' && labtest.rights.canTransfer">Transfer</a>
+                    <a class="dropdown-item" href="#" ng-click="labtest.enterResult('CONFIRMATION')"
+                        ng-if="labtest.selectedTab === 'result-tab'">Enter Result</a>
+                    <a class="dropdown-item" href="#" ng-click="labtest.printResultConfirmed()"
+                        ng-if="labtest.selectedTab === 'result-confirmed-tab'">Print</a>
+                    <a class="dropdown-item" href="#" ng-click="labtest.archiveMembers()"
+                        ng-if="labtest.selectedTab === 'result-confirmed-tab'">Archive</a>
+                    <a class="dropdown-item" href="#" ng-click="labtest.collectSamples()"
+                        ng-if="labtest.selectedTab === 'sample-collection-tab'">Collect</a>
+                </div>
+            </div>
+            <div class="cst-tab">
+                <uib-tabset active='labtest.selectedTab'>
+                    <uib-tab index="'sample-collection-tab'" heading="Sample Collection"
+                        select="labtest.sampleCollectionTabSelected()" ng-if="labtest.rights.canSampleCollect">
+                        <div class="tab-pane fade show" id="sample-collection" role="tabpanel"
+                            aria-labelledby="sample-collection" aria-expanded="true">
+                            <div class="tab-pane fade show" id="sample-collection" role="tabpanel"
+                                aria-labelledby="sample-collection" aria-expanded="true">
+                                <div class="cst-table table-responsive table-style" id="sample-collection-scroll">
+                                    <table
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th ng-if="labtest.sampleCollectionList.length > 0">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="labtest.markAll"
+                                                            ng-change="labtest.selectMarkAll(labtest.sampleCollectionList)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </th>
+                                                <th class="white-space-unset">Sr.No</th>
+                                                <th class="white-space-unset">Patient Name</th>
+                                                <th class="white-space-unset">Admission Date</th>
+                                                <th class="white-space-unset">Lab Test No.</th>
+                                                <th class="white-space-unset">Age</th>
+                                                <th class="white-space-unset">HIV</th>
+                                                <th class="white-space-unset">Health Status</th>
+                                                <th class="white-space-unset">
+                                                    <div class="row">
+                                                        <div class="col-9">
+                                                            <select class="form-control cst-form-control"
+                                                                chosen-directive="labtest.distinctWards" form-control
+                                                                ng-model="labtest.filteredWard" name="locationId"
+                                                                id="districtlocationId" ng-options="healthInfra as healthInfra for
+                                                                    healthInfra in labtest.distinctWards"
+                                                                ng-change="labtest.filterCollectionTab()">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <em class="fa fa-times fa-lg" ng-if="labtest.filteredWard"
+                                                                style="cursor: pointer;"
+                                                                ng-click="labtest.clearWardFilter()"></em>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            Ward No.
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="white-space-unset">Bed No.</th>
+                                                <th class="white-space-unset" colspan="2">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='labtest.getSampleCollectionList(true)'
+                                            infinite-scroll-container='"#sample-collection-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr ng-repeat="member in labtest.sampleCollectionList"
+                                                ng-if="labtest.sampleCollectionList.length > 0">
+                                                <td class="small-col"
+                                                    ng-if="member.labCollectionStatus==='COLLECTION_PENDING'">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="member.markedForAction"
+                                                            ng-disabled="member.labCollectionStatus==='SAMPLE_COLLECTED'"
+                                                            ng-change="labtest.selectMarkedForAction(member.markedForAction)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </td>
+                                                <td ng-if="member.labCollectionStatus==='SAMPLE_COLLECTED'"></td>
+                                                <td ng-bind="$index + 1"></td>
+                                                <td class="pseudolink" ng-bind-html="member.memberDetail | emptylabel"
+                                                    ng-click="labtest.openAdmissionDetailsModal(member)">
+                                                </td>
+                                                <td ng-bind-html="member.admissionDate | emptylabel"></td>
+                                                <td ng-bind-html="member.labTestGeneratedNumber | emptylabel"></td>
+                                                <td ng-bind-html="member.age | emptylabel"></td>
+                                                <td ng-bind-html="member.hiv | emptylabel"></td>
+                                                <td ng-bind-html="member.healthStatus | emptylabel"></td>
+                                                <td ng-bind-html="member.wardName | emptylabel"></td>
+                                                <td ng-bind-html="member.bedNumber| emptylabel"></td>
+                                                <td ng-if="member.labCollectionStatus==='SAMPLE_COLLECTED'">
+                                                    <button class="btn btn-primary"
+                                                        ng-click="labtest.printSampleCollection(member)">Print</button>
+                                                </td>
+                                                <td ng-if="member.labCollectionStatus==='COLLECTION_PENDING'">-</td>
+                                                <td ng-if="member.labCollectionStatus==='SAMPLE_COLLECTED'">
+                                                    <button class="btn btn-success"
+                                                        ng-click="labtest.markSampleCollectionArchive(member)">Archive</button>
+                                                </td>
+                                                <td ng-if="member.labCollectionStatus==='COLLECTION_PENDING'">-</td>
+                                            </tr>
+                                            <tr ng-if="labtest.sampleCollectionList.length == 0">
+                                                <td colspan="12">No Samples Found</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'sample-receive-tab'" heading="Sample Receive"
+                        select="labtest.sampleReceiveTabSelected()" ng-if="labtest.rights.canSampleReceive">
+                        <div class="tab-pane fade show" id="sample-receive" role="tabpanel"
+                            aria-labelledby="sample-receive" aria-expanded="true">
+                            <div class="tab-pane fade show" id="sample-receive" role="tabpanel"
+                                aria-labelledby="sample-receive" aria-expanded="true">
+                                <div class="cst-table table-responsive table-style" id="sample-receive-scroll">
+                                    <table
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th ng-if="labtest.sampleReceiveList.length > 0">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="labtest.markAll"
+                                                            ng-change="labtest.selectMarkAll(labtest.sampleReceiveList)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </th>
+                                                <th class="white-space-unset">Sr.No</th>
+                                                <th class="white-space-unset">Patient Name</th>
+                                                <th class="white-space-unset">Admission Date</th>
+                                                <th class="white-space-unset">Lab Test No.</th>
+                                                <th class="white-space-unset">
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            <input type="text" datepicker name="collectionDate"
+                                                                ng-model="labtest.filteredCollectionDate"
+                                                                ng-change="labtest.filterReceiveTab()"
+                                                                max-date='labtest.today'>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <em class="fa fa-times fa-lg"
+                                                                ng-if="labtest.filteredCollectionDate"
+                                                                style="cursor: pointer;"
+                                                                ng-click="labtest.clearDateFilter()"></em>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            Date of Collection
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="white-space-unset">Hours Lapsed</th>
+                                                <th class="white-space-unset">Age</th>
+                                                <th class="white-space-unset">Health Status</th>
+                                                <th class="white-space-unset">
+                                                    <div class="row">
+                                                        <div class="col-9">
+                                                            <select class="form-control cst-form-control"
+                                                                chosen-directive="labtest.distinctReceiveHealthInfras"
+                                                                form-control ng-model="labtest.filteredHealthInfra"
+                                                                name="locationId" id="districtlocationId"
+                                                                ng-options="healthInfra as healthInfra for healthInfra in labtest.distinctReceiveHealthInfras"
+                                                                ng-change="labtest.filterReceiveTab()">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <em class="fa fa-times fa-lg"
+                                                                ng-if="labtest.filteredHealthInfra"
+                                                                style="cursor: pointer;"
+                                                                ng-click="labtest.clearHealthInfraFilter()"></em>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            Recd. From
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="white-space-unset">
+                                                    <div class="row">
+                                                        <div class="col-11">
+                                                            <select class="form-control cst-form-control"
+                                                                chosen-directive="labtest.distinctWards" form-control
+                                                                ng-model="labtest.filteredWard" name="ward" id="ward"
+                                                                ng-options="ward as ward for ward in labtest.distinctWards"
+                                                                ng-change="labtest.filterReceiveTab()">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <em class="fa fa-times fa-lg" ng-if="labtest.filteredWard"
+                                                                style="cursor: pointer;"
+                                                                ng-click="labtest.clearWardFilter()"></em>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            Ward No.
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="white-space-unset">Bed No.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='labtest.getSampleReceiveList(true)'
+                                            infinite-scroll-container='"#sample-receive-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr ng-repeat="member in labtest.sampleReceiveList"
+                                                ng-if="labtest.sampleReceiveList.length > 0">
+                                                <td class="small-col">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="member.markedForAction"
+                                                            ng-change="labtest.selectMarkedForAction(member.markedForAction)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </td>
+                                                <td ng-bind="$index + 1"></td>
+                                                <td class="pseudolink" ng-bind-html="member.memberDetail | emptylabel"
+                                                    ng-click="labtest.openAdmissionDetailsModal(member)"></td>
+                                                <td ng-bind-html="member.admissionDate | emptylabel"></td>
+                                                <td ng-bind-html="member.labTestGeneratedNumber | emptylabel"></td>
+                                                <td ng-class="member.showInRed ? 'red':''"
+                                                    ng-bind-html="member.sampleReceiveTime|emptylabel"></td>
+                                                <td ng-class="member.showInRed ? 'red':''"
+                                                    ng-bind-html="member.hoursLapsed|emptylabel"></td>
+                                                <td ng-bind-html="member.age | emptylabel"></td>
+                                                <td ng-bind-html="member.healthStatus | emptylabel"></td>
+                                                <td ng-bind-html="member.sampleFrom | emptylabel"></td>
+                                                <td ng-bind-html="member.wardName | emptylabel"></td>
+                                                <td ng-bind-html="member.bedNumber | emptylabel"></td>
+                                            </tr>
+                                            <tr ng-if="labtest.sampleReceiveList.length == 0">
+                                                <td colspan="12">No Samples Found</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'result-tab'" heading="Pending Result" select="labtest.resultTabSelected()"
+                        ng-if="labtest.rights.canSampleResult">
+                        <div class="tab-pane fade show" id="result" role="tabpanel" aria-labelledby="result"
+                            aria-expanded="true">
+                            <div class="tab-pane fade show" id="result" role="tabpanel" aria-labelledby="result"
+                                aria-expanded="true">
+                                <div class="cst-table table-responsive table-style" id="result-scroll">
+                                    <table
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th ng-if="labtest.resultList.length > 0">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="labtest.markAll"
+                                                            ng-change="labtest.selectMarkAll(labtest.resultList)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </th>
+                                                <th class="white-space-unset">Sr.No</th>
+                                                <th class="white-space-unset">Patient Name</th>
+                                                <th class="white-space-unset">Admission Date</th>
+                                                <th class="white-space-unset">
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            <input type="text" datepicker name="collectionDate"
+                                                                ng-model="labtest.filteredCollectionDate"
+                                                                ng-change="labtest.filterResultTab()"
+                                                                max-date='labtest.today'>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <em class="fa fa-times fa-lg"
+                                                                ng-if="labtest.filteredCollectionDate"
+                                                                style="cursor: pointer;"
+                                                                ng-click="labtest.clearDateFilter()"></em>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">Sample Receive Date</div>
+                                                    </div>
+                                                </th>
+                                                <th class="white-space-unset">Lab Test No.</th>
+                                                <th class="white-space-unset">Age</th>
+                                                <th class="white-space-unset">Health Status</th>
+                                                <th class="white-space-unset">
+                                                    <div class="row">
+                                                        <div class="col-9">
+                                                            <select class="form-control cst-form-control"
+                                                                chosen-directive="labtest.distinctReceiveHealthInfras"
+                                                                form-control ng-model="labtest.filteredHealthInfra"
+                                                                name="locationId" id="districtlocationId"
+                                                                ng-options="healthInfra as healthInfra for healthInfra in labtest.distinctResultHealthInfras"
+                                                                ng-change="labtest.filterResultTab()">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <em class="fa fa-times fa-lg"
+                                                                ng-if="labtest.filteredHealthInfra"
+                                                                style="cursor: pointer;"
+                                                                ng-click="labtest.clearHealthInfraFilter()"></em>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            Recd. From
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="white-space-unset">
+                                                    <div class="row">
+                                                        <div class="col-11">
+                                                            <select class="form-control cst-form-control"
+                                                                chosen-directive="labtest.distinctWards" form-control
+                                                                ng-model="labtest.filteredWard" name="ward" id="ward"
+                                                                ng-options="ward as ward for ward in labtest.distinctWards"
+                                                                ng-change="labtest.filterResultTab()">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <em class="fa fa-times fa-lg" ng-if="labtest.filteredWard"
+                                                                style="cursor: pointer;"
+                                                                ng-click="labtest.clearWardFilter()"></em>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            Ward No.
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="white-space-unset">Bed No.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='labtest.getResultList(true)'
+                                            infinite-scroll-container='"#result-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr ng-repeat="member in labtest.resultList"
+                                                ng-if="labtest.resultList.length > 0">
+                                                <td class="small-col">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="member.markedForAction"
+                                                            ng-change="labtest.selectMarkedForAction(member.markedForAction)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </td>
+                                                <td ng-bind="$index + 1"></td>
+                                                <td class="pseudolink" ng-bind-html="member.memberDetail | emptylabel"
+                                                    ng-click="labtest.openAdmissionDetailsModal(member)"></td>
+                                                <td ng-bind-html="member.admissionDate | emptylabel"></td>
+                                                <td
+                                                    ng-bind-html="member.sampleReceiveDate|date:'dd/MM/yyyy HH:mm:ss' | emptylabel">
+                                                </td>
+                                                <td ng-bind-html="member.labTestGeneratedNumber | emptylabel"></td>
+                                                <td ng-bind-html="member.age | emptylabel"></td>
+                                                <td ng-bind-html="member.healthStatus | emptylabel"></td>
+                                                <td ng-bind-html="member.sampleFrom | emptylabel"></td>
+                                                <td ng-bind-html="member.wardName | emptylabel"></td>
+                                                <td ng-bind-html="member.bedNumber | emptylabel"></td>
+                                            </tr>
+                                            <tr ng-if="labtest.resultList.length == 0">
+                                                <td colspan="10">No Samples Found</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'indeterminate-tab'" heading="Sent for confirmation"
+                        select="labtest.indeterminateTabSelected()" ng-if="labtest.rights.canIndeterminate">
+                        <div class="tab-pane fade show" id="indeterminate" role="tabpanel"
+                            aria-labelledby="indeterminate" aria-expanded="true">
+                            <div class="tab-pane fade show" id="indeterminate" role="tabpanel"
+                                aria-labelledby="indeterminate" aria-expanded="true">
+                                <div class="cst-table table-responsive table-style" id="indeterminate-scroll">
+                                    <table
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th class="white-space-unset">Sr.No</th>
+                                                <th class="white-space-unset">Patient Name</th>
+                                                <th class="white-space-unset">Admission Date</th>
+                                                <th class="white-space-unset">Lab Test No.</th>
+                                                <th class="white-space-unset">Age</th>
+                                                <th class="white-space-unset">Health Status</th>
+                                                <th class="white-space-unset">Recd. From</th>
+                                                <th class="white-space-unset">Ward No.</th>
+                                                <th class="white-space-unset">Bed No.</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='labtest.getIndeterminateList(true)'
+                                            infinite-scroll-container='"#indeterminate-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr ng-repeat="member in labtest.indeterminateList"
+                                                ng-if="labtest.indeterminateList.length > 0">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td class="pseudolink"
+                                                    ng-click="labtest.openAdmissionDetailsModal(member)"
+                                                    ng-bind-html="member.memberDetail | emptylabel"></td>
+                                                <td ng-bind-html="member.admissionDate | emptylabel"></td>
+                                                <td ng-bind-html="member.labTestGeneratedNumber | emptylabel"></td>
+                                                <td ng-bind-html="member.age | emptylabel"></td>
+                                                <td ng-bind-html="member.healthStatus | emptylabel"></td>
+                                                <td ng-bind-html="member.sampleFrom | emptylabel"></td>
+                                                <td ng-bind-html="member.wardName | emptylabel"></td>
+                                                <td ng-bind-html="member.bedNumber | emptylabel"></td>
+                                                <td>
+                                                    <button class="btn btn-primary"
+                                                        ng-click="labtest.openResultModal(member, 'INDETERMINATE')">Confirmation</button>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="labtest.indeterminateList.length == 0">
+                                                <td colspan="10">No Samples Found</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab index="'result-confirmed-tab'" heading="Results"
+                        select="labtest.resultConfirmedTabSelected()" ng-if="labtest.rights.canResultConfirm">
+                        <div class="tab-pane fade show" id="result-confirmed" role="tabpanel"
+                            aria-labelledby="result-confirmed" aria-expanded="true">
+                            <div class="tab-pane fade show" id="result-confirmed" role="tabpanel"
+                                aria-labelledby="result-confirmed" aria-expanded="true">
+                                <div class="cst-table table-responsive table-style" id="result-confirmed-scroll">
+                                    <table
+                                        class="table table-sm table-striped filter-table table-auto table-bordered header-fixed">
+                                        <thead class="cst-thead">
+                                            <tr>
+                                                <th ng-if="labtest.resultConfirmedList.length > 0">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="labtest.markAll"
+                                                            ng-change="labtest.selectMarkAll(labtest.resultConfirmedList)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </th>
+                                                <th class="white-space-unset">Sr.No</th>
+                                                <th class="white-space-unset">Patient Name</th>
+                                                <th class="white-space-unset">Admission Date</th>
+                                                <th class="white-space-unset">Result Date</th>
+                                                <th class="white-space-unset">Lab Test No.</th>
+                                                <th class="white-space-unset">Age</th>
+                                                <th class="white-space-unset">Health Status</th>
+                                                <th class="white-space-unset">Recd. From</th>
+                                                <th class="white-space-unset">Ward No.</th>
+                                                <th class="white-space-unset">Bed No.</th>
+                                                <th class="white-space-unset">Suggested Hospital</th>
+                                                <th class="white-space-unset">Result</th>
+                                                <th class="white-space-unset" ng-if="labtest.rights.canEditResult">
+                                                    Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="cst-tbody" infinite-scroll-distance="0"
+                                            infinite-scroll='labtest.getResultConfirmedList(true)'
+                                            infinite-scroll-container='"#result-confirmed-scroll"'
+                                            infinite-scroll-immediate-check="false">
+                                            <tr ng-repeat="member in labtest.resultConfirmedList"
+                                                ng-if="labtest.resultConfirmedList.length > 0">
+                                                <td class="small-col">
+                                                    <label class="form-group control control-checkbox">
+                                                        <input type="checkbox" ng-model="member.markedForAction"
+                                                            ng-change="labtest.selectMarkedForAction(member.markedForAction)">
+                                                        <div class="control_indicator checkbox-success"></div>
+                                                    </label>
+                                                </td>
+                                                <td ng-bind="$index + 1"></td>
+                                                <td class="pseudolink" ng-bind-html="member.memberDetail | emptylabel"
+                                                    ng-click="labtest.openAdmissionDetailsModal(member)"></td>
+                                                <td ng-bind-html="member.admissionDate | emptylabel"></td>
+                                                <td
+                                                    ng-bind-html="member.labResultEntryOn|date:'dd/MM/yyyy HH:mm:ss' | emptylabel">
+                                                </td>
+                                                <td ng-bind-html="member.labTestGeneratedNumber| emptylabel"></td>
+                                                <td ng-bind-html="member.age | emptylabel"></td>
+                                                <td ng-bind-html="member.healthStatus | emptylabel"></td>
+                                                <td ng-bind-html="member.sampleFrom | emptylabel"></td>
+                                                <td ng-bind-html="member.wardName | emptylabel"></td>
+                                                <td ng-bind-html="member.bedNumber | emptylabel"></td>
+                                                <td ng-bind-html="member.suggestedHospital | emptylabel"></td>
+                                                <td ng-bind-html="member.labResult | emptylabel"></td>
+                                                <td class="action-cell" ng-if="labtest.rights.canEditResult">
+                                                    <ul class="action-item">
+                                                        <li>
+                                                            <a href="#" class="action-icon edit-icon"
+                                                                ng-click="labtest.openEditResultModal(member, 'CONFIRMATION')">
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="labtest.resultConfirmedList.length == 0">
+                                                <td colspan="12">No Results Found</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+    <div class="no-data-placeholder" ng-if="labtest.multipleHealthInfrastructuresAssigned">
+        <h5>Multiple Health healthInfrastructureList Assigned. Please Contact System Administrator</h5>
+    </div>
+    <div class="no-data-placeholder" ng-if="labtest.noHealthInfrastructureAssigned">
+        <h5>No Health Infrastructure Assigned. Please Contact System Administrator</h5>
+    </div>
+    <div class="modal fade" id="sampleCollection" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Sample Collection</h4>
+                </div>
+                <div class="modal-body">
+                    <h6>Total Samples Selected : <span
+                            ng-bind-html="labtest.markedMembersList.length | emptylabel"></span></h6>
+                    <hr>
+                    <form name="labtest.sampleCollectionForm" novalidate>
+                        <div class="form-group">
+                            <validate for='collectionDate' required-msg="Select Date">
+                                <label for="collectionDate" control-label>Collection Date</label>
+                                <input type="text" style="float: inherit;" datepicker name="collectionDate" form-control
+                                    ng-model="labtest.collectionDate" ng-change="labtest.collectionDateChanged()"
+                                    min-date="labtest.minimumSampleCollectionDate" max-date='labtest.today' required>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" style="margin-top: 4%">
+                            <validate for='collectionTime' required-msg="Select Time"
+                                time-msg="Invalid collection time">
+                                <label for="collectionTime" control-label>Collection Time</label>
+                                <input class="form-control" type="time" form-control id="collectionTime"
+                                    name="collectionTime" ng-model="labtest.collectionTime"
+                                    ng-change="labtest.checkCollectionTimeValidity()" placeholder="HH:mm:ss" required />
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Please select testing center</strong></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-group control control-checkbox">Is Same Health Infrastructure
+                                <small ng-if="!labtest.showIsSameHealthInfrastructure">(Lab test facility not available
+                                    here)</small>
+                                <input type="checkbox" ng-model="labtest.isSameHealthInfrastructure"
+                                    ng-disabled="!labtest.showIsSameHealthInfrastructure"
+                                    ng-change="labtest.isSameHealthInfrastructureChanged()">
+                                <div class="control_indicator checkbox-success"></div>
+                            </label>
+                        </div>
+                        <div ng-if="!labtest.isSameHealthInfrastructure">
+                            <div class="form-group">
+                                <validate for='districtlocationId' required-msg="Select District">
+                                    <label for="districtlocationId" control-label>District</label>
+                                    <select class="form-control cst-form-control"
+                                        chosen-directive="labtest.districtLocations" form-control
+                                        ng-model="labtest.districtlocationId" name="locationId" id="districtlocationId"
+                                        ng-options="location.id as location.english_name for location in labtest.districtLocations"
+                                        ng-change="labtest.sampleCollectionLocationChanged()">
+                                        <option value="" selected>--Select--</option>
+                                    </select>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                            <div class="form-group">
+                                <validate for='healthInfrastructure' required-msg="Select health infrastructure">
+                                    <label for="healthInfrastructure" control-label>Health Infrastructure</label>
+                                    <select class="form-control cst-form-control"
+                                        chosen-directive="labtest.healthInfrastructureList" form-control
+                                        ng-model="labtest.healthInfraId" name="healthInfrastructure"
+                                        id="healthInfrastructure"
+                                        ng-options="healthInfra.id as healthInfra.name for healthInfra in labtest.healthInfrastructureList"
+                                        required>
+                                        <option value="" selected>--Select--</option>
+                                    </select>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="labtest.saveSampleCollectionDetails()">Save</button>
+                    <button class="btn btn-secondary" ng-click="labtest.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="sampleReceive" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text"
+                        ng-bind="labtest.currentSampleReceiveStatus === 'SAMPLE_REJECTED' ? 'Reject Sample' : 'Receive Sample'">
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <h6>Total Samples Selected : <span
+                            ng-bind-html="labtest.markedMembersList.length | emptylabel"></span></h6>
+                    <hr>
+                    <form name="labtest.sampleReceiveForm">
+                        <div class="form-group">
+                            <validate for='receiveDate' required-msg="Select Date">
+                                <label ng-if="labtest.currentSampleReceiveStatus === 'SAMPLE_REJECTED'"
+                                    for="receiveDate" control-label>Rejection Date</label>
+                                <label ng-if="labtest.currentSampleReceiveStatus === 'SAMPLE_ACCEPTED'"
+                                    for="receiveDate" control-label>Receive Date</label>
+                                <input type="text" style="float: inherit;" datepicker name="receiveDate" form-control
+                                    ng-model="labtest.receiveDate" ng-change="labtest.receiveDateChanged()"
+                                    min-date="labtest.minimumSampleReceiveDate" max-date='labtest.today' required>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" style="margin-top: 4%">
+                            <validate for='receiveTime' required-msg="Select Time" time-msg="Invalid collection time">
+                                <label ng-if="labtest.currentSampleReceiveStatus === 'SAMPLE_REJECTED'"
+                                    for="receiveTime" control-label>Rejection Time</label>
+                                <label ng-if="labtest.currentSampleReceiveStatus === 'SAMPLE_ACCEPTED'"
+                                    for="receiveTime" control-label>Receive Time</label>
+                                <input class="form-control" type="time" form-control id="receiveTime" name="receiveTime"
+                                    ng-model="labtest.receiveTime" ng-change="labtest.checkReceiveTimeValidity()"
+                                    placeholder="HH:mm:ss" required />
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="labtest.markedMembersList.length === 1">
+                            <validate for='labTestNumber' required-msg="Enter lab test number">
+                                <label for="labTestNumber" control-label>Lab test
+                                    number</label>
+                                <input type="text" class="form-control cst-form-control" form-control
+                                    name="labTestNumber" id="labTestNumber" ng-model="labtest.labTestNumber">
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="labtest.currentSampleReceiveStatus === 'SAMPLE_REJECTED'">
+                            <validate for='rejectionRemarkSelected' required-msg="Select Reason">
+                                <label for="rejectionRemarkSelected" control-label>Reason</label>
+                                <select class="form-control cst-form-control" form-control
+                                    ng-model="labtest.rejectionRemarkSelected" name="rejectionRemarkSelected"
+                                    id="rejectionRemarkSelected">
+                                    <option value="" selected>--Select--</option>
+                                    <option value="{{rejectionRemarkSelected}}" ng-repeat="rejectionRemarkSelected in [ 'Sample/s is/are not received in VTM',
+                                                        'Cold chain not maintained',
+                                                        'Open container/ Leakage or Breakage of container',
+                                                        'No Sample Received',
+                                                    'Mismatch Sample',
+                                                    'Sample not labelled',
+                                                    'Sample/s not received in triple layer']">
+                                        {{rejectionRemarkSelected}}
+                                    </option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <validate for='rejectionRemarks' required-msg="Enter rejection remarks">
+                                    <label ng-if="labtest.currentSampleReceiveStatus === 'SAMPLE_REJECTED'"
+                                        for="rejectionRemarks" control-label>Rejection remarks</label>
+                                    <label ng-if="labtest.currentSampleReceiveStatus === 'SAMPLE_ACCEPTED'"
+                                        for="rejectionRemarks" control-label>Remarks</label>
+                                    <textarea rows="4" cols="20" type="text" class="form-control cst-form-control"
+                                        maxlength="99" form-control name="rejectionRemarks" id="rejectionRemarks"
+                                        ng-model="labtest.rejectionRemarks">
+                                    </textarea>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="labtest.saveSampleReceiveDetails()">Save</button>
+                    <button class="btn btn-secondary" ng-click="labtest.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="resultModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Result Details</h4>
+                </div>
+                <div class="modal-body">
+                    <h6>Total Samples Selected : <span
+                            ng-bind-html="labtest.markedMembersList.length | emptylabel"></span></h6>
+                    <h6 ng-bind-html="labtest.currentResultMember.memberDetail"></h6>
+                    <h6>Lab Test Number : <span
+                            ng-bind-html="labtest.currentResultMember.labTestGeneratedNumber | emptylabel"></span></h6>
+                    <hr>
+                    <form name="labtest.resultForm">
+                        <div class="form-group">
+                            <validate for='resultDate' required-msg="Select Date">
+                                <label for="resultDate" control-label>Result Date</label>
+                                <input type="text" style="float: inherit;" datepicker name="resultDate" form-control
+                                    ng-model="labtest.resultDate" ng-change="labtest.resultDateChanged()"
+                                    min-date="labtest.minimumResultDate" max-date='labtest.today' required>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" style="margin-top: 4%">
+                            <validate for='resultTime' required-msg="Select Time" time-msg="Invalid collection time">
+                                <label for="resultTime" control-label>Result Time</label>
+                                <input class="form-control" type="time" form-control id="resultTime" name="resultTime"
+                                    ng-model="labtest.resultTime" ng-change="labtest.checkResultTimeValidity()"
+                                    placeholder="HH:mm:ss" required />
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <validate for='result' required-msg="Select result">
+                                <label for="result" control-label>Result</label>
+                                <select class="form-control cst-form-control" form-control ng-model="labtest.result"
+                                    name="result" id="result" required>
+                                    <option value="" selected>--Select--</option>
+                                    <option value="POSITIVE">Positive</option>
+                                    <option value="NEGATIVE">Negative</option>
+                                    <option value="INDETERMINATE" ng-if="labtest.resultMode === 'CONFIRMATION'">
+                                        Indeterminate</option>
+                                    <option value="INCONCLUSIVE" ng-if="labtest.resultMode === 'SCREENING'">Inconclusive
+                                    </option>
+                                    <option value="OTHER">Other</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="labtest.result === 'OTHER'">
+                            <validate for='otherResultRemarksSelected' required-msg="Select Rejection Remark">
+                                <label for="otherResultRemarksSelected" control-label>Other Result Remark</label>
+                                <select class="form-control cst-form-control" form-control
+                                    ng-model="labtest.otherResultRemarksSelected" name="otherResultRemarksSelected"
+                                    id="otherResultRemarksSelected">
+                                    <option value="" selected>--Select--</option>
+                                    <option value="{{otherResultRemarksSelected}}" ng-repeat="otherResultRemarksSelected in [ 'Sample/s is/are not received in VTM',
+                                                        'Cold chain not maintained',
+                                                        'Open container/ Leakage or Breakage of container',
+                                                        'No Sample Received',
+                                                    'Mismatch Sample',
+                                                    'Sample not labelled',
+                                                    'Sample/s not received in triple layer']">
+                                        {{otherResultRemarksSelected}}
+                                    </option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+
+                        <div class="form-group" ng-if="labtest.result === 'OTHER'">
+                            <label class="form-group control control-checkbox"> Send for recollection
+                                <input type="checkbox" ng-model="labtest.isRecollect">
+                                <div class="control_indicator checkbox-success"></div>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <validate for='resultRemarks' required-msg="Enter reult remarks">
+                                <label for="resultRemarks" control-label>Remarks</label>
+                                <textarea rows="4" cols="20" type="text" maxlength="99"
+                                    class="form-control cst-form-control" form-control name="resultRemarks"
+                                    id="resultRemarks" ng-model="labtest.resultRemarks">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+
+                        <div class="form-group" ng-if="labtest.resultMode !== 'CONFIRMATION'">
+                            <validate for='labName' required-msg="Enter confirming lab name">
+                                <label for="labName" control-label>Confirming lab name</label>
+                                <input type="text" class="form-control cst-form-control" form-control name="labName"
+                                    id="labName" ng-model="labtest.labName" required>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="labtest.saveResultDetails()">Save</button>
+                    <button class="btn btn-secondary" ng-click="labtest.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Result Modal -->
+    <div class="modal fade" id="editResultModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Edit Result Details</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="labtest.editResultForm">
+                        <div class="form-group">
+                            <validate for='resultDate' required-msg="Select Date">
+                                <label for="resultDate" control-label>Result Date</label>
+                                <input type="text" style="float: inherit;" datepicker name="resultDate" form-control
+                                    ng-model="labtest.currentResultMember.resultDate"
+                                    ng-change="labtest.resultDateChanged()" min-date="labtest.minimumResultDate"
+                                    max-date='labtest.today' required>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" style="margin-top: 4%">
+                            <validate for='resultTime' required-msg="Select Time" time-msg="Invalid collection time">
+                                <label for="resultTime" control-label>Result Time</label>
+                                <input class="form-control" type="time" form-control id="resultTime" name="resultTime"
+                                    ng-model="labtest.currentResultMember.resultTime"
+                                    ng-change="labtest.checkResultTimeValidity()" placeholder="HH:mm:ss" required />
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group">
+                            <validate for='result' required-msg="Select result">
+                                <label for="result" control-label>Result</label>
+                                <select class="form-control cst-form-control" form-control
+                                    ng-model="labtest.currentResultMember.labResult" name="result" id="result" required>
+                                    <option value="" selected>--Select--</option>
+                                    <option value="POSITIVE">Positive</option>
+                                    <option value="NEGATIVE">Negative</option>
+                                    <option value="INDETERMINATE" ng-if="labtest.resultMode === 'CONFIRMATION'">
+                                        Indeterminate</option>
+                                    <option value="INCONCLUSIVE" ng-if="labtest.resultMode === 'SCREENING'">Inconclusive
+                                    </option>
+                                    <option value="OTHER">Other</option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                        <div class="form-group" ng-if="labtest.currentResultMember.labResult === 'OTHER'">
+                            <validate for='otherResultRemarksSelected' required-msg="Select Rejection Remark">
+                                <label for="otherResultRemarksSelected" control-label>Other Result Remark</label>
+                                <select class="form-control cst-form-control" form-control
+                                    ng-model="labtest.currentResultMember.otherResultRemarksSelected"
+                                    name="otherResultRemarksSelected" id="otherResultRemarksSelected">
+                                    <option value="" selected>--Select--</option>
+                                    <option value="{{otherResultRemarksSelected}}" ng-repeat="otherResultRemarksSelected in [ 'Sample/s is/are not received in VTM',
+                                                        'Cold chain not maintained',
+                                                        'Open container/ Leakage or Breakage of container',
+                                                        'No Sample Received',
+                                                    'Mismatch Sample',
+                                                    'Sample not labelled',
+                                                    'Sample/s not received in triple layer']">
+                                        {{otherResultRemarksSelected}}
+                                    </option>
+                                </select>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+
+                        <div class="form-group" ng-if="labtest.currentResultMember.labResult === 'OTHER'">
+                            <label class="form-group control control-checkbox"> Send for recollection
+                                <input type="checkbox" ng-model="labtest.currentResultMember.isRecollect">
+                                <div class="control_indicator checkbox-success"></div>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <validate for='resultRemarks' required-msg="Enter reult remarks">
+                                <label for="resultRemarks" control-label>Remarks</label>
+                                <textarea rows="4" cols="20" type="text" maxlength="99"
+                                    class="form-control cst-form-control" form-control name="resultRemarks"
+                                    id="resultRemarks" ng-model="labtest.currentResultMember.resultRemarks">
+                                </textarea>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+
+                        <div class="form-group" ng-if="labtest.resultMode !== 'CONFIRMATION'">
+                            <validate for='labName' required-msg="Enter confirming lab name">
+                                <label for="labName" control-label>Confirming lab name</label>
+                                <input type="text" class="form-control cst-form-control" form-control name="labName"
+                                    id="labName" ng-model="labtest.currentResultMember.labName" required>
+                                <placeholder></placeholder>
+                            </validate>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="labtest.editResult()">Save</button>
+                    <button class="btn btn-secondary" ng-click="labtest.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="transferSample" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Transfer Sample</h4>
+                </div>
+                <div class="modal-body">
+                    <h6>Total Samples Selected : <span
+                            ng-bind-html="labtest.markedMembersList.length | emptylabel"></span></h6>
+                    <hr>
+                    <form name="labtest.transferSampleForm" novalidate>
+                        <div>
+                            <div class="form-group">
+                                <validate for='transferDate' required-msg="Select Date">
+                                    <label for="transferDate" control-label>Transfer Date</label>
+                                    <input type="text" style="float: inherit;" datepicker name="transferDate"
+                                        form-control ng-model="labtest.transferDate"
+                                        ng-change="labtest.transferDateChanged()" max-date='labtest.today' required>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                            <div class="form-group" style="margin-top: 4%">
+                                <validate for='transferTime' required-msg="Select Time"
+                                    time-msg="Invalid transfer time">
+                                    <label for="transferTime" control-label>Transfer Time</label>
+                                    <input class="form-control" type="time" form-control id="transferTime"
+                                        name="transferTime" ng-model="labtest.transferTime"
+                                        ng-change="labtest.checktransferTimeValidity()" placeholder="HH:mm:ss"
+                                        required />
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                            <div class="form-group">
+                                <validate for='districtlocationId' required-msg="Select District">
+                                    <label for="districtlocationId" control-label>District</label>
+                                    <select class="form-control cst-form-control"
+                                        chosen-directive="labtest.districtLocations" form-control
+                                        ng-model="labtest.districtlocationId" name="locationId"
+                                        id="transferDistrictlocationId"
+                                        ng-options="location.id as location.english_name for location in labtest.districtLocations"
+                                        ng-change="labtest.sampleCollectionLocationChanged()">
+                                        <option value="" selected>--Select--</option>
+                                    </select>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                            <div class="form-group">
+                                <validate for='healthInfrastructure' required-msg="Select health infrastructure">
+                                    <label for="healthInfrastructure" control-label>Health Infrastructure</label>
+                                    <select class="form-control cst-form-control"
+                                        chosen-directive="labtest.healthInfrastructureList" form-control
+                                        ng-model="labtest.healthInfraId" name="healthInfrastructure"
+                                        id="transferHealthInfrastructure"
+                                        ng-options="healthInfra.id as healthInfra.name for healthInfra in labtest.healthInfrastructureList"
+                                        required>
+                                        <option value="" selected>--Select--</option>
+                                    </select>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="labtest.saveTransferDetails()">Save</button>
+                    <button class="btn btn-secondary" ng-click="labtest.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="admissionDisplay" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text">Patient Details</h4>
+                </div>
+                <div class="modal-body">
+                    <h6 ng-bind-html="labtest.currentAdmissionDisplayMember.memberDetail"></h6>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 mb-r1">
+                            <div class="form-group">
+                                <label class="display"><strong>Gender :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.gender | gender | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Location :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.location | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Address :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.address | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Pincode :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.pincode | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Occupation :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.occupation | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Travel History :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.travelHistory | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Contact with International Traveller
+                                        :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.abroadContact | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Contact with COVID-19 Positive Person
+                                        :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.covidPositiveContact | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Admitted at :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.admittedHospital | emptylabel"></label>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-r1">
+                            <div class="form-group">
+                                <label class="display"><strong>Contact No :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.contactNumber | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Age :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.age | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Admission Date :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.admissionDate| date:'dd / MM / yyyy' | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Case No/Unit No. :</strong></label>
+                                <label class="display">
+                                    <span
+                                        ng-bind-html="labtest.currentAdmissionDisplayMember.caseNumber | emptylabel"></span>
+                                    /
+                                    <span
+                                        ng-bind-html="labtest.currentAdmissionDisplayMember.unitNumber | emptylabel"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>OPD Case No. :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.opdCaseNumber | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Symptoms/Comorbidity :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.symptoms | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Date of onset of symptom :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.onsetDate| date:'dd / MM / yyyy'|emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Ward Name/Bed No. :</strong></label>
+                                <label class="display">
+                                    <span
+                                        ng-bind-html="labtest.currentAdmissionDisplayMember.wardName | emptylabel"></span>
+                                    /
+                                    <span
+                                        ng-bind-html="labtest.currentAdmissionDisplayMember.bedNumber | emptylabel"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Emergency Details :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.emergencyDetails | emptylabel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="display"><strong>Sample Received From :</strong></label>
+                                <label class="display"
+                                    ng-bind-html="labtest.currentAdmissionDisplayMember.sampleFrom | emptylabel"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="labtest.closeAdmissionDetailsModal()">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

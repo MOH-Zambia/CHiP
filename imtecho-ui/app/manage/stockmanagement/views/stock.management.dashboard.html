@@ -1,0 +1,235 @@
+<style>
+    .dropdown-menu{
+        padding: 10px;
+        font-size: 1.1rem;
+    }
+    .text-left {
+        min-width: 10rem    
+    }
+    .results-container {
+        width: auto;
+    }
+    .cst-tab {
+        width: 80%;
+    }
+    .nav-tabs .nav-item {
+        margin-top:1rem;
+    }
+    .medicine-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+
+    .medicine-name {
+      flex: 1;
+    }
+
+    .medicine-quantity {
+      white-space: nowrap;
+      width: 150px;
+      text-align: left; 
+    }
+
+    .dotted-cell ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        width: 100%;
+    }
+
+    .dotted-cell li {
+        border-bottom: 1px dotted #000;
+        padding: 5px 0;
+        margin: 0;
+    }
+
+    .dotted-cell li:last-child {
+        border-bottom: none;
+    }
+
+    .tab-content{
+        margin-top: 1rem;
+    }
+</style>
+
+<div class="d-flex justify-content-center" style="margin-top: 20px;">
+    <div class="cst-tab">
+        <div>
+            <div class="search-container">
+                <label for="infrastructureDropdown" class="mr-2">Healthcare Facility : </label>
+                <div class="d-inline-block"> 
+                    <input type="text" id="infrastructureDropdown" ng-model="ctrl.selectedInfrastructure.name" 
+                        disabled required>
+                </div>
+                <div class="float-right">
+                    <div class="input-group mb-4">  
+                        <input type="search" placeholder="Search requests..." aria-describedby="button-addon5" ng-model="ctrl.searchText" class="form-control">  
+                        <div class="input-group-append">  
+                        <button id="button-addon5" type="submit" class="btn btn-primary" ng-click="ctrl.filteredResults()"> <i class="fa fa-search"> </i> </button>  
+                        </div>  
+                    </div>  
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; float: right;margin-bottom: 1rem;">
+            <button class="btn btn-success" style="margin-top: 1.5rem;margin-right: 1rem;" ng-click="ctrl.openInventoryModal()">
+                Update Medicine Stock
+            </button >
+            <span
+                uib-tooltip="Download excel" class="fa fa-file-excel-o float-right" style="cursor: pointer;margin-top: 2rem;margin-right: -16.6rem;"
+                ng-click="ctrl.exportToExcel(ctrl.selectedTab)"></span>
+        </div>
+        
+        <uib-tabset active="ctrl.selectedTab" style="width: 100%;">
+            <uib-tab heading="Pending Requests" ng-click="ctrl.searchPending(true)" index=0>
+                <div class="text-left"> 
+                    <div class="results-container">
+                        <div class="no-data-placeholder"
+                            ng-if="!ctrl.listOfRequestsPending || ctrl.filteredResults(ctrl.listOfRequestsPending).length === 0">
+                            <h5>No Record Found!</h5>
+                        </div>
+                            <div class="cst-table table-responsive"
+                                ng-if="ctrl.tempArray && ctrl.filteredResults(ctrl.listOfRequestsPending).length !== 0" id = "pending-scroll">
+                                <table class="table table-sm table-striped table-bordered header-fixed" id="pending">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th>S. No.</th>
+                                            <th>Name of User</th>
+                                            <th>Requested Medicines</th>
+                                            <th>Requested Quantities</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody"
+                                        infinite-scroll-distance="0"
+                                        infinite-scroll='ctrl.searchPending(false)'
+                                        infinite-scroll-container='"#pending-scroll"'
+                                        infinite-scroll-immediate-check="false"
+                                    >
+                                        <tr ng-repeat="user in ctrl.filteredResults(ctrl.listOfRequestsPending)">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{user.username}}</td>
+                                            <td>
+                                                <ul>
+                                                    <li ng-repeat="medicine in user.medicine_data" class="medicine-item">
+                                                        <span class="medicine-name">{{medicine.medicine_name}}</span>
+                                                        <span class="medicine-quantity"> In Stock : {{medicine.in_stock}}</span>
+                                                    </li>        
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <ul>
+                                                    <li ng-repeat="medicine in user.medicine_data" class="medicine-item">
+                                                        <span class="medicine-quantity">Req. Qty. : {{medicine.medicineQuantity}}</span>
+                                                    </li>        
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <ul class="action-item mt-3 ml-3">
+                                                    <em ng-click="ctrl.openModal(user)" uib-tooltip="Approve " tooltip-placement="bottom" class="fa fa-edit" aria-hidden="true">
+                                                    </em>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab heading="Approved Requests" ng-click="ctrl.searchApproved(true)" index=1>
+                <div class="text-left"> 
+                    <div class="results-container">
+                        <div class="no-data-placeholder"
+                            ng-if="!ctrl.listOfRequestsApproved || ctrl.filteredResults(ctrl.listOfRequestsApproved).length === 0">
+                            <h5>No Record Found!</h5>
+                        </div>
+                            <div class="cst-table table-responsive"
+                                ng-if="ctrl.listOfRequestsApproved && ctrl.filteredResults(ctrl.listOfRequestsApproved).length !== 0" id="approved-scroll">
+                                <table class="table table-sm table-striped table-bordered header-fixed" id="approved">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th>S. No.</th>
+                                            <th>Name of User</th>
+                                            <th>Requested Medicines </th>
+                                            <th>Approved Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody"
+                                    infinite-scroll-distance="0"
+                                    infinite-scroll='ctrl.searchApproved(false)'
+                                    infinite-scroll-container='"#approved-scroll"'
+                                    infinite-scroll-immediate-check="false"
+                                    >
+                                        <tr ng-repeat="user in ctrl.filteredResults(ctrl.listOfRequestsApproved)">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{user.username}}</td>
+                                            <td class="dotted-cell">
+                                                <ul>
+                                                    <li ng-repeat="medicine in user.medicine_data">{{medicine.medicine_name}}</li>
+                                                </ul>
+                                            </td>
+                                            <td class="dotted-cell">
+                                                <ul>
+                                                    <li ng-repeat="medicine in user.medicine_data">{{medicine.approved_qty}}</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab heading="Rejected Requests" ng-click="ctrl.searchRejected(true)" index=2>
+                <div class="text-left"> 
+                    <div class="results-container">
+                        <div class="no-data-placeholder"
+                            ng-if="!ctrl.listOfRequestsRejected || ctrl.filteredResults(ctrl.listOfRequestsRejected).length === 0">
+                            <h5>No Record Found!</h5>
+                        </div>
+                            <div class="cst-table table-responsive"
+                                ng-if="ctrl.listOfRequestsRejected && ctrl.filteredResults(ctrl.listOfRequestsRejected).length !== 0" id="rejected-scroll">
+                                <table class="table table-sm table-striped table-bordered header-fixed" id="rejected">
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th>S. No.</th>
+                                            <th>Name of User</th>
+                                            <th>Requested Medicines</th>
+                                            <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cst-tbody"
+                                        infinite-scroll-distance="0"
+                                        infinite-scroll='ctrl.searchRejected(false)'
+                                        infinite-scroll-container='"#rejected-scroll"'
+                                        infinite-scroll-immediate-check="false"
+                                        >
+                                        <tr ng-repeat="user in ctrl.filteredResults(ctrl.listOfRequestsRejected)">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{user.username}}</td>
+                                            <td>
+                                                <ul>
+                                                    <li ng-repeat="medicine in user.medicine_data">{{medicine.medicine_name}}</li>
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <ul class="action-item mt-3 ml-3">
+                                                    <em ng-click="ctrl.openModal(user)" uib-tooltip="Show Reason " tooltip-placement="bottom" class="fa fa-eye" aria-hidden="true">
+                                                    </em>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+        
+        
+        </div>
+    </div>
+</div>
