@@ -8,3 +8,5 @@ imtecho-android/*.externalNativeBuild
 /imtecho-android/.nb-gradle
 /imtecho-android/captures
 imtecho-android/local.properties
+/imtecho-ui/node_modules/
+/imtecho-ui/bower_components/
