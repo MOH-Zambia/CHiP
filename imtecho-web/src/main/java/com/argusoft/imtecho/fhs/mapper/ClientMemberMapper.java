@@ -1,71 +1,58 @@
 package com.argusoft.imtecho.fhs.mapper;
 
 import com.argusoft.imtecho.fhs.dto.ClientMemberDto;
-import com.argusoft.imtecho.fhs.model.MemberEntity;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 public class ClientMemberMapper {
 
     /**
-     * Convert member entity to dto.
+     * Convert object to dto.
      *
-     * @param memberEntity Entity of member.
+     * @param row Object.
      * @return Returns details of member.
      */
-    public static ClientMemberDto getMemberDto(MemberEntity memberEntity) {
-        if (memberEntity != null) {
-            ClientMemberDto memberDto = new ClientMemberDto();
-            memberDto.setId(memberEntity.getId());
 
-            memberDto.setFamilyId(memberEntity.getFamilyId());
-            memberDto.setUniqueHealthId(memberEntity.getUniqueHealthId());
-            memberDto.setMotherId(memberEntity.getMotherId());
+    public static ClientMemberDto getMemberDto(Object[] row) {
+        ClientMemberDto memberDto = new ClientMemberDto();
 
-            memberDto.setFirstName(memberEntity.getFirstName());
-            memberDto.setMiddleName(memberEntity.getMiddleName());
-            memberDto.setLastName(memberEntity.getLastName());
-            memberDto.setHusbandName(memberEntity.getHusbandName());
-            memberDto.setGrandfatherName(memberEntity.getGrandfatherName());
-            memberDto.setGender(memberEntity.getGender());
-            memberDto.setDob(memberEntity.getDob());
+        memberDto.setId((Integer) row[29]);
+        memberDto.setUniqueHealthId((String) row[0]);
+        memberDto.setFirstName((String) row[22]);
+        memberDto.setMiddleName((String) row[21]);
+        memberDto.setLastName((String) row[20]);
+        memberDto.setGender((String) row[2]);
+        memberDto.setDob((Date) row[11]);
+        memberDto.setMenopauseArrived((Boolean) row[12]);
+        memberDto.setHysterectomyDone((Boolean) row[13]);
 
-            memberDto.setMaritalStatus(memberEntity.getMaritalStatus() != null ? memberEntity.getMaritalStatus() : null);
-            memberDto.setMobileNumber(memberEntity.getMobileNumber());
-            memberDto.setFamilyHeadFlag(memberEntity.getFamilyHeadFlag());
+        memberDto.setMaritalStatus((String) row[16]);
+        memberDto.setMobileNumber((String) row[15]);
+        memberDto.setPassportNumber((String) row[17]);
+        memberDto.setNrcNumber((String) row[18]);
 
-            memberDto.setIsPregnantFlag(memberEntity.getIsPregnantFlag());
-            memberDto.setLmpDate(memberEntity.getLmpDate());
-            memberDto.setEdd(memberEntity.getEdd());
-            memberDto.setNormalCycleDays(memberEntity.getNormalCycleDays());
-            memberDto.setFamilyPlanningMethod(memberEntity.getFamilyPlanningMethod() != null ? memberEntity.getFamilyPlanningMethod() : null);
-            memberDto.setState(memberEntity.getState());
-            memberDto.setIsMobileNumberVerified(memberEntity.getIsMobileNumberVerified());
-            memberDto.setIsNativeFlag(memberEntity.getIsNativeFlag());
-            memberDto.setEducationStatus(memberEntity.getEducationStatus() != null ? memberEntity.getEducationStatus() : null);
-            memberDto.setIsReport(memberEntity.getIsReport());
-            memberDto.setIsEarlyRegistration(memberEntity.getIsEarlyRegistration());
-            memberDto.setImmunisationGiven(memberEntity.getImmunisationGiven());
-            memberDto.setBloodGroup(memberEntity.getBloodGroup());
-            memberDto.setWeight(memberEntity.getWeight());
-            memberDto.setHaemoglobin(memberEntity.getHaemoglobin());
-            memberDto.setAncVisitDates(memberEntity.getAncVisitDates());
-            memberDto.setCurPregRegDetId(memberEntity.getCurPregRegDetId());
-            memberDto.setCurPregRegDate(memberEntity.getCurPregRegDate());
-            memberDto.setLastDeliveryDate(memberEntity.getLastDeliveryDate());
-            memberDto.setLastDeliveryOutcome(memberEntity.getLastDeliveryOutcome());
-            memberDto.setHealthInsurance(memberEntity.getHealthInsurance());
-//            memberDto.setSchemeDetail(memberEntity.getSchemeDetail());
-            memberDto.setChronicDiseaseDetails(memberEntity.getChronicDiseaseDetails());
+        memberDto.setIsPregnantFlag((Boolean) row[1]);
+        memberDto.setLmpDate((Date) row[3]);
+        memberDto.setEdd((Date) row[26]);
+        memberDto.setFamilyPlanningMethod((String) row[23]);
+        memberDto.setEducationStatus((String) row[14]);
+        memberDto.setImmunisationGiven((String) row[30]);
+        memberDto.setBloodGroup((String) row[28]);
+        memberDto.setWeight((BigDecimal) row[25]);
+        memberDto.setHaemoglobin((BigDecimal) row[24]);
+//        memberDto.setChronicDiseaseDetails((Set<Integer>) row[10]);
+        memberDto.setOtherChronicDiseaseTreatment((String) row[4]);
+        memberDto.setChronicDiseaseTreatment((String) row[5]);
+        memberDto.setUnderTreatmentChronic((Boolean) row[6]);
+        memberDto.setOtherDisability((String) row[7]);
+        memberDto.setOtherChronic((String) row[8]);
+        memberDto.setPhysicalDisability((String) row[9]);
+        memberDto.setMemberReligion((String) row[19]);
+        memberDto.setBloodGroup((String) row[28]);
+        memberDto.setLastMethodOfContraception((String) row[27]);
 
-            memberDto.setAdditionalInfo(memberEntity.getAdditionalInfo());
-            memberDto.setEligibleCoupleDate(memberEntity.getEligibleCoupleDate());
-            memberDto.setFamilyPlanningHealthInfrastructure(memberEntity.getFamilyPlanningHealthInfrastructure());
-            memberDto.setBasicState(memberEntity.getBasicState());
-            memberDto.setLastMethodOfContraception(memberEntity.getLastMethodOfContraception());
-            memberDto.setRelationWithHof(memberEntity.getRelationWithHof());
-
-            return memberDto;
-        }
-        return null;
+        return memberDto;
     }
 
 }

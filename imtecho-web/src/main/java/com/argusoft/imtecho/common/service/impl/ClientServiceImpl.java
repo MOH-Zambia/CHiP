@@ -4,16 +4,12 @@ import com.argusoft.imtecho.common.service.ClientService;
 import com.argusoft.imtecho.fhs.dao.FamilyDao;
 import com.argusoft.imtecho.fhs.dao.MemberDao;
 import com.argusoft.imtecho.fhs.dto.*;
-import com.argusoft.imtecho.fhs.mapper.*;
 import com.argusoft.imtecho.rch.dao.*;
-import com.argusoft.imtecho.rch.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Implementation of method in ClientService.
@@ -74,118 +70,87 @@ public class ClientServiceImpl implements ClientService {
      * {@inheritDoc}
      */
     @Override
-    public InteractionDto getInteractions(Integer memberId, Date serviceStartDate, Date serviceEndDate) {
-        List<MalariaDto> malariaDetails = memberDao.getMalariaDetails(memberId, serviceStartDate, serviceEndDate);
-        List<TuberculosisDto> tuberculosisDetails = memberDao.getTuberculosisDetails(memberId, serviceStartDate, serviceEndDate);
-        List<CovidDto> covidDetails = memberDao.getCovidDetails(memberId, serviceStartDate, serviceEndDate);
-        List<AncDto> ancDetails = getAncDetails(memberId);
-        List<ChildServiceDto> childServiceDetails = getChildServiceDetails(memberId, 10);
-        List<PncChildDetailsDto> pncChildDetails = getPncChildDetails(memberId);
-        List<PncMotherDetailsDto> pncMotherDetails = getPncMotherDetails(memberId);
-        List<WpdMotherDetailsDto> wpdMotherDetails = getWpdMotherDetails(memberId);
-        List<WpdChildDetailsDto> wpdChildDetails = getWpdChildDetails(memberId);
-        List<HivDto> hivDetails = memberDao.getHivDetails(memberId,serviceStartDate,serviceEndDate);
+    public List<InteractionDto> getInteractions(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
+        List<MalariaDto> malariaDetails = memberDao.getMalariaDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<TuberculosisDto> tuberculosisDetails = memberDao.getTuberculosisDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<CovidDto> covidDetails = memberDao.getCovidDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<HivDto> hivDetails = memberDao.getHivDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<AncDto> ancDetails = memberDao.getAncDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<ChildServiceDto> childServiceDetails = memberDao.getChildServiceDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<PncChildDetailsDto> pncChildDetails = memberDao.getPncChildDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<PncMotherDetailsDto> pncMotherDetails = memberDao.getPncMotherDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<WpdMotherDetailsDto> wpdMotherDetails = memberDao.getWpdMotherDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        List<WpdChildDetailsDto> wpdChildDetails = memberDao.getWpdChildDetails(facilityCode, serviceStartDate, serviceEndDate, cbvId, householdId, zoneId);
+        Map<Integer, InteractionDto> interactionMap = new HashMap<>();
 
-
-        InteractionDto interactionDto = new InteractionDto();
-        interactionDto.setMemberId(memberId);
-
-        if (!malariaDetails.isEmpty()) {
-            interactionDto.setMalariaDetails(malariaDetails);
+        for (MalariaDto malariaDto : malariaDetails) {
+            if (malariaDto.getMemberId() != null) {
+                interactionMap.computeIfAbsent(malariaDto.getMemberId(), k -> new InteractionDto()).getMalariaDetails().add(malariaDto);
+            }
         }
 
-        if (!tuberculosisDetails.isEmpty()) {
-            interactionDto.setTbDetails(tuberculosisDetails);
+        for (TuberculosisDto tuberculosisDto : tuberculosisDetails) {
+            if (tuberculosisDto.getMemberId() != null) {
+                interactionMap.computeIfAbsent(tuberculosisDto.getMemberId(), k -> new InteractionDto()).getTbDetails().add(tuberculosisDto);
+            }
         }
 
-        if (!covidDetails.isEmpty()) {
-            interactionDto.setCovidDetails(covidDetails);
+        for (CovidDto covidDto : covidDetails) {
+            if (covidDto.getMemberId() != null) {
+                interactionMap.computeIfAbsent(covidDto.getMemberId(), k -> new InteractionDto()).getCovidDetails().add(covidDto);
+            }
         }
 
-        if (!ancDetails.isEmpty()) {
-            interactionDto.setAncDetails(ancDetails);
+        for (AncDto ancDto : ancDetails) {
+            if (ancDto.getMemberId() != null) {
+                interactionMap.computeIfAbsent(ancDto.getMemberId(), k -> new InteractionDto()).getAncDetails().add(ancDto);
+            }
         }
 
-        if (!childServiceDetails.isEmpty()) {
-            interactionDto.setChildServiceDetails(childServiceDetails);
+        for (ChildServiceDto childServiceDto : childServiceDetails) {
+            if (childServiceDto.getMemberId() != null) {
+                interactionMap.computeIfAbsent(childServiceDto.getMemberId(), k -> new InteractionDto()).getChildServiceDetails().add(childServiceDto);
+            }
         }
 
-        if (!pncChildDetails.isEmpty()) {
-            interactionDto.setPncChildDetails(pncChildDetails);
+        for (PncChildDetailsDto pncChildDetailsDto : pncChildDetails) {
+            if (pncChildDetailsDto.getChildId() != null) {
+                interactionMap.computeIfAbsent(pncChildDetailsDto.getChildId(), k -> new InteractionDto()).getPncChildDetails().add(pncChildDetailsDto);
+            }
         }
 
-        if (!pncMotherDetails.isEmpty()){
-            interactionDto.setPncMotherDetails(pncMotherDetails);
+        for (PncMotherDetailsDto pncMotherDetailsDto : pncMotherDetails) {
+            if (pncMotherDetailsDto.getMotherId() != null) {
+                interactionMap.computeIfAbsent(pncMotherDetailsDto.getMotherId(), k -> new InteractionDto()).getPncMotherDetails().add(pncMotherDetailsDto);
+            }
         }
 
-        if (!wpdMotherDetails.isEmpty()){
-            interactionDto.setWpdMotherDetails(wpdMotherDetails);
+        for (WpdMotherDetailsDto wpdMotherDetailsDto : wpdMotherDetails) {
+            if (wpdMotherDetailsDto.getMemberId() != null) {
+                interactionMap.computeIfAbsent(wpdMotherDetailsDto.getMemberId(), k -> new InteractionDto()).getWpdMotherDetails().add(wpdMotherDetailsDto);
+            }
         }
 
-        if (!wpdChildDetails.isEmpty()) {
-            interactionDto.setWpdChildDetails(wpdChildDetails);
+        for (WpdChildDetailsDto wpdChildDetailsDto : wpdChildDetails) {
+            if (wpdChildDetailsDto.getMemberId() != null) {
+                interactionMap.computeIfAbsent(wpdChildDetailsDto.getMemberId(), k -> new InteractionDto()).getWpdChildDetails().add(wpdChildDetailsDto);
+            }
         }
 
-        if(!hivDetails.isEmpty()){
-            interactionDto.setHivDetails(hivDetails);
+        for (HivDto hivDto : hivDetails) {
+            if (hivDto.getMemberId() != null) {
+                interactionMap.computeIfAbsent(hivDto.getMemberId(), k -> new InteractionDto()).getHivDetails().add(hivDto);
+            }
         }
 
-        return interactionDto;
+        List<InteractionDto> interactions = new ArrayList<>(interactionMap.values());
+
+        for (Map.Entry<Integer, InteractionDto> entry : interactionMap.entrySet()) {
+            entry.getValue().setMemberId(entry.getKey());
+        }
+
+        return interactions;
+
     }
-
-    public List<AncDto> getAncDetails(Integer memberId) {
-        List<AncVisit> ancVisits = ancVisitDao.retrieveByMemberId(memberId);
-        List<AncDto> ancDetails = new ArrayList<>();
-        for (AncVisit visit : ancVisits) {
-            ancDetails.add(AncDetailsMapper.mapFromAncVisit(visit));
-        }
-        return ancDetails;
-    }
-
-    public List<ChildServiceDto> getChildServiceDetails(Integer memberId, int limit) {
-        List<ChildServiceMaster> childServiceMasters = childServiceDao.retrieveByMemberId(memberId, limit);
-        List<ChildServiceDto> childServiceDetails = new ArrayList<>();
-        for (ChildServiceMaster service : childServiceMasters) {
-            childServiceDetails.add(ChildServiceMapper.mapFromChildServiceMaster(service));
-        }
-        return childServiceDetails;
-    }
-
-    public List<PncChildDetailsDto> getPncChildDetails(Integer memberId) {
-        List<PncChildMaster> pncChildMasters = pncChildMasterDao.getPncChildbyMemberid(memberId);
-        List<PncChildDetailsDto> pncChildDetails = new ArrayList<>();
-        for (PncChildMaster pncChildMaster : pncChildMasters) {
-            pncChildDetails.add(PncChildDetailMapper.mapFromPncChildMaster(pncChildMaster));
-        }
-        return pncChildDetails;
-    }
-
-    public List<PncMotherDetailsDto> getPncMotherDetails(Integer memberId) {
-        List<PncMotherMaster> pncMotherMasters = pncMotherMasterDao.getPncMotherbyMemberid(memberId);
-        List<PncMotherDetailsDto> pncMotherDetails = new ArrayList<>();
-        for (PncMotherMaster pncMotherMaster : pncMotherMasters) {
-            pncMotherDetails.add(PncMotherDetailsMapper.mapFromPncMotherMaster(pncMotherMaster));
-        }
-        return pncMotherDetails;
-    }
-
-    public List<WpdMotherDetailsDto> getWpdMotherDetails(Integer memberId) {
-        List<WpdMotherMaster> wpdMotherMasters = wpdMotherDao.getWpdMotherbyMemberid(memberId);
-        List<WpdMotherDetailsDto> wpdMotherDetails = new ArrayList<>();
-        for (WpdMotherMaster master : wpdMotherMasters) {
-            wpdMotherDetails.add(WpdMotherDetailsMapper.mapFromWpdMotherMaster(master));
-        }
-        return wpdMotherDetails;
-    }
-
-    public List<WpdChildDetailsDto> getWpdChildDetails(Integer memberId) {
-        List<WpdChildMaster> wpdChildMasters = wpdChildDao.getWpdChildbyMemberid(memberId);
-        List<WpdChildDetailsDto> wpdChildDetails = new ArrayList<>();
-        for (WpdChildMaster master : wpdChildMasters) {
-            wpdChildDetails.add(WpdChildMapper.mapFromWpdChildMaster(master));
-        }
-        return wpdChildDetails;
-    }
-
 
 }

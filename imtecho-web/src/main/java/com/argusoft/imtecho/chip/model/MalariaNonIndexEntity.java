@@ -1,14 +1,12 @@
 package com.argusoft.imtecho.chip.model;
 
 import com.argusoft.imtecho.common.model.EntityAuditInfo;
-import com.argusoft.imtecho.mobile.mapper.MemberDataBeanMapper;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -19,6 +17,9 @@ public class MalariaNonIndexEntity extends EntityAuditInfo implements Serializab
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer id;
+    @Column(name = "service_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date serviceDate;
     @Column(name = "member_id")
     private Integer memberId;
     @Column(name = "family_id")

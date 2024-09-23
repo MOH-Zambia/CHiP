@@ -26,6 +26,7 @@ import com.argusoft.sewa.android.app.component.listeners.StockRequestComponent;
 import com.argusoft.sewa.android.app.component.listeners.TextChangeListener;
 import com.argusoft.sewa.android.app.component.listeners.TextFocusChangeListener;
 import com.argusoft.sewa.android.app.constants.FormulaConstants;
+import com.argusoft.sewa.android.app.constants.RelatedPropertyNameConstants;
 import com.argusoft.sewa.android.app.databean.FieldValueMobDataBean;
 import com.argusoft.sewa.android.app.databean.FormulaTagBean;
 import com.argusoft.sewa.android.app.databean.OptionDataBean;
@@ -437,7 +438,7 @@ public class FormGenerator {
                 }
                 defaultValue = SharedStructureData.relatedPropertyHashTable.get(relatedPropertyName);
                 if (defaultValue != null) {
-                    queFormBean.setAnswer(defaultValue + "----"); //DON'T DELETE THE APPEND OF '----' IN THE STRING ANSWER. IT IS FOR VALIDATION PURPOSE
+                    queFormBean.setAnswer(defaultValue); //DON'T DELETE THE APPEND OF '----' IN THE STRING ANSWER. IT IS FOR VALIDATION PURPOSE
                     editText.getEditText().setText(defaultValue);
                 }
             }
@@ -518,14 +519,22 @@ public class FormGenerator {
             String defaultValue = GlobalTypes.NOT_AVAILABLE;
             if (queFormBean.getRelatedpropertyname() != null && queFormBean.getRelatedpropertyname().trim().length() > 0) {
                 relatedPropertyName = queFormBean.getRelatedpropertyname().trim();
-                if (queFormBean.getLoopCounter() > 0 && !queFormBean.isIgnoreLoop()) {
-                    relatedPropertyName += queFormBean.getLoopCounter();
+                if (!relatedPropertyName.equalsIgnoreCase(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER)) {
+                    if (queFormBean.getLoopCounter() > 0 && !queFormBean.isIgnoreLoop()) {
+                        relatedPropertyName += queFormBean.getLoopCounter();
+                    }
                 }
                 defaultValue = SharedStructureData.relatedPropertyHashTable.get(relatedPropertyName);
                 if (defaultValue == null || defaultValue.trim().length() == 0 || defaultValue.trim().equalsIgnoreCase("null")) {
                     defaultValue = GlobalTypes.NOT_AVAILABLE;
                 } else {
-                    queFormBean.setAnswer(defaultValue);
+                    if (defaultValue.contains("F")) {
+                        defaultValue = defaultValue.split("/")[1];
+                    } else if (defaultValue.equals("T")) {
+                        defaultValue="Not Available";
+                    } else {
+                        queFormBean.setAnswer(defaultValue);
+                    }
                 }
             }
             MaterialTextView labelFormula;

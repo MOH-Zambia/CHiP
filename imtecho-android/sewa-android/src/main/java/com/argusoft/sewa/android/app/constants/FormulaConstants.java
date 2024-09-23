@@ -48,6 +48,7 @@ public class FormulaConstants {
     public static final String VALIDATION_GREATER_THAN_RELATED_PROPERTY = "greaterThanRelatedProperty";
     public static final String VALIDATION_IN_BETWEEN_RANGE = "Between";
     public static final String VALIDATION_COMPARE_DATE_WITH_GIVEN_DATE = "comapreDateWithGivenDate";
+    public static final String VALIDATION_COMPARE_DATE_WITH_GIVEN_DATE_FOR_COVID = "comapreDateWithGivenDateForCovid";
     public static final String VALIDATION_COMPARE_DATE_WITH_GIVEN_DATE_AFTER = "ComapreDateWithGivenDateAfter";
     public static final String VALIDATION_MAX_LENGTH = "maxLength";
     public static final String VALIDATION_LENGTH = "length";
@@ -242,6 +243,7 @@ public class FormulaConstants {
     public static final String FORMULA_SET_ANEMIA_STATUS = "setanemiastatus";
     public static final String FORMULA_SHOW_ANEMIA_SUGGESTION = "showanemiasuggestion";
     public static final String FORMULA_CHECK_IF_SECOND_TRIMESTER = "checkifsecondtrimester"; // checkIfSecondTrimester
+    public static final String FORMULA_SET_DEFAULT_NON_HOF_MEMBER_NAMES_CBDS = "setDefaultNonHofMemberNames";
 
 
 }

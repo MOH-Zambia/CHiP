@@ -1,7 +1,6 @@
 package com.argusoft.imtecho.chip.model;
 
 import com.argusoft.imtecho.common.model.EntityAuditInfo;
-import com.argusoft.imtecho.rch.model.VisitCommonFields;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +17,9 @@ public class MalariaIndexCaseEntity extends EntityAuditInfo implements Serializa
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer id;
+    @Column(name = "service_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date serviceDate;
     @Column(name = "member_id")
     private Integer memberId;
     @Column(name = "family_id")
@@ -85,4 +87,5 @@ public class MalariaIndexCaseEntity extends EntityAuditInfo implements Serializa
     private String longitude;
     @Column(name = "other_showing_signs")
     private String otherShowingSigns;
+
 }

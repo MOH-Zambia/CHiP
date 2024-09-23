@@ -12,8 +12,6 @@ import com.argusoft.imtecho.fhs.dto.MemberInformationDto;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
 import com.argusoft.imtecho.mobile.dto.FamilyDataBean;
-import com.argusoft.imtecho.mobile.dto.MemberDataBean;
-import com.argusoft.imtecho.mobile.dto.MyTechoFamilyDataBean;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 
 import java.util.List;
@@ -201,7 +199,7 @@ public interface FamilyHealthSurveyService {
      */
     MemberDto retrieveDetailsByMemberId(Integer memberId);
 
-    MemberDto  getMemberDetailsByUniqueHealthId(String  byUniqueHealthId);
+    MemberDto getMemberDetailsByUniqueHealthId(String byUniqueHealthId);
 
 //    /**
 //     * Store member update form details.
@@ -215,6 +213,12 @@ public interface FamilyHealthSurveyService {
 
 
     Map<String, String> storeMemberUpdateFormZambia(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswersMap, UserMaster user);
+
+    Integer storeAddMemberFormOCR(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
+
+    Integer storeUpdateMemberFormOCR(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
+
+    Integer storeHouseholdLineListFormOCR(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
 
 //    /**
 //     * Search member by unique health id.
@@ -325,5 +329,5 @@ public interface FamilyHealthSurveyService {
     void insertDiseasesInformationForMember(MemberEntity memberEntity);
 
     void markMemberAsDeathZambia(Long deathDate, String deathPlace, String otherDeathPlace, String deathReason, String otherDeathReason, String healthInfraId,
-                                        Integer memberId, Integer familyId, Integer locationId, Integer userId, String formType, Integer referenceId);
+                                 Integer memberId, Integer familyId, Integer locationId, Integer userId, String formType, Integer referenceId);
 }

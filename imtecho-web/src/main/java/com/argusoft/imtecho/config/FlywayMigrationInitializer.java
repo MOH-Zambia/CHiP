@@ -22,6 +22,7 @@ public class FlywayMigrationInitializer {
                 .baselineOnMigrate(Boolean.TRUE)
                 .dataSource(dataSource)
                 .validateOnMigrate(false)
+                .placeholderReplacement(false)
                 .outOfOrder(true)
                 .baselineVersion("1").load();
         flyway.migrate();

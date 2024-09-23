@@ -1,0 +1,117 @@
+<style>
+    .dndDisabled {
+        cursor: not-allowed;
+        background-color: darkgray !important;
+    }
+
+    div[dnd-list] {
+        min-height: 50px;
+    }
+
+    div[dnd-list] .dndDraggingSource {
+        display: none;
+    }
+
+    div[dnd-list] .dndPlaceholder {
+        background-color: #ddd;
+        min-height: 40px;
+        list-style-type: none;
+        margin-bottom: 2%;
+        display: block;
+    }
+
+    .modified {
+        text-decoration: line-through;
+        color: red;
+    }
+</style>
+
+<div class="modal-header" style="font-size: 18px;">
+    <h4 class="text">Configure Form onLoad Execution</h4>
+    <div class="pull-right">
+        <em class="fa fa-2x fa-times fa-times-red" ng-click="cancel()"></em>
+    </div>
+</div>
+<div class="modal-body" style="overflow-y: scroll;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <div class="cst-table table-responsive" ng-if="executionData.length>0">
+                    <table aria-describedby="table"
+                        class="table table-sm  filter-table table-fixed table-bordered header-fixed">
+                        <tbody class="cst-tbody">
+                            <tr>
+                                <th class="align-center" style="background-color: #dddddd;"> <span>&#9656;</span>
+                                    Form Methods</th>
+                            </tr>
+                            <tr ng-repeat="item in executionData" dnd-moved="checkSelected()"
+                                dnd-disable-if="item.isAdded" dnd-draggable="item"
+                                ng-class="item.isAdded ? 'dndDisabled' : ''">
+                                <td ng-if="item.type==='FORM_METHOD'">{{item.value}}</td>
+                            </tr>
+                            <tr>
+                                <th class="align-center" style="background-color: #dddddd;"> <span>&#9656;</span>
+                                    Setter Methods</th>
+                            </tr>
+                            <tr ng-repeat="item in executionData" dnd-moved="checkSelected()"
+                                dnd-disable-if="item.isAdded" dnd-draggable="item"
+                                ng-class="item.isAdded ? 'dndDisabled' : ''">
+                                <td ng-if="item.type==='FORM_VARIABLE_SETTER'">{{item.value}}</td>
+                            </tr>
+                            <tr>
+                                <th class="align-center" style="background-color: #dddddd;"> <span>&#9656;</span>
+                                    APIs</th>
+                            </tr>
+                            <tr ng-repeat="item in executionData" dnd-moved="checkSelected()"
+                                dnd-disable-if="item.isAdded" dnd-draggable="item"
+                                ng-class="item.isAdded ? 'dndDisabled' : ''">
+                                <td ng-if="item.type==='FORM_API'">{{item.value}}</td>
+                            </tr>
+                            <tr>
+                                <th class="align-center" style="background-color: #dddddd;"> <span>&#9656;</span>
+                                    Queries</th>
+                            </tr>
+                            <tr ng-repeat="item in executionData" dnd-moved="checkSelected()"
+                                dnd-disable-if="item.isAdded" dnd-draggable="item"
+                                ng-class="item.isAdded ? 'dndDisabled' : ''">
+                                <td ng-if="item.type==='FORM_QUERY'">{{item.value}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-9 sorting-list drop-zone" style="border-left: 2px solid #9a9898; display: inline-block;"
+                dnd-list="executionSequence">
+                <div ng-repeat="item in executionSequence" dnd-draggable="item" dnd-effect-allowed="move"
+                    dnd-moved="executionSequence.splice($index,1)">
+                    <div class="card cst-card mb-15">
+                        <!-- <span></span> -->
+                        <div class="card-body mb-0" ng-class="item.itemModified?'modified':''" role="tab">
+                            {{$index+1}}. {{item.value}} | {{item.type}}
+                            <em style="cursor:pointer; float:right" class="fa fa-trash-o fa-2x text-danger"
+                                uib-tooltip="Remove sequence" ng-click="onDelete($index,item)">
+                            </em>
+                            <div class="form-group mb-0">
+                                <label control-label class="control control-checkbox">Continue if fails?
+                                    <input checked="checked" name="continueIfFails" form-control type="checkbox"
+                                        ng-model="item.continueIfFail">
+                                    <div class="control_indicator"></div>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="save()">
+        <em class="fa fa-save"></em>
+        Save
+    </button>
+</div>

@@ -7,6 +7,7 @@ package com.argusoft.imtecho.rch.service.impl;
 
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.ConstantUtil;
+import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
 import com.argusoft.imtecho.common.util.SystemConstantUtil;
 import com.argusoft.imtecho.config.security.ImtechoSecurityUser;
@@ -52,6 +53,9 @@ import com.argusoft.imtecho.rch.service.AshaReportedEventService;
 import com.argusoft.imtecho.rch.service.ImmunisationService;
 import com.argusoft.imtecho.rch.service.WpdService;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -608,6 +612,66 @@ public class WpdServiceImpl implements WpdService {
         return wpdMotherMaster.getId();
     }
 
+    @Override
+    public Integer storeWpdFormForOcr(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+        JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
+        WpdMotherMaster wpdMotherMaster = new WpdMotherMaster();
+        WpdChildMaster wpdChildMaster = new WpdChildMaster();
+        MemberEntity motherEntity = null;
+        if (jsonObject.has("memberId")) {
+            motherEntity = memberDao.retrieveMemberById(jsonObject.get("memberId").getAsInt());
+        } else if (jsonObject.has("memberUUID")) {
+            motherEntity = memberDao.retrieveMemberByUuid(jsonObject.get("memberUUID").getAsString());
+        }
+        MemberEntity childEntity = new MemberEntity();
+        motherEntity.setIsPregnantFlag(false);
+        if (motherEntity.getCurrentPara() != null) {
+            motherEntity.setCurrentPara((short) (motherEntity.getCurrentPara() + 1));
+        } else {
+            motherEntity.setCurrentPara((short) 1);
+        }
+        motherEntity.setLastDeliveryOutcome(jsonObject.get("pregnancyOutcome").getAsString());
+        childEntity.setMemberUUId(jsonObject.get("childUUID").getAsString());
+        wpdMotherMaster.setDateOfDelivery(new Date(Long.parseLong(jsonObject.get("serviceDate").getAsString())));
+        wpdMotherMaster.setCorticoSteroidGiven(jsonObject.get("isCorticoInjected").getAsBoolean());
+        wpdMotherMaster.setPregnancyOutcome(jsonObject.get("pregnancyOutcome").getAsString());
+        wpdMotherMaster.setDeliveryPlace(jsonObject.get("deliveryPlace").getAsString());
+        wpdMotherMaster.setTypeOfDelivery(jsonObject.get("typeOfDelivery").getAsString());
+        wpdMotherMaster.setBreastFeedingInOneHour(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("breastFeedingInOneHour").getAsString()));
+        if (wpdMotherMaster.getPregnancyOutcome().equalsIgnoreCase("MTP")) {
+            wpdMotherMaster.setMtpPerformedBy(jsonObject.get("deliveryPerformedBy").getAsString());
+        }
+        if (jsonObject.get("motherReferalRequired").getAsBoolean()) {
+            wpdMotherMaster.setReferralDone(RchConstants.REFFERAL_DONE_YES);
+            wpdMotherMaster.setReferralReason(jsonObject.get("motherReferalReason").getAsString());
+        } else {
+            wpdMotherMaster.setReferralDone(RchConstants.REFFERAL_DONE_NO);
+        }
+        if (jsonObject.get("childReferalRequired").getAsBoolean()) {
+            wpdChildMaster.setReferralDone(RchConstants.CHILD_REFERRAL_DONE);
+            wpdChildMaster.setReferralReason(jsonObject.get("childReferralReason").getAsString());
+        } else {
+            wpdChildMaster.setReferralDone(RchConstants.REFFERAL_DONE_NO);
+        }
+
+        wpdChildMaster.setWpdMotherId(motherEntity.getId());
+        wpdChildMaster.setDateOfDelivery(new Date(Long.parseLong(jsonObject.get("deliveryDate").getAsString())));
+        wpdChildMaster.setBirthWeight(jsonObject.get("babyWeight").getAsFloat());
+        wpdChildMaster.setGender(jsonObject.get("gender").getAsString());
+        wpdChildMaster.setBreastFeedingInOneHour(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("breastFeedingInOneHour").getAsString()));
+        wpdMotherDao.create(wpdMotherMaster);
+        Integer memberId = memberDao.create(childEntity);
+        wpdChildMaster.setMemberId(memberId);
+        FamilyEntity family = familyDao.retrieveFamilyByFamilyId(motherEntity.getFamilyId());
+        wpdChildMaster.setFamilyId(family.getId());
+        wpdChildMaster.setLocationId(family.getAreaId() != null ? family.getAreaId() : family.getLocationId());
+        wpdChildMaster.setLocationHierarchyId(-1);
+        wpdChildMaster.setMobileStartDate(new Date());
+        wpdChildMaster.setMobileEndDate(new Date());
+        return wpdChildDao.create(wpdChildMaster);
+    }
+
 
     private void setAnswersToWpdMotherMaster(String key, String answer, WpdMotherMaster wpdMotherMaster, Map<String, String> keyAndAnswerMap) {
         switch (key) {
@@ -791,7 +855,7 @@ public class WpdServiceImpl implements WpdService {
                 if (keyAndAnswerMap.get("51").equalsIgnoreCase(RchConstants.MEMBER_STATUS_AVAILABLE)
                         && keyAndAnswerMap.get("511").equalsIgnoreCase("1")
                         && keyAndAnswerMap.get("20").equals("1")) {
-                        wpdMotherMaster.setReferralInfraId(Integer.valueOf(answer));
+                    wpdMotherMaster.setReferralInfraId(Integer.valueOf(answer));
                 }
 
                 break;

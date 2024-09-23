@@ -29,6 +29,7 @@ public interface ChildService {
      * @return Returns id of store details.
      */
     Integer storeChildServiceForm(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
+    Integer storeChildServiceOcrForm(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
 
     /**
      * Retrieves medical complications details by member id.

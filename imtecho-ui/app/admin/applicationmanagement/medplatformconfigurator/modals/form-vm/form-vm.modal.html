@@ -1,0 +1,745 @@
+<style>
+    .flex-card-header {
+        padding: 3px;
+        background-color: bisque;
+    }
+
+    .flex-card-body {
+        flex: 1 1 auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .filter-div{
+        width: 60%;
+        position: fixed;
+        top: 1px;
+        right: calc(-61%);
+        bottom: 1px;
+        background: #fff;
+        -webkit-transition: all .5s;
+        transition: all .5s;
+        z-index: 1056;
+        -webkit-box-shadow: -1px 0px 2px 2px rgba(0, 0, 0, 0.16);
+        box-shadow: -1px 0px 2px 2px rgba(0, 0, 0, 0.16);
+    }
+</style>
+
+<div class="modal-backdrop fade in" style="z-index: 1050;" ng-click="toggleFilter(null, true)" ng-if="showBackdropForSQLEdit"></div>
+<div class="modal-header" style="font-size: 18px;">
+    <h3 class="text">Configure Form Utilities</h3>
+    <div class="pull-right">
+        <em class="fa fa-2x fa-times fa-times-red" ng-click="cancel()"></em>
+    </div>
+</div>
+<div class="modal-body" style="overflow-x: hidden; overflow-y: scroll; scrollbar-width: none;">
+    <div class="row">
+        <div class="col-12" style="color: green;">
+            <!-- <ul>
+                <li>All Variables and Methods will bind to $utilityData$ object.</li>
+            </ul> -->
+            <div class="alert alert-info py-2 mt-0" role="alert">
+                All Variables and Methods will bind to <strong>$utilityData$</strong> object.
+            </div>
+        </div>
+    </div>
+    <div class="row mb-15">
+        <div class="col-12">
+
+            <div class="filter-div">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="filter-div-title"><span style="color: red;">UTILITIES <em class="fa fa-cogs"></em></span> | Enter Query for ( {{currentQueryConfig.value}} )</h5>
+                    </div>
+                </div>
+                <div class="filter-div-body">
+                    <div 
+                        style="height: 65%;" ui-ace="{
+                        mode: 'pgsql',
+                        theme: 'solarized_dark',
+                        useWrapMode : true,
+                        require: ['ace/ext/language_tools'],
+                        advanced: {
+                            enableSnippets: true,
+                            enableBasicAutocompletion: true,
+                            enableLiveAutocompletion: true
+                            }
+                        }" 
+                        ng-change="queryStringChanged(currentQueryConfig, currentQueryConfig.query)"
+                        ng-model-options="{debounce: 800}"
+                        ng-model="currentQueryConfig.query">
+                    </div>
+                    <hr/>
+                    <div class="mt-3">
+                        <button class="btn btn-secondary pull-right" ng-click="toggleFilter(null, true)">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary pull-right" ng-click="add()">Add</button>
+            <div class="cst-tab">
+                <form role="form" name="vmForm" aria-label="vmForm" id="vmForm" novalidate>
+                    <uib-tabset active='selectedTab'>
+                        <uib-tab index="'variables'" heading="Variables">
+                            <div class="tab-pane fade show" id="variables" role="tabpanel" aria-labelledby="variables"
+                                aria-expanded="true">
+                                <div ng-if="formVm.formVariables.length == 0">
+                                    <div class="no-data-placeholder">
+                                        <h5>No Variables Found!</h5>
+                                    </div>
+                                </div>
+                                <div class="row" ng-if="formVm.formVariables.length > 0">
+                                    <div class="col-12">
+                                        <ng-form role="form" name="variablesForm" aria-label="variablesForm"
+                                            id="variablesForm" novalidate>
+                                            <div class="cst-table table-responsive" id="variablesDiv">
+                                                <table aria-describedby="table"
+                                                    class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                                    style="table-layout: auto">
+                                                    <thead class="cst-thead">
+                                                        <tr>
+                                                            <th class="white-space-unset" id="srNo">#</th>
+                                                            <th class="white-space-unset" id="variable">Variable</th>
+                                                            <th class="white-space-unset" id="type">Type</th>
+                                                            <!-- <th class="white-space-unset" id="bindTo">Bind To</th> -->
+                                                            <th class="white-space-unset" id="methods">Setter Method
+                                                            </th>
+                                                            <th class="white-space-unset" id="actions">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="cst-tbody">
+                                                        <tr
+                                                            ng-repeat="variable in formVm.formVariables track by $index">
+                                                            <td>{{$index+1}}</td>
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <validate for="value{{$index}}"
+                                                                        required-msg="Please enter variable">
+                                                                        <input type="text"
+                                                                            class="form-control cst-form-control"
+                                                                            form-control required name="value{{$index}}"
+                                                                            id="value{{$index}}"
+                                                                            ng-model="variable.value"
+                                                                            ng-change="manageVariableSetterMethod(variable)">
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                                <!-- <label control-label class="control control-checkbox">
+                                                                    Support Setter
+                                                                    <input name="setter" form-control type="checkbox"
+                                                                        ng-model="variable.setter"
+                                                                        ng-change="manageVariableSetterMethod(variable)">
+                                                                    <div class="control_indicator"></div>
+                                                                </label> -->
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <validate for='type{{$index}}'
+                                                                        required-msg="Please select a value">
+                                                                        <select class="form-control cst-form-control"
+                                                                            form-control ng-model="variable.type"
+                                                                            ng-change="manageVariableSetterMethod(variable)"
+                                                                            name="type{{$index}}" id="type{{$index}}"
+                                                                            required>
+                                                                            <option value="" selected>--Select--
+                                                                            </option>
+                                                                            <option value="STRING">String</option>
+                                                                            <option value="NUMBER">Number</option>
+                                                                            <option value="DATE">Date</option>
+                                                                            <option value="DATE_AND_TIME">Date and Time
+                                                                            </option>
+                                                                            <option value="BOOLEAN">Boolean</option>
+                                                                            <option value="ARRAY">Array</option>
+                                                                            <option value="OBJECT">Object</option>
+                                                                            <option value="DATE">Date</option>
+                                                                        </select>
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                            </td>
+                                                            <!-- <td>
+                                                                <div class="form-group">
+                                                                    <validate for='bindTo{{$index}}'
+                                                                        required-msg="Please select a value">
+                                                                        <select class="form-control cst-form-control"
+                                                                            form-control ng-model="variable.bindTo"
+                                                                            ng-change="manageVariableSetterMethod(variable)"
+                                                                            name="bindTo{{$index}}"
+                                                                            id="bindTo{{$index}}"
+                                                                            ng-options="bindTo for bindTo in variablesBindTo"
+                                                                            required>
+                                                                        </select>
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                            </td> -->
+                                                            <td>
+                                                                <div style="font-size: 1.1rem; cursor: pointer;" 
+                                                                    ng-class="{'badge badge-secondary p-2': variable.setterMethodName!=null}" 
+                                                                    ng-if="variable.setterMethodName!=null && variable.setter"
+                                                                    ng-click="editVariableMethodCode(variable)">
+                                                                    {{variable.setterMethodName}}
+                                                                    <em class="fa fa-edit">
+                                                                    </em>
+                                                                </div>
+                                                                <div ng-if="variable.setterMethodName==null">
+                                                                    N.A
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <em style="cursor: pointer;color: red;"
+                                                                    class="fa fa-lg fa-times-circle"
+                                                                    ng-click="delete(formVm.formVariables,$index)"></em>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </ng-form>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab index="'methods'" heading="Methods">
+                            <div class="tab-pane fade show" id="methods" role="tabpanel" aria-labelledby="methods"
+                                aria-expanded="true">
+                                <div ng-if="formVm.formMethods.length == 0">
+                                    <div class="no-data-placeholder">
+                                        <h5>No Methods Found!</h5>
+                                    </div>
+                                </div>
+                                <div class="row" ng-if="formVm.formMethods.length > 0">
+                                    <div class="col-12">
+                                        <ng-form role="form" name="methodsForm" aria-label="methodsForm"
+                                            id="methodsForm" novalidate>
+                                            <div class="cst-table table-responsive" id="methodsDiv">
+                                                <table aria-describedby="table"
+                                                    class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                                    style="table-layout: auto">
+                                                    <thead class="cst-thead">
+                                                        <tr>
+                                                            <th class="white-space-unset" id="srNo">#</th>
+                                                            <th class="white-space-unset" id="method">Method</th>
+                                                            <th class="white-space-unset" id="actions">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="cst-tbody">
+                                                        <tr ng-repeat="method in formVm.formMethods track by $index">
+                                                            <td>{{$index+1}}</td>
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <validate for="value{{$index}}"
+                                                                        required-msg="Please enter method">
+                                                                        <input style="width: 80%;float: left;"
+                                                                            type="text"
+                                                                            class="form-control cst-form-control"
+                                                                            form-control required name="value{{$index}}"
+                                                                            id="value{{$index}}" ng-model="method.value"
+                                                                            ng-change="manageMethod(method)">
+                                                                        <em class="fa fa-2x fa-edit ml-15-px"
+                                                                            style="cursor: pointer;"
+                                                                            ng-click="editMethodCode(method)"></em>
+                                                                    </validate>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <em style="cursor: pointer;color: red;"
+                                                                    class="fa fa-lg fa-times-circle"
+                                                                    ng-click="delete(formVm.formMethods,$index)"></em>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </ng-form>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab index="'queries'" heading="Queries">
+                            <div class="tab-pane fade show" id="queries" role="tabpanel" aria-labelledby="queries"
+                                aria-expanded="true">
+                                <div ng-if="formVm.formQueries.length == 0">
+                                    <div class="no-data-placeholder">
+                                        <h5>No Queries Found!</h5>
+                                    </div>
+                                </div>
+                                <div class="row" ng-if="formVm.formQueries.length > 0">
+                                    <div class="col-12">
+                                        <ng-form role="form" name="queriesForm" aria-label="queriesForm"
+                                            id="queriesForm" novalidate>
+                                            <div class="cst-table table-responsive" id="queriesFormDiv">
+                                                <table aria-describedby="table"
+                                                    class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed"
+                                                    style="table-layout: auto">
+                                                    <thead class="cst-thead">
+                                                        <tr>
+                                                            <th class="white-space-unset" id="srNo">#</th>
+                                                            <th class="white-space-unset" id="name">Name</th>
+                                                            <th class="white-space-unset" width="70%"
+                                                                id="configurations">Configurations</th>
+                                                            <th class="white-space-unset" id="actions">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="cst-tbody">
+                                                        <tr ng-repeat="query in formVm.formQueries track by $index"
+                                                            style="height: 200px;">
+                                                            <td>{{$index+1}}</td>
+                                                            <td style="max-width: 200px;">
+                                                                <div class="form-group">
+                                                                    <validate for="value{{$index}}"
+                                                                        required-msg="Please enter Query Name"
+                                                                        querynameduplicate-msg="Duplicate Query Name Found">
+                                                                        <input type="text"
+                                                                            class="form-control cst-form-control"
+                                                                            form-control required name="value{{$index}}"
+                                                                            id="value{{$index}}" ng-model="query.value">
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <validate for="isResponseMandatory{{$index}}">
+                                                                        <input form-control type="checkbox"
+                                                                            name="isResponseMandatory{{$index}}"
+                                                                            id="isResponseMandatory{{$index}}"
+                                                                            ng-model="query.isResponseMandatory"
+                                                                            style="width: 30px; height: 30px;" />
+                                                                        <label
+                                                                            style="position: absolute;left: 40px;top: 3px;"
+                                                                            for='isResponseMandatory{{$index}}'
+                                                                            control-label
+                                                                            uib-tooltip="Error if No Response">
+                                                                            Error if No Response
+                                                                        </label>
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <validate for="isField{{$index}}">
+                                                                        <input form-control type="checkbox"
+                                                                            name="isField{{$index}}"
+                                                                            id="isField{{$index}}"
+                                                                            ng-model="query.isField"
+                                                                            ng-change="queryCheckboxChange(query, 'FIELD', $index);setQueryColumnNameMap(query);"
+                                                                            style="width: 30px; height: 30px;" />
+                                                                        <label
+                                                                            style="position: absolute;left: 40px;top: 3px;"
+                                                                            for='isField{{$index}}' control-label
+                                                                            uib-tooltip="Is for Field?">
+                                                                            Is for Field?
+                                                                        </label>
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                                <div class="form-group" ng-if="query.isField">
+                                                                    <validate for="toVariable{{$index}}">
+                                                                        <input form-control type="checkbox"
+                                                                            name="toVariable{{$index}}"
+                                                                            id="toVariable{{$index}}"
+                                                                            ng-model="query.toVariable"
+                                                                            ng-change="queryCheckboxChange(query, 'VARIABLE', $index)"
+                                                                            style="width: 30px; height: 30px;" />
+                                                                        <label
+                                                                            style="position: absolute;left: 40px;top: 3px;"
+                                                                            for='toVariable{{$index}}' control-label
+                                                                            uib-tooltip="Populate Field By Variable?">
+                                                                            Populate Field By Variable?
+                                                                        </label>
+                                                                        <placeholder></placeholder>
+                                                                    </validate>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="row">
+                                                                    <div class="col-8">
+                                                                        <div class="form-group">
+                                                                            <validate for='queryCode{{$index}}'
+                                                                                required-msg="Please enter query code">
+                                                                                <label for='queryCode{{$index}}'
+                                                                                    control-label
+                                                                                    uib-tooltip="Query Code">
+                                                                                    Query Code
+                                                                                </label>
+                                                                                <input type="text"
+                                                                                    class="form-control cst-form-control"
+                                                                                    form-control required name="queryCode{{$index}}"
+                                                                                    id="queryCode{{$index}}" ng-model="query.queryCode">
+                                                                                <placeholder></placeholder>
+                                                                            </validate>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-4 mt-30">
+                                                                        <div ng-if="query.queryCode">
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-info"
+                                                                                ng-click="toggleFilter(query)">
+                                                                                Edit SQL Query <em class="fa fa-database"></em>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb-2">
+                                                                    <div class="col-3">
+                                                                        <div class="form-group" ng-if="query.isPagination">
+                                                                            <validate for="recordsToFetch{{$index}}" required-msg="Please enter no of records To fetch">
+                                                                                <label
+                                                                                    for='recordsToFetch{{$index}}'
+                                                                                    control-label
+                                                                                    uib-tooltip="No of records To fetch?">
+                                                                                    No of records To fetch?
+                                                                                </label>
+                                                                                <input type="number"
+                                                                                    class="form-control cst-form-control"
+                                                                                    form-control required name="recordsToFetch{{$index}}"
+                                                                                    id="recordsToFetch{{$index}}" ng-model="query.recordsToFetch">
+                                                                                <placeholder></placeholder>
+                                                                            </validate>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <div class="card"
+                                                                            ng-if="getObjectKeys(query.paramConfig).length > 0">
+                                                                            <div class="flex-card-header">
+                                                                                Query Parameters
+                                                                                <span class="m-2 align-self-end"
+                                                                                    popover-trigger="'outsideClick'"
+                                                                                    uib-popover="Available Params : $formData$, $utilityData$, $infoData$, $stateParams$, $loggedInUserId$"
+                                                                                    title="Available Params"> <i class="fa fa-info-circle"></i>
+                                                                                </span> 
+                                                                            </div>
+                                                                            <div class="flex-card-body">
+                                                                                <div class="mt-2 d-flex flex-wrap">
+                                                                                    <div class="form-group m-1"
+                                                                                        ng-repeat="(key, value) in query.paramConfig track by key">
+                                                                                        <validate
+                                                                                            for="params{{query.queryCode}}{{key}}"
+                                                                                            required-msg="Please enter #{{key}}#">
+                                                                                            <label
+                                                                                                for='params{{query.queryCode}}{{key}}'
+                                                                                                control-label
+                                                                                                uib-tooltip="#{{key}}#">
+                                                                                                #{{key}}#
+                                                                                            </label>
+                                                                                            <input type="text"
+                                                                                                class="form-control cst-form-control"
+                                                                                                required
+                                                                                                ng-pattern="/$/"
+                                                                                                form-control required
+                                                                                                name="params{{query.queryCode}}{{key}}"
+                                                                                                placeholder="#{{key}}#"
+                                                                                                id="params{{query.queryCode}}{{key}}"
+                                                                                                ng-model="query.paramConfig[key]">
+                                                                                            <placeholder>
+                                                                                            </placeholder>
+                                                                                        </validate>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div class="card" ng-if="query.queryCode">
+                                                                            <div class="flex-card-header">
+                                                                                Query Response
+                                                                            </div>
+                                                                            <div class="card-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-2">
+                                                                                        <div class="form-group">
+                                                                                            <validate
+                                                                                                for="resultIsArray{{$index}}"
+                                                                                                required-msg="Please enter Response is Array?">
+                                                                                                <label
+                                                                                                    for='resultIsArray{{$index}}'
+                                                                                                    control-label
+                                                                                                    uib-tooltip="Is Response an array?">
+                                                                                                    Is Array?
+                                                                                                </label>
+                                                                                                <br>
+                                                                                                <input form-control
+                                                                                                    type="checkbox"
+                                                                                                    name="resultIsArray{{$index}}"
+                                                                                                    id="resultIsArray{{$index}}"
+                                                                                                    ng-model="query.isResultArray"
+                                                                                                    ng-disabled="query.isField"
+                                                                                                    ng-change="queryCheckboxChange(query, 'ARRAY', $index)"
+                                                                                                    style="width: 30px; height: 30px;" />
+                                                                                                <placeholder>
+                                                                                                </placeholder>
+                                                                                            </validate>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-10"
+                                                                                        ng-if="!query.isField && !query.isResultArray">
+                                                                                        <div class="form-group">
+                                                                                            <validate
+                                                                                                for="response{{$index}}"
+                                                                                                required-msg="Please enter Response">
+                                                                                                <label
+                                                                                                    for='response{{$index}}'
+                                                                                                    control-label
+                                                                                                    uib-tooltip="Response">
+                                                                                                    Response <em
+                                                                                                        uib-tooltip="Enter variable name where the response of the API will be stored"
+                                                                                                        tooltip-append-to-body="true"
+                                                                                                        class="fa fa-question-circle-o"></em>
+                                                                                                </label>
+                                                                                                <select
+                                                                                                    class="form-control cst-form-control"
+                                                                                                    form-control
+                                                                                                    chosen-directive="defaultResponseBindTo"
+                                                                                                    name="response{{$index}}"
+                                                                                                    id="response{{$index}}"
+                                                                                                    ng-model="query.response"
+                                                                                                    ng-options="formObject for formObject in defaultResponseBindTo"
+                                                                                                    required>
+                                                                                                </select>
+                                                                                                <placeholder>
+                                                                                                </placeholder>
+                                                                                            </validate>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-10"
+                                                                                        ng-if="!query.isField && query.isResultArray">
+                                                                                        <div class="form-group">
+                                                                                            <validate
+                                                                                                for="response{{$index}}"
+                                                                                                required-msg="Please enter Response">
+                                                                                                <label
+                                                                                                    for='response{{$index}}'
+                                                                                                    control-label
+                                                                                                    uib-tooltip="Response">
+                                                                                                    Response <em
+                                                                                                        uib-tooltip="Enter variable name where the response of the API will be stored"
+                                                                                                        tooltip-append-to-body="true"
+                                                                                                        class="fa fa-question-circle-o"></em>
+                                                                                                </label>
+                                                                                                <select
+                                                                                                    class="form-control cst-form-control"
+                                                                                                    form-control
+                                                                                                    chosen-directive="arrayResponseBindTo"
+                                                                                                    name="response{{$index}}"
+                                                                                                    id="response{{$index}}"
+                                                                                                    ng-model="query.response"
+                                                                                                    ng-options="formObject for formObject in arrayResponseBindTo"
+                                                                                                    required>
+                                                                                                </select>
+                                                                                                <placeholder>
+                                                                                                </placeholder>
+                                                                                            </validate>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-4"
+                                                                                        ng-if="query.isField && query.toVariable">
+                                                                                        <div class="form-group">
+                                                                                            <validate
+                                                                                                for="response{{$index}}"
+                                                                                                required-msg="Please enter Response">
+                                                                                                <label
+                                                                                                    for='response{{$index}}'
+                                                                                                    control-label
+                                                                                                    uib-tooltip="Response">
+                                                                                                    Response <em
+                                                                                                        uib-tooltip="Enter variable name where the response of the API will be stored"
+                                                                                                        tooltip-append-to-body="true"
+                                                                                                        class="fa fa-question-circle-o"></em>
+                                                                                                </label>
+                                                                                                <select
+                                                                                                    class="form-control cst-form-control"
+                                                                                                    form-control
+                                                                                                    chosen-directive="fieldVariableResponseBindTo"
+                                                                                                    name="response{{$index}}"
+                                                                                                    id="response{{$index}}"
+                                                                                                    ng-model="query.response"
+                                                                                                    ng-options="formObject for formObject in fieldVariableResponseBindTo"
+                                                                                                    required>
+                                                                                                </select>
+                                                                                                <placeholder>
+                                                                                                </placeholder>
+                                                                                            </validate>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div ng-class="query.toVariable?'col-6':'col-10'"
+                                                                                        ng-if="query.isField">
+                                                                                        <div class="row" ng-if="!(query.availableColumns && query.availableColumns.length>0)">
+                                                                                            <div class="form-group col-6">
+                                                                                                <validate
+                                                                                                    for="dropdownKey{{$index}}"
+                                                                                                    required-msg="Enter option key">
+                                                                                                    <label
+                                                                                                        for='dropdownKey{{$index}}'
+                                                                                                        control-label
+                                                                                                        uib-tooltip="Key for options">
+                                                                                                        Field Key
+                                                                                                    </label>
+                                                                                                    <input form-control
+                                                                                                        type="text"
+                                                                                                        class="form-control cst-form-control"
+                                                                                                        name="dropdownKey{{$index}}"
+                                                                                                        id="dropdownKey{{$index}}"
+                                                                                                        rows="3"
+                                                                                                        ng-model="query.dropdownKey"
+                                                                                                        required>
+                                                                                                    </input>
+                                                                                                    <placeholder>
+                                                                                                    </placeholder>
+                                                                                                </validate>
+                                                                                            </div>
+                                                                                            <div class="form-group col-6">
+                                                                                                <validate
+                                                                                                    for="dropdownValue{{$index}}"
+                                                                                                    required-msg="Enter option value">
+                                                                                                    <label
+                                                                                                        for='dropdownValue{{$index}}'
+                                                                                                        control-label
+                                                                                                        uib-tooltip="Value for dropdown options">
+                                                                                                        Field Value
+                                                                                                    </label>
+                                                                                                    <input form-control
+                                                                                                        type="text"
+                                                                                                        class="form-control cst-form-control"
+                                                                                                        name="dropdownValue{{$index}}"
+                                                                                                        id="dropdownValue{{$index}}"
+                                                                                                        rows="3"
+                                                                                                        ng-model="query.dropdownValue"
+                                                                                                        required>
+                                                                                                    </input>
+                                                                                                    <placeholder>
+                                                                                                    </placeholder>
+                                                                                                </validate>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="row"
+                                                                                            ng-if="(query.availableColumns && query.availableColumns.length>0)">
+                                                                                            <div class="form-group col-6">
+                                                                                                <validate
+                                                                                                    for="dropdownKey{{$index}}"
+                                                                                                    required-msg="Enter option key">
+                                                                                                    <label
+                                                                                                        for='dropdownKey{{$index}}'
+                                                                                                        control-label
+                                                                                                        uib-tooltip="Key for options">
+                                                                                                        Field Key
+                                                                                                    </label>
+                                                                                                    <select form-control
+                                                                                                        class="form-control cst-form-control"
+                                                                                                        name="dropdownKey{{$index}}"
+                                                                                                        chosen-directive="query.availableColumns"
+                                                                                                        ng-model="query.dropdownKey"
+                                                                                                        ng-options="keyName for keyName in query.availableColumns"
+                                                                                                        required>
+                                                                                                    </select>
+                                                                                                    <placeholder>
+                                                                                                    </placeholder>
+                                                                                                </validate>
+                                                                                            </div>
+                                                                                            <div class="form-group col-6">
+                                                                                                <validate
+                                                                                                    for="dropdownValue{{$index}}"
+                                                                                                    required-msg="Enter option value">
+                                                                                                    <label
+                                                                                                        for='dropdownValue{{$index}}'
+                                                                                                        control-label
+                                                                                                        uib-tooltip="Value for dropdown options">
+                                                                                                        Field Value
+                                                                                                    </label>
+                                                                                                    <select form-control
+                                                                                                        class="form-control cst-form-control"
+                                                                                                        ng-model="query.dropdownValue"
+                                                                                                        chosen-directive="query.availableColumns"
+                                                                                                        name="dropdownValue{{$index}}"
+                                                                                                        ng-options="keyName for keyName in query.availableColumns"
+                                                                                                        required>
+                                                                                                    </select>
+                                                                                                    <placeholder>
+                                                                                                    </placeholder>
+                                                                                                </validate>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row"
+                                                                                    ng-if="query.queryCode">
+                                                                                    <div class="col-6">
+                                                                                        <div class="form-group">
+                                                                                            <validate
+                                                                                                for="successMessage{{$index}}"
+                                                                                                required-msg="Please enter Success Message">
+                                                                                                <label
+                                                                                                    for='successMessage{{$index}}'
+                                                                                                    control-label
+                                                                                                    uib-tooltip="Success Message">
+                                                                                                    Success Message
+                                                                                                </label>
+                                                                                                <textarea form-control
+                                                                                                    type="text"
+                                                                                                    class="form-control cst-form-control alert alert-success"
+                                                                                                    name="successMessage{{$index}}"
+                                                                                                    id="successMessage{{$index}}"
+                                                                                                    rows="3"
+                                                                                                    ng-model="query.successMessage">
+                                                                                                    </textarea>
+                                                                                                <placeholder>
+                                                                                                </placeholder>
+                                                                                            </validate>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        <div class="form-group">
+                                                                                            <validate
+                                                                                                for="failureMessage{{$index}}"
+                                                                                                required-msg="Please enter Failure Message">
+                                                                                                <label
+                                                                                                    for='failureMessage{{$index}}'
+                                                                                                    control-label
+                                                                                                    uib-tooltip="Failure Message">
+                                                                                                    Failure Message
+                                                                                                </label>
+                                                                                                <textarea form-control
+                                                                                                    type="text"
+                                                                                                    class="form-control cst-form-control alert alert-danger"
+                                                                                                    name="failureMessage{{$index}}"
+                                                                                                    id="failureMessage{{$index}}"
+                                                                                                    rows="3"
+                                                                                                    ng-model="query.failureMessage">
+                                                                                                    </textarea>
+                                                                                                <placeholder>
+                                                                                                </placeholder>
+                                                                                            </validate>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <em style="cursor: pointer;color: red;"
+                                                                    class="fa fa-lg fa-times-circle"
+                                                                    ng-click="delete(formVm.formQueries,$index)">
+                                                                </em>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </ng-form>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-tab>
+                    </uib-tabset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="save()">
+        <em class="fa fa-save"></em>
+        Save
+    </button>
+</div>

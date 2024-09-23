@@ -56,9 +56,6 @@ public class StockManagementDaoImpl extends GenericDaoImpl<StockManagementEntity
                         reason = '%s'
                     where medicine_id = %d and id = %d ;
                     
-                    update stock_inventory_entity
-                    set medicine_stock_amount = medicine_stock_amount - %d
-                    where id = %d;
                     """.formatted(status, stockManagementDataBean.getApprovedQuantity(), healthInfraId, stockManagementDataBean.getReason(), stockManagementDataBean.getMedicineId(), stockManagementDataBean.getId(), stockManagementDataBean.getApprovedQuantity(), stockManagementDataBean.getInventoryId());
             }
             else {
@@ -77,7 +74,7 @@ public class StockManagementDaoImpl extends GenericDaoImpl<StockManagementEntity
                 stockInventoryEntity.setRequestedBy(userId);
                 stockInventoryEntity.setMedicineId(stockManagementDataBean.getMedicineId());
                 stockInventoryEntity.setUsed(0);
-                stockInventoryEntity.setApprovedBy(stockManagementDataBean.getApprovedBy());
+                stockInventoryEntity.setApprovedBy(healthInfraId);
                 stockInventoryEntity.setHealthInfraId(healthInfraId);
                 stockInventoryEntity.setMedicineStockAmount(stockManagementDataBean.getApprovedQuantity());
                 stockInventoryDao.createOrUpdate(stockInventoryEntity);

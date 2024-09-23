@@ -161,6 +161,7 @@ public class CommonUtil {
             case "TRUE":
             case "True":
             case "true":
+            case "Y":
                 bool = true;
                 break;
             case "2":
@@ -168,6 +169,7 @@ public class CommonUtil {
             case "FALSE":
             case "False":
             case "false":
+            case "N":
                 bool = false;
                 break;
             default:

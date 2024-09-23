@@ -1,2 +1,0 @@
-ALTER TABLE blocked_devices_master
-ADD is_delete_database boolean;

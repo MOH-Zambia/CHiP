@@ -486,6 +486,18 @@ public class HouseHoldLineListServiceImpl implements HouseHoldLineListService {
                     memberEntity.setMotherName(answer);
                 }
                 break;
+            case "1403":
+                if (answer != null) {
+                    MemberAdditionalInfo memberAdditionalInfo;
+                    if (memberEntity.getAdditionalInfo() != null && !memberEntity.getAdditionalInfo().isEmpty()) {
+                        memberAdditionalInfo = new Gson().fromJson(memberEntity.getAdditionalInfo(), MemberAdditionalInfo.class);
+                    } else {
+                        memberAdditionalInfo = new MemberAdditionalInfo();
+                    }
+                    memberAdditionalInfo.setNhimaCard(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                }
+                break;
+
             case "1444":
                 if (!answer.trim().isEmpty()) {
                     memberEntity.setNextOfKin(answer);

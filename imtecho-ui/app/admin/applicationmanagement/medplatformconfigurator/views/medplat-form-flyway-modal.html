@@ -1,0 +1,62 @@
+<style>
+.version-modal{
+    padding: 7px;
+    padding-bottom: 20px;
+}
+</style>
+
+<div class="modal-header">
+    <h4 class="text" ng-if="type==='FLYWAY'">Form Flyway Download</h4>
+    <h4 class="text" ng-if="type==='RESET'">Reset Draft Config</h4>
+</div>
+<div class="version-modal">
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col-12">
+                <h6>Form Name: {{form.formName}}</h6>
+                <h6>Form Code: {{form.formCode}}</h6>
+                <h6>Menu Config Name: {{form.menuName}}</h6>
+                <!-- <br ng-if="type==='FLYWAY'"> -->
+                <!-- <h6 class="text-danger text-bold" ng-if="type==='FLYWAY'">NOTE: Please update the current version to latest stable version before executing the Flyway.</h6> -->
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12">
+                <ng-form role="form" name="versionForm" aria-label="versionForm" id="versionForm" novalidate>
+                    <validate for="version"
+                        required-msg="Please select form version">
+                        <label
+                            ng-if="type==='FLYWAY'"
+                            for='selectedVersion'
+                            control-label
+                            uib-tooltip="Select which version to download">
+                            Select which version to download
+                        </label>
+                        <label
+                            ng-if="type==='RESET'"
+                            for='selectedVersion'
+                            control-label
+                            uib-tooltip="Select which version to update from">
+                            Select which version to update from
+                        </label>
+                        <select class="form-control cst-form-control"
+                            form-control
+                            chosen-directive="versionList"
+                            required
+                            name="selectedVersion"
+                            id="selectedVersion"
+                            ng-model="selectedVersion"
+                            ng-options="version for version in versionList">
+                        </select>
+                        <placeholder></placeholder>
+                    </validate>
+                </ng-form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="download()" ng-if="type==='FLYWAY'">Download</button>
+    <button class="btn btn-primary" ng-click="resetDraft()" ng-if="type==='RESET'">Update Draft</button>
+    <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+</div>

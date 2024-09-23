@@ -1766,10 +1766,15 @@ public class MyDynamicComponents {
                     }
 
                     stringOptions.add(UtilBean.getMyLabel(LabelConstants.NOT_AVAILABLE));
+                    stringOptions.add(UtilBean.getMyLabel(LabelConstants.NOT_APPLICABLE));
                     OptionTagBean option1 = new OptionTagBean();
                     option1.setKey("-1");
                     option1.setValue(UtilBean.getMyLabel(LabelConstants.NOT_AVAILABLE));
+                    OptionTagBean option2 = new OptionTagBean();
+                    option2.setKey("-1");
+                    option2.setValue(UtilBean.getMyLabel(LabelConstants.NOT_APPLICABLE));
                     motherOptions.add(option1);
+                    motherOptions.add(option2);
                     queFormBean.setOptions(motherOptions);
                     motherOptionListMap.put(Integer.valueOf(loopCounter), motherOptions);
 

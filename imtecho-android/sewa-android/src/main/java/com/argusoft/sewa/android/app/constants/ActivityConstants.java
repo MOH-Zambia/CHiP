@@ -24,8 +24,9 @@ public class ActivityConstants {
     public static final int LMS_TRANSCRIPT_ACTIVITY_REQUEST_CODE = 1018;
     public static final int LMS_CASE_STUDY_QUIZ_ACTIVITY_REQUEST_CODE = 1019;
     public static final int PPG_CAPTURE_ACTIVITY_REQUEST_CODE = 1020;
-    public static final int HH_REQUEST_CODE = 1021;
+    public static final int HH_REQUEST_CODE_FOR_NEW_FAMILY = 1021;
     public static final int QR_CODE_REQUEST_CODE = 1022;
     public static final int HIV_ACT_CODE_REQUEST_CODE = 1023;
     public static final int STOCK_MANAGEMENT_ACTIVITY_RESULT = 1026;
+    public static final int HH_REQUEST_CODE_FOR_EXISTING_FAMILY = 1027;
 }

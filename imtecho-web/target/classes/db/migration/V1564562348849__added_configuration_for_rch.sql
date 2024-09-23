@@ -1,1 +1,0 @@
-insert into system_configuration (system_key,key_value,is_active) values ('RCH_SERVICE_PUSH_ENABLE','false',true);

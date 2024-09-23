@@ -71,6 +71,8 @@
                         'datesuffix.filter',
                         'formvalidation.directive',
                         'generalutil.service',
+                        'paging-for-form-configurator-query.service',
+                        'medplat-form.util',
                         'chosen',
                         'confirmation.modal',
                         'data-persist.service',
@@ -110,14 +112,13 @@
                         'update-password.modal.controller',
                         'infrastructure.directive',
                         'selectize.generator',
-                        'techo-form-field-directive',
-                        'condition-render-directive',
                         'generate-dynamic-template.directives',
                         'listvalue.modal',
                         'search.directive',
                         'search.constants',
                         'qr-code-scan.modal.controller',
-                        'map.modal.controller'
+                        'map.modal.controller',
+                        'immunisation.directive'
                     ])
                 })
                 .state('techo.dashboard', {
@@ -2071,6 +2072,18 @@
                         'query.service',
                         'user.service'
                     ])
+                }).state('techo.admin.genericForm', {
+                    url: '/dynamicForm?{config:json}',
+                    params: { config: {} },
+                    templateUrl: 'app/admin/applicationmanagement/medplatformconfigurator/views/medplat-form-generic.html',
+                    controller: 'GenericFormController as ctrl',
+                    title: 'Form',
+                    resolve: load([
+                        'medplat-form-generic.controller',
+                        'ngInfiniteScroll',
+                        'medplat-form-v2.service',
+                        'immunisation.service'
+                    ])
                 })
                 // .state('techo.manage.updateFamilyAreaList', {
                 //     url: '/update-family-area',
@@ -2083,87 +2096,59 @@
                 //         'ngInfiniteScroll',
                 //     ])
                 // })
-                .state('techo.admin.systemConstraints', {
-                    url: '/system-constraints?selectedTab',
-                    params: {
-                        selectedTab: {
-                            value: 'manage-form-configs'
-                        }
-                    },
+                .state('techo.admin.medplatForms', {
+                    url: '/medplat-forms',
                     title: 'Form Configurator',
-                    templateUrl: 'app/admin/applicationmanagement/managesystemconstraints/views/system-constraints.html',
-                    controller: 'SystemConstraints as ctrl',
+                    templateUrl: 'app/admin/applicationmanagement/medplatformconfigurator/views/medplat-forms.html',
+                    controller: 'MedplatForms as ctrl',
                     resolve: load([
-                        'system-constraints.controller',
-                        'system-constraint.service',
+                        'medplat-forms.controller',
+                        'medplat-form.service',
+                        'medplat-form-v2.service',
                         'statecapitalize.filter',
+                        'medplat-form-flyway.controller'
                     ])
                 })
-                .state('techo.admin.manageSystemConstraintForm', {
-                    url: '/system-constraint/form/:uuid',
-                    templateUrl: 'app/admin/applicationmanagement/managesystemconstraints/views/manage-system-constraint-form.html',
-                    title: 'Manage Form',
-                    controller: 'ManageSystemConstraintForm as ctrl',
+                .state('techo.admin.medplatForm', {
+                    url: '/medplat-form/form/:uuid',
+                    templateUrl: 'app/admin/applicationmanagement/medplatformconfigurator/views/medplat-form-V2.html',
+                    title: 'Manage Form V2',
+                    controller: 'MedplatFormV2 as ctrl',
                     resolve: load([
-                        'manage-system-constraint-form.controller',
-                        'system-constraint.service',
-                    ])
-                })
-                .state('techo.admin.manageSystemConstraintForms', {
-                    url: '/system-constraint/forms?menuConfigId',
-                    params: {
-                        menuConfigId: {
-                            value: null
-                        }
-                    },
-                    templateUrl: 'app/admin/applicationmanagement/managesystemconstraints/views/manage-system-constraint-form.html',
-                    title: 'Manage Forms',
-                    controller: 'ManageSystemConstraintForm as ctrl',
-                    resolve: load([
-                        'manage-system-constraint-form.controller',
-                        'system-constraint.service',
-                    ])
-                })
-                .state('techo.admin.configureDynamicTemplate', {
-                    url: '/system-constraint/form/dynamic-template/:uuid',
-                    templateUrl: 'app/admin/applicationmanagement/managesystemconstraints/views/configure-dynamic-template.html',
-                    title: 'Configure Dynamic Template',
-                    controller: 'ConfigureDynamicTemplate as ctrl',
-                    resolve: load([
-                        'configure-dynamic-template.controller',
-                        'configure-dynamic-template.directives',
-                        'system-constraint.service',
-                    ])
-                })
-                .state('techo.admin.configureMobileTemplate', {
-                    url: '/system-constraint/form/mobile-template/:uuid',
-                    templateUrl: 'app/admin/applicationmanagement/managesystemconstraints/views/configure-mobile-template.html',
-                    title: 'Configure Mobile Template',
-                    controller: 'ConfigureMobileTemplate as ctrl',
-                    resolve: load([
-                        'configure-mobile-template.controller',
-                        'system-constraint.service',
+                        'medplat-form-v2.controller',
+                        'medplat-form.directives',
+                        'medplat-form.modals',
+                        'medplat-form-v2.service',
+                        'query.service',
+                        'ui.ace',
+                        'ui.tree',
                         'dndLists'
                     ])
                 })
-                .state('techo.admin.manageSystemConstraintStandard', {
-                    url: '/system-constraint/standard/:id',
-                    templateUrl: 'app/admin/applicationmanagement/managesystemconstraints/views/manage-system-constraint-standard.html',
-                    title: 'Manage Form Standard',
-                    controller: 'ManageSystemConstraintStandard as ctrl',
+                .state('techo.admin.medplatFormWebLayout', {
+                    url: '/medplat-form/form/web-layout/:uuid',
+                    templateUrl: 'app/admin/applicationmanagement/medplatformconfigurator/views/medplat-form-web-layout.html',
+                    title: 'Configure Form Web Layout',
+                    controller: 'MedplatFormWebLayout as ctrl',
                     resolve: load([
-                        'manage-system-constraint-standard.controller',
-                        'system-constraint.service',
+                        'medplat-form-web-layout.controller',
+                        'medplat-form-web-layout.directives',
+                        'medplat-form-web-layout.modals',
+                        'medplat-form.service',
+                        'medplat-form-v2.service',
+                        'ui.ace',
+                        'dndLists'
                     ])
                 })
-                .state('techo.admin.manageSystemConstraintStandardField', {
-                    url: '/system-constraint/standard-field/:uuid',
-                    templateUrl: 'app/admin/applicationmanagement/managesystemconstraints/views/manage-system-constraint-standard-field.html',
-                    title: 'Manage Form Standard Field',
-                    controller: 'ManageSystemConstraintStandardField as ctrl',
+                .state('techo.admin.medplatFormMobileLayout', {
+                    url: '/medplat-form/form/mobile-layout/:uuid',
+                    templateUrl: 'app/admin/applicationmanagement/medplatformconfigurator/views/medplat-form-mobile-layout.html',
+                    title: 'Configure Mobile Layout',
+                    controller: 'MedplatFormMobileLayout as ctrl',
                     resolve: load([
-                        'manage-system-constraint-standard-field.controller',
-                        'system-constraint.service',
+                        'medplat-form-mobile-layout.controller',
+                        'medplat-form.service',
+                        'dndLists'
                     ])
                 })
                 .state('techo.manage.healthInfrastructureType', {
@@ -2428,6 +2413,26 @@
                         'user.service',
                         'paging.service'
                     ])
+                }).state('techo.manage.monthlyfacilityreportingform', {
+                    url: '/monthlyfacilityreportingform/:id',
+                    title: 'Monthly Facility Report',
+                    templateUrl: 'app/manage/monthlyfacilityreportingform/views/monthly-facility-reporting-form.html',
+                    controller: 'MonthlyFacilityReportingForm as ctrl',
+                    resolve: load([
+                        'monthly-facility-reporting-form.controller',
+                        'monthly-reporting-form.associations'
+                    ])
+                }).state('techo.manage.monthlyfacilityreportingformsearch', {
+                    url: '/monthlyfacilityreportingformsearch',
+                    title: 'Monthly Facility Report Search',
+                    templateUrl: 'app/manage/monthlyfacilityreportingform/views/monthly-facility-reporting-search.html',
+                    controller: 'MonthlyFacilityReportingFormSearch as ctrl',
+                    resolve: load([
+                        'monthly-facility-reporting-form-search.controller',
+                        'user.service',
+                        'paging.service',
+                        'manualsync.service'
+                    ])
                 }).state('techo.manage.integrateddailyregister', {
                     url: '/integrated-daily-register/:id',
                     title: 'Integrated Daily Activities Register',
@@ -2482,7 +2487,38 @@
                         'query.service',
                         'paging.service',
                     ])
-                }).state('techo.manage.bcgsurveyfillform', {
+                }).state('techo.manage.servicevisitedit', {
+                    url: '/formService',
+                    title: 'Service Visit Details',
+                    templateUrl: 'app/manage/formservice/views/formList.html',
+                    controller: 'FormListController as ctrl',
+                    resolve: load([
+                        'paging-for-query-builder.service',
+                        'authentication.service',
+                        'user.service',
+                        'role.service',
+                        'alasql',
+                        'query.service',
+                        'paging.service',
+                        'formList.controller'
+                    ])
+                }).state('techo.manage.userdetails', {
+                    url: '/formService/userDetails/:formName/:locationId/:fromDate/:toDate',
+                    title: 'User Details',
+                    templateUrl: 'app/manage/formservice/views/userDetails.html',
+                    controller: 'UserDetailsController as ctrl',
+                    resolve: load([
+                        'paging-for-query-builder.service',
+                        'authentication.service',
+                        'user.service',
+                        'role.service',
+                        'alasql',
+                        'query.service',
+                        'paging.service',
+                        'userDetails.controller',
+                        'ngInfiniteScroll'
+                    ])
+                }).state('techo.manage.service.visit', {
                     url: '/bcgsurveyform/:memberId/:bcgId',
                     title: 'BCG Survey Fill Form',
                     templateUrl: 'app/manage/bcgsurveyform/views/bcg-survey-fill-form.html',

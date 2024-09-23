@@ -1,5 +1,8 @@
 package com.argusoft.imtecho.mobile.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class GbvDto {
     private Boolean furtherTreatment;
     private String healthInfra;
@@ -22,6 +25,18 @@ public class GbvDto {
     private boolean pregnantDueToForce;
     private boolean forcedPregnancyLossPast12Months;
     private boolean coercedOrForcedMarriagePast12Months;
+    @Getter
+    @Setter
+    private String photoDocId;
+    @Getter
+    @Setter
+    private String photoUniqueId;
+    @Getter
+    @Setter
+    private String typeOfGbv;
+    @Setter
+    @Getter
+    private String typeOfDifficulty;
 
     public Boolean getFurtherTreatment() {
         return furtherTreatment;
@@ -119,7 +134,7 @@ public class GbvDto {
         this.severeCase = severeCase;
     }
 
-    public boolean  getClientResponse() {
+    public boolean getClientResponse() {
         return clientResponse;
     }
 

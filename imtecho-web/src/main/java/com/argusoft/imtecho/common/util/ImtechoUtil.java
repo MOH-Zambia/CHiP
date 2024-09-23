@@ -476,6 +476,7 @@ public class ImtechoUtil {
         Boolean bool = null;
         switch (trueOrFalse) {
             case "T":
+            case "true":
             case "1":
             case "Positive":
             case "FHW_ANC": //for navigation from LMPFU to ANC
@@ -484,6 +485,7 @@ public class ImtechoUtil {
                 break;
             case "F":
             case "2":
+            case "false":
             case "3":
             case "Negative":
             case "INELIGIBLE":
@@ -704,8 +706,35 @@ public class ImtechoUtil {
         }
     }
 
+    public static void printSomething(String str) {
+        System.out.println(">>>>>>>>>> " + str);
+    }
+
     public static <T> T getValueOrDefault(T value, T defaultValue) {
         return value == null ? defaultValue : value;
+    }
+
+    public static String convertAnswersWithOther(String answer) {
+        if (answer == null || answer.isEmpty()) {
+            return "";
+        }
+        String[] multiAnswer = answer.split(",");
+        List<String> finalAnswer = new ArrayList<>();
+        for (String answer1 : multiAnswer) {
+            if (answer1.equalsIgnoreCase("OTHER")) {
+                continue;
+            } else {
+                finalAnswer.add(answer1);
+            }
+        }
+        StringBuilder answerString = new StringBuilder();
+        for (String answer1 : finalAnswer) {
+            answerString.append(answer1).append(",");
+        }
+        if (answerString.toString().endsWith(",")) {
+            answerString.deleteCharAt(answerString.length() - 1);
+        }
+        return answerString.toString();
     }
 
 }

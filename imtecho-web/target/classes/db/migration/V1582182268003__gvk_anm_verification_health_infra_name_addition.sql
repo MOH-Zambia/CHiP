@@ -1,3 +1,0 @@
-alter table gvk_anm_verification_response
-drop column if exists delivery_health_infrastructure_name,
-add column delivery_health_infrastructure_name text;

@@ -1,4 +1,0 @@
-alter table covid_travellers_info
-add column suggest_covid_test boolean;
-alter table covid_travellers_info
-add column is_shortness_of_breath boolean;

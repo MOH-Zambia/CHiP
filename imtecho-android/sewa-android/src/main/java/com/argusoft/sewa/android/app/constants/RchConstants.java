@@ -24,12 +24,12 @@ public class RchConstants {
 
     //
     public static final String NOT_DONE = "NOT_DONE";
+    public static final String SMAG_TRAINED = "SMAG Trained";
 
     //Family Planning Methods
     public static final String FEMALE_STERILIZATION = "FMLSTR";
     public static final String MALE_STERILIZATION = "MLSTR";
     public static final String IUCD_5_YEARS = "IUCD5";
-    public static final String SMAG_TRAINED = "SMAG Trained";
     public static final String IUCD_10_YEARS = "IUCD10";
     public static final String CONDOM = "CONDOM";
     public static final String ORAL_PILLS = "ORALPILLS";

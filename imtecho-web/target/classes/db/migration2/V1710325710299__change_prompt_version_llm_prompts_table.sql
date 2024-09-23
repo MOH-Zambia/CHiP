@@ -1,1 +1,0 @@
-UPDATE llm_prompts set prompt_version = 'v0.1';

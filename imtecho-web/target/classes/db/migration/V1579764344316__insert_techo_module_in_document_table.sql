@@ -1,1 +1,0 @@
-INSERT into document_module_master(module_name,base_path,created_by, created_on) values ('TECHO','techo',-1 , now());

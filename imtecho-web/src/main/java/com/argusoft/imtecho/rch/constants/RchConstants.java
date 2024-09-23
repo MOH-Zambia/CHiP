@@ -44,6 +44,7 @@ public class RchConstants {
     public static final String MEMBER_STATUS_MIGRATED = "MIGRATED";
     public static final String MEMBER_STATUS_AVAILABLE = "AVAILABLE";
     public static final String MEMBER_STATUS_WRONGLY_REGISTERED = "WRONGLY_REGISTERED";
+    public static final String MALARIA_DBS_ANALYSIS = "ANALYSIS";
 
     public static final String PREGNANCY_OUTCOME_MTP = "MTP";
     public static final String PREGNANCY_OUTCOME_LIVE_BIRTH = "LBIRTH";

@@ -1,2 +1,0 @@
-alter table health_infrastructure_details
-add column is_idsp boolean;

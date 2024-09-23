@@ -137,7 +137,7 @@ public class StockManagementActivity extends MenuActivity implements View.OnClic
             startActivity(myIntent);
             finish();
         }
-        setTitle(UtilBean.getTitleText(LabelConstants.STOCK_MANAGEMENT));
+        setTitle(UtilBean.getTitleText(UtilBean.getFullFormOfEntity().get(FormConstants.STOCK_MANAGEMENT)));
     }
 
     private void initView() {
@@ -158,7 +158,7 @@ public class StockManagementActivity extends MenuActivity implements View.OnClic
 
     private void startLocationSelectionActivity() {
         myIntent = new Intent(context, LocationSelectionActivity_.class);
-        myIntent.putExtra(FieldNameConstants.TITLE, LabelConstants.STOCK_MANAGEMENT);
+        myIntent.putExtra(FieldNameConstants.TITLE, UtilBean.getFullFormOfEntity().get(FormConstants.STOCK_MANAGEMENT));
         startActivityForResult(myIntent, ActivityConstants.LOCATION_SELECTION_ACTIVITY_REQUEST_CODE);
     }
 
@@ -324,7 +324,7 @@ public class StockManagementActivity extends MenuActivity implements View.OnClic
                 textView.setBackground(ContextCompat.getDrawable(context, R.drawable.border_for_stock));
 
                 MaterialTextView qtyTextView = new MaterialTextView(context);
-                qtyTextView.setText(String.valueOf(stockInventoryBean.getDeliveredQuantity() - stockInventoryBean.getUsed()));
+                qtyTextView.setText(stockInventoryBean.getDeliveredQuantity() - stockInventoryBean.getUsed() > 0 ? String.valueOf(stockInventoryBean.getDeliveredQuantity() - stockInventoryBean.getUsed()) : "0");
                 qtyTextView.setPadding(20, 30, 20, 30);
                 qtyTextView.setLayoutParams(qtyParams);
                 qtyTextView.setTextColor(ContextCompat.getColor(context, R.color.black));

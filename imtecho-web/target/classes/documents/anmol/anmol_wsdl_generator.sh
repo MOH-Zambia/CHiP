@@ -1,1 +1,0 @@
-wsimport -d /home/slamba/work/techo/imtecho/ImtechoV2/imtecho-web/src/main/java -p  com.argusoft.imtecho.anmol.wsdl  -keep -verbose -b http://www.w3.org/2001/XMLSchema.xsd -b xsd.xjb https://rchrpt.nhm.gov.in/TRCH_rel/?WSDL

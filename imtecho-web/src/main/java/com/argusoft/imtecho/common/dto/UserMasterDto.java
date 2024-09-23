@@ -85,7 +85,7 @@ public class UserMasterDto {
     private String actionBy;
     private String otp;
     private Integer defaultHealthInfrastructure;
-    private Boolean aadharNumberAvailable;
+//    private Boolean aadharNumberAvailable;
     private Date userLastLogin;
     private Boolean isUserSmagTrained;
     private String assignedLocations;
@@ -587,13 +587,13 @@ public class UserMasterDto {
         this.defaultHealthInfrastructure = defaultHealthInfrastructure;
     }
 
-    public Boolean getAadharNumberAvailable() {
-        return aadharNumberAvailable;
-    }
-
-    public void setAadharNumberAvailable(Boolean aadharNumberAvailable) {
-        this.aadharNumberAvailable = aadharNumberAvailable;
-    }
+//    public Boolean getAadharNumberAvailable() {
+//        return aadharNumberAvailable;
+//    }
+//
+//    public void setAadharNumberAvailable(Boolean aadharNumberAvailable) {
+//        this.aadharNumberAvailable = aadharNumberAvailable;
+//    }
 
     public Date getUserLastLogin() {
         return userLastLogin;
@@ -684,7 +684,7 @@ public class UserMasterDto {
                 ", actionBy='" + actionBy + '\'' +
                 ", otp='" + otp + '\'' +
                 ", defaultHealthInfrastructure=" + defaultHealthInfrastructure +
-                ", aadharNumberAvailable=" + aadharNumberAvailable +
+//                ", aadharNumberAvailable=" + aadharNumberAvailable +
                 ", userLastLogin=" + userLastLogin +
                 ", isUserSmagTrained=" + isUserSmagTrained +
                 '}';

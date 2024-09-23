@@ -1,0 +1,472 @@
+<style>
+    .configuration-container{
+        display: flex;
+        width: 100%;
+        /* min-height: 400px; */
+        flex-wrap: wrap;
+    }
+
+    .table-list{
+        width: 39%;
+        overflow: visible;
+    }
+
+    .table-list::-webkit-scrollbar{
+        display: none;
+    }
+
+
+    .table-list-card {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        height: auto;
+        border: 1px solid #dfdfdf;
+    }
+
+    .table-list-card li {
+        padding: 8px 10px;
+        border-bottom: 1px solid #dfdfdf;
+        position: relative;
+    }
+
+    .table-list-card li:hover,
+    .table-list-card li.current {
+        background: #efefef;
+        font-weight: 500;
+        cursor: pointer;
+        border-color: transparent;
+    }
+
+    .divider{
+        width: 1%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .divider-vertical{
+        height: 75%;
+        width: 30%;
+        background-color: gray;
+        border-radius: 20px;
+        cursor: col-resize;
+    }
+
+    .divider-vertical:hover{
+        background-color: cornflowerblue;
+    }
+
+    .config-container{
+        width: 60%;
+        /* background-color: aliceblue; */
+    }
+
+    .config-container-table{
+        background-color: aliceblue;
+    }
+
+    .filter-div{
+        width: 60%;
+        position: fixed;
+        top: 1px;
+        right: calc(-61%);
+        bottom: 1px;
+        background: #fff;
+        -webkit-transition: all .5s;
+        transition: all .5s;
+        z-index: 1056;
+        -webkit-box-shadow: -1px 0px 2px 2px rgba(0, 0, 0, 0.16);
+        box-shadow: -1px 0px 2px 2px rgba(0, 0, 0, 0.16);
+    }
+</style>
+
+
+
+
+<div class="modal-backdrop fade in" style="z-index: 1050;" ng-click="toggleFilter(true)" ng-if="showBackdropForSQLEdit"></div>
+<div class="modal-header" style="font-size: 18px;">
+    <h4 class="text">Configure Backend</h4>
+    <div class="pull-right">
+        <em class="fa fa-2x fa-times fa-times-red" ng-click="cancel()"></em>
+    </div>
+</div>
+
+<div class="modal-body" style="overflow-y: scroll;">
+    <!-- {{backendConfiguration}} -->
+    <div class="container-fluid">
+        <form role="form" name="backendConfigurationForm" aria-label="backendConfigurationForm" id="backendConfigurationForm" novalidate></ng-form>
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" class="btn btn-primary mr-0 mb-3" ng-click="addConfig(backendConfiguration)">Add Config <em class="fa fa-plus-circle"></em></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" ng-if="backendConfiguration.length > 0">
+                    <div class="configuration-container">
+                        <div class="table-list" id="table-list">
+                            <div ui-tree id="tree-root" class="angular-ui-tree" ng-if="backendConfiguration.length > 0">
+                                <ol ui-tree-nodes ng-model="backendConfiguration" class="angular-ui-tree-nodes">
+                                    <li ng-repeat="config in backendConfiguration" ui-tree-node
+                                        ng-include="'app/admin/applicationmanagement/medplatformconfigurator/modals/backend-configuration/backend-configs-nodes.html'"
+                                        class="angular-ui-tree-node">
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="divider">
+                            <div class="divider-vertical" ng-mousedown="startResize($event)"></div>
+                        </div>
+
+                        <div class="config-container" id="config-container" style="margin-top: 10px; padding-left: 10px;" ng-if="currentConfig">
+
+                            <div class="filter-div">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5 class="filter-div-title"><span style="color: red;">BACKEND <em class="fa fa-server"></em></span> | Enter Query for ( {{currentConfig.queryCode}} )</h5>
+                                    </div>
+                                </div>
+                                <div class="filter-div-body">
+                                    <!-- <div class="form-group">
+                                        <validate for='query' required-msg="Please enter query">
+                                            <label
+                                                for='query'
+                                                control-label>
+                                                Query
+                                            </label>
+                                            <textarea form-control class="form-control cst-form-control" name="query" id="query" ng-model="currentConfig.query" rows="10" placeholder="Enter Query" required></textarea>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div> -->
+                                    <div 
+                                        style="height: 65%;" ui-ace="{
+                                        mode: 'pgsql',
+                                        theme: 'solarized_dark',
+                                        useWrapMode : true,
+                                        require: ['ace/ext/language_tools'],
+                                        advanced: {
+                                            enableSnippets: true,
+                                            enableBasicAutocompletion: true,
+                                            enableLiveAutocompletion: true
+                                            }
+                                        }" 
+                                        ng-change="queryStringChanged(currentConfig, currentConfig.query)"
+                                        ng-model-options="{debounce: 800}"
+                                        ng-model="currentConfig.query">
+                                    </div>
+                                    <hr/>
+                                    <div class="mt-3">
+                                        <button class="btn btn-secondary pull-right" ng-click="toggleFilter(true)">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row inline-form">
+                                <div class="col-5">
+
+                                    <div class="form-group">
+                                        <validate for='queryName' required-msg="Please enter query name">
+                                            <label
+                                                for='queryName'
+                                                control-label>
+                                                Query Name
+                                            </label>
+                                            <input form-control
+                                                type="text"
+                                                class="form-control cst-form-control"
+                                                name="queryName"
+                                                id="queryName"
+                                                ng-model="currentConfig.queryName"
+                                                ng-pattern="/$/"
+                                                placeholder="Enter Query Name"
+                                                required/>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+
+                                </div>
+                                <div class="col-5">
+
+                                    <div class="form-group">
+                                        <validate for='queryCode' required-msg="Please enter query code" pattern-msg="no spaces allowed">
+                                            <label
+                                                for='queryCode'
+                                                control-label>
+                                                Query Code <span class="align-self-end" popover-trigger="'mouseenter'" uib-popover="Once saved this cannot be changed later"><i class="fa fa fa-info-circle"></i></span>
+                                            </label>
+                                            <input form-control
+                                                type="text"
+                                                class="form-control cst-form-control"
+                                                name="queryCode"
+                                                id="queryCode"
+                                                ng-model="currentConfig.queryCode"
+                                                ng-disabled="currentConfig.fetchedFromServer"
+                                                ng-change="checkUniqueQueryCode(currentConfig, currentConfig.queryCode)"
+                                                ng-pattern="/^\S*$/"
+                                                placeholder="Enter Query Code"
+                                                required/>
+                                                <small class="alert alert-danger checkbox-padding valid-feedback" ng-if="duplicateQueryCodeError">Duplicate Code</small>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-group d-flex justify-content-end">
+                                        <button class="btn" ng-class="{'btn-outline-info': currentConfig.queryCode, 'btn-outline-dark': !currentConfig.queryCode}" ng-disabled="!currentConfig.queryCode" ng-click="toggleFilter()">Edit Query <em class="fa fa-database"></em></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row inline-form">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <validate for='hasLoop' required-msg="Please select">
+                                            <label
+                                                for='hasLoop'
+                                                control-label>
+                                                Has Loop?
+                                            </label>
+                                            <input form-control
+                                                type="checkbox"
+                                                name="hasLoop"
+                                                id="hasLoop"
+                                                ng-model="currentConfig.hasLoop"
+                                                style="width: 30px; height: 30px;" />
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <validate for='isEventResource' required-msg="Please select">
+                                            <label
+                                                for='isEventResource'
+                                                control-label >
+                                                Is Event Resource? <span class="align-self-end" popover-trigger="'mouseenter'" uib-popover="Only one config is allowed to be an event resource"><i class="fa fa fa-info-circle"></i></span>
+                                            </label>
+                                            <input form-control
+                                                type="checkbox"
+                                                name="isEventResource"
+                                                id="isEventResource"
+                                                ng-change="isEventResourceChanged(currentConfig, currentConfig.isEventResource)"
+                                                ng-disabled="isEventResourceTrueInConfig && isEventResourceTrueInConfigObject !== currentConfig"
+                                                ng-model="currentConfig.isEventResource"
+                                                style="width: 30px; height: 30px;" />
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group">
+                                        <validate for='queryPath' required-msg="Please enter query path">
+                                            <label
+                                                for='queryPath'
+                                                control-label>
+                                                Query Path
+                                            </label>
+                                            <input form-control
+                                                type="text"
+                                                class="form-control cst-form-control"
+                                                name="queryPath"
+                                                id="queryPath"
+                                                ng-model="currentConfig.queryPath"
+                                                ng-pattern="/$/"
+                                                placeholder="Enter Query Path"
+                                                required/>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+
+                                    <div class="form-group" ng-if="currentConfig.isEventResource">
+                                        <validate for='eventResourceIdKey' required-msg="Please select an event">
+                                            <label
+                                                for='eventResourceIdKey'
+                                                control-label>
+                                                Event Name <span class="align-self-end" popover-trigger="'mouseenter'" uib-popover="Only FORM_SUBMITTED events are shown"><i class="fa fa fa-info-circle"></i></span>
+                                            </label>
+                                            <select name="eventResourceIdKey"
+                                                form-control
+                                                id="eventResourceIdKey" 
+                                                chosen-directive="formSubmittedEvents" 
+                                                ng-model="currentConfig.eventUUID"
+                                                required
+                                                ng-options="option.key as option.value for option in formSubmittedEvents">
+                                                <option value="">--Select Event--</option>
+                                            </select>
+                                            <placeholder></placeholder>
+                                        </validate>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cst-table table-responsive" id="backendConfigurationJsonDiv" style="height: 100%; overflow: visible;" ng-if="currentConfig.params.length > 0">
+                                <table aria-describedby="table" class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed" style="table-layout: auto">
+
+                                    <thead class="cst-thead">
+                                        <tr>
+                                            <th class="white-space-unset" id="name" width="10%">Param</th>
+                                            <th class="white-space-unset" id="configurations">Type</th>
+                                            <th class="white-space-unset" id="actions" colspan="3">Config</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="cst-tbody">
+                                        <tr ng-repeat="(configIndex, config) in currentConfig.params track by configIndex">
+                                            <td>
+                                                <h5>
+                                                    <span class="badge badge-pill badge-secondary">{{config.key}}</span>
+                                                </h5>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <validate for='type{{configIndex}}' required-msg="Please select type">
+                                                        <select
+                                                        class="form-control cst-form-control"
+                                                        form-control
+                                                        name="type{{configIndex}}"
+                                                        id="type{{configIndex}}"
+                                                        required
+                                                        ng-change="paramConfigTypeChange(config)"
+                                                        ng-model="config.type">
+                                                        <option value="">--Select--</option>
+                                                        <option value="FIELD">FIELD</option>
+                                                        <option value="REFERENCE_QUERY">REFERENCE QUERY</option>
+                                                        <option value="REFERENCE_QUERY_RESPONSE">REFERENCE QUERY RESPONSE</option>
+                                                        <option value="META_DATA">META DATA</option>
+                                                        </select>
+                                                        <placeholder></placeholder>
+                                                    </validate>
+                                                </div>
+                                            </td>
+                                            <td ng-if="config.type === 'FIELD'" colspan="3">
+                                                <div class="form-group">
+                                                    <validate for='valueKey{{configIndex}}' required-msg="Please select field">
+                                                        <select name="valueKey{{configIndex}}"
+                                                            form-control
+                                                            id="valueKey{{configIndex}}" 
+                                                            chosen-directive="fieldList" 
+                                                            ng-model="config.valueKey"
+                                                            required
+                                                            ng-options="option.key as option.value for option in fieldList">
+                                                            <option value="">--Select Field--</option>
+                                                        </select>
+                                                        <placeholder></placeholder>
+                                                    </validate>
+                                                </div>
+                                            </td>
+                                            <td ng-if="config.type === 'REFERENCE_QUERY'">
+                                                <div class="form-group">
+                                                    <validate for='referenceQuery{{configIndex}}' required-msg="Please select query code">
+                                                        <select name="referenceQuery{{configIndex}}"
+                                                            form-control
+                                                            id="referenceQuery{{configIndex}}" 
+                                                            chosen-directive="configListForParams"
+                                                            ng-model="config.referenceQuery"
+                                                            required
+                                                            ng-options="option.key as option.value for option in configListForParams">
+                                                            <option value="">--Select Config--</option>
+                                                        </select>
+                                                        <placeholder></placeholder>
+                                                    </validate>
+                                                </div>
+                                            </td>
+                                            <td ng-if="config.type === 'REFERENCE_QUERY' && config.referenceQuery">
+                                                <div class="form-group">
+                                                    <validate for='referenceParam{{configIndex}}' required-msg="Please select query param">
+                                                        <select name="referenceParam{{configIndex}}"
+                                                            id="referenceParam{{configIndex}}" 
+                                                            form-control
+                                                            chosen-directive="configMapForParamList[config.referenceQuery]"
+                                                            ng-model="config.referenceParam"
+                                                            required
+                                                            ng-options="option.key as option.value for option in configMapForParamList[config.referenceQuery]">
+                                                            <option value="">--Select Query Param--</option>
+                                                        </select>
+                                                        <placeholder></placeholder>
+                                                    </validate>
+                                                </div>
+                                            </td>
+                                            <td ng-if="config.type === 'REFERENCE_QUERY_RESPONSE'">
+                                                <div class="form-group">
+                                                    <validate for='referenceQuery{{configIndex}}' required-msg="Please select query code">
+                                                        <select name="referenceQuery{{configIndex}}"
+                                                            id="referenceQuery{{configIndex}}" 
+                                                            chosen-directive="configListForParams"
+                                                            required
+                                                            form-control
+                                                            ng-model="config.referenceQuery"
+                                                            ng-options="option.key as option.value for option in configListForParams">
+                                                            <option value="">--Select Query Code--</option>
+                                                        </select>
+                                                        <placeholder></placeholder>
+                                                    </validate>
+                                                </div>
+                                            </td>
+                                            <td ng-if="config.type === 'REFERENCE_QUERY_RESPONSE' && config.referenceQuery">
+                                                <div class="d-flex justify-content-between align-content-center">
+                                                    <div class="align-self-center pb-2">
+                                                        <span class="m-2 align-self-end"
+                                                            popover-trigger="'mouseenter'"
+                                                            uib-popover="Enter the returning key from the query"> <i class="fa fa-info-circle"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="form-group flex-grow-1">
+                                                        <validate for='referenceParam{{configIndex}}' required-msg="Please select query param">
+                                                            <input type="text" id="referenceParam{{configIndex}}" name="referenceParam{{configIndex}}" form-control
+                                                                ng-model="config.referenceParam" ng-pattern="/$/"
+                                                                class="form-control cst-form-control" placeholder="Enter Response Key"
+                                                                ng-required="true" maxlength="255">
+                                                                <placeholder></placeholder>
+                                                        </validate>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td ng-if="config.type === 'META_DATA'" colspan="3">
+                                                <div class="d-flex justify-content-between align-content-center">
+                                                    <div class="align-self-center pb-2">
+                                                        <span class="m-2 align-self-end"
+                                                            popover-trigger="'mouseenter'"
+                                                            uib-popover="Available Params : $formData$, $utilityData$, $infoData$, $stateParams$"
+                                                            > <i class="fa fa-info-circle"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="form-group flex-grow-1">
+                                                        <validate for='valueKey{{configIndex}}' required-msg="Please enter custom path">
+                                                            <input type="text" id="valueKey{{configIndex}}" name="valueKey{{configIndex}}" form-control
+                                                                ng-model="config.valueKey" ng-pattern="/$/"
+                                                                class="form-control cst-form-control" placeholder="Enter Custom Path"
+                                                                ng-required="true" maxlength="255">
+                                                                <placeholder></placeholder>
+                                                        </validate>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="config-container" id="config-container" style="margin-top: 10px; padding-left: 10px;" ng-if="currentConfig === null">
+                            <div class="no-data-placeholder">
+                                <h5>Please select a config from the left panel!</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" ng-if="backendConfiguration.length === 0">
+                    <div class="no-data-placeholder">
+                        <h5>No Backend Configs Found!</h5>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="save()">
+        <em class="fa fa-save"></em>
+        Save
+    </button>
+</div>

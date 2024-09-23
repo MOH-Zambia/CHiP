@@ -1,1 +1,0 @@
-update notification_type_master set code = 'TRAVELLERS_SCREENING' where code = 'TSA';

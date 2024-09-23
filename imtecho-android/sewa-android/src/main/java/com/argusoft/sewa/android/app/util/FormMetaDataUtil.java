@@ -421,6 +421,24 @@ public class FormMetaDataUtil {
         }
 
         String tmpDataObj;
+        tmpDataObj = FullFormConstants.getFullFormsOfPlace(memberBean.getPlaceOfBirth());
+        if (tmpDataObj != null) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PLACE_OF_BIRTH, tmpDataObj);
+        }
+        if (memberBean.getBirthWeight() != null) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.BIRTH_WEIGHT, memberBean.getBirthWeight().toString());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.BIRTH_WEIGHT_DISPLAY, memberBean.getBirthWeight().toString() + " " + UtilBean.getMyLabel("Kgs"));
+        }
+        MemberAdditionalInfoDataBean memberAdditionalInfo = new MemberAdditionalInfoDataBean();
+        if (memberBean.getAdditionalInfo() != null && !memberBean.getAdditionalInfo().isEmpty()) {
+            Gson gson = new Gson();
+            memberAdditionalInfo = gson.fromJson(memberBean.getAdditionalInfo(), MemberAdditionalInfoDataBean.class);
+        }
+
+
+        if (memberAdditionalInfo.getHivTest() != null && !memberAdditionalInfo.getHivTest().equals(RchConstants.NOT_DONE)) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HIV_TEST, memberAdditionalInfo.getHivTest());
+        }
         if (memberBean.getLastMethodOfContraception() != null) {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LAST_METHOD_OF_CONTRACEPTION, FullFormConstants.convertToCamelCase(memberBean.getLastMethodOfContraception()));
             tmpDataObj = FullFormConstants.getFullFormOfFamilyPlanningMethods(memberBean.getLastMethodOfContraception());
@@ -523,54 +541,51 @@ public class FormMetaDataUtil {
             }
         }
 
-        MemberAdditionalInfoDataBean memberAdditionalInfo = new MemberAdditionalInfoDataBean();
-        if (memberBean.getAdditionalInfo() != null && !memberBean.getAdditionalInfo().isEmpty()) {
-            Gson gson = new Gson();
-            memberAdditionalInfo = gson.fromJson(memberBean.getAdditionalInfo(), MemberAdditionalInfoDataBean.class);
-            if (memberAdditionalInfo.getLastServiceLongDate() != null && memberAdditionalInfo.getLastServiceLongDate() > 0) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LAST_SERVICE_DATE, memberAdditionalInfo.getLastServiceLongDate().toString());
-            } else {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LAST_SERVICE_DATE, null);
-            }
-            if (memberAdditionalInfo.getFpServiceDate() != null && memberAdditionalInfo.getFpServiceDate() > 0) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FP_SERVICE_DATE, memberAdditionalInfo.getFpServiceDate().toString());
-            }
-            if (memberAdditionalInfo.getDevelopmentDelays() != null && memberAdditionalInfo.getDevelopmentDelays()) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEVELOPMENTAL_DELAYS, "Yes");
-            } else {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEVELOPMENTAL_DELAYS, "No");
-            }
-            if (memberAdditionalInfo.getAbortionCount() != null) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ABORTION_COUNT, memberAdditionalInfo.getAbortionCount().toString());
-            }
-            if (memberAdditionalInfo.getPmmvyBeneficiary() != null && memberAdditionalInfo.getPmmvyBeneficiary()) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PMMVY_BENEFICIARY, "1");
-            } else if (memberAdditionalInfo.getPmmvyBeneficiary() != null && !memberAdditionalInfo.getPmmvyBeneficiary()) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PMMVY_BENEFICIARY, "2");
-            }
-            if (memberAdditionalInfo.getPmmvyBeneficiary() != null && memberAdditionalInfo.getPmmvyBeneficiary()) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PMSMA_BENEFICIARY, "1");
-            } else if (memberAdditionalInfo.getPmmvyBeneficiary() != null && !memberAdditionalInfo.getPmmvyBeneficiary()) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PMSMA_BENEFICIARY, "2");
-            }
-            if (memberAdditionalInfo.getDikariBeneficiary() != null && memberAdditionalInfo.getDikariBeneficiary()) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DIKRI_BENEFICIARY, "1");
-            } else if (memberAdditionalInfo.getDikariBeneficiary() != null && !memberAdditionalInfo.getDikariBeneficiary()) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DIKRI_BENEFICIARY, "2");
-            }
-            if (memberAdditionalInfo.getHepatitisCTest() != null) {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEPATITIS_TEST, memberAdditionalInfo.getHepatitisCTest());
-            }
-            if (memberAdditionalInfo.getAlbendanzoleGiven() != null) {
-                if (memberAdditionalInfo.getAlbendanzoleGiven()) {
-                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ALBENDAZOLE_GIVEN, LabelConstants.YES);
-                } else {
-                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ALBENDAZOLE_GIVEN, LabelConstants.NO);
-                }
-            } else {
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ALBENDAZOLE_GIVEN, LabelConstants.NOT_AVAILABLE);
-            }
+
+        if (memberAdditionalInfo.getLastServiceLongDate() != null && memberAdditionalInfo.getLastServiceLongDate() > 0) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LAST_SERVICE_DATE, memberAdditionalInfo.getLastServiceLongDate().toString());
+        } else {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LAST_SERVICE_DATE, null);
         }
+        if (memberAdditionalInfo.getFpServiceDate() != null && memberAdditionalInfo.getFpServiceDate() > 0) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FP_SERVICE_DATE, memberAdditionalInfo.getFpServiceDate().toString());
+        }
+        if (memberAdditionalInfo.getDevelopmentDelays() != null && memberAdditionalInfo.getDevelopmentDelays()) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEVELOPMENTAL_DELAYS, "Yes");
+        } else {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEVELOPMENTAL_DELAYS, "No");
+        }
+        if (memberAdditionalInfo.getAbortionCount() != null) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ABORTION_COUNT, memberAdditionalInfo.getAbortionCount().toString());
+        }
+        if (memberAdditionalInfo.getPmmvyBeneficiary() != null && memberAdditionalInfo.getPmmvyBeneficiary()) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PMMVY_BENEFICIARY, "1");
+        } else if (memberAdditionalInfo.getPmmvyBeneficiary() != null && !memberAdditionalInfo.getPmmvyBeneficiary()) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PMMVY_BENEFICIARY, "2");
+        }
+        if (memberAdditionalInfo.getPmmvyBeneficiary() != null && memberAdditionalInfo.getPmmvyBeneficiary()) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PMSMA_BENEFICIARY, "1");
+        } else if (memberAdditionalInfo.getPmmvyBeneficiary() != null && !memberAdditionalInfo.getPmmvyBeneficiary()) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PMSMA_BENEFICIARY, "2");
+        }
+        if (memberAdditionalInfo.getDikariBeneficiary() != null && memberAdditionalInfo.getDikariBeneficiary()) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DIKRI_BENEFICIARY, "1");
+        } else if (memberAdditionalInfo.getDikariBeneficiary() != null && !memberAdditionalInfo.getDikariBeneficiary()) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DIKRI_BENEFICIARY, "2");
+        }
+        if (memberAdditionalInfo.getHepatitisCTest() != null) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEPATITIS_TEST, memberAdditionalInfo.getHepatitisCTest());
+        }
+        if (memberAdditionalInfo.getAlbendanzoleGiven() != null) {
+            if (memberAdditionalInfo.getAlbendanzoleGiven()) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ALBENDAZOLE_GIVEN, LabelConstants.YES);
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ALBENDAZOLE_GIVEN, LabelConstants.NO);
+            }
+        } else {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ALBENDAZOLE_GIVEN, LabelConstants.NOT_AVAILABLE);
+        }
+
 
         if (memberBean.getCongenitalAnomalyIds() != null && !memberBean.getCongenitalAnomalyIds().isEmpty()) {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CONGENITAL_ANOMALY_IDS, memberBean.getCongenitalAnomalyIds());
@@ -592,6 +607,162 @@ public class FormMetaDataUtil {
 
         if (memberBean.getEyeIssueIds() != null && !memberBean.getEyeIssueIds().isEmpty()) {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.EYE_ISSUE_IDS, memberBean.getEyeIssueIds());
+        }
+        try {
+            if (memberBean.getActualId() != null || memberBean.getMemberUuid() != null) {
+                List<MemberBean> allChildrenOfMother = null;
+                MemberBean wifeOf;
+                if (memberBean.getActualId() != null) {
+                    if (memberBean.getGender().equals(GlobalTypes.MALE)) {
+                        wifeOf = memberBeanDao.queryBuilder().where()
+                                .eq(FieldNameConstants.HUSBAND_ID, memberBean.getActualId())
+                                .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
+                        if (wifeOf != null) {
+                            allChildrenOfMother = memberBeanDao.queryBuilder().where()
+                                    .eq(FieldNameConstants.MOTHER_ID, wifeOf.getActualId())
+                                    .and().notIn(FieldNameConstants.STATE, invalidStates).query();
+                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
+                                    String.valueOf(memberBeanDao.queryBuilder().where()
+                                            .eq(FieldNameConstants.MOTHER_ID, wifeOf.getActualId())
+                                            .and().eq(FieldNameConstants.FAMILY_ID, wifeOf.getFamilyId())
+                                            .and().ne(FieldNameConstants.ACTUAL_ID, wifeOf.getActualId())
+                                            .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
+                        }
+
+                    } else {
+                        allChildrenOfMother = memberBeanDao.queryBuilder().where()
+                                .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
+                                .and().notIn(FieldNameConstants.STATE, invalidStates).query();
+                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
+                                String.valueOf(memberBeanDao.queryBuilder().where()
+                                        .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
+                                        .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
+                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
+                                        .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
+
+                        MemberBean latestChild = memberBeanDao.queryBuilder()
+                                .orderBy(FieldNameConstants.DOB, false)
+                                .where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
+                                .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
+                                .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
+                                .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
+
+                        if (latestChild != null) {
+                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_NAME, latestChild.getFirstName() + " " + latestChild.getLastName());
+                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_AGE, UtilBean.getAgeDisplayOnGivenDate(latestChild.getDob(), new Date()));
+                            if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.MALE)) {
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.MALE);
+                            } else if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.FEMALE)) {
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.FEMALE);
+                            }
+                        }
+                    }
+
+                } else {
+                    if (memberBean.getGender().equals(GlobalTypes.MALE)) {
+                        wifeOf = memberBeanDao.queryBuilder().where()
+                                .eq(FieldNameConstants.HUSBAND_ID, memberBean.getMemberUuid())
+                                .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
+                        if (wifeOf != null) {
+                            allChildrenOfMother = memberBeanDao.queryBuilder().where()
+                                    .eq(FieldNameConstants.MOTHER_ID, wifeOf.getMemberUuid())
+                                    .and().notIn(FieldNameConstants.STATE, invalidStates).query();
+                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
+                                    String.valueOf(memberBeanDao.queryBuilder().where()
+                                            .eq(FieldNameConstants.MOTHER_ID, wifeOf.getMemberUuid())
+                                            .and().eq(FieldNameConstants.FAMILY_ID, wifeOf.getFamilyId())
+                                            .and().ne(FieldNameConstants.ACTUAL_ID, wifeOf.getMemberUuid())
+                                            .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
+                        }
+                    } else {
+                        allChildrenOfMother = memberBeanDao.queryBuilder().where()
+                                .eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid())
+                                .and().notIn(FieldNameConstants.STATE, invalidStates).query();
+
+                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
+                                String.valueOf(memberBeanDao.queryBuilder().where()
+                                        .eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid())
+                                        .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
+                                        .and().ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid())
+                                        .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
+
+                        MemberBean latestChild = memberBeanDao.queryBuilder()
+                                .orderBy(FieldNameConstants.DOB, false)
+                                .where().eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid())
+                                .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
+                                .and().ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid())
+                                .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
+
+                        if (latestChild != null) {
+                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_NAME, latestChild.getFirstName() + " " + latestChild.getLastName());
+                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_AGE, UtilBean.getAgeDisplayOnGivenDate(latestChild.getDob(), new Date()));
+                            if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.MALE)) {
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.MALE);
+                            } else if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.FEMALE)) {
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.FEMALE);
+                            }
+                        }
+                    }
+                }
+
+                if (allChildrenOfMother != null && !allChildrenOfMother.isEmpty()) {
+                    List<MemberBean> childrenLessThan60Days = new ArrayList<>();
+                    for (MemberBean child : allChildrenOfMother) {
+                        Calendar cal1 = Calendar.getInstance();
+                        cal1.add(Calendar.DATE, -60);
+                        if (child.getDob().after(cal1.getTime())) {
+                            childrenLessThan60Days.add(child);
+                        }
+                    }
+
+                    //SETTING CHILDREN's METADATA
+                    if (!childrenLessThan60Days.isEmpty()) {
+                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DELIVERY_DATE_DISPLAY,
+                                sdf.format(childrenLessThan60Days.get(0).getDob()));
+                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DELIVERY_DATE,
+                                Long.toString(childrenLessThan60Days.get(0).getDob().getTime()));
+
+                        int i = 0;
+                        for (MemberBean child : childrenLessThan60Days) {
+                            if (i == 0) {
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID_CHILD, child.getUniqueHealthId());
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_NAME, child.getFirstName());
+                                Set<String> dueImmunisations;
+                                if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
+                                    dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
+                                } else {
+                                    dueImmunisations = immunisationService.getDueImmunisationsForChild(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
+                                }
+
+                                if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
+                                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.REMAINING_VACCINES,
+                                            dueImmunisations.toString().replace("[", "").replace("]", ""));
+                                }
+                            } else {
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID_CHILD + i, child.getUniqueHealthId());
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_NAME + i, child.getFirstName());
+                                Set<String> dueImmunisations;
+                                if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
+                                    dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
+                                } else {
+                                    dueImmunisations = immunisationService.getDueImmunisationsForChild(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
+                                }
+                                if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
+                                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.REMAINING_VACCINES + i,
+                                            dueImmunisations.toString().replace("[", "").replace("]", ""));
+                                }
+                            }
+                            i++;
+                        }
+                    }
+
+                    SharedStructureData.totalFamilyMembersCount = childrenLessThan60Days.size();
+                } else {
+                    SharedStructureData.totalFamilyMembersCount = 0;
+                }
+            }
+        } catch (SQLException e) {
+            Log.e(getClass().getSimpleName(), null, e);
         }
 
         switch (formType) {
@@ -617,7 +788,15 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MARITAL_STATUS,
                             UtilBean.getNotAvailableIfNull(fhsService.getValueOfListValuesById(memberBean.getMaritalStatus())));
                 }
-
+                try {
+                    List<StockInventoryBean> stockInventoryBean = stockInventoryBeanDao.queryBuilder().query();
+                    for (StockInventoryBean stock : stockInventoryBean) {
+                        String constant = fhsService.getConstOfListValueById(String.valueOf(stock.getMedicineId()));
+                        SharedStructureData.relatedPropertyHashTable.put(constant, String.valueOf(stock.getDeliveredQuantity() - stock.getUsed()));
+                    }
+                } catch (SQLException e) {
+                    Log.e(getClass().getSimpleName(), null, e);
+                }
                 MemberBean mother;
                 if (memberBean.getMotherId() != null) {
                     try {
@@ -697,101 +876,6 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.POTENTIAL_MALARIA_CASE, "0");
                 }
 
-                try {
-                    Where<MemberBean, Integer> totalLivingChildRenWhere = memberBeanDao.queryBuilder().where();
-                    if (memberBean.getActualId() != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
-                                String.valueOf(totalLivingChildRenWhere.and(
-                                        totalLivingChildRenWhere.eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId()),
-                                        totalLivingChildRenWhere.eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId()),
-                                        totalLivingChildRenWhere.ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId()),
-                                        totalLivingChildRenWhere.notIn(FieldNameConstants.STATE, invalidStates)).countOf())
-                        );
-                    }
-
-                    if (memberBean.getActualId() == null && memberBean.getMemberUuid() != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
-                                String.valueOf(totalLivingChildRenWhere.and(
-                                        totalLivingChildRenWhere.eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid()),
-                                        totalLivingChildRenWhere.eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId()),
-                                        totalLivingChildRenWhere.ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid()),
-                                        totalLivingChildRenWhere.notIn(FieldNameConstants.STATE, invalidStates)).countOf())
-                        );
-                    }
-
-
-                    Where<MemberBean, Integer> totalMaleChildrenWhere = memberBeanDao.queryBuilder().where();
-                    if (memberBean.getActualId() != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_MALE_CHILDREN,
-                                String.valueOf(totalMaleChildrenWhere.and(
-                                        totalMaleChildrenWhere.eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId()),
-                                        totalMaleChildrenWhere.eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId()),
-                                        totalMaleChildrenWhere.ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId()),
-                                        totalMaleChildrenWhere.notIn(FieldNameConstants.STATE, invalidStates)).countOf())
-                        );
-                    }
-
-                    if (memberBean.getActualId() == null && memberBean.getMemberUuid() != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_MALE_CHILDREN,
-                                String.valueOf(totalMaleChildrenWhere.and(
-                                        totalMaleChildrenWhere.eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid()),
-                                        totalMaleChildrenWhere.eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId()),
-                                        totalMaleChildrenWhere.ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid()),
-                                        totalMaleChildrenWhere.notIn(FieldNameConstants.STATE, invalidStates)).countOf())
-                        );
-                    }
-
-                    Where<MemberBean, Integer> totalFemaleChildrenWhere = memberBeanDao.queryBuilder().where();
-                    if (memberBean.getActualId() != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_FEMALE_CHILDREN,
-                                String.valueOf(totalFemaleChildrenWhere.and(
-                                        totalFemaleChildrenWhere.eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId()),
-                                        totalFemaleChildrenWhere.eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId()),
-                                        totalFemaleChildrenWhere.ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId()),
-                                        totalFemaleChildrenWhere.notIn(FieldNameConstants.STATE, invalidStates)).countOf())
-                        );
-                    }
-
-                    if (memberBean.getActualId() == null && memberBean.getMemberUuid() != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_FEMALE_CHILDREN,
-                                String.valueOf(totalFemaleChildrenWhere.and(
-                                        totalFemaleChildrenWhere.eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid()),
-                                        totalFemaleChildrenWhere.eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId()),
-                                        totalFemaleChildrenWhere.ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid()),
-                                        totalFemaleChildrenWhere.notIn(FieldNameConstants.STATE, invalidStates)).countOf())
-                        );
-                    }
-
-                    MemberBean latestChild = null;
-                    Where<MemberBean, Integer> latestChilWhere = memberBeanDao.queryBuilder().orderBy(FieldNameConstants.DOB, false).where();
-                    if (memberBean.getActualId() != null) {
-                        latestChild = latestChilWhere.and(
-                                        latestChilWhere.eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId()),
-                                        latestChilWhere.eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId()),
-                                        latestChilWhere.ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId()),
-                                        latestChilWhere.notIn(FieldNameConstants.STATE, invalidStates)).queryForFirst();
-                    }
-
-                    if (memberBean.getActualId() == null && memberBean.getMemberUuid() != null) {
-                        latestChild = latestChilWhere.and(
-                                latestChilWhere.eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid()),
-                                latestChilWhere.eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId()),
-                                latestChilWhere.ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid()),
-                                latestChilWhere.notIn(FieldNameConstants.STATE, invalidStates)).queryForFirst();
-                    }
-
-                    if (latestChild != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_NAME, latestChild.getFirstName() + " " + latestChild.getLastName());
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_AGE, UtilBean.getAgeDisplayOnGivenDate(latestChild.getDob(), new Date()));
-                        if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.MALE)) {
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.MALE);
-                        } else if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.FEMALE)) {
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.FEMALE);
-                        }
-                    }
-                } catch (SQLException e) {
-                    Log.e(getClass().getSimpleName(), null, e);
-                }
 
                 if (memberBean.getHusbandId() != null) {
                     MemberBean husband = fhsService.retrieveMemberBeanByActualId(memberBean.getHusbandId());
@@ -833,47 +917,6 @@ public class FormMetaDataUtil {
                         SharedStructureData.relatedPropertyHashTable.put(constant, String.valueOf(stock.getDeliveredQuantity() - stock.getUsed()));
                     }
 
-                    if (memberBean.getActualId() != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
-                                String.valueOf(memberBeanDao.queryBuilder().where()
-                                        .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                        .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                        .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
-
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_MALE_CHILDREN,
-                                String.valueOf(memberBeanDao.queryBuilder().where()
-                                        .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                        .and().eq(FieldNameConstants.GENDER, GlobalTypes.MALE)
-                                        .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                        .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
-
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_FEMALE_CHILDREN,
-                                String.valueOf(memberBeanDao.queryBuilder().where()
-                                        .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                        .and().eq(FieldNameConstants.GENDER, GlobalTypes.FEMALE)
-                                        .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                        .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
-
-                        MemberBean latestChild = memberBeanDao.queryBuilder()
-                                .orderBy(FieldNameConstants.DOB, false)
-                                .where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
-
-                        if (latestChild != null) {
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_NAME, latestChild.getFirstName() + " " + latestChild.getLastName());
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_AGE, UtilBean.getAgeDisplayOnGivenDate(latestChild.getDob(), new Date()));
-                            if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.MALE)) {
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.MALE);
-                            } else if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.FEMALE)) {
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.FEMALE);
-                            }
-                        }
-                    }
 
                     if (memberBean.getDob() != null) {
                         if (memberBean.getYearOfWedding() != null) {
@@ -1140,48 +1183,7 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HIV_TEST, memberAdditionalInfo.getHivTest());
                 }
 
-                try {
-                    if (memberBean.getActualId() != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
-                                String.valueOf(memberBeanDao.queryBuilder().where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                        .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                        .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
 
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_MALE_CHILDREN,
-                                String.valueOf(memberBeanDao.queryBuilder().where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                        .and().eq(FieldNameConstants.GENDER, GlobalTypes.MALE)
-                                        .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                        .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
-
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_FEMALE_CHILDREN,
-                                String.valueOf(memberBeanDao.queryBuilder().where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                        .and().eq(FieldNameConstants.GENDER, GlobalTypes.FEMALE)
-                                        .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                        .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
-
-                        MemberBean latestChild = memberBeanDao.queryBuilder()
-                                .orderBy(FieldNameConstants.DOB, false)
-                                .where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
-
-                        if (latestChild != null) {
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_NAME, latestChild.getFirstName() + " " + latestChild.getLastName());
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_AGE, UtilBean.getAgeDisplayOnGivenDate(latestChild.getDob(), new Date()));
-                            if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.MALE)) {
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.MALE);
-                            } else if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.FEMALE)) {
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.FEMALE);
-                            }
-                        }
-                    }
-                } catch (SQLException e) {
-                    Log.e(getClass().getSimpleName(), null, e);
-                }
                 break;
 
             case FormConstants.TECHO_FHW_CS:
@@ -1194,10 +1196,7 @@ public class FormMetaDataUtil {
             case FormConstants.TECHO_AWW_THR:
             case FormConstants.DNHDD_FHW_SAM_SCREENING:
             case FormConstants.DNHDD_CMAM_FOLLOWUP:
-                tmpDataObj = FullFormConstants.getFullFormsOfPlace(memberBean.getPlaceOfBirth());
-                if (tmpDataObj != null) {
-                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PLACE_OF_BIRTH, tmpDataObj);
-                }
+
 
                 tmpDataObj = FullFormConstants.getFullFormOfGender(memberBean.getGender());
                 if (tmpDataObj != null) {
@@ -1219,10 +1218,6 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MOTHER_HEALTH_ID, mother.getUniqueHealthId());
                 }
 
-                if (memberBean.getBirthWeight() != null) {
-                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.BIRTH_WEIGHT, memberBean.getBirthWeight().toString());
-                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.BIRTH_WEIGHT_DISPLAY, memberBean.getBirthWeight().toString() + " " + UtilBean.getMyLabel("Kgs"));
-                }
 
                 if (memberBean.getDob() != null) {
                     int ageInMonths = UtilBean.calculateMonthsBetweenDates(memberBean.getDob(), new Date());
@@ -1406,9 +1401,7 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PNC_CALCIUM, memberAdditionalInfo.getPncCalcium().toString());
                 }
 
-                if (memberAdditionalInfo.getHivTest() != null && !memberAdditionalInfo.getHivTest().equals(RchConstants.NOT_DONE)) {
-                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HIV_TEST, memberAdditionalInfo.getHivTest());
-                }
+
                 if (memberBean.getCurrentGravida() != null) {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.GRAVIDA_VALUE, memberBean.getCurrentGravida().toString());
                 }
@@ -1421,126 +1414,7 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEFAULT_PARA, ("1"));
                 }
 
-                try {
-                    if (memberBean.getActualId() != null || memberBean.getMemberUuid() != null) {
-                        List<MemberBean> allChildrenOfMother;
-                        if (memberBean.getActualId() != null) {
-                            allChildrenOfMother = memberBeanDao.queryBuilder().where()
-                                    .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                    .and().notIn(FieldNameConstants.STATE, invalidStates).query();
 
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
-                                    String.valueOf(memberBeanDao.queryBuilder().where()
-                                            .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                            .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                            .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                            .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
-
-                            MemberBean latestChild = memberBeanDao.queryBuilder()
-                                    .orderBy(FieldNameConstants.DOB, false)
-                                    .where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
-                                    .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                    .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
-                                    .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
-
-                            if (latestChild != null) {
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_NAME, latestChild.getFirstName() + " " + latestChild.getLastName());
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_AGE, UtilBean.getAgeDisplayOnGivenDate(latestChild.getDob(), new Date()));
-                                if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.MALE)) {
-                                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.MALE);
-                                } else if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.FEMALE)) {
-                                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.FEMALE);
-                                }
-                            }
-                        } else {
-                            allChildrenOfMother = memberBeanDao.queryBuilder().where()
-                                    .eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid())
-                                    .and().notIn(FieldNameConstants.STATE, invalidStates).query();
-
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOTAL_LIVING_CHILDREN,
-                                    String.valueOf(memberBeanDao.queryBuilder().where()
-                                            .eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid())
-                                            .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                            .and().ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid())
-                                            .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
-
-                            MemberBean latestChild = memberBeanDao.queryBuilder()
-                                    .orderBy(FieldNameConstants.DOB, false)
-                                    .where().eq(FieldNameConstants.MOTHER_UUID, memberBean.getMemberUuid())
-                                    .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                    .and().ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid())
-                                    .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
-
-                            if (latestChild != null) {
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_NAME, latestChild.getFirstName() + " " + latestChild.getLastName());
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_AGE, UtilBean.getAgeDisplayOnGivenDate(latestChild.getDob(), new Date()));
-                                if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.MALE)) {
-                                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.MALE);
-                                } else if (latestChild.getGender() != null && latestChild.getGender().equals(GlobalTypes.FEMALE)) {
-                                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LATEST_CHILD_GENDER, LabelConstants.FEMALE);
-                                }
-                            }
-                        }
-
-                        if (allChildrenOfMother != null && !allChildrenOfMother.isEmpty()) {
-                            List<MemberBean> childrenLessThan60Days = new ArrayList<>();
-                            for (MemberBean child : allChildrenOfMother) {
-                                Calendar cal1 = Calendar.getInstance();
-                                cal1.add(Calendar.DATE, -60);
-                                if (child.getDob().after(cal1.getTime())) {
-                                    childrenLessThan60Days.add(child);
-                                }
-                            }
-
-                            //SETTING CHILDREN's METADATA
-                            if (!childrenLessThan60Days.isEmpty()) {
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DELIVERY_DATE_DISPLAY,
-                                        sdf.format(childrenLessThan60Days.get(0).getDob()));
-                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DELIVERY_DATE,
-                                        Long.toString(childrenLessThan60Days.get(0).getDob().getTime()));
-
-                                int i = 0;
-                                for (MemberBean child : childrenLessThan60Days) {
-                                    if (i == 0) {
-                                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID_CHILD, child.getUniqueHealthId());
-                                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_NAME, child.getFirstName());
-                                        Set<String> dueImmunisations;
-                                        if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                                            dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                        } else {
-                                            dueImmunisations = immunisationService.getDueImmunisationsForChild(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                        }
-
-                                        if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
-                                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.REMAINING_VACCINES,
-                                                    dueImmunisations.toString().replace("[", "").replace("]", ""));
-                                        }
-                                    } else {
-                                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID_CHILD + i, child.getUniqueHealthId());
-                                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_NAME + i, child.getFirstName());
-                                        Set<String> dueImmunisations;
-                                        if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                                            dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                        } else {
-                                            dueImmunisations = immunisationService.getDueImmunisationsForChild(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                        }
-                                        if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
-                                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.REMAINING_VACCINES + i,
-                                                    dueImmunisations.toString().replace("[", "").replace("]", ""));
-                                        }
-                                    }
-                                    i++;
-                                }
-                            }
-
-                            SharedStructureData.totalFamilyMembersCount = childrenLessThan60Days.size();
-                        } else {
-                            SharedStructureData.totalFamilyMembersCount = 0;
-                        }
-                    }
-                } catch (SQLException e) {
-                    Log.e(getClass().getSimpleName(), null, e);
-                }
                 break;
 
             case FormConstants.TECHO_WPD_DISCHARGE:
@@ -1725,6 +1599,24 @@ public class FormMetaDataUtil {
                     }
                 }
 
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ACTUAL_GRAVIDA, String.valueOf(children.size()));
+                if (!children.isEmpty()) {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.SELECTED_CHILDREN, selectedChildren.toString());
+                }
+            }
+            if (memberDataBean != null && memberDataBean.getMemberUuid() != null) {
+                List<MemberBean> children = memberBeanDao.queryBuilder().where()
+                        .eq(FieldNameConstants.MOTHER_UUID, memberDataBean.getMemberUuid())
+                        .and().eq(FieldNameConstants.MEMBERS_FAMILY_UUID, memberDataBean.getFamilyUuid())
+                        .and().ne(FieldNameConstants.MEMBER_UUID, memberDataBean.getMemberUuid())
+                        .and().notIn(FieldNameConstants.STATE, invalidStates).query();
+                for (MemberBean memberBean : children) {
+                    selectedChildren.append(memberBean.getActualId() != null ? memberBean.getActualId() : memberBean.getUniqueHealthId()).append(",");
+                    if (!memberBeans.contains(memberBean)) {
+                        memberBeans.add(memberBean);
+                    }
+
+                }
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ACTUAL_GRAVIDA, String.valueOf(children.size()));
                 if (!children.isEmpty()) {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.SELECTED_CHILDREN, selectedChildren.toString());
@@ -1923,6 +1815,7 @@ public class FormMetaDataUtil {
             MemberDataBean headMember = headMemberDataBeanMap.get(familyDataBean.getFamilyId());
             if (headMember != null && headMember.getDob() != null) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HOF_NAME, UtilBean.getMemberFullName(headMember));
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HOF_ID, headMember.getUniqueHealthId());
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER, headMember.getMobileNumber());
                 SharedStructureData.relatedPropertyHashTable.put("hofDob", headMember.getDob().toString());
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_HOF_AVAILABLE, "1");
@@ -1953,7 +1846,26 @@ public class FormMetaDataUtil {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DOB_DISPLAY, sdf.format(new Date(memberDataBean.getDob())));
             }
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_HEAD_FLAG, "2");
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.SINGLE_MEMBER_FAMILY, "2");
             if (memberDataBean.getFamilyHeadFlag() != null && memberDataBean.getFamilyHeadFlag()) {
+                List<MemberDataBean> memberList = fhsService.retrieveMemberDataBeansByFamily(familyDataBean.getFamilyId());
+                if (memberList != null && !memberList.isEmpty()) {
+                    List<OptionDataBean> memberNameOptions = new ArrayList<>();
+                    for (MemberDataBean member : memberList) {
+                        if (member.getFamilyHeadFlag() == null || !member.getFamilyHeadFlag()) {
+                            Calendar cal = Calendar.getInstance();
+                            cal.add(Calendar.YEAR, -18);
+                            Date before18Years = cal.getTime();
+                            if (!FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES.contains(member.getState())) {
+                                memberNameOptions.add(new OptionDataBean(member.getId(), UtilBean.getMemberFullName(member), null));
+                            }
+                        }
+                    }
+                    SharedStructureData.nonHofMemberNameList = memberNameOptions;
+                }
+                if (SharedStructureData.nonHofMemberNameList == null || SharedStructureData.nonHofMemberNameList.isEmpty()) {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.SINGLE_MEMBER_FAMILY, "1");
+                }
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_HEAD_FLAG, "1");
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.GRANDFATHER_NAME, memberDataBean.getGrandfatherName());
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY, UtilBean.getMemberFullName(memberDataBean));

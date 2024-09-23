@@ -12,6 +12,7 @@ import java.util.Date;
 @Data
 public class WpdMotherDetailsDto {
 
+    private Integer memberId;
     private Date dateOfDelivery;
     private Boolean hasDeliveryHappened;
     private Boolean corticoSteroidGiven;

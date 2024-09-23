@@ -367,11 +367,155 @@ public interface MemberDao extends GenericDao<MemberEntity, Integer> {
      */
     List<ReferralDto> getReferral(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, String householdId, Integer zoneId, Integer cbvId);
 
-    List<MalariaDto> getMalariaDetails(Integer memberId, Date serviceStartDate, Date serviceEndDate);
+    /**
+     * Retrieve list of malaria details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of MalariaDto objects that match the specified criteria.
+     */
+    List<MalariaDto> getMalariaDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
 
-    List<TuberculosisDto> getTuberculosisDetails(Integer memberId, Date serviceStartDate, Date serviceEndDate);
+    /**
+     * Retrieve list of tuberculosis details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of TuberculosisDto objects that match the specified criteria.
+     */
+    List<TuberculosisDto> getTuberculosisDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
 
-    List<CovidDto> getCovidDetails(Integer memberId, Date serviceStartDate, Date serviceEndDate);
+    /**
+     * Retrieve list of COVID-19 details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of CovidDto objects that match the specified criteria.
+     */
+    List<CovidDto> getCovidDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
 
-    List<HivDto> getHivDetails(Integer memberId, Date serviceStartDate, Date serviceEndDate);
-}
+    /**
+     * Retrieve list of HIV details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of HivDto objects that match the specified criteria.
+     */
+    List<HivDto> getHivDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
+
+    /**
+     * Retrieve list of ANC (Antenatal Care) details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of AncDto objects that match the specified criteria.
+     */
+    List<AncDto> getAncDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
+
+    /**
+     * Retrieve list of child service details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of ChildServiceDto objects that match the specified criteria.
+     */
+    List<ChildServiceDto> getChildServiceDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
+
+    /**
+     * Retrieve list of PNC (Postnatal Care) child details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of PncChildDetailsDto objects that match the specified criteria.
+     */
+    List<PncChildDetailsDto> getPncChildDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
+
+    /**
+     * Retrieve list of PNC (Postnatal Care) mother details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of PncMotherDetailsDto objects that match the specified criteria.
+     */
+    List<PncMotherDetailsDto> getPncMotherDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
+
+    /**
+     * Retrieve list of WPD (Well-Child and Postpartum Care) mother details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of WpdMotherDetailsDto objects that match the specified criteria.
+     */
+    List<WpdMotherDetailsDto> getWpdMotherDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
+
+    /**
+     * Retrieve list of WPD (Well-Child and Postpartum Care) child details based on the provided parameters.
+     *
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of WpdChildDetailsDto objects that match the specified criteria.
+     */
+    List<WpdChildDetailsDto> getWpdChildDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
+
+
+    }

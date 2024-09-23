@@ -1530,7 +1530,12 @@ public class MemberBean extends BaseEntity implements Serializable {
         if (o == null) return false;
         if (!(o instanceof MemberBean)) return false;
         MemberBean that = (MemberBean) o;
-        return this.actualId.equals(that.actualId);
+        if (this.actualId != null && that.actualId != null) {
+            return this.actualId.equals(that.actualId);
+        } else if (this.memberUuid != null && that.memberUuid != null) {
+            return this.memberUuid.equals(that.memberUuid);
+        }
+        return false;
     }
 
     @Override

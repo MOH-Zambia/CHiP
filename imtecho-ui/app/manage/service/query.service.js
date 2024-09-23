@@ -47,6 +47,16 @@
                     params: {
                         action: 'runquery'
                     }
+                },
+                executeForFormConfigurator: {
+                    method: 'POST'
+                },
+                executeAllForFormConfigurator: {
+                    method: 'POST',
+                    isArray: true,
+                    params: {
+                        action: 'getalldataforformconfigurator'
+                    }
                 }
             });
         return {
@@ -80,6 +90,12 @@
             runquery: function (query) {
                 return api.runquery({}, query).$promise;
             },
+            executeForFormConfigurator: function(params) {
+                return api.executeForFormConfigurator({action: 'getdataforformconfigurator', id: params.code }, params).$promise;
+            },
+            executeAllForFormConfigurator: function (dtoList) {
+                return api.executeForFormConfigurator(dtoList).$promise;
+            }
         };
     }
     angular.module('imtecho.service').factory('QueryDAO', QueryDAO);

@@ -7,6 +7,8 @@ package com.argusoft.imtecho.query.service;
 
 import com.argusoft.imtecho.query.dto.QueryDto;
 import com.argusoft.imtecho.query.dto.QueryMasterDto;
+import com.argusoft.imtecho.query.dto.QueryWithSQLDto;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -87,4 +89,14 @@ public interface QueryMasterService {
      * @return A result list
      */
     List<LinkedHashMap<String, Object>> getQueryResult(QueryDto queryDto);
+
+    /**
+     * Executes given list of query
+     * @param queryDtos A list of QueryWithSQLDto
+     * @param isSecure Whether user is authorize to execute query or not
+     * @return A list of QueryWithSQLDto
+     */
+    List<QueryWithSQLDto> executeForFormConfigurator(List<QueryWithSQLDto> queryDtos, boolean isSecure);
+
+    List<LinkedHashMap<String, Object>> executeFormConfiguratorQuery(QueryDto queryDto);
 }

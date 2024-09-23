@@ -964,17 +964,17 @@ public class CFHCServiceImpl implements CFHCService {
             case "452":
                 memberEntity.setVulnerableFlag(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
-            case "94":
-                switch (answer) {
-                    case "1":
-                        memberEntity.setAgreedToShareAadhar(Boolean.TRUE);
-                        break;
-                    case "2":
-                        memberEntity.setAgreedToShareAadhar(Boolean.FALSE);
-                        break;
-                    default:
-                }
-                break;
+//            case "94":
+//                switch (answer) {
+//                    case "1":
+//                        memberEntity.setAgreedToShareAadhar(Boolean.TRUE);
+//                        break;
+//                    case "2":
+//                        memberEntity.setAgreedToShareAadhar(Boolean.FALSE);
+//                        break;
+//                    default:
+//                }
+//                break;
             case "6043":
                 memberEntity.setHealthInsurance(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;

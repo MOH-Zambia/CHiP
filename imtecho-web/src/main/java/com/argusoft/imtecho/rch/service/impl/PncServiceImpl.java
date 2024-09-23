@@ -2,6 +2,7 @@ package com.argusoft.imtecho.rch.service.impl;
 
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.ConstantUtil;
+import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
 import com.argusoft.imtecho.common.util.SystemConstantUtil;
 import com.argusoft.imtecho.config.security.ImtechoSecurityUser;
@@ -41,6 +42,9 @@ import com.argusoft.imtecho.rch.model.PncMotherMaster;
 import com.argusoft.imtecho.rch.service.ImmunisationService;
 import com.argusoft.imtecho.rch.service.PncService;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -403,6 +407,56 @@ public class PncServiceImpl implements PncService {
         }
         pncChildMasterDao.flush();
         eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.FHW_PNC, pncMaster.getId()));
+        return pncMaster.getId();
+    }
+
+    @Override
+    public Integer storePncOcrForm(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+        JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
+        PncMotherMaster pncMotherMaster = new PncMotherMaster();
+        PncChildMaster pncChildMaster = new PncChildMaster();
+        PncMaster pncMaster = new PncMaster();
+        MemberEntity mother;
+        if (jsonObject.has("memberUniqueHealthId")) {
+            mother = memberDao.retrieveMemberById(jsonObject.get("memberId").getAsInt());
+        } else {
+            mother = memberDao.retrieveMemberByUuid(jsonObject.get("memberUUID").getAsString());
+        }
+        FamilyEntity familyEntity = familyDao.retrieveFamilyByFamilyId(mother.getFamilyId());
+        pncMaster.setMemberId(mother.getId());
+        pncMaster.setDeliveryPlace(jsonObject.get("pncDoneAt").getAsString());
+        pncMaster.setServiceDate(new Date(Long.parseLong(jsonObject.get("serviceDate").getAsString())));
+        pncMaster.setLongitude(jsonObject.get("longitude").getAsString());
+        pncMaster.setLatitude(jsonObject.get("latitude").getAsString());
+        pncMaster.setLocationId(familyEntity.getLocationId());
+        pncMaster.setLocationHierarchyId(-1);
+        Integer pncId = pncMasterDao.create(pncMaster);
+        if (ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("isReferralRequired").getAsString())) {
+            pncMotherMaster.setMotherReferralDone(RchConstants.REFFERAL_DONE_YES);
+            pncMotherMaster.setReferralReason(jsonObject.get("referralReason").getAsString());
+        } else {
+            pncMotherMaster.setMotherReferralDone(RchConstants.REFFERAL_DONE_NO);
+        }
+        pncMotherMaster.setPncMasterId(pncId);
+        pncMotherMaster.setServiceDate(pncMaster.getServiceDate());
+        pncMotherMaster.setCalciumTabletsGiven(jsonObject.get("calciumTabletsGiven").getAsInt());
+        pncMotherMaster.setIfaTabletsGiven(jsonObject.get("ifaTabletsGiven").getAsInt());
+        pncMotherMaster.setIecGiven(jsonObject.get("isIecGiven").getAsBoolean());
+
+        pncMotherMasterDao.create(pncMotherMaster);
+        pncChildMaster.setChildWeight(jsonObject.get("childWeight").getAsFloat());
+        if (ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("childReferalRequired").getAsString())) {
+            pncChildMaster.setChildReferralDone(RchConstants.REFFERAL_DONE_YES);
+            pncChildMaster.setReferralReason(jsonObject.get("childReferralReason").getAsString());
+        } else {
+            pncChildMaster.setChildReferralDone(RchConstants.REFFERAL_DONE_NO);
+        }
+        pncChildMaster.setPncMasterId(pncMaster.getId());
+        pncChildMaster.setEidStarted(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("eidStarted").getAsString()));
+        pncChildMaster.setCptStarted(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("cptStarted").getAsString()));
+        pncChildMasterDao.create(pncChildMaster);
+
         return pncMaster.getId();
     }
 
@@ -1114,16 +1168,16 @@ public class PncServiceImpl implements PncService {
         if (pncMotherMaster.getIfaTabletsGiven() != null && pncMotherMaster.getIfaTabletsGiven() > 0) {
             memberAdditionalInfo.setPncIfa(pncMotherMaster.getIfaTabletsGiven());
         }
-        if (pncMotherMaster.getReceivedMebendazole() != null ) {
+        if (pncMotherMaster.getReceivedMebendazole() != null) {
             memberAdditionalInfo.setPncMebendazole(pncMotherMaster.getReceivedMebendazole());
         }
-        if (pncMotherMaster.getTetanus1Date() != null ) {
+        if (pncMotherMaster.getTetanus1Date() != null) {
             memberAdditionalInfo.setPnctetanus1(pncMotherMaster.getTetanus1Date());
         }
-        if (pncMotherMaster.getTetanus2Date() != null ) {
+        if (pncMotherMaster.getTetanus2Date() != null) {
             memberAdditionalInfo.setPnctetanus2(pncMotherMaster.getTetanus2Date());
         }
-        if (pncMotherMaster.getTetanus3Date() != null ) {
+        if (pncMotherMaster.getTetanus3Date() != null) {
             memberAdditionalInfo.setPnctetanus3(pncMotherMaster.getTetanus3Date());
         }
         if (pncMotherMaster.getCalciumTabletsGiven() != null && pncMotherMaster.getCalciumTabletsGiven() > 0) {

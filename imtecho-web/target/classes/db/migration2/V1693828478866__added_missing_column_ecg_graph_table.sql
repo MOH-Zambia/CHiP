@@ -1,1 +1,0 @@
-ALTER table ncd_ecg_graph_detail add column IF NOT EXISTS avr_data text;

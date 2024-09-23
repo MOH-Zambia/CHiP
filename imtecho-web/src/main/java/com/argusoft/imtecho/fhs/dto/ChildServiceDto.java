@@ -2,7 +2,6 @@ package com.argusoft.imtecho.fhs.dto;
 
 import lombok.Data;
 
-import java.util.Set;
 
 /**
  * <p>
@@ -19,7 +18,6 @@ public class ChildServiceDto {
     private Boolean ifaSyrupGiven;
     private Boolean complementaryFeedingStarted;
     private String complementaryFeedingStartPeriod;
-    private Set<Integer> dieseases;
     private String otherDiseases;
     private String isTreatementDone;
     private Integer height;

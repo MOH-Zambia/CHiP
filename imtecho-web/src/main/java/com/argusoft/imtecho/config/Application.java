@@ -162,9 +162,9 @@ public class Application extends SpringBootServletInitializer {
         };
         tomcat.addConnectorCustomizers(connector -> {
             AbstractHttp11Protocol<?> abstractHttp11Protocol = ((AbstractHttp11Protocol<?>) connector.getProtocolHandler());
-            abstractHttp11Protocol.setMaxConnections(20000);
-            abstractHttp11Protocol.setKeepAliveTimeout(5000);
-            abstractHttp11Protocol.setMaxThreads(800);
+            abstractHttp11Protocol.setMaxConnections(40000);
+            abstractHttp11Protocol.setKeepAliveTimeout(500);
+            abstractHttp11Protocol.setMaxThreads(10000);
             abstractHttp11Protocol.setMaxKeepAliveRequests(500);
             abstractHttp11Protocol.setCompression("on");
             abstractHttp11Protocol.setCompressionMinSize(256);
@@ -179,9 +179,9 @@ public class Application extends SpringBootServletInitializer {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
 
         AbstractHttp11Protocol<?> abstractHttp11Protocol = ((AbstractHttp11Protocol<?>) connector.getProtocolHandler());
-        abstractHttp11Protocol.setMaxConnections(20000);
+        abstractHttp11Protocol.setMaxConnections(40000);
         abstractHttp11Protocol.setKeepAliveTimeout(500);
-        abstractHttp11Protocol.setMaxThreads(1200);
+        abstractHttp11Protocol.setMaxThreads(10000);
         abstractHttp11Protocol.setMaxKeepAliveRequests(500);
 
         connector.setScheme("http");

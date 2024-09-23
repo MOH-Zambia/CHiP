@@ -50,4 +50,12 @@ public class GbvVisit extends VisitCommonFields implements Serializable {
     private boolean forcedPregnancyLossPast12Months;
     @Column(name = "coerced_or_forced_marriage_past_12_months")
     private boolean coercedOrForcedMarriagePast12Months;
+    @Column(name = "photo_doc_id")
+    private String photoDocId;
+    @Column(name = "photo_unique_id")
+    private String photoUniqueId;
+    @Column(name = "gbv_type")
+    private String gbvType;
+    @Column(name = "difficulty_type")
+    private String difficultyType;
 }

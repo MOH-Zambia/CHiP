@@ -1,7 +1,6 @@
 package com.argusoft.imtecho.chip.service.impl;
 
 import com.argusoft.imtecho.chip.dao.ChipTBDao;
-import com.argusoft.imtecho.chip.model.ChipMalariaEntity;
 import com.argusoft.imtecho.chip.model.ChipTBEntity;
 import com.argusoft.imtecho.chip.service.ChipTBScreeningService;
 import com.argusoft.imtecho.common.model.UserMaster;
@@ -126,7 +125,7 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         memberDao.flush();
 
 
-        if (chipTBEntity.getTbSuspected() != null && chipTBEntity.getTbSuspected()) {
+        if (chipTBEntity.getIsTbSuspected() != null && chipTBEntity.getIsTbSuspected()) {
             createTbSuspectedNotification(user, chipTBEntity, familyEntity);
         }
 
@@ -144,7 +143,7 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         if (jsonObject.get("memberId") != null) {
             memberId = jsonObject.get("memberId").getAsInt();
         } else {
-            if (jsonObject.get("memberUUID")  != null) {
+            if (jsonObject.get("memberUUID") != null) {
                 memberId = memberDao.retrieveMemberByUuid(String.valueOf(jsonObject.get("memberUUID"))).getId();
             }
         }
@@ -206,7 +205,7 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         memberDao.flush();
 
 
-        if (chipTBEntity.getTbSuspected() != null && chipTBEntity.getTbSuspected()) {
+        if (chipTBEntity.getIsTbSuspected() != null && chipTBEntity.getIsTbSuspected()) {
             createTbSuspectedNotification(user, chipTBEntity, familyEntity);
         }
 
@@ -286,7 +285,7 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         memberDao.flush();
 
 
-        if (chipTBEntity.getTbCured() != null && chipTBEntity.getTbCured()) {
+        if (chipTBEntity.getIsTbCured() != null && chipTBEntity.getIsTbCured()) {
             if (parsedRecordBean.getNotificationId() != null && !parsedRecordBean.getNotificationId().equals("-1")) {
                 TechoNotificationMaster techoNotificationMaster = techoNotificationMasterDao.retrieveById(Integer.parseInt(parsedRecordBean.getNotificationId()));
                 techoNotificationMaster.setState(TechoNotificationMaster.State.COMPLETED);
@@ -303,20 +302,26 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         switch (key) {
             case "4":
                 if (!answer.equals("NONE")) {
+                    if (answer.contains("OTHER")) {
+                        answer = ImtechoUtil.convertAnswersWithOther(answer);
+                    }
                     chipTBEntity.setTuberculosisSymptoms(answer);
                 }
+                break;
+            case "7513":
+                chipTBEntity.setServiceDate(new Date(Long.parseLong(answer)));
                 break;
             case "6":
                 chipTBEntity.setOtherTbSymptoms(answer);
                 break;
             case "7":
-                chipTBEntity.setTbTestingDone(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipTBEntity.setIsTbTestingDone(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "8":
                 chipTBEntity.setTbTestType(answer);
                 break;
             case "9":
-                chipTBEntity.setTbSuspected(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipTBEntity.setIsTbSuspected(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 MemberAdditionalInfo memberAdditionalInfo;
                 Gson gson = new Gson();
 
@@ -326,11 +331,11 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
                     memberAdditionalInfo = new MemberAdditionalInfo();
                 }
 
-                if (chipTBEntity.getTbSuspected() != null) {
-                    memberAdditionalInfo.setTbSuspected(chipTBEntity.getTbSuspected());
+                if (chipTBEntity.getIsTbSuspected() != null) {
+                    memberAdditionalInfo.setTbSuspected(chipTBEntity.getIsTbSuspected());
                 }
 
-                if (chipTBEntity.getTbSuspected() != null && chipTBEntity.getTbSuspected()) {
+                if (chipTBEntity.getIsTbSuspected() != null && chipTBEntity.getIsTbSuspected()) {
                     memberAdditionalInfo.setTbCured(false);
                 }
                 memberEntity.setModifiedOn(new Date());
@@ -360,11 +365,17 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
                 break;
             case "3333":
                 if (!answer.trim().isEmpty()) {
+                    if (answer.equalsIgnoreCase("NONE")){
+                        break;
+                    }
+                    if (answer.contains("OTHER")) {
+                        answer = ImtechoUtil.convertAnswersWithOther(answer);
+                    }
                     chipTBEntity.setReferralFor(answer);
                 }
                 break;
             case "8989":
-                chipTBEntity.setIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipTBEntity.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "4501":
                 chipTBEntity.setStartedMenstruating(ImtechoUtil.returnTrueFalseFromInitials(answer));
@@ -383,7 +394,7 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
     private void setAnswersToTBFollowUpForm(String key, String answer, ChipTBEntity chipTBEntity, MemberEntity memberEntity) {
         switch (key) {
             case "4":
-                chipTBEntity.setTbCured(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipTBEntity.setIsTbCured(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 MemberAdditionalInfo memberAdditionalInfo;
                 Gson gson = new Gson();
                 if (memberEntity.getAdditionalInfo() != null && !memberEntity.getAdditionalInfo().isEmpty()) {
@@ -392,22 +403,26 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
                     memberAdditionalInfo = new MemberAdditionalInfo();
                 }
 
-                if (chipTBEntity.getTbCured() != null) {
-                    memberAdditionalInfo.setTbCured(chipTBEntity.getTbCured());
+                if (chipTBEntity.getIsTbCured() != null) {
+                    memberAdditionalInfo.setTbCured(chipTBEntity.getIsTbCured());
                 }
 
-                if (chipTBEntity.getTbCured() != null && chipTBEntity.getTbCured()) {
+                if (chipTBEntity.getIsTbCured() != null && chipTBEntity.getIsTbCured()) {
                     memberAdditionalInfo.setTbSuspected(false);
                 }
                 memberEntity.setModifiedOn(new Date());
                 memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
                 break;
             case "5":
-                chipTBEntity.setPatientTakingMedicines(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipTBEntity.setIsPatientTakingMedicines(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "6":
                 chipTBEntity.setAnyReactionOrSideEffect(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
+            case "7513":
+                chipTBEntity.setServiceDate(new Date(Long.parseLong(answer)));
+                break;
+            case "8":
             case "7":
                 chipTBEntity.setReferralPlace(Integer.valueOf(answer));
                 break;
@@ -444,6 +459,9 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
                 break;
             case "7514":
                 chipTBEntity.setMemberStatus(answer);
+                break;
+            case "70":
+                chipTBEntity.setReasonForNotTesting(answer);
                 break;
             default:
         }

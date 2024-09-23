@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by prateek on 10/8/19
@@ -1742,28 +1743,91 @@ public class ValidationFormulaUtil {
         String medicineConstant = split[1];
         String type = split[2];
         if (SharedStructureData.relatedPropertyHashTable.get(medicineConstant) == null) {
-            if (medicineConstant.equalsIgnoreCase("ALBENDAZOLE")) {
+            if (medicineConstant.equalsIgnoreCase(LabelConstants.ALBENDAZOLE)) {
                 return null;
             }
             return UtilBean.getMyLabel(validation.getMessage());
         }
-        int tabletAmount = Integer.parseInt(SharedStructureData.relatedPropertyHashTable.get(medicineConstant));
+        if (!SharedStructureData.relatedPropertyHashTable.containsKey(medicineConstant)) {
+            return null;
+        }
+        String medicine = SharedStructureData.relatedPropertyHashTable.get(medicineConstant);
+        int tabletAmount = 0;
+        if (medicine.matches("\\d+")) {
+            tabletAmount = Integer.parseInt(medicine);
+        } else if (SharedStructureData.relatedPropertyHashTable.containsKey(medicine)) {
+            tabletAmount = Integer.parseInt(SharedStructureData.relatedPropertyHashTable.get(medicine));
+        }
         switch (type) {
-            case "DATE":
+            case LabelConstants.DATE_FOR_MEDICINE:
                 if (tabletAmount == 0) {
                     return UtilBean.getMyLabel(validation.getMessage());
                 }
                 return null;
-            case "NUMBER":
+            case LabelConstants.NUMBER:
                 if (Integer.parseInt(answer) > tabletAmount) {
                     return UtilBean.getMyLabel(validation.getMessage());
                 }
                 return null;
-            case "BOOL":
+            case LabelConstants.BOOL:
                 if (answer.equalsIgnoreCase("1") && tabletAmount == 0) {
                     return UtilBean.getMyLabel(validation.getMessage());
                 }
                 return null;
+            case LabelConstants.LIST:
+                if (!answer.equalsIgnoreCase("NONE") && tabletAmount == 0) {
+                    return UtilBean.getMyLabel(validation.getMessage());
+                }
+        }
+        return null;
+    }
+
+    public static String checkGivenDateForCovid(String[] split, String answer, ValidationTagBean validation) {
+        if (split.length > 1) {
+            String doseOne = SharedStructureData.relatedPropertyHashTable.get(split[1]);
+            if (doseOne == null) {
+                return "Enter dose one";
+            }
+            Date doseOneDate = new Date(Long.parseLong(doseOne));
+            if (split.length > 2) {
+                String vaccineName = SharedStructureData.relatedPropertyHashTable.get(split[2]);
+                switch (vaccineName) {
+                    case RelatedPropertyNameConstants.PFIZER:
+                        Date doseTwoDate = new Date(Long.parseLong(answer));
+                        Long difference = TimeUnit.MILLISECONDS.toDays(doseTwoDate.getTime() - doseOneDate.getTime());
+                        if (difference < 21) {
+                            return "Dose 2 can't be before 21 days of dose 1";
+                        }
+                        break;
+                    case RelatedPropertyNameConstants.MODERNA:
+                        doseTwoDate = new Date(Long.parseLong(answer));
+                        difference = TimeUnit.MILLISECONDS.toDays(doseTwoDate.getTime() - doseOneDate.getTime());
+                        if (difference < 28) {
+                            return "Dose 2 can't be before 28 days of dose 1";
+                        }
+                        break;
+                    case RelatedPropertyNameConstants.OXFORD:
+                    case RelatedPropertyNameConstants.ASTRAZENECA:
+                        doseTwoDate = new Date(Long.parseLong(answer));
+                        difference = TimeUnit.MILLISECONDS.toDays(doseTwoDate.getTime() - doseOneDate.getTime());
+                        int numberOfWeeks = (int) Math.floor(difference / 7);
+                        if (numberOfWeeks < 4) {
+                            return "Dose 2 can't be before 4 weeks of dose 1";
+                        } else if (numberOfWeeks > 12) {
+                            return "Dose 2 can't be after 12 weeks of dose 1";
+                        }
+                        break;
+                    case RelatedPropertyNameConstants.SINOPHARM:
+                        doseTwoDate = new Date(Long.parseLong(answer));
+                        difference = TimeUnit.MILLISECONDS.toDays(doseTwoDate.getTime() - doseOneDate.getTime());
+                        if (difference < 21) {
+                            return "Dose 2 can't be before 21 days of dose 1";
+                        } else if (difference > 28) {
+                            return "Dose 2 can't be after 28 days of dose 1";
+                        }
+                        break;
+                }
+            }
         }
         return null;
     }

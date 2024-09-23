@@ -4,7 +4,6 @@ import lombok.Data;
 
 import java.util.Date;
 
-import java.util.Set;
 
 /**
  * <p>
@@ -25,6 +24,4 @@ public class PncChildDetailsDto {
     private String otherDeathReason;
     private Boolean isHighRiskCase;
     private String childReferralDone;
-    private Set<Integer> childDangerSigns;
-
 }

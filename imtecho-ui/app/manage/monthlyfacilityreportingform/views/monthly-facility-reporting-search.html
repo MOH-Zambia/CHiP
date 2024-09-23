@@ -1,0 +1,89 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="no-data-placeholder" ng-if="!ctrl.facilities || ctrl.facilities.length == 0">
+          <h5>No Record(s) Found!</h5>
+        </div>
+        <div class="cst-table table-responsive table-set-height">
+          <table aria-describedby="table"
+            class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed">
+            <thead class="cst-thead">
+            <tr>
+              <th class="small-col">S.N.</th>
+              <th class="medium-col">Health Facility</th>
+              <th class="medium-col">District Name</th>
+              <th class="medium-col">Province Name</th>
+              <th style="width: 9.5%;">State</th>
+              <th id="Actions" style="width: 7.5%;">Action</i>
+              </th>
+            </tr>
+            </thead>
+            <tbody class="cst-tbody" >
+              <tr ng-repeat="facility in ctrl.facilities">
+                <td>{{$index + 1}}</td>
+                <td>{{facility.facility_name}}</td>
+                <td>{{facility.district_name?facility.district_name:"N/A"}}</td>
+                <td>{{facility.province_name?facility.province_name:"N/A"}}</td>
+                <td>{{ facility.is_enabled ? 'Enabled' : 'Disabled' }}</td>
+                <td class="action-cell">
+                  <ul class="action-item"> 
+                    <li>
+                      <a class="fa fa-eye" aria-hidden="true" style="font-size:1.5rem;"
+                          ng-click="ctrl.previewClicked(facility.facility_id)">
+                    </a>
+                    </li>
+                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <a class="fa fa-ellipsis-h"></a>
+                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                            aria-labelledby="moreDropdown" x-placement="bottom-end">
+                            <li ng-if="facility.is_enabled === false"
+                            ng-click="ctrl.toggleState(facility)">
+                                <a><strong>Mark as </strong> Enabled</a>
+                            </li>
+                            <li ng-if="facility.is_enabled === true"
+                            ng-click="ctrl.toggleState(facility)">
+                                <a><strong>Mark as </strong> Disabled</a>
+                            </li>
+                            <li ng-click="ctrl.showModal(facility.facility_id)">
+                                <a>Sync Manually</a>
+                            </li>
+                        </ul>
+                    </li>
+                  </ul>     
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="filter-div">
+  <span class="filter-toggle" ng-click="ctrl.toggleFilter()">Filter</span>
+  <div class="row">
+      <div class="col-12">
+          <h5 class="filter-div-title">Search</h5>
+      </div>
+  </div>
+  <div class="filter-div-body">
+      <div class="row">
+          <div class="col-12" ng-form="ctrl.searchForm">
+              <div class="form-group">
+                  <location-directive ng-model="ctrl.selectedLocationId"
+                      fetch-according-to-user-aoi="true"></location-directive>
+              </div>
+          </div>
+      </div>
+      <div class="col-12">
+          <hr>
+          <div class="form-group text-right">
+              <button class="btn btn-secondary close-filter"
+                  ng-click="ctrl.close()">Close</button>
+              <button class="btn btn-primary search-filter" ng-click="ctrl.searchData();
+              ctrl.toggleFilter();">Search</button>
+          </div>
+      </div>
+  </div>
+</div>           

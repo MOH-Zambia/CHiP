@@ -8,6 +8,7 @@ package com.argusoft.imtecho.query.controller;
 import com.argusoft.imtecho.exception.ImtechoSystemException;
 import com.argusoft.imtecho.query.dto.QueryDto;
 import com.argusoft.imtecho.query.dto.QueryMasterDto;
+import com.argusoft.imtecho.query.dto.QueryWithSQLDto;
 import com.argusoft.imtecho.query.service.QueryMasterService;
 import java.util.LinkedList;
 import java.util.List;
@@ -180,6 +181,44 @@ public class QueryController {
     @PostMapping(value = "/runquery")
     public void runQuery(@RequestBody String query) {
         queryMasterService.runUpdateQuery(query);
+    }
+
+
+    /**
+     * Execute a query from given query dto
+     * @param code A query code
+     * @param queryDto An instance of QueryWithSQLDto
+     * @return An instance of QueryWithSQLDto
+     */
+    @PostMapping(value = "/getdataforformconfigurator/{code}")
+    public QueryWithSQLDto executeForFormConfigurator(@PathVariable(value = "code")String code, @RequestBody QueryWithSQLDto queryDto) {
+        List<QueryWithSQLDto> queryDtos = new LinkedList<>();
+        queryDtos.add(queryDto);
+        List<QueryWithSQLDto> executeQueryByCode = queryMasterService.executeForFormConfigurator(queryDtos, true);
+        if (!executeQueryByCode.isEmpty()) {
+            return executeQueryByCode.get(0);
+        } else {
+            throw new ImtechoSystemException("Get multiple response " + queryDto, 0);
+        }
+    }
+
+    /**
+     * Executes query from given a list of query dto
+     * @param queryDtos A list of QueryWithSQLDto
+     * @return A list of QueryWithSQLDto
+     */
+    @PostMapping(value = "/getalldataforformconfigurator")
+    public List<QueryWithSQLDto> executeAllForFormConfigurator(@RequestBody List<QueryWithSQLDto> queryDtos) {
+        for (QueryWithSQLDto query : queryDtos) {
+            if (query.getSequence() == null) {
+                throw new ImtechoSystemException("Please add Sequence!", 0);
+            }
+        }
+        try {
+            return queryMasterService.executeForFormConfigurator(queryDtos, true);
+        } catch (Exception e) {
+            throw new ImtechoSystemException("Exception in getdata " + queryDtos, e);
+        }
     }
 
 }

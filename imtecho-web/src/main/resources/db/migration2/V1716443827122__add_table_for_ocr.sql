@@ -28,6 +28,9 @@ values(
     -1,
     now());
 
+insert into mobile_beans_master (bean,depends_on_last_sync)
+values('OcrFormBean',true);
+
 insert
 	into
 	mobile_beans_feature_rel (bean,
@@ -120,13 +123,6 @@ values(
     -1,
     now());
 
-insert
-	into
-	mobile_beans_feature_rel (bean,
-	feature)
-values
-         ('OcrFormBean',
-'CBV_MY_PEOPLE');
 
 insert
 	into

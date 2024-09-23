@@ -1,1 +1,0 @@
-update menu_config set feature_json = '{"canAdd":true,"canEdit":true,"canEditUserName":false,"canEditPassword":false,"canUnlockUser":false}' where navigation_state = 'techo.manage.users' 

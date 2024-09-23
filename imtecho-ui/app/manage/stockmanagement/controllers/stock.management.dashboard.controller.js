@@ -68,8 +68,10 @@
                     }
                     return element;
                   });
+                  
                  
                 ctrl.listOfRequestsPending = ctrl.tempArray;
+            
             }).catch((error) => {
                 GeneralUtil.showMessageOnApiCallFailure(error);
             }).finally(() => {
@@ -225,6 +227,7 @@
         }
 
         ctrl.fetchUsers = function (user_id){
+            Mask.show();
             let dto = {
                 code : 'fetch_users_for_inventory_list',
                 parameters : {
@@ -245,11 +248,13 @@
 
 
         ctrl.filteredResults = function (array){
+
             const filteredData = array.filter(item => {
-                const usernameMatch = item.username.toLowerCase().includes(ctrl.searchText.toLowerCase());
-                const medicineMatch = item.medicine_data.some(medicine => 
-                    medicine.medicine_name.toLowerCase().includes(ctrl.searchText.toLowerCase())
-                );
+                const usernameMatch = item?.username?.toLowerCase().includes(ctrl.searchText.toLowerCase());
+
+                const medicineMatch = item.medicine_data.medicine_name ? item?.medicine_data.some(medicine => 
+                    medicine?.medicine_name.toLowerCase().includes(ctrl.searchText.toLowerCase())
+                ) : false;
                 return usernameMatch || medicineMatch;
             });
         
@@ -342,7 +347,7 @@
 })();
 
 (function () {
-    function SMModalController(StockConfigDAO, data, loggedUser, fetch, $uibModalInstance, Mask, healthInfraId,toaster) {
+    function SMModalController(StockConfigDAO,QueryDAO, data, loggedUser, fetch, $uibModalInstance, Mask, healthInfraId,toaster) {
         let mdctrl = this;
         mdctrl.loaded = false;
         mdctrl.valid = true;
@@ -373,11 +378,18 @@
             item.showReason = !item.showReason;
         }
 
+        mdctrl.getMaxErrorMessage = (item, index) => {
+            if (item.inventoryId === -1) {
+                mdctrl.approvedForm[`quantity${index}`].$setValidity(false);
+            }
+        }
+
         mdctrl.save = function (user) {
             Mask.show();
             let validQuantities = true;
             let acknowledgedReqs = 0;
             let rejectedReqs = 0;
+            let promises = [];
             user.medicine_data.forEach((el) => {
                 el.id = user.id;
                 el.approvedBy = user.user_id;
@@ -396,8 +408,27 @@
                     acknowledgedReqs++;
                 if(el.reason.length > 0)
                     rejectedReqs++;
-            }
-            )
+
+                if(el.approvedQuantity < el.medicineQuantity){
+                    Mask.show();
+                    let dto = {
+                        code : 'insert_remaining_medicine_req',
+                        parameters: {
+                            id : el.inventoryId,
+                            medicineId : el.medicineId,
+                            quantity : el.medicineQuantity - el.approvedQuantity,
+                            userId : el.id,
+                            infraId : healthInfraId
+                        }
+                    }
+                    const promise = QueryDAO.execute(dto).finally(() => {
+                        Mask.hide();
+                    });
+        
+                    promises.push(promise);
+                    
+                }
+            })
 
             if (validQuantities)
                 mdctrl.StockConfigDAO.updateStock(user.medicine_data, healthInfraId, userId = mdctrl.loggedUser.data.id).then(() => {
@@ -406,7 +437,16 @@
                     mdctrl.fetch(true);
                     Mask.hide();
                     mdctrl.cancel();
-                })
+            })
+                
+            
+            Mask.show();
+            Promise.all(promises).then(() => {
+            Mask.hide();
+            }).catch((error) => {
+                console.error("Error in one or more API calls:", error);
+            });
+
         }
 
         mdctrl.init();

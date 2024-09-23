@@ -1,2 +1,0 @@
-update menu_config set active =false where id=189;
-update menu_config set feature_json ='{"canModifyMemberDob":false,"canModifyMemberGender":false,"canModifyPregnancyRegDate":false,"canModifyLmpDate":false,"canModifyAncServiceDate":false,"canModifyWpdServiceDate":false,"canModifyWpdDeliveryDate":false,"canModifyPncServiceDate":false,"canModifyChvServiceDate":false,"canModifyImmuGivenDate":false}' where id=144;

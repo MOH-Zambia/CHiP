@@ -208,6 +208,15 @@ public class FormConstants {
     public static final String OCR_HIV_POSITIVE = "OCR_HIV_POSITIVE";
     public static final String OCR_EMTCT = "OCR_EMTCT";
     public static final String OCR_ANC = "OCR_ANC";
+    public static final String OCR_ADD_MEMBER="OCR_ADD_MEMBER";
+    public static final String OCR_UPDATE_MEMBER="OCR_UPDATE_MEMBER";
+    public static final String OCR_HOUSEHOLD_LINE_LIST="OCR_HOUSEHOLD_LINE_LIST";
+    public static final String OCR_WPD ="OCR_WPD";
+    public static final String OCR_PNC ="OCR_PNC";
+    public static final String OCR_CS ="OCR_CS";
+    public static final String OCR_GBV ="OCR_GBV";
+    public static final String OCR_MALARIA_NON_INDEX ="OCR_NON_INDEX";
+    public static final String OCR_MALARIA_INDEX ="OCR_INDEX";
 
 //    public static final String DNHDD_APPETITE = "DNHDD_APPETITE";
 

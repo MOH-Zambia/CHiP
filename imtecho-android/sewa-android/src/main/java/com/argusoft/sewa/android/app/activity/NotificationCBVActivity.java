@@ -311,7 +311,7 @@ public class NotificationCBVActivity extends MenuActivity implements View.OnClic
 
         notificationCodeWithRadioButtonIdMap.put(count, NotificationConstants.FHW_NOTIFICATION_MIGRATION_IN);
         listItems.add(new ListItemDataBean(-1,
-               UtilBean.getMyLabel(UtilBean.getFullFormOfEntity().get(NotificationConstants.FHW_NOTIFICATION_MIGRATION_IN)),
+                UtilBean.getMyLabel(UtilBean.getFullFormOfEntity().get(NotificationConstants.FHW_NOTIFICATION_MIGRATION_IN)),
                 setNotificationCountFromMap(notificationsCountMap.get(NotificationConstants.FHW_NOTIFICATION_MIGRATION_IN))));
         count++;
 
@@ -765,8 +765,8 @@ public class NotificationCBVActivity extends MenuActivity implements View.OnClic
                     if (notificationMobDataBean.getCustomField() != null && !notificationMobDataBean.getCustomField().equals("0")) {
                         visit = UtilBean.getMyLabel(LabelConstants.VISIT) + " " + notificationMobDataBean.getCustomField();
                     }
-
-                    items.add(new ListItemDataBean(date, memberBean.getUniqueHealthId(), UtilBean.getMemberFullName(memberBean), visit, notificationMobDataBean.getOverdueFlag()));
+                    String memberFullDetails = String.format("%s | %s | %s yrs", memberBean.getUniqueHealthId(), memberBean.getGender(), UtilBean.calculateAge(memberBean.getDob()));
+                    items.add(new ListItemDataBean(date, memberFullDetails, UtilBean.getMemberFullName(memberBean), visit, notificationMobDataBean.getOverdueFlag()));
                     break;
             }
         }

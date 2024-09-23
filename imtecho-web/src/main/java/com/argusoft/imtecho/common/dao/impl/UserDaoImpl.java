@@ -512,7 +512,7 @@ public class UserDaoImpl extends GenericDaoImpl<UserMaster, Integer> implements 
         cq.select(root)
                 .where(
                         cb.and(
-                                cb.equal(root.get(UserMaster.Fields.AADHAAR_REFERENCE_KEY), aadharReferenceKey),
+//                                cb.equal(root.get(UserMaster.Fields.AADHAAR_REFERENCE_KEY), aadharReferenceKey),
                                 cb.equal(root.get(UserMaster.Fields.STATE), UserMaster.State.ACTIVE)
                         )
                 );
@@ -523,18 +523,18 @@ public class UserDaoImpl extends GenericDaoImpl<UserMaster, Integer> implements 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public List<UserMaster> retrieveByEncryptedAadhar(String encryptedAadharNumber) {
-        Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<UserMaster> cq = cb.createQuery(UserMaster.class);
-        Root<UserMaster> root = cq.from(UserMaster.class);
-
-        cq.select(root);
-        cq.where(cb.equal(root.get(UserMaster.Fields.AADHAAR_NUMBER_ENCRYPTED), encryptedAadharNumber));
-
-        return session.createQuery(cq).getResultList();
-    }
+//    @Override
+//    public List<UserMaster> retrieveByEncryptedAadhar(String encryptedAadharNumber) {
+//        Session session = sessionFactory.getCurrentSession();
+//        CriteriaBuilder cb = session.getCriteriaBuilder();
+//        CriteriaQuery<UserMaster> cq = cb.createQuery(UserMaster.class);
+//        Root<UserMaster> root = cq.from(UserMaster.class);
+//
+//        cq.select(root);
+//        cq.where(cb.equal(root.get(UserMaster.Fields.AADHAAR_NUMBER_ENCRYPTED), encryptedAadharNumber));
+//
+//        return session.createQuery(cq).getResultList();
+//    }
 
     /**
      * {@inheritDoc}

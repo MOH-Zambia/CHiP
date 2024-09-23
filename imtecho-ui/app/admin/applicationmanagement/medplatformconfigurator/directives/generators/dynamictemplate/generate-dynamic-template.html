@@ -1,0 +1,21 @@
+<style ng-bind-html="css"></style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <form name="form" novalidate>
+                <div ng-repeat="(elementIndex, element) in templateConfig">
+                    <generate-repeatable-template-directive sibling-elements="templateConfig"
+                        element-index="elementIndex" element="element" constraint-config="constraintConfig">
+                    </generate-repeatable-template-directive>
+                </div>
+                <div class="float-right mb-15">
+                    <button type="submit" class="btn btn-primary" ng-click="submitForm()">
+                        <em class="fa fa-floppy-o"></em> Save
+                    </button>
+                    <button ng-if="backButtonReq" type="button" class="btn btn-secondary" ng-click="goBack()">Back
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

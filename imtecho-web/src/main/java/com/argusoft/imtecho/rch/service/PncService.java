@@ -11,37 +11,42 @@ import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.rch.dto.PncChildDto;
 import com.argusoft.imtecho.rch.dto.PncMasterDto;
 import com.argusoft.imtecho.rch.dto.PncMotherDto;
+
 import java.util.List;
 import java.util.Map;
 
 /**
- *
  * <p>
- *     Define services for pnc.
+ * Define services for pnc.
  * </p>
+ *
  * @author prateek
  * @since 26/08/20 11:00 AM
- *
  */
 public interface PncService {
 
     /**
      * Store pnc visit form.
+     *
      * @param parsedRecordBean Contains details like form fill up time, relative id, village id etc.
-     * @param keyAndAnswerMap Contains key and answers.
-     * @param user User details.
+     * @param keyAndAnswerMap  Contains key and answers.
+     * @param user             User details.
      * @return Returns id of store details.
      */
     Integer storePncVisitForm(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
 
+    Integer storePncOcrForm(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
+
     /**
      * Add pnc visit details.
+     *
      * @param pncMasterDto Pnc master details.
      */
     void create(PncMasterDto pncMasterDto);
 
     /**
      * Retrieves pnc child by member id.
+     *
      * @param memberId Member id.
      * @return Returns list of pnc children details.
      */
@@ -49,6 +54,7 @@ public interface PncService {
 
     /**
      * Retrieves pnc mothers by member id.
+     *
      * @param memberId Member id.
      * @return Returns list of pnc mothers.
      */

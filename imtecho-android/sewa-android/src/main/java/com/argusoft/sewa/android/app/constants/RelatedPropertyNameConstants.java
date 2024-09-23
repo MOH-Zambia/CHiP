@@ -80,6 +80,7 @@ public class RelatedPropertyNameConstants {
     public static final String GENDER = "gender";
     public static final String HOF_GENDER = "hofGender";
     public static final String HOF_NAME = "hofName";
+    public static final String HOF_ID = "hofId";
     public static final String ANS_12 = "ans12"; //Used for GENDER //1 for Male //2 for Female
     public static final String MINOR_MOBILE_NUMBER = "minorMobileNumber";
     public static final String MOBILE_NUMBER = "mobileNumber";
@@ -189,6 +190,7 @@ public class RelatedPropertyNameConstants {
     public static final String ANGANWADI_ID = "anganwadiId";
     public static final String UPDATE_FAMILY_ANGANWADI = "updateFamilyAnganwadi";
     public static final String MEMBER_NAME = "memberName";
+    public static final String MEMBER_NAME_FOR_LOG = "memberNameForLog";
     public static final String NAME_OF_BENEFICIARY = "nameOfBeneficiary";
     public static final String SUB_TITLE_DETAILS = "subtitleDetails";
     public static final String MEMBER_UNIQUE_ID = "memberUniqueId";
@@ -207,6 +209,7 @@ public class RelatedPropertyNameConstants {
     public static final String PREGNANCY_OUTCOME = "pregnancyOutcome";
     public static final String HAS_DELIVERY_HAPPENED = "hasDeliveryHappened";
     public static final String PREGNANCY_OUTCOME_LIVE_BIRTH = "LBIRTH";
+    public static final String PREGNANCY_OUTCOME_STILL_BIRTH = "SBIRTH";
     public static final String PREGNANCY_OUTCOME_PREMATURE = "PREMATURE";
     public static final String PREMATURE = "PREMATURE";
     public static final String BABIES_GENDER = "babysGender";
@@ -469,6 +472,16 @@ public class RelatedPropertyNameConstants {
     public static final String TT_VACCINE = "ttVaccine";
     public static final String TT_ONE_VACCINE = "ttOneVaccine";
     public static final String TT_TWO_VACCINE = "ttTwoVaccine";
+    public static final String AMD = "AMD";
+    public static final String PAIN_KILLER = "PAIN_KILLER";
+    public static final String ORS = "ORS";
+
+    //Covid Vaccine Constants
+    public static final String PFIZER = "PFIZER";
+    public static final String OXFORD = "OXFORD";
+    public static final String SINOPHARM = "SINOPHARM";
+    public static final String ASTRAZENECA = "ASTRAZENECA";
+    public static final String MODERNA = "MODERNA";
 
 
     public static final String NUMBER_OF_SANITARY_PADS_GIVEN = "numberOfSanitaryPadsGiven";
@@ -518,4 +531,5 @@ public class RelatedPropertyNameConstants {
     public static final String CURRENT_TRIMESTER = "currentTrimester";
     public static final String HEAD_OF_FAMILY_NUMBER = "headMobileNumber";
     public static final String RCH_ID = "rchId";
+    public static final String SINGLE_MEMBER_FAMILY = "singleMemberFamily";
 }

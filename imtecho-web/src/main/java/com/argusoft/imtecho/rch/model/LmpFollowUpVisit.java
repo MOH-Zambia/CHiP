@@ -13,13 +13,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
  * <p>
- *     Define rch_lmp_follow_up entity and its fields.
+ * Define rch_lmp_follow_up entity and its fields.
  * </p>
+ *
  * @author prateek
  * @since 26/08/20 11:00 AM
- *
  */
 @Entity
 @Table(name = "rch_lmp_follow_up")
@@ -33,6 +32,9 @@ public class LmpFollowUpVisit extends VisitCommonFields implements Serializable 
     @Column(name = "lmp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lmp;
+
+    @Column(name = "irregular_periods")
+    private Boolean irregularPeriods;
 
     @Column(name = "is_pregnant", nullable = false)
     private Boolean isPregnant;
@@ -415,6 +417,14 @@ public class LmpFollowUpVisit extends VisitCommonFields implements Serializable 
 
     public void setPrevAncState(String prevAncState) {
         this.prevAncState = prevAncState;
+    }
+
+    public Boolean getIrregularPeriods() {
+        return irregularPeriods;
+    }
+
+    public void setIrregularPeriods(Boolean irregularPeriods) {
+        this.irregularPeriods = irregularPeriods;
     }
 
     @Override

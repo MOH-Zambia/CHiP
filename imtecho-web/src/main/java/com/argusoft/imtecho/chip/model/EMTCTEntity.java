@@ -19,6 +19,10 @@ public class EMTCTEntity extends EntityAuditInfo implements Serializable {
     private Integer id;
     @Column(name = "member_id")
     private Integer memberId;
+    @Column(name = "service_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date serviceDate;
+
     @Column(name = "family_id")
     private Integer familyId;
     @Column(name = "location_id")

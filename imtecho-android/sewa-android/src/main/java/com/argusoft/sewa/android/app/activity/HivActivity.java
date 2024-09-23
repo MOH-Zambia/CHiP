@@ -269,7 +269,7 @@ public class HivActivity extends MenuActivity implements View.OnClickListener, P
         };
         alertDialog = new MyAlertDialog(this,
                 UtilBean.getMyLabel("Select form filling type"),
-                myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR");
+                myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR", null);
         alertDialog.show();
     }
 

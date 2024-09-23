@@ -3,7 +3,6 @@ package com.argusoft.imtecho.fhs.dto;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.Set;
 
 /**
  * <p>
@@ -16,7 +15,6 @@ public class AncDto {
     private Integer memberId;
     private Date lmp;
     private String lastDeliveryOutcome;
-    private Set<String> previousPregnancyComplication;
     private String otherPreviousPregnancyComplication;
     private Integer ancPlace;
     private Float weight;

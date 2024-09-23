@@ -1,0 +1,81 @@
+--with insert_into_medplat_form_master as (
+--	INSERT INTO medplat_form_master
+--	("uuid", form_name, form_code, current_version, state, created_by, created_on, modified_by, modified_on, menu_config_id)
+--	SELECT
+--		'4a7d1fad-0024-4be0-8131-065229ae3d06',
+--		'Family Planning',
+--		'FAMILY_PLANNING',
+--		'1',
+--		'ACTIVE',
+--		97067,
+--		now(),
+--		97067,
+--		now(),
+--		127
+--	ON CONFLICT (form_code)
+--	DO UPDATE
+--	SET
+--		uuid=EXCLUDED."uuid",
+--		form_name=EXCLUDED.form_name,
+--		current_version=cast(cast(coalesce((select max(cast(medplat_form_version_history.version as integer)) from medplat_form_master inner join medplat_form_version_history on medplat_form_master.uuid  = medplat_form_version_history.form_master_uuid where medplat_form_master.form_code = EXCLUDED.form_code and medplat_form_version_history.version <> 'DRAFT'),'0') as integer) + 1 as text),
+--		state=EXCLUDED.state,
+--		created_by=EXCLUDED.created_by,
+--		created_on=EXCLUDED.created_on,
+--		modified_by=EXCLUDED.modified_by,
+--		modified_on=EXCLUDED.modified_on,
+--		menu_config_id=EXCLUDED.menu_config_id
+--	returning medplat_form_master.current_version
+--)
+--INSERT INTO medplat_form_version_history
+--("uuid", form_master_uuid, template_config, field_config, "version", created_by, created_on, modified_by, modified_on, form_object, template_css, form_vm, execution_sequence, query_config)
+--SELECT
+--	'de700592-b3f4-de92-a0a8-452534f0b3c3',
+--	'4a7d1fad-0024-4be0-8131-065229ae3d06',
+--	null,
+--	null,
+--	current_version,
+--	97067,
+--	now(),
+--	97067,
+--	now(),
+--	null,
+--	null,
+--	null,
+--	null,
+--	null
+--FROM insert_into_medplat_form_master;
+--
+--
+--INSERT INTO medplat_form_version_history
+--("uuid", form_master_uuid, template_config, field_config, "version", created_by, created_on, modified_by, modified_on, form_object, template_css, form_vm, execution_sequence, query_config)
+--SELECT
+--	'4d34b0b0-551b-36cd-15ed-e39a07780666',
+--	'4a7d1fad-0024-4be0-8131-065229ae3d06',
+--	null,
+--	null,
+--	'DRAFT',
+--	97067,
+--	now(),
+--	97067,
+--	now(),
+--	null,
+--	null,
+--	null,
+--	null,
+--	null
+--ON CONFLICT (form_master_uuid, "version")
+--DO UPDATE
+--SET
+--	form_master_uuid=EXCLUDED.form_master_uuid,
+--	template_config=EXCLUDED.template_config,
+--	field_config=EXCLUDED.field_config,
+--	"version"=EXCLUDED."version",
+--	created_by=EXCLUDED.created_by,
+--	created_on=EXCLUDED.created_on,
+--	modified_by=EXCLUDED.modified_by,
+--	modified_on=EXCLUDED.modified_on,
+--	form_object=EXCLUDED.form_object,
+--	template_css=EXCLUDED.template_css,
+--	form_vm=EXCLUDED.form_vm,
+--	execution_sequence=EXCLUDED.execution_sequence,
+--	query_config=EXCLUDED.query_config;

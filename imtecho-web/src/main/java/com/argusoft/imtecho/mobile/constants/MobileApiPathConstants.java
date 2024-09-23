@@ -129,4 +129,6 @@ public class MobileApiPathConstants {
 
     //for Rbsk module
     public static final String GET_DETAILS_RBSK = "getdetailsrbsk";
+    public static final String TECHO_UPLOAD_MEDIA = "uploadMedia";
+
 }

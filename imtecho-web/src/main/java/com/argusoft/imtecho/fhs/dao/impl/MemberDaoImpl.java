@@ -13,7 +13,6 @@ import com.argusoft.imtecho.fhs.dto.*;
 import com.argusoft.imtecho.fhs.mapper.*;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
-import com.argusoft.imtecho.rch.model.*;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
@@ -150,7 +149,14 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
     @Override
     public List<ClientMemberDto> findMembers(Integer facilityCode, Date registrationStartDate, Date registrationEndDate, String householdId, Integer zoneId, Integer cbvId) {
         StringBuilder queryBuilder = new StringBuilder(
-                "SELECT i.* FROM imt_member i " +
+                "SELECT i.unique_health_id, i.is_pregnant, i.gender, i.lmp, i.other_chronic_disease_treatment, " +
+                        "    i.chronic_disease_treatment, i.under_treatment_chronic, i.other_disability, i.other_chronic, " +
+                        "    i.physical_disability, i.chronic_disease, i.dob, i.menopause_arrived, i.hysterectomy_done, " +
+                        "    (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = i.education_status), " +
+                        "    i.mobile_number,(SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = i.marital_status) as marital_status, i.passport_number, i.nrc_number, " +
+                        "    (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = cast(i.member_religion as int)) as religion, i.last_name, i.middle_name, i.first_name, i.family_planning_method, " +
+                        "    i.haemoglobin, i.weight, i.edd, i.last_method_of_contraception, i.blood_group, i.id, i.immunisation_given " +
+                        "FROM imt_member i " +
                         "INNER JOIN um_user u ON i.created_by = u.id " +
                         "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
                         "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
@@ -175,7 +181,7 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
         queryBuilder.append("ORDER BY i.created_on DESC LIMIT 1000");
 
         Session session = sessionFactory.openSession();
-        NativeQuery<MemberEntity> nativeQuery = session.createNativeQuery(queryBuilder.toString(),MemberEntity.class)
+        NativeQuery<Object[]> nativeQuery = session.createNativeQuery(queryBuilder.toString())
                 .setParameter("facilityCode", facilityCode)
                 .setParameter("registrationStartDate", registrationStartDate)
                 .setParameter("registrationEndDate", registrationEndDate);
@@ -192,10 +198,10 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
             nativeQuery.setParameter("zoneId", zoneId);
         }
 
-        List<MemberEntity> resultList = nativeQuery.getResultList();
+        List<Object[]> resultList = nativeQuery.getResultList();
         List<ClientMemberDto> members = new ArrayList<>();
 
-        for (MemberEntity row : resultList) {
+        for (Object[] row : resultList) {
             members.add(ClientMemberMapper.getMemberDto(row));
         }
 
@@ -1219,43 +1225,43 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
 
         StringBuilder queryBuilder = new StringBuilder(
                 "WITH cte_member_details AS ( " +
-                        "    SELECT member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'MALARIA' AS refer_type " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'MALARIA' AS refer_type " +
                         "    FROM malaria_details " +
                         "    WHERE is_referral_done IS NOT NULL AND referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'TUBERCULOSIS' AS refer_type " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'TUBERCULOSIS' AS refer_type " +
                         "    FROM tuberculosis_screening_details " +
                         "    WHERE is_referral_done IS NOT NULL AND referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'COVID' AS refer_type " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'COVID' AS refer_type " +
                         "    FROM covid_screening_details " +
                         "    WHERE is_referral_done IS NOT NULL AND referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'ANC' AS refer_type " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'ANC' AS refer_type " +
                         "    FROM rch_anc_master " +
                         "    WHERE referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'CHILD SERVICE' AS refer_type " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'CHILD SERVICE' AS refer_type " +
                         "    FROM rch_child_service_master " +
                         "    WHERE referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT child_id AS member_id, referral_place, referral_reason, referral_for, child_referral_done AS is_referral_done, created_on, created_by, 'PNC CHILD' AS refer_type " +
+                        "    SELECT id, child_id AS member_id, referral_place, referral_reason, referral_for, child_referral_done AS is_referral_done, created_on, created_by, 'PNC CHILD' AS refer_type " +
                         "    FROM rch_pnc_child_master " +
                         "    WHERE child_referral_done IS NOT NULL AND referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT mother_id AS member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'PNC MOTHER' AS refer_type " +
+                        "    SELECT id, mother_id AS member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'PNC MOTHER' AS refer_type " +
                         "    FROM rch_pnc_mother_master " +
                         "    WHERE referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT member_id, referral_place, referral_reason, referral_for, referral_done AS is_referral_done, created_on, created_by, 'WPD MOTHER' AS refer_type " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, referral_done AS is_referral_done, created_on, created_by, 'WPD MOTHER' AS refer_type " +
                         "    FROM rch_wpd_mother_master " +
                         "    WHERE referral_done IS NOT NULL AND referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT member_id, referral_place, referral_reason, referral_for, referral_done AS is_referral_done, created_on, created_by, 'WPD CHILD' AS refer_type " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, referral_done AS is_referral_done, created_on, created_by, 'WPD CHILD' AS refer_type " +
                         "    FROM rch_wpd_child_master " +
                         "    WHERE referral_done IS NOT NULL AND referral_place = :facilityCode " +
                         "    UNION ALL " +
-                        "    SELECT member_id, referral_place, 'hiv' AS referral_reason, NULL AS referral_for, 'yes' AS is_referral_done, created_on, created_by, 'HIV' AS refer_type " +
+                        "    SELECT id, member_id, referral_place, 'hiv' AS referral_reason, NULL AS referral_for, 'yes' AS is_referral_done, created_on, created_by, 'HIV' AS refer_type " +
                         "    FROM rch_hiv_screening_master " +
                         "    WHERE referral_place = :facilityCode " +
                         "), max_service_date AS ( " +
@@ -1263,21 +1269,28 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
                         "    FROM cte_member_details " +
                         "    GROUP BY member_id, refer_type " +
                         ") " +
-                        "SELECT m.unique_health_id, m.first_name, m.middle_name, m.last_name, m.dob, m.gender, m.mobile_number, m.marital_status, m.nrc_number, " +
+                        "SELECT m.unique_health_id, m.first_name, m.middle_name, m.last_name, m.dob, m.gender, m.mobile_number," +
+                        " (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = CAST(m.marital_status AS INT)) as marital_status, " +
+                        "m.nrc_number, " +
                         "    CASE " +
                         "        WHEN cmd.is_referral_done = 'YES' THEN " +
                         "            CASE " +
-                        "                WHEN cmd.referral_for IS NULL OR cmd.referral_for = 'OTHER' THEN cmd.referral_reason " +
-                        "                ELSE (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = CAST(cmd.referral_for AS INT)) " +
+                        "                WHEN cmd.referral_for IS NULL OR cmd.referral_for = 'OTHER' THEN 'OTHER : ' || cmd.referral_reason " +
+                        "                ELSE cmd.referral_for || ' : ' || (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = CAST(cmd.referral_for AS INT)) " +
                         "            END " +
                         "        ELSE NULL " +
                         "    END AS reason, " +
                         "    cmd.refer_type, " +
-                        "    cmd.created_on, cmd.referral_place, cmd.created_by, m.religion, f.location_id ,get_location_hierarchy(f.location_id) " +
+                        "    DATE(TO_CHAR(cmd.created_on, 'YYYY-MM-DD HH24:MI:SS')), cmd.referral_place, cmd.created_by, m.religion, get_location_hierarchy(f.location_id), " +
+                        "h.name,  u.user_name,  ul.loc_id, lm.name as loc_name, cmd.id " +
                         "FROM imt_member m " +
                         "INNER JOIN cte_member_details cmd ON m.id = cmd.member_id " +
                         "INNER JOIN max_service_date msd ON msd.member_id = cmd.member_id AND msd.created_on = cmd.created_on AND cmd.refer_type = msd.refer_type " +
+                        "INNER JOIN health_infrastructure_details h on h.id = cmd.referral_place "+
                         "INNER JOIN imt_family f ON m.family_id = f.family_id " +
+                        "INNER JOIN um_user u on u.id = cmd.created_by " +
+                        "INNER JOIN um_user_location ul ON ul.user_id = u.id " +
+                        "INNER JOIN location_master lm ON lm.id = ul.loc_id " +
                         "WHERE cmd.referral_place = :facilityCode "
         );
 
@@ -1330,22 +1343,48 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
         return referrals;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List<MalariaDto> getMalariaDetails(Integer memberId, Date serviceStartDate, Date serviceEndDate) {
+    public List<MalariaDto> getMalariaDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
         Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
         Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
 
-        String sqlQuery = "SELECT md.member_id, md.active_malaria_symptoms, md.rdt_test_status, md.is_treatment_being_given, md.malaria_type " +
+        String sqlQuery = "SELECT m.id AS member_id, md.active_malaria_symptoms, md.rdt_test_status, md.is_treatment_being_given, md.malaria_type " +
                 "FROM malaria_details md " +
-                "WHERE md.member_id = :memberId " +
+                "JOIN imt_member m ON md.member_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON md.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
                 "AND md.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
 
+        if (cbvId != null) {
+            sqlQuery += "AND md.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
 
         Query query = entityManager.createNativeQuery(sqlQuery)
-                .setParameter("memberId", memberId)
+                .setParameter("facilityCode", facilityCode)
                 .setParameter("serviceStartDate", startDateWithTime)
                 .setParameter("serviceEndDate", endDateWithTime);
 
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
 
         List<Object[]> results = query.getResultList();
         List<MalariaDto> malariaData = new ArrayList<>();
@@ -1360,25 +1399,51 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
         return malariaData;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List<TuberculosisDto> getTuberculosisDetails(Integer memberId, Date serviceStartDate, Date serviceEndDate) {
+    public List<TuberculosisDto> getTuberculosisDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
         Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
         Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
 
         String sqlQuery = "SELECT " +
-                "td.member_id, " +
+                "m.id AS member_id, " +
                 "td.tuberculosis_symptoms, " +
                 "td.is_tb_cured " +
                 "FROM tuberculosis_screening_details td " +
-                "WHERE td.member_id = :memberId " +
+                "JOIN imt_member m ON td.member_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON td.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
                 "AND td.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
 
+        if (cbvId != null) {
+            sqlQuery += "AND td.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
 
         Query query = entityManager.createNativeQuery(sqlQuery)
-                .setParameter("memberId", memberId)
+                .setParameter("facilityCode", facilityCode)
                 .setParameter("serviceStartDate", startDateWithTime)
                 .setParameter("serviceEndDate", endDateWithTime);
 
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
 
         List<Object[]> results = query.getResultList();
         List<TuberculosisDto> tuberculosisDetails = new ArrayList<>();
@@ -1393,23 +1458,50 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
         return tuberculosisDetails;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List<CovidDto> getCovidDetails(Integer memberId, Date serviceStartDate, Date serviceEndDate) {
+    public List<CovidDto> getCovidDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
         Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
         Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
 
-        String sqlQuery = "SELECT cd.member_id, cd.is_dose_one_taken, cd.dose_one_name, cd.is_dose_two_taken, cd.dose_two_name, " +
+        String sqlQuery = "SELECT m.id AS member_id, cd.is_dose_one_taken, cd.dose_one_name, cd.is_dose_two_taken, cd.dose_two_name, " +
                 "cd.willing_for_booster_vaccine, cd.is_booster_dose_given, cd.booster_name, cd.any_reactions " +
                 "FROM covid_screening_details cd " +
-                "WHERE cd.member_id = :memberId " +
+                "JOIN imt_member m ON cd.member_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON cd.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
                 "AND cd.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
 
+        if (cbvId != null) {
+            sqlQuery += "AND cd.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
 
         Query query = entityManager.createNativeQuery(sqlQuery)
-                .setParameter("memberId", memberId);
+                .setParameter("facilityCode", facilityCode);
         if (startDateWithTime != null && endDateWithTime != null) {
             query.setParameter("serviceStartDate", startDateWithTime);
             query.setParameter("serviceEndDate", endDateWithTime);
+        }
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
         }
 
         List<Object[]> results = query.getResultList();
@@ -1423,32 +1515,420 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
         return covidData;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List<HivDto> getHivDetails(Integer memberId, Date serviceStartDate, Date serviceEndDate) {
-        StringBuilder queryBuilder = new StringBuilder(
-                "SELECT i.* FROM rch_hiv_screening_master i " +
-                        "WHERE i.member_id = :memberId " +
-                        "AND i.created_on >= :serviceStartDate AND i.created_on < :serviceEndDate "
-        );
+    public List<HivDto> getHivDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
+
+        Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
+        Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
+
+        String sqlQuery = "SELECT i.* FROM rch_hiv_screening_master i " +
+                        "JOIN imt_member m ON i.member_id = m.id " +
+                        "JOIN imt_family f ON m.family_id = f.family_id " +
+                        "JOIN um_user u ON i.created_by = u.id " +
+                        "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                        "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                        "WHERE h.id = :facilityCode " +
+                        "AND i.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
 
 
-        queryBuilder.append("ORDER BY i.created_on DESC LIMIT 100");
-
-        Session session = sessionFactory.openSession();
-        NativeQuery<HivScreeningEntity> nativeQuery = session.createNativeQuery(queryBuilder.toString(),HivScreeningEntity.class)
-                .setParameter("memberId", memberId)
-                .setParameter("serviceStartDate", serviceStartDate)
-                .setParameter("serviceEndDate", serviceEndDate);
-
-
-        List<HivScreeningEntity> resultList = nativeQuery.getResultList();
-        List<HivDto> hivDetails = new ArrayList<>();
-
-        for (HivScreeningEntity row : resultList) {
-            hivDetails.add(HivDetailsMapper.getHivDto(row));
+        if (cbvId != null) {
+            sqlQuery += "AND cd.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
         }
 
-        return hivDetails;    }
+        Query query = entityManager.createNativeQuery(sqlQuery)
+                .setParameter("facilityCode", facilityCode);
+        if (startDateWithTime != null && endDateWithTime != null) {
+            query.setParameter("serviceStartDate", startDateWithTime);
+            query.setParameter("serviceEndDate", endDateWithTime);
+        }
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
 
+        List<Object[]> results = query.getResultList();
+        List<HivDto> hivData = new ArrayList<>();
 
+        for (Object[] row : results) {
+            HivDto hivDto = HivDetailsMapper.getHivDto(row);
+            hivData.add(hivDto);
+        }
+
+        return hivData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<AncDto> getAncDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
+        Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
+        Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
+
+        String sqlQuery = "SELECT m.id AS member_id, " +
+                "a.lmp, a.last_delivery_outcome, a.other_previous_pregnancy_complication, " +
+                "a.anc_place, a.weight, a.haemoglobin_count, a.systolic_bp, a.diastolic_bp, " +
+                "a.member_height, a.foetal_movement, a.foetal_height, a.foetal_heart_sound, a.foetal_position, " +
+                "a.ifa_tablets_given, a.fa_tablets_given, a.calcium_tablets_given, a.hbsag_test, a.blood_sugar_test, " +
+                "a.sugar_test_after_food_val, a.sugar_test_before_food_val, a.urine_test_done, a.urine_albumin, " +
+                "a.urine_sugar, a.vdrl_test, a.sickle_cell_test, a.hiv_test, a.albendazole_given, " +
+                "a.mebendazole1_given, a.mebendazole1_date, a.mebendazole2_given, a.mebendazole2_date " +
+                "FROM rch_anc_master a " +
+                "JOIN imt_member m ON a.member_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON a.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
+                "AND a.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
+
+        if (cbvId != null) {
+            sqlQuery += "AND a.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
+
+        Query query = entityManager.createNativeQuery(sqlQuery)
+                .setParameter("facilityCode", facilityCode);
+        if (startDateWithTime != null && endDateWithTime != null) {
+            query.setParameter("serviceStartDate", startDateWithTime);
+            query.setParameter("serviceEndDate", endDateWithTime);
+        }
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
+
+        List<Object[]> results = query.getResultList();
+        List<AncDto> ancData = new ArrayList<>();
+
+        for (Object[] row : results) {
+            AncDto ancDto = AncDetailsMapper.mapFromAncVisit(row);
+            ancData.add(ancDto);
+        }
+
+        return ancData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ChildServiceDto> getChildServiceDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
+        Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
+        Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
+
+        String sqlQuery = "SELECT m.id AS member_id, " +
+                "cd.is_alive, cd.death_reason, cd.weight, cd.ifa_syrup_given, cd.complementary_feeding_started, " +
+                "cd.complementary_feeding_start_period, cd.other_diseases, cd.is_treatement_done, " +
+                "cd.height, cd.have_pedal_edema, cd.exclusively_breastfeded, cd.any_vaccination_pending, " +
+                "cd.sd_score, cd.delivery_place, cd.delivery_done_by, cd.delivery_person, cd.delivery_person_name " +
+                "FROM rch_child_service_master cd " +
+                "JOIN imt_member m ON cd.member_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON cd.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
+                "AND cd.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
+
+        if (cbvId != null) {
+            sqlQuery += "AND cd.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
+
+        Query query = entityManager.createNativeQuery(sqlQuery)
+                .setParameter("facilityCode", facilityCode);
+        if (startDateWithTime != null && endDateWithTime != null) {
+            query.setParameter("serviceStartDate", startDateWithTime);
+            query.setParameter("serviceEndDate", endDateWithTime);
+        }
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
+
+        List<Object[]> results = query.getResultList();
+        List<ChildServiceDto> childServiceData = new ArrayList<>();
+
+        for (Object[] row : results) {
+            ChildServiceDto childServiceDto = ChildServiceMapper.mapFromChildServiceMaster(row);
+            childServiceData.add(childServiceDto);
+        }
+
+        return childServiceData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<PncChildDetailsDto> getPncChildDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
+        Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
+        Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
+
+        String sqlQuery = "SELECT m.id AS child_id, " +
+                "pcd.is_alive, pcd.other_danger_sign, pcd.child_weight, pcd.member_status, pcd.death_date, " +
+                "pcd.death_reason, pcd.place_of_death, pcd.referral_place, pcd.other_death_reason, " +
+                "pcd.is_high_risk_case, pcd.child_referral_done " +
+                "FROM rch_pnc_child_master pcd " +
+                "JOIN imt_member m ON pcd.child_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON pcd.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
+                "AND pcd.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
+
+        if (cbvId != null) {
+            sqlQuery += "AND pcd.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
+
+        Query query = entityManager.createNativeQuery(sqlQuery)
+                .setParameter("facilityCode", facilityCode);
+        if (startDateWithTime != null && endDateWithTime != null) {
+            query.setParameter("serviceStartDate", startDateWithTime);
+            query.setParameter("serviceEndDate", endDateWithTime);
+        }
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
+
+        List<Object[]> results = query.getResultList();
+        List<PncChildDetailsDto> pncChildDetails = new ArrayList<>();
+
+        for (Object[] row : results) {
+            PncChildDetailsDto pncChildDetailsDto = PncChildDetailMapper.mapFromPncChildMaster(row);
+            pncChildDetails.add(pncChildDetailsDto);
+        }
+
+        return pncChildDetails;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<PncMotherDetailsDto> getPncMotherDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
+        Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
+        Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
+
+        String sqlQuery = "SELECT pm.mother_id, pm.date_of_delivery, pm.service_date, " +
+                "pm.is_alive, pm.ifa_tablets_given, pm.other_danger_sign, pm.death_reason, " +
+                "pm.fp_insert_operate_date, pm.family_planning_method, pm.is_high_risk_case, " +
+                "pm.blood_transfusion, pm.iron_def_anemia_inj, pm.iron_def_anemia_inj_due_date, " +
+                "pm.received_mebendazole, pm.tetanus4_date, pm.tetanus5_date, pm.check_for_breastfeeding, " +
+                "pm.payment_type " +
+                "FROM rch_pnc_mother_master pm " +
+                "JOIN imt_member m ON pm.mother_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON pm.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
+                "AND pm.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
+
+        if (cbvId != null) {
+            sqlQuery += "AND pm.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
+
+        Query query = entityManager.createNativeQuery(sqlQuery)
+                .setParameter("facilityCode", facilityCode);
+        if (startDateWithTime != null && endDateWithTime != null) {
+            query.setParameter("serviceStartDate", startDateWithTime);
+            query.setParameter("serviceEndDate", endDateWithTime);
+        }
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
+
+        List<Object[]> results = query.getResultList();
+        List<PncMotherDetailsDto> pncMotherDetails = new ArrayList<>();
+
+        for (Object[] row : results) {
+            PncMotherDetailsDto pncMotherDetailsDto = PncMotherDetailsMapper.mapFromPncMotherMaster(row);
+            pncMotherDetails.add(pncMotherDetailsDto);
+        }
+
+        return pncMotherDetails;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<WpdMotherDetailsDto> getWpdMotherDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
+        Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
+        Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
+
+        String sqlQuery = "SELECT wpd.date_of_delivery, wpd.has_delivery_happened, wpd.cortico_steroid_given, " +
+                "wpd.is_preterm_birth, wpd.delivery_place, wpd.institutional_delivery_place, " +
+                "wpd.type_of_hospital, wpd.delivery_done_by, wpd.type_of_delivery, " +
+                "wpd.mother_alive, wpd.other_danger_signs, wpd.is_discharged, " +
+                "wpd.discharge_date, wpd.breast_feeding_in_one_hour, wpd.mtp_done_at, " +
+                "wpd.mtp_performed_by, wpd.death_reason, wpd.is_high_risk_case, " +
+                "wpd.pregnancy_reg_det_id, wpd.pregnancy_outcome, wpd.misoprostol_given, " +
+                "wpd.free_drop_delivery, wpd.delivery_person, wpd.delivery_person_name, " +
+                "wpd.was_art_given, wpd.hiv_during_delivery, wpd.is_art_given_delivery, " +
+                "wpd.payment_type, wpd.member_id " +
+                "FROM rch_wpd_mother_master wpd " +
+                "JOIN imt_member m ON wpd.member_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON wpd.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
+                "AND wpd.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
+
+        if (cbvId != null) {
+            sqlQuery += "AND wpd.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
+
+        Query query = entityManager.createNativeQuery(sqlQuery)
+                .setParameter("facilityCode", facilityCode);
+        if (startDateWithTime != null && endDateWithTime != null) {
+            query.setParameter("serviceStartDate", startDateWithTime);
+            query.setParameter("serviceEndDate", endDateWithTime);
+        }
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
+
+        List<Object[]> results = query.getResultList();
+        List<WpdMotherDetailsDto> wpdMotherDetails = new ArrayList<>();
+
+        for (Object[] row : results) {
+            WpdMotherDetailsDto wpdMotherDetailsDto = WpdMotherDetailsMapper.mapFromWpdMotherMaster(row);
+            wpdMotherDetails.add(wpdMotherDetailsDto);
+        }
+
+        return wpdMotherDetails;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<WpdChildDetailsDto> getWpdChildDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId) {
+        Timestamp startDateWithTime = serviceStartDate != null ? new Timestamp(serviceStartDate.getTime()) : null;
+        Timestamp endDateWithTime = serviceEndDate != null ? new Timestamp(serviceEndDate.getTime()) : null;
+
+        String sqlQuery = "SELECT wcd.member_id, wcd.wpd_mother_id, wcd.pregnancy_outcome, wcd.kangaroo_care, " +
+                "wcd.breast_crawl, wcd.was_premature, wcd.name, wcd.type_of_delivery, wcd.death_reason, " +
+                "wcd.is_high_risk_case, wcd.vitamin_k1_date, wcd.exclusive_breastfeeding_in_health_center, " +
+                "wcd.baby_breathe_at_birth, wcd.skin_to_skin_care " +
+                "FROM rch_wpd_child_master wcd " +
+                "JOIN imt_member m ON wcd.member_id = m.id " +
+                "JOIN imt_family f ON m.family_id = f.family_id " +
+                "JOIN um_user u ON wcd.created_by = u.id " +
+                "INNER JOIN user_health_infrastructure uh ON u.id = uh.user_id " +
+                "INNER JOIN health_infrastructure_details h ON uh.health_infrastrucutre_id = h.id " +
+                "WHERE h.id = :facilityCode " +
+                "AND wcd.created_on BETWEEN :serviceStartDate AND :serviceEndDate ";
+
+        if (cbvId != null) {
+            sqlQuery += "AND wcd.created_by = :cbvId ";
+        }
+        if (householdId != null) {
+            sqlQuery += "AND m.family_id = :householdId ";
+        }
+        if (zoneId != null) {
+            sqlQuery += "AND f.location_id = :zoneId ";
+        }
+
+        Query query = entityManager.createNativeQuery(sqlQuery)
+                .setParameter("facilityCode", facilityCode);
+        if (startDateWithTime != null && endDateWithTime != null) {
+            query.setParameter("serviceStartDate", startDateWithTime);
+            query.setParameter("serviceEndDate", endDateWithTime);
+        }
+        if (cbvId != null) {
+            query.setParameter("cbvId", cbvId);
+        }
+        if (householdId != null) {
+            query.setParameter("householdId", householdId);
+        }
+        if (zoneId != null) {
+            query.setParameter("zoneId", zoneId);
+        }
+
+        List<Object[]> results = query.getResultList();
+        List<WpdChildDetailsDto> wpdChildDetails = new ArrayList<>();
+
+        for (Object[] row : results) {
+            WpdChildDetailsDto wpdChildDetailsDto = WpdChildMapper.mapFromWpdChildMaster(row);
+            wpdChildDetails.add(wpdChildDetailsDto);
+        }
+
+        return wpdChildDetails;
+    }
 }

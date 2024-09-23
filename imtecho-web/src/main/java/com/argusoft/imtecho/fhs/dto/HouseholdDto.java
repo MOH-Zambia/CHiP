@@ -2,7 +2,6 @@ package com.argusoft.imtecho.fhs.dto;
 
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,55 +18,40 @@ public class HouseholdDto {
 
     private Integer locationId;
 
-    private String religion;
-
-    private String caste;
-
-    private Boolean bplFlag;
-
-    private Integer anganwadiId;
-
-    private Boolean toiletAvailableFlag;
-
-    private Boolean isVerifiedFlag;
-
-    private String state;
-
-    private Integer assignedTo;
-
     private String address1;
-
-    private String address2;
-
-    private String maaVatsalyaNumber;
 
     private Integer areaId;
 
-    private Boolean vulnerableFlag;
+    private Boolean outdoorCookingPractice;
 
-    private Boolean migratoryFlag;
+    private String typeOfToilet;
+
+    private String drinkingWaterSource;
+
+    private Boolean handwashAvailable;
+
+    private String otherWasteDisposal;
+
+    private Boolean storageMeetsStandard;
+
+    private Boolean waterSafetyMeetsStandard;
+
+    private Boolean dishrackAvailable;
+
+    private Boolean complaintOfInsects;
+
+    private Boolean complaintOfRodents;
+
+    private Boolean separateLivestockShelter;
+
+    private Integer noOfMosquitoNetsAvailable;
+
+    private Boolean isIecGiven;
 
     private String latitude;
 
     private String longitude;
 
-    private String rsbyCardNumber;
-
-    private String comment;
-
-    private Integer currentState;
-
-    private Boolean isReport;
-
-    private Integer contactPersonId;
-
-    private Integer createdBy;
-
-    private Date createdOn;
-
-    private Integer modifiedBy;
-
-    private Date modifiedOn;
-
     private List<ClientMemberDto> members;
+
 }

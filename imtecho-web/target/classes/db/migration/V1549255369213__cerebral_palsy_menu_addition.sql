@@ -1,1 +1,0 @@
-insert into menu_config(active,menu_name,navigation_state,menu_type) values('TRUE','Suspected CP','techo.manage.cerebralpalsysearch','manage');

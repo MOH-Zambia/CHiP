@@ -1,6 +1,8 @@
 package com.argusoft.imtecho.chip.model;
 
 import com.argusoft.imtecho.common.model.EntityAuditInfo;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,12 +10,18 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tuberculosis_screening_details")
+@Getter
+@Setter
 public class ChipTBEntity extends EntityAuditInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer id;
+
+    @Column(name = "service_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date serviceDate;
 
     @Column(name = "member_id")
     private Integer memberId;
@@ -76,172 +84,7 @@ public class ChipTBEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "member_status")
     private String memberStatus;
 
+    @Column(name = "reason_for_not_testing")
+    private String reasonForNotTesting;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
-    }
-
-    public String getTuberculosisSymptoms() {
-        return tuberculosisSymptoms;
-    }
-
-    public void setTuberculosisSymptoms(String tuberculosisSymptoms) {
-        this.tuberculosisSymptoms = tuberculosisSymptoms;
-    }
-
-    public Boolean getTbTestingDone() {
-        return isTbTestingDone;
-    }
-
-    public void setTbTestingDone(Boolean tbTestingDone) {
-        isTbTestingDone = tbTestingDone;
-    }
-
-    public String getTbTestType() {
-        return tbTestType;
-    }
-
-    public void setTbTestType(String tbTestType) {
-        this.tbTestType = tbTestType;
-    }
-
-    public Boolean getTbSuspected() {
-        return isTbSuspected;
-    }
-
-    public void setTbSuspected(Boolean tbSuspected) {
-        isTbSuspected = tbSuspected;
-    }
-
-    public Integer getReferralPlace() {
-        return referralPlace;
-    }
-
-    public void setReferralPlace(Integer referralPlace) {
-        this.referralPlace = referralPlace;
-    }
-
-    public Boolean getTbCured() {
-        return isTbCured;
-    }
-
-    public void setTbCured(Boolean tbCured) {
-        isTbCured = tbCured;
-    }
-
-    public Boolean getPatientTakingMedicines() {
-        return isPatientTakingMedicines;
-    }
-
-    public void setPatientTakingMedicines(Boolean patientTakingMedicines) {
-        isPatientTakingMedicines = patientTakingMedicines;
-    }
-
-    public Boolean getAnyReactionOrSideEffect() {
-        return anyReactionOrSideEffect;
-    }
-
-    public void setAnyReactionOrSideEffect(Boolean anyReactionOrSideEffect) {
-        this.anyReactionOrSideEffect = anyReactionOrSideEffect;
-    }
-
-    public String getFormType() {
-        return formType;
-    }
-
-    public void setFormType(String formType) {
-        this.formType = formType;
-    }
-
-    public Integer getFamilyId() {
-        return familyId;
-    }
-
-    public void setFamilyId(Integer familyId) {
-        this.familyId = familyId;
-    }
-
-    public Integer getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Integer locationId) {
-        this.locationId = locationId;
-    }
-
-    public String getOtherTbSymptoms() {
-        return otherTbSymptoms;
-    }
-
-    public void setOtherTbSymptoms(String otherTbSymptoms) {
-        this.otherTbSymptoms = otherTbSymptoms;
-    }
-
-    public String getReferralDone() {
-        return referralDone;
-    }
-
-    public void setReferralDone(String referralDone) {
-        this.referralDone = referralDone;
-    }
-
-    public String getReferralReason() {
-        return referralReason;
-    }
-
-    public void setReferralReason(String referralReason) {
-        this.referralReason = referralReason;
-    }
-
-    public Boolean getStartedMenstruating() {
-        return startedMenstruating;
-    }
-
-    public void setStartedMenstruating(Boolean startedMenstruating) {
-        this.startedMenstruating = startedMenstruating;
-    }
-
-    public Date getLmpDate() {
-        return lmpDate;
-    }
-
-    public void setLmpDate(Date lmpDate) {
-        this.lmpDate = lmpDate;
-    }
-
-    public String getReferralFor() {
-        return referralFor;
-    }
-
-    public void setReferralFor(String referralFor) {
-        this.referralFor = referralFor;
-    }
-
-    public Boolean getIecGiven() {
-        return isIecGiven;
-    }
-
-    public void setIecGiven(Boolean iecGiven) {
-        isIecGiven = iecGiven;
-    }
-
-    public String getMemberStatus() {
-        return memberStatus;
-    }
-
-    public void setMemberStatus(String memberStatus) {
-        this.memberStatus = memberStatus;
-    }
 }

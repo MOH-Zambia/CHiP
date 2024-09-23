@@ -1,0 +1,28 @@
+<ng-form name="vaccinationForm">
+    <div ng-repeat="(key,value) in immunisation track by $index" class="row">
+        <div class="form-group col-6">
+            <validate for="{{dob}}-{{key}}given" required-msg="Required">
+                <label for="{{dob}}-{{key}}given" control-label uib-tooltip="Is ({{getTransformedKey(key)}}) given?">Is ({{getTransformedKey(key)}}) given?</label>
+                <label class="control control-radio mt-10">Yes
+                    <input ng-value="true" name="{{dob}}-{{key}}given" form-control type="radio"
+                        ng-model="immunisation[key].given" required ng-change="immunisationGivenChanged(key)">
+                    <div class="control_indicator"></div>
+                </label>
+                <label class="control control-radio mt-10">No
+                    <input ng-value="false" name="{{dob}}-{{key}}given" form-control type="radio"
+                        ng-model="immunisation[key].given" required ng-change="immunisationGivenChanged(key)">
+                    <div class="control_indicator"></div>
+                </label>
+                <placeholder></placeholder>
+            </validate>
+        </div>
+        <div class="form-group col-6" ng-if="immunisation[key].given">
+            <validate for="{{dob}}-{{key}}date" required-msg="Required">
+                <label control-label style="float: left;" for="{{dob}}-{{key}}date"> {{key}} Date</label>
+                <input type="text" datepicker form-control name="{{dob}}-{{key}}date" id="{{dob}}-{{key}}date"
+                    ng-model="immunisation[key].date" required ng-change="immunisationDateChanged(key)">
+                <placeholder></placeholder>
+            </validate>
+        </div>
+    </div>
+</ng-form>

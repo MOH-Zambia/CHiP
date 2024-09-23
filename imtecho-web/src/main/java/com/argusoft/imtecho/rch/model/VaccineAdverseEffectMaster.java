@@ -5,6 +5,9 @@
  */
 package com.argusoft.imtecho.rch.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -19,12 +22,18 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "rch_vaccine_adverse_effect")
+@Getter
+@Setter
 public class VaccineAdverseEffectMaster extends VisitCommonFields implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer id;
+
+    @Column(name = "service_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date serviceDate;
 
     @Column(name = "adverse_effect", length = 15)
     private String adverseEffect;
@@ -72,132 +81,4 @@ public class VaccineAdverseEffectMaster extends VisitCommonFields implements Ser
     @Column(name = "vaccination_infra_id")
     private Integer vaccinationInfraId;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAdverseEffect() {
-        return adverseEffect;
-    }
-
-    public void setAdverseEffect(String adverseEffect) {
-        this.adverseEffect = adverseEffect;
-    }
-
-    public String getVaccineName() {
-        return vaccineName;
-    }
-
-    public void setVaccineName(String vaccineName) {
-        this.vaccineName = vaccineName;
-    }
-
-    public String getBatchNumber() {
-        return batchNumber;
-    }
-
-    public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
-    }
-
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public String getSessionSite() {
-        return sessionSite;
-    }
-
-    public void setSessionSite(String sessionSite) {
-        this.sessionSite = sessionSite;
-    }
-
-    public Boolean getCluster() {
-        return cluster;
-    }
-
-    public void setCluster(Boolean cluster) {
-        this.cluster = cluster;
-    }
-
-    public String getVaccinationPlace() {
-        return vaccinationPlace;
-    }
-
-    public void setVaccinationPlace(String vaccinationPlace) {
-        this.vaccinationPlace = vaccinationPlace;
-    }
-
-    public Date getNotificationDate() {
-        return notificationDate;
-    }
-
-    public void setNotificationDate(Date notificationDate) {
-        this.notificationDate = notificationDate;
-    }
-
-    public Date getVaccinationDate() {
-        return vaccinationDate;
-    }
-
-    public void setVaccinationDate(Date vaccinationDate) {
-        this.vaccinationDate = vaccinationDate;
-    }
-
-    public String getVaccinationIn() {
-        return vaccinationIn;
-    }
-
-    public void setVaccinationIn(String vaccinationIn) {
-        this.vaccinationIn = vaccinationIn;
-    }
-
-    public Integer getNumberOfCluster() {
-        return numberOfCluster;
-    }
-
-    public void setNumberOfCluster(Integer numberOfCluster) {
-        this.numberOfCluster = numberOfCluster;
-    }
-
-    public Integer getClusterId() {
-        return clusterId;
-    }
-
-    public void setClusterId(Integer clusterId) {
-        this.clusterId = clusterId;
-    }
-
-    public String getAdverseEffectType() {
-        return adverseEffectType;
-    }
-
-    public void setAdverseEffectType(String adverseEffectType) {
-        this.adverseEffectType = adverseEffectType;
-    }
-
-    public Integer getVaccinationInfraId() {
-        return vaccinationInfraId;
-    }
-
-    public void setVaccinationInfraId(Integer vaccinationInfraId) {
-        this.vaccinationInfraId = vaccinationInfraId;
-    }
 }

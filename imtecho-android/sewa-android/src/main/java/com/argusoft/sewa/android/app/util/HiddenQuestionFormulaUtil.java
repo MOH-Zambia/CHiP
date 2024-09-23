@@ -1,6 +1,7 @@
 package com.argusoft.sewa.android.app.util;
 
 import static com.argusoft.sewa.android.app.datastructure.SharedStructureData.context;
+import static com.argusoft.sewa.android.app.datastructure.SharedStructureData.sewaFhsService;
 import static com.argusoft.sewa.android.app.util.DynamicUtils.getLoopId;
 import static com.argusoft.sewa.android.app.util.UtilBean.createAdapter;
 import static com.argusoft.sewa.android.app.util.UtilBean.setTextColourAsPerStatus;
@@ -209,6 +210,7 @@ public class HiddenQuestionFormulaUtil {
             }
         }
     }
+
     public static void lessThanFloat(String[] split, QueFormBean queFormBean) {
         if (queFormBean.getLoopCounter() > 0 && !queFormBean.isIgnoreLoop()) {
             split[1] += queFormBean.getLoopCounter();
@@ -474,8 +476,7 @@ public class HiddenQuestionFormulaUtil {
                 queFormBean.setAnswer(queFormBean.getOptions().get(1).getKey());
                 queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
             }
-        }
-        else if (split[1].contains(GlobalTypes.MULTI_SELECT_SEPARATOR)) {
+        } else if (split[1].contains(GlobalTypes.MULTI_SELECT_SEPARATOR)) {
             List<String> relatedPropertyValue = new ArrayList<>();
             /*You may change the double slash i.e. "\\" appended to the separator if your separator is other than "*" */
             String[] relatedPropertyKey = split[1].split("\\" + GlobalTypes.MULTI_SELECT_SEPARATOR);
@@ -523,8 +524,7 @@ public class HiddenQuestionFormulaUtil {
                     queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
                 }
             }
-        }
-        else if (split[1].contains(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR)) {
+        } else if (split[1].contains(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR)) {
             //split-1 contains ~
             String[] relatedPropertyKey = split[1].split(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
             boolean b = true;
@@ -542,8 +542,7 @@ public class HiddenQuestionFormulaUtil {
                 queFormBean.setAnswer(queFormBean.getOptions().get(1).getKey());
                 queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
             }
-        }
-        else if (split[1].contains(GlobalTypes.MORBIDITY_DETAILS_SEPARATOR)) {
+        } else if (split[1].contains(GlobalTypes.MORBIDITY_DETAILS_SEPARATOR)) {
             //split-1 contains @
             String[] relatedPropertyKey = split[1].split(GlobalTypes.MORBIDITY_DETAILS_SEPARATOR);
             String givenAnswer;
@@ -567,8 +566,7 @@ public class HiddenQuestionFormulaUtil {
                     queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
                 }
             }
-        }
-        else {
+        } else {
             //split-2 contains comma
             String givenAnswer = SharedStructureData.relatedPropertyHashTable.get(split[1]);
             if (split[2].contains(GlobalTypes.ADD_SEPARATOR)) {
@@ -781,33 +779,33 @@ public class HiddenQuestionFormulaUtil {
         }
     }
 
-    public static void checkBetween(String[] split, QueFormBean queFormBean){
-            if (queFormBean.getLoopCounter() > 0 && !queFormBean.isIgnoreLoop()) {
-                split[1] += queFormBean.getLoopCounter();
+    public static void checkBetween(String[] split, QueFormBean queFormBean) {
+        if (queFormBean.getLoopCounter() > 0 && !queFormBean.isIgnoreLoop()) {
+            split[1] += queFormBean.getLoopCounter();
+        }
+        String propertyValue = SharedStructureData.relatedPropertyHashTable.get(split[1]); // get value of property
+        if (propertyValue != null) {
+            if (propertyValue.equalsIgnoreCase("")) {
+                propertyValue = "0";
             }
-            String propertyValue = SharedStructureData.relatedPropertyHashTable.get(split[1]); // get value of property
-            if (propertyValue != null) {
-                if (propertyValue.equalsIgnoreCase("")) {
-                    propertyValue = "0";
-                }
-                int parseInt;
-                try {
-                    parseInt = Integer.parseInt(propertyValue);
-                } catch (Exception e) {
-                    parseInt = 0;
-                }
-                try {
-                    if (parseInt >= Integer.parseInt(split[2]) && parseInt<=Integer.parseInt(split[3])) {
-                        queFormBean.setNext(queFormBean.getOptions().get(0).getNext());
-                        queFormBean.setAnswer(queFormBean.getOptions().get(0).getKey());
-                    } else {
-                        queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
-                        queFormBean.setAnswer(queFormBean.getOptions().get(1).getKey());
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, null, e);
-                }
+            int parseInt;
+            try {
+                parseInt = Integer.parseInt(propertyValue);
+            } catch (Exception e) {
+                parseInt = 0;
             }
+            try {
+                if (parseInt >= Integer.parseInt(split[2]) && parseInt <= Integer.parseInt(split[3])) {
+                    queFormBean.setNext(queFormBean.getOptions().get(0).getNext());
+                    queFormBean.setAnswer(queFormBean.getOptions().get(0).getKey());
+                } else {
+                    queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
+                    queFormBean.setAnswer(queFormBean.getOptions().get(1).getKey());
+                }
+            } catch (Exception e) {
+                Log.e(TAG, null, e);
+            }
+        }
     }
 
     public static void loopCheckAgeBetween(String[] split, QueFormBean queFormBean) {
@@ -3042,17 +3040,23 @@ public class HiddenQuestionFormulaUtil {
                     SharedStructureData.relatedPropertyHashTable.put(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.DEFAULT_MARITAL_STATUS,
                             queFormBean.getLoopCounter()), "629");
                 } else {
-                    SharedStructureData.relatedPropertyHashTable.put(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.DEFAULT_MARITAL_STATUS,
-                            queFormBean.getLoopCounter()), null);
+                    if (msQueFormBean != null) {
+                        SharedStructureData.relatedPropertyHashTable.put(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.DEFAULT_MARITAL_STATUS,
+                                queFormBean.getLoopCounter()), msQueFormBean.getAnswer() != null ? msQueFormBean.getAnswer().toString() : null);
+                    } else {
+                        SharedStructureData.relatedPropertyHashTable.put(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.DEFAULT_MARITAL_STATUS,
+                                queFormBean.getLoopCounter()), null);
+                    }
                 }
 
                 if (msQueFormBean != null) {
                     Spinner spinner = (Spinner) msQueFormBean.getQuestionTypeView();
                     if (wifeOrHusbandRel) {
                         spinner.setSelection(1);
-                    } else {
-                        spinner.setSelection(0);
                     }
+                /*    else {
+                        spinner.setSelection(0);
+                    }*/
                 }
             }
         }
@@ -3127,11 +3131,12 @@ public class HiddenQuestionFormulaUtil {
 
     public static void setHOFMobileNumberForMinors(QueFormBean queFormBean) {
         String hofMobileNumber = null;
-        for (int i = 0; i < queFormBean.getLoopCounter(); i++) {
-            String isFamilyHeadFlag = SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.FAMILY_HEAD_FLAG, i));
-            if ("1".equals(isFamilyHeadFlag)) {
-                hofMobileNumber = SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.MOBILE_NUMBER, i));
-            }
+        String headMemberId = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.HOF_ID);
+        if (headMemberId == null) {
+            hofMobileNumber = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER);
+        } else {
+            MemberBean headMember = sewaFhsService.retrieveMemberBeanByHealthId(headMemberId);
+            hofMobileNumber = headMember.getMobileNumber();
         }
         if (hofMobileNumber != null) {
             String mob = null;
@@ -3143,10 +3148,7 @@ public class HiddenQuestionFormulaUtil {
             }
             if (!hofMobileNumber.trim().equalsIgnoreCase("null")
                     && !hofMobileNumber.trim().equalsIgnoreCase("")) {
-                SharedStructureData.relatedPropertyHashTable.put(UtilBean.
-                        getRelatedPropertyNameWithLoopCounter(
-                                RelatedPropertyNameConstants.MINOR_MOBILE_NUMBER,
-                                queFormBean.getLoopCounter()), mob);
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MINOR_MOBILE_NUMBER, mob);
             }
         }
     }

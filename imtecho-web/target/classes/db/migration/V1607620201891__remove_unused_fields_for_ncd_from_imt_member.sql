@@ -1,7 +1,0 @@
---alter table imt_member
---drop column if exists ncd_screening_needed,
---drop column if exists hypertension_screening_done,
---drop column if exists diabetes_screening_done,
---drop column if exists oral_screening_done,
---drop column if exists breast_screening_done,
---drop column if exists cervical_screening_done;

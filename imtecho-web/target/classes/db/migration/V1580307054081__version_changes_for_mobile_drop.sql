@@ -1,1 +1,0 @@
-update system_configuration set key_value = '77-74' where system_key = 'ANDROID_VERSION';

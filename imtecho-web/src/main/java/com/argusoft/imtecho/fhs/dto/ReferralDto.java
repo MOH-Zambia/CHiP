@@ -1,5 +1,6 @@
 package com.argusoft.imtecho.fhs.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,12 +14,15 @@ import java.util.Date;
 public class ReferralDto {
 
     private String referredFrom;
-    private Integer referredTo;
+    private String referredTo;
+
+    @JsonFormat(pattern = "yyyy-MM-dd' 'HH:mm:ss")
+    private String uniqueId;
     private Date referredOn;
-    private Integer referredBy;
+    private String referredBy;
     private String reasons;
-    private String  typeCode;
-    private String typeDescription;
+    private String  typeCode = "310449005";
+    private String typeDescription = "Referral to hospital";
     private String serviceArea;
     private String notes;
     private String systemClientId;
@@ -29,8 +33,8 @@ public class ReferralDto {
     private String religion;
     private String NRC;
     private String gender;
-    private Integer maritalStatus;
+    private String maritalStatus;
     private Date dateOfBirth;
     private String mobileNumber;
-    private Integer location;
+    private String location;
 }

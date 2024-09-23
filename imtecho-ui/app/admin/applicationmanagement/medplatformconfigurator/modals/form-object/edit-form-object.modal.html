@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h4 class="text">Configure Form Structure</h4>
+</div>
+<div class="modal-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 inline-form">
+                <form role="form" name="editFormObject" id="editFormObject" novalidate>
+                    <div class="row">
+                        <div class="col-10">
+                            <div class="form-group">
+                                <validate for='formObject' root-msg="Name cannot be same as roots"
+                                    required-msg="Please enter object key">
+                                    <label for="formObject" control-label>
+                                        Object
+                                    </label>
+                                    <input type="text" max-length="20" class="form-control cst-form-control" form-control
+                                        name="formObject" id="formObject" ng-model="currentNode.title"
+                                        ng-change="titleChanged(currentNode.title)" required>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center">
+                            <div class="form-group">
+                                <label control-label class="control control-checkbox">Is Array
+                                    <input name="isArray" form-control type="checkbox" ng-model="currentNode.isArray" ng-change="isArrayChanged(currentNode)">
+                                    <div class="control_indicator"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10">
+                            <div class="form-group" ng-if="currentNode.isArray">
+                                <validate for='indexAlias'
+                                    required-msg="Please enter Index Alias" alias-msg="Alias must be unique">
+                                    <label for="formObject" control-label>
+                                        Index Alias
+                                    </label>
+                                    <input type="text" max-length="20" class="form-control cst-form-control" form-control
+                                        name="indexAlias" id="indexAlias" ng-change="indexAliasChanged(currentNode.indexAlias)" ng-model-options="{debounce: 400}" ng-model="currentNode.indexAlias" required>
+                                    <placeholder></placeholder>
+                                </validate>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+</div>

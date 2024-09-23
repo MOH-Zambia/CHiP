@@ -175,13 +175,13 @@ public interface UserDao extends GenericDao<UserMaster, Integer> {
      */
     List<UserMaster> retrieveByAadharReferenceKey(UUID aadharReferenceKey);
 
-    /**
-     * Returns a list of user based on given aadhar number
-     *
-     * @param encryptedAadharNumber An aadhar number
-     * @return A list of UserMaster
-     */
-    List<UserMaster> retrieveByEncryptedAadhar(String encryptedAadharNumber);
+//    /**
+//     * Returns a list of user based on given aadhar number
+//     *
+//     * @param encryptedAadharNumber An aadhar number
+//     * @return A list of UserMaster
+//     */
+//    List<UserMaster> retrieveByEncryptedAadhar(String encryptedAadharNumber);
 
     /**
      * Updates User's preferred language to by default language

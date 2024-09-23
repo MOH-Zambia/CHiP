@@ -296,6 +296,8 @@ public class MemberAdditionalInfo {
     private Date mebendazole1Date;
     private Boolean mebendazole2Given;
     private Date mebendazole2Date;
+    private Boolean havingIrregularPeriods;
+    private Boolean nhimaCard;
 
     public Date getPnctetanus1() {
         return pnctetanus1;
@@ -1495,5 +1497,21 @@ public class MemberAdditionalInfo {
 
     public void setRchId(String rchId) {
         this.rchId = rchId;
+    }
+
+    public Boolean getHavingIrregularPeriods() {
+        return havingIrregularPeriods;
+    }
+
+    public void setHavingIrregularPeriods(Boolean havingIrregularPeriods) {
+        this.havingIrregularPeriods = havingIrregularPeriods;
+    }
+
+    public Boolean getNhimaCard() {
+        return nhimaCard;
+    }
+
+    public void setNhimaCard(Boolean nhimaCard) {
+        this.nhimaCard = nhimaCard;
     }
 }

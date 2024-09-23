@@ -1,2 +1,0 @@
-alter table gvk_high_risk_follow_up_usr_info drop column unique_health_id ;
-alter table gvk_high_risk_follow_up_responce  drop column unique_health_id;

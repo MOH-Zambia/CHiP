@@ -242,6 +242,9 @@ public class VaccineAdverseEffectServiceImpl implements VaccineAdverseEffectServ
             case "7":
                 vaccineAdverseEffectMaster.setManufacturer(answer);
                 break;
+            case "7513":
+                vaccineAdverseEffectMaster.setServiceDate(new Date(Long.parseLong(answer)));
+                break;
             default:
         }
     }

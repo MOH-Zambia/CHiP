@@ -28,20 +28,20 @@ public class InteractionDto {
     private List<AncDto> ancDetails = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ChildServiceDto> childServiceDetails;
+    private List<ChildServiceDto> childServiceDetails = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PncChildDetailsDto> pncChildDetails;
+    private List<PncChildDetailsDto> pncChildDetails = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PncMotherDetailsDto> pncMotherDetails;
+    private List<PncMotherDetailsDto> pncMotherDetails = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WpdMotherDetailsDto> wpdMotherDetails;
+    private List<WpdMotherDetailsDto> wpdMotherDetails = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WpdChildDetailsDto> wpdChildDetails;
+    private List<WpdChildDetailsDto> wpdChildDetails = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HivDto> hivDetails;
+    private List<HivDto> hivDetails = new ArrayList<>();
 }

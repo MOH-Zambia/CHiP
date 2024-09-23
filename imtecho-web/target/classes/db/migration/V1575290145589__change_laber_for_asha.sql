@@ -1,1 +1,0 @@
-update um_role_master set "name" ='ASHA' where code = 'ASHA';

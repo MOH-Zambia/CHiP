@@ -191,9 +191,9 @@
         vnm.addValue = function () {
             vnm.addModalForm.$setSubmitted();
             if (vnm.addModalForm.$valid && vnm.newValue.value  && ((vnm.newValue.field.field_type != 'M' &&vnm.newValue.constant) || (vnm.newValue.field.field_type == 'M'))) {
-                var dto = {};
+                
                 if (vnm.editMode) {
-                    dto = {
+                   var dto = {
                             code: 'update_listvalues',
                         parameters: {
                             value: vnm.newValue.value,
@@ -204,7 +204,7 @@
                         }
                     };
                 } else {
-                    dto = {
+                   var dto = {
                         code: 'insert_listvalues',
                         parameters: {
                             value: vnm.newValue.value,

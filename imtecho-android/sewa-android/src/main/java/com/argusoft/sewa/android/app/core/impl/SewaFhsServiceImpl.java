@@ -949,6 +949,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
         try {
             memberBeans = new ArrayList<>(memberBeanDao.queryBuilder()
                     .selectColumns(FieldNameConstants.FAMILY_ID, FieldNameConstants.FIRST_NAME,
+                            FieldNameConstants.UNIQUE_HEALTH_ID,
+                            FieldNameConstants.MOBILE_NUMBER,
                             FieldNameConstants.MIDDLE_NAME, FieldNameConstants.LAST_NAME,
                             FieldNameConstants.GRAND_FATHER_NAME, FieldNameConstants.MARITAL_STATUS,
                             FieldNameConstants.GENDER,
@@ -969,6 +971,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
             membersOfFamiliesWithoutHeads = memberBeanDao.queryBuilder()
                     .selectColumns(FieldNameConstants.FAMILY_ID, FieldNameConstants.FIRST_NAME,
                             FieldNameConstants.MIDDLE_NAME, FieldNameConstants.LAST_NAME,
+                            FieldNameConstants.UNIQUE_HEALTH_ID,
+                            FieldNameConstants.MOBILE_NUMBER,
                             FieldNameConstants.GRAND_FATHER_NAME, FieldNameConstants.MARITAL_STATUS, FieldNameConstants.GENDER, FieldNameConstants.DOB)
                     .where().in(FieldNameConstants.FAMILY_ID, familyIdsWithoutHead).query();
             for (MemberBean memberBean : membersOfFamiliesWithoutHeads) {
@@ -1380,7 +1384,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.LAST_NAME, "%" + searchString + "%"),         //Search By LastName
                                     where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),         //Search By FamilyId
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),      //Search By MobileNumber
-                                    where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%")      //Search By HealthId
+                                    where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),      //Search By HealthId
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -1490,7 +1495,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),         //Search By FamilyId
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),            //Search by nrc
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),    //Search By HealthId
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -1607,7 +1613,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),         //Search By FamilyId
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),            //Search by nrc
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),    //Search By HealthId
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -1741,7 +1748,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                         where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),   //Search By MobileNumber
                                         where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                         where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),     //Search By HealthId
-                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                        where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                                 )
                         ).query();
                     } else {
@@ -1778,7 +1786,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                         where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"), //Search By MobileNumber
                                         where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                         where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),     //Search By HealthId
-                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                        where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                                 )
                         ).query();
                     } else {
@@ -1872,7 +1881,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),        //Search By FamilyId
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search By MobileNumber
-                                    where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%")     //Search By HealthId
+                                    where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),    //Search By HealthId
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -1966,7 +1976,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"), //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),     //Search By HealthId
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -2049,7 +2060,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                         where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                         where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                         where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                        where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                                 )
                         ).query();
                     } else {
@@ -2085,7 +2097,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                         where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                         where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                         where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId
-                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                        where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                                 )
                         ).query();
                     } else {
@@ -2160,7 +2173,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),           //Search By FamilyId
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),      //Search By MobileNumber
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),      //Search By HealthId
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -2654,7 +2668,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),        //Search By FamilyId
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),     //Search By MobileNumber
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),     //Search By HealthId
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -2739,7 +2754,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -2794,7 +2810,7 @@ public class SewaFhsServiceImpl implements SewaFhsService {
 
             if (!familyIds.isEmpty()) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.MONTH, -3);
+                calendar.add(Calendar.YEAR, -1);
                 List<MemberBean> memberBeans;
                 Where<MemberBean, Integer> where = memberBeanDao.queryBuilder().limit(limit).offset(offset).orderBy(FieldNameConstants.DOB, false).where();
 
@@ -2821,7 +2837,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -2935,7 +2952,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -3025,7 +3043,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -3110,7 +3129,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -3196,7 +3216,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -3290,7 +3311,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -3356,12 +3378,15 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                         Objects.equals(qrData.get(FieldNameConstants.IS_QR_FOR_ABHA), "true")) {
                     memberBeans = where.and(
                             where.in(FieldNameConstants.FAMILY_ID, familyIds),
+                            where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
                             where.lt(FieldNameConstants.DOB, calendar.getTime())
                     ).query();
                 } else if (searchString != null) {
                     memberBeans = where.and(
                             where.in(FieldNameConstants.FAMILY_ID, familyIds),
+                            where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
                             where.lt(FieldNameConstants.DOB, calendar.getTime()),
+                            where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
                             where.or(where.like(FieldNameConstants.UNIQUE_HEALTH_ID, "%" + searchString + "%"),   //Search By UniqueHealthId
                                     where.like(FieldNameConstants.FIRST_NAME, "%" + searchString + "%"),         //Search By FirstName
                                     where.like(FieldNameConstants.MIDDLE_NAME, "%" + searchString + "%"),       //Search By MiddleName
@@ -3370,12 +3395,14 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
                     memberBeans = where.and(
                             where.in(FieldNameConstants.FAMILY_ID, familyIds),
+                            where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
                             where.lt(FieldNameConstants.DOB, calendar.getTime())
                     ).query();
                 }
@@ -3391,8 +3418,7 @@ public class SewaFhsServiceImpl implements SewaFhsService {
         return memberDataBeans;
     }
 
-    public List<MemberDataBean> retrieveMembersForPhoneVerificationByFhsr(Long
-                                                                                  locationId, String searchString, long limit, long offset, LinkedHashMap<
+    public List<MemberDataBean> retrieveMembersForPhoneVerificationByFhsr(Long locationId, String searchString, long limit, long offset, LinkedHashMap<
             String, String> qrData) {
         List<MemberDataBean> memberDataBeans = new ArrayList<>();
 
@@ -3443,7 +3469,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.UNIQUE_HEALTH_ID, "%" + searchString + "%"),  //Search By UniqueHealthId
                                     where.like(FieldNameConstants.FIRST_NAME, "%" + searchString + "%"),       //Search By FirstName
                                     where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),        //Search By FamilyId
-                                    where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%")     //Search By MobileNumber
+                                    where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"), //Search By MobileNumber
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {
@@ -3630,7 +3657,8 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                     where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),     //Search By MobileNumber
                                     where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
                                     where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),
-                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
+                                    where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                    where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
                             )
                     ).query();
                 } else {

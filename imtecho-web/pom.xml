@@ -521,17 +521,18 @@
                 <server.implementation.type>chip</server.implementation.type>
 
                 <jdbc.url>localhost</jdbc.url>
-                <jdbc.database>zambia_local_test</jdbc.database>
+                <jdbc.database>CHiP</jdbc.database>
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>argusadmin</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>5</jdbc.maxActiveConnection>
+                <jdbc.maxActiveConnection>50</jdbc.maxActiveConnection>
+                <jdbc.maxPoolSize>100</jdbc.maxPoolSize>
 
                 <hibernate.showsql>true</hibernate.showsql>
                 <hibernate.formatsql>true</hibernate.formatsql>
                 <spring.resourceslocation>file:../</spring.resourceslocation>
 
-                <repository.path>/home/utkarsh/Repository/</repository.path>
+                <repository.path>/home/shrinivasana/Repository/</repository.path>
                 <firebasejson.path>/home/kunjan/Firebase/</firebasejson.path>
 
                 <email.server>smtp.gmail.com</email.server>
@@ -542,7 +543,7 @@
                 <email.replyTo>hshah@argusoft.com</email.replyTo>
                 <email.isSecure>true</email.isSecure>
 
-                <ssl.keystore.enable>true</ssl.keystore.enable>
+                <ssl.keystore.enable>false</ssl.keystore.enable>
                 <ssl.keystore.file>classpath:ssl-certs/imtstaging.jks</ssl.keystore.file>
                 <ssl.keystore.password>q1w2e3R$</ssl.keystore.password>
 
@@ -550,14 +551,9 @@
                 <skipTests>true</skipTests>
 
                 <rch.data.push.cron.job>false</rch.data.push.cron.job>
-                <aadhaar.vault.url>192.1.200.161</aadhaar.vault.url>
-                <aadhaar.vault.port>8081</aadhaar.vault.port>
 
                 <ibm.access.key>WXI-fgndQ07mYNqMEHcTC5CnqZvqfxy2IjgD-4fgY9z5</ibm.access.key>
 
-                <minio.url>http://192.1.200.235:9000</minio.url>
-                <minio.access.key>9Yct7WiLhFLRrFg64mjj</minio.access.key>
-                <minio.secret.key>7SC4rYez396nOZ7EOcShnlt2Vtd8WCM0nODq2uUV</minio.secret.key>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -579,7 +575,8 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>100</jdbc.maxActiveConnection>
+                <jdbc.maxActiveConnection>300</jdbc.maxActiveConnection>
+                <jdbc.maxPoolSize>3000</jdbc.maxPoolSize>
 
                 <repository.path>/home/argus/Repository/</repository.path>
                 <firebasejson.path>/home/argus/Firebase/</firebasejson.path>
@@ -610,9 +607,6 @@
                 <rch.data.push.cron.job>false</rch.data.push.cron.job>
                 <ibm.access.key>WXI-fgndQ07mYNqMEHcTC5CnqZvqfxy2IjgD-4fgY9z5</ibm.access.key>
 
-                <minio.url>http://localhost:9090/</minio.url>
-                <minio.access.key>accesskey</minio.access.key>
-                <minio.secret.key>secret</minio.secret.key>
             </properties>
         </profile>
 
@@ -631,7 +625,8 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>100</jdbc.maxActiveConnection>
+                <jdbc.maxActiveConnection>30</jdbc.maxActiveConnection>
+                <jdbc.maxPoolSize>200</jdbc.maxPoolSize>
 
                 <repository.path>/home/pathserver3/Repository/</repository.path>
                 <firebasejson.path>/home/pathserver3/Firebase/</firebasejson.path>
@@ -652,7 +647,7 @@
                 <email.replyTo>hshah@argusoft.com</email.replyTo>
                 <email.isSecure>true</email.isSecure>
 
-                <ssl.keystore.enable>true</ssl.keystore.enable>
+                <ssl.keystore.enable>false</ssl.keystore.enable>
                 <ssl.keystore.file>classpath:ssl-certs/imtstaging.jks</ssl.keystore.file>
                 <ssl.keystore.password>q1w2e3R$</ssl.keystore.password>
 
@@ -662,9 +657,6 @@
                 <rch.data.push.cron.job>false</rch.data.push.cron.job>
                 <ibm.access.key>WXI-fgndQ07mYNqMEHcTC5CnqZvqfxy2IjgD-4fgY9z5</ibm.access.key>
 
-                <minio.url>http://localhost:9090/</minio.url>
-                <minio.access.key>accesskey</minio.access.key>
-                <minio.secret.key>secret</minio.secret.key>
             </properties>
         </profile>
 
@@ -683,7 +675,8 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>200</jdbc.maxActiveConnection>
+                <jdbc.maxActiveConnection>300</jdbc.maxActiveConnection>
+                <jdbc.maxPoolSize>3000</jdbc.maxPoolSize>
 
                 <repository.path>/home/pathserver1/Repository/</repository.path>
                 <firebasejson.path>/home/pathserver1/Firebase/</firebasejson.path>
@@ -714,9 +707,6 @@
                 <rch.data.push.cron.job>false</rch.data.push.cron.job>
                 <ibm.access.key>WXI-fgndQ07mYNqMEHcTC5CnqZvqfxy2IjgD-4fgY9z5</ibm.access.key>
 
-                <minio.url>http://localhost:9090/</minio.url>
-                <minio.access.key>accesskey</minio.access.key>
-                <minio.secret.key>secret</minio.secret.key>
             </properties>
         </profile>
 
@@ -735,7 +725,8 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>200</jdbc.maxActiveConnection>
+                <jdbc.maxActiveConnection>300</jdbc.maxActiveConnection>
+                <jdbc.maxPoolSize>3000</jdbc.maxPoolSize>
 
                 <repository.path>/home/pathserver2/Repository/</repository.path>
                 <firebasejson.path>/home/pathserver2/Firebase/</firebasejson.path>
@@ -756,7 +747,7 @@
                 <email.replyTo>hshah@argusoft.com</email.replyTo>
                 <email.isSecure>true</email.isSecure>
 
-                <ssl.keystore.enable>true</ssl.keystore.enable>
+                <ssl.keystore.enable>false</ssl.keystore.enable>
                 <ssl.keystore.file>classpath:ssl-certs/imtstaging.jks</ssl.keystore.file>
                 <ssl.keystore.password>q1w2e3R$</ssl.keystore.password>
 
@@ -766,9 +757,6 @@
                 <rch.data.push.cron.job>false</rch.data.push.cron.job>
                 <ibm.access.key>WXI-fgndQ07mYNqMEHcTC5CnqZvqfxy2IjgD-4fgY9z5</ibm.access.key>
 
-                <minio.url>http://localhost:9090/</minio.url>
-                <minio.access.key>accesskey</minio.access.key>
-                <minio.secret.key>secret</minio.secret.key>
             </properties>
         </profile>
 

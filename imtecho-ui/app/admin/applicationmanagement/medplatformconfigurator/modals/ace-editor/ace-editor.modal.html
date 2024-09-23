@@ -1,0 +1,52 @@
+<style>
+    .badge {
+        display: inline-block;
+        padding: 5px;
+        margin-right: 10px;
+        font-size: 1em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .flex-card-header {
+        background-color: aliceblue!important;
+        font-weight: 500;
+    }
+</style>
+
+<div class="modal-header">
+    <h4 class="text">Edit Function Code</h4>
+</div>
+<div class="modal-body">
+    <div class="card mb-3">
+        <div class="flex-card-header">
+            Available Parameters
+        </div>
+        <div class="card-body" style="font-size: 16px;">
+            <span class="badge badge-primary mr-15 mb-3" ng-repeat="param in availableParameters">
+                {{param}}
+            </span>
+        </div>
+    </div>
+    <h6>
+        <em class="fa fa-info-circle mr-2"></em> Only Function Body should be edited
+    </h6>
+    <div style="resize: vertical;" ui-ace="{
+        mode: 'javascript',
+        require: ['ace/ext/language_tools'],
+        advanced: {
+            enableSnippets: true,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true
+        }
+    }" ng-model="currentCodeEditorModel"></div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+</div>

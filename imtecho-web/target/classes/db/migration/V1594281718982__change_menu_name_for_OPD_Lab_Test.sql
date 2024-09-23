@@ -1,1 +1,0 @@
-update menu_config set menu_name = 'OPD Lab Test Entry' where  menu_name = 'OPD Lab Test' and menu_type = 'manage';

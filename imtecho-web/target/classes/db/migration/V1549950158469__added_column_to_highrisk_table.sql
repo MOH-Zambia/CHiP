@@ -1,1 +1,0 @@
-alter table gvk_high_risk_follow_up_usr_info add gvk_call_status varchar(255);

@@ -3,7 +3,9 @@ package com.argusoft.sewa.android.app.mappers;
 import com.argusoft.sewa.android.app.constants.FhsConstants;
 import com.argusoft.sewa.android.app.constants.LabelConstants;
 import com.argusoft.sewa.android.app.constants.RchConstants;
+import com.argusoft.sewa.android.app.constants.RelatedPropertyNameConstants;
 import com.argusoft.sewa.android.app.databean.MemberAdditionalInfoDataBean;
+import com.argusoft.sewa.android.app.datastructure.SharedStructureData;
 import com.argusoft.sewa.android.app.dtos.HouseHoldLineListMobileDto;
 import com.argusoft.sewa.android.app.model.FamilyBean;
 import com.argusoft.sewa.android.app.model.MemberBean;
@@ -44,10 +46,11 @@ public class HouseHoldLineListMobileMapper {
         if (member == null) {
             member = new HouseHoldLineListMobileDto.MemberDetails();
         }
-        memberBean.setFamilyHeadFlag(member.getHof() != null ? member.getHof() : false);
+        memberBean.setFamilyHeadFlag(member.getHof() != null ? member.getHof() : memberBean.getFamilyHeadFlag());
         memberBean.setFirstName(member.getFirstName() != null ? member.getFirstName() : memberBean.getFirstName());
         memberBean.setMiddleName(member.getMiddleName() != null ? member.getMiddleName() : memberBean.getMiddleName());
         memberBean.setLastName(member.getLastName() != null ? member.getLastName() : memberBean.getLastName());
+        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MEMBER_NAME_FOR_LOG, UtilBean.getMemberFullName(memberBean));
         memberBean.setMemberReligion(member.getReligion() != null ? member.getReligion() : memberBean.getMemberReligion());
         memberBean.setNrcNumber(member.getNRCNumber() != null ? member.getNRCNumber() : memberBean.getNrcNumber());
         memberBean.setPassportNumber(member.getPassportNumber() != null ? member.getPassportNumber() : memberBean.getPassportNumber());
@@ -56,6 +59,7 @@ public class HouseHoldLineListMobileMapper {
         memberBean.setEducationStatus(member.getEducationStatus() != null ? String.valueOf((member.getEducationStatus())) : memberBean.getEducationStatus());
         memberBean.setHysterectomyDone(member.getHysterectomyArrived() != null ? member.getHysterectomyArrived() : memberBean.getHysterectomyDone());
         memberBean.setMenopauseArrived(member.getMenopauseArrived() != null ? member.getMenopauseArrived() : memberBean.getMenopauseArrived());
+        memberBean.setFamilyId(familyBean.getFamilyId());
         if ((member.getGender() != null && "F".equalsIgnoreCase(checkGenderFromNumber(member.getGender()))) ||
                 memberBean.getGender() != null && "F".equalsIgnoreCase(checkGenderFromNumber(memberBean.getGender()))) {
             memberBean.setLmpDate(member.getLmpDate() != null ? new Date(member.getLmpDate()) : memberBean.getLmpDate());
@@ -87,6 +91,13 @@ public class HouseHoldLineListMobileMapper {
                 memberBean.setIsPregnantFlag(null);
             } else {
                 memberBean.setIsPregnantFlag(member.getWomanPregnant() != null ? member.getWomanPregnant() : memberBean.getPregnantFlag());
+                if (memberBean.getPregnantFlag() != null && memberBean.getPregnantFlag()) {
+                    if (memberBean.getCurrentGravida() != null) {
+                        memberBean.setCurrentGravida((short) (memberBean.getCurrentGravida() + 1));
+                    } else {
+                        memberBean.setCurrentGravida((short) 1);
+                    }
+                }
             }
         } else {
             memberBean.setPregnantFlag(null);
@@ -101,9 +112,23 @@ public class HouseHoldLineListMobileMapper {
                         memberBean.getPassportNumber() + " " +
                         UtilBean.getFamilyFullAddress(familyBean) + " ";
         memberBean.setSearchString(stringBuilder);
-
-        memberBean.setChronicDiseaseIds(member.getChronicDisease() != null ? (convertSetToCommaSeparatedString(member.getChronicDisease(), ",")) : memberBean.getCurrentDiseaseIds());
-
+        if (memberBean.getChronicDiseaseIds() != null && memberBean.getChronicDiseaseIds().equalsIgnoreCase(RchConstants.NONE)) {
+            memberBean.setChronicDiseaseIds(null);
+        }
+        if (member.getChronicDisease() != null) {
+            for (String diseaseId : convertSetToCommaSeparatedString(member.getChronicDisease(), ",").split(",")) {
+                if (memberBean.getChronicDiseaseIds() != null) {
+                    if (!memberBean.getChronicDiseaseIds().contains(diseaseId)) {
+                        memberBean.setChronicDiseaseIds(memberBean.getChronicDiseaseIds() + "," + diseaseId);
+                    }
+                } else {
+                    memberBean.setChronicDiseaseIds(diseaseId);
+                }
+            }
+        }
+        if (memberBean.getChronicDiseaseIds() != null) {
+            member.setChronicDisease(memberBean.getChronicDiseaseIds().split(","));
+        }
         if (member.getChronicDisease() != null) {
             for (String id : convertSetToCommaSeparatedString(member.getChronicDisease(), ",").split(",")) {
                 MemberAdditionalInfoDataBean memberAdditionalInfo;
@@ -146,12 +171,17 @@ public class HouseHoldLineListMobileMapper {
 
         //only update following info if member is getting registered for the first time
         if (!isFromUpdate) {
+            if (SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID) != null && !SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID).equalsIgnoreCase("NOT_AVAILABLE")) {
+                memberBean.setMotherId(Long.valueOf(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID)));
+            }
             memberBean.setGender(member.getGender() != null ? checkGenderFromNumber(member.getGender()) : memberBean.getGender());
             memberBean.setDob(member.getDob() != null ? new Date(member.getDob()) : memberBean.getDob());
             memberBean.setMemberUuid(member.getMemberUuid() != null ? member.getMemberUuid() : memberBean.getMemberUuid());
             memberBean.setFamilyUuid(familyBean.getUuid());
             memberBean.setFamilyId(familyBean.getFamilyId());
-            memberBean.setUniqueHealthId(generateTempUniqueHealthId(memberBean.getMemberUuid()));
+            if (memberBean.getUniqueHealthId() == null) {
+                memberBean.setUniqueHealthId(generateTempUniqueHealthId(memberBean.getMemberUuid()));
+            }
         }
     }
 

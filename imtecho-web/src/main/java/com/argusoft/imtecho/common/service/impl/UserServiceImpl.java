@@ -181,11 +181,11 @@ public class UserServiceImpl implements UserService {
         }
         UserMaster um = userDao.retrieveById(user.getId());
         user.setPassword(um.getPassword());
-        if (Objects.nonNull(user.isAadharNumberAvailable()) && user.isAadharNumberAvailable()) {
-            if (user.getAadharNumberEncrypted() == null) {
-                user.setAadharNumberEncrypted(um.getAadharNumberEncrypted());
-            }
-        }
+//        if (Objects.nonNull(user.isAadharNumberAvailable()) && user.isAadharNumberAvailable()) {
+//            if (user.getAadharNumberEncrypted() == null) {
+//                user.setAadharNumberEncrypted(um.getAadharNumberEncrypted());
+//            }
+//        }
         userDao.merge(user);
     }
 

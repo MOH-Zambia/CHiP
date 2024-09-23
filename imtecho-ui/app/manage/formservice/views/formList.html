@@ -1,0 +1,171 @@
+<style>
+    .table-striped-columns tbody tr td:nth-child(odd) {
+        background-color: #f9f9f9; 
+    }
+    .table-striped-columns tbody tr td:nth-child(even) {
+        background-color: #ffffff; 
+    }
+    .table-bordered th, 
+    .table-bordered td {
+        border: 1px solid #ddd;
+    }
+    .table-bordered {
+        border: 2px solid #ddd; 
+    }
+    
+    .filter-div{
+        width: 330px;
+        position: fixed;
+        top: 0;
+        right: -331px;
+        bottom: 0;
+        background: #fff;
+        -webkit-transition: all .5s;
+        transition: all .5s;
+        z-index: 1033;
+        -webkit-box-shadow: -1px 0px 2px 2px rgba(0, 0, 0, 0.16);
+        box-shadow: -1px 0px 2px 2px rgba(0, 0, 0, 0.16);
+    }
+    
+    .link {
+        color: blue;
+        cursor: pointer;
+    }
+</style>
+
+<div class="container-fluid" ng-if = "ctrl.list" >
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>Service Visit Details</h3>
+                <h4 class="mb-0">
+                    From: {{ctrl.currFromDate}} To: {{ctrl.currToDate}}
+                </h4>
+            </div>
+            
+            <br>
+            <div class="cst-table-responsive">
+                <table class="table table-hover table-striped-columns table-bordered">
+                    <thead class="thead-light cst-thead">
+                        <tr>
+                            <th>Location Name</th>
+                            <th>Household Line List</th>
+                            <th>Reproductive Information Modification</th>
+                            <th>Family Planning Follow Up</th>
+                            <th>Antenatal Care Visit</th>
+                            <th>Pregnancy Outcome Visit</th>
+                            <th>Postnatal Care Visit</th>
+                            <th>Child Service Visit</th>
+                            <th>Vaccine Adverse Effect</th>
+                            <th>Active Malaria</th>
+                            <th>Passive Malaria</th>
+                            <th>Covid 19 Screening</th>
+                            <th>Tuberculosis Screening</th>
+                            <th>Tuberculosis Screening Follow Up</th>
+                            <th>Hiv Screening</th>
+                            <th>Known Positive Members</th>
+                            <th>Positive Pregnant Women</th>
+                            <th>EMTCT</th>
+                            <th>Malaria Index</th>
+                            <th>Malaria Non Index</th>
+                            <th>Gender Based Violence </th>
+                        </tr>
+                    </thead>
+                    <tbody class="cst-tbody">
+                        <tr ng-repeat="item in ctrl.list">
+                            <td>{{item['Location Name']}}</td>
+                            <td ng-class="{'link': item.HOUSEHOLD_LINELIST > 0}" ng-click="ctrl.openList('HOUSEHOLD_LINE_LIST', item)">{{item.HOUSEHOLD_LINELIST | emptylabel}}</td>
+                            <td ng-class="{'link': item.FHW_RIM > 0}" ng-click="ctrl.openList('FHW_RIM', item)">{{item.FHW_RIM | emptylabel}}</td>
+                            <td ng-class="{'link': item.FP_FOLLOW_UP > 0}" ng-click="ctrl.openList('CHIP_FP_FOLLOW_UP', item)">{{item.FP_FOLLOW_UP | emptylabel}}</td>
+                            <td ng-class="{'link': item.FHW_ANC > 0}" ng-click="ctrl.openList('FHW_ANC', item)">{{item.FHW_ANC | emptylabel}}</td>
+                            <td ng-class="{'link': item.FHW_WPD > 0}" ng-click="ctrl.openList('FHW_WPD', item)">{{item.FHW_WPD | emptylabel}}</td>
+                            <td ng-class="{'link': item.FHW_PNC > 0}" ng-click="ctrl.openList('FHW_PNC', item)">{{item.FHW_PNC | emptylabel}}</td>
+                            <td ng-class="{'link': item.FHW_CS > 0}" ng-click="ctrl.openList('FHW_CS', item)">{{item.FHW_CS | emptylabel}}</td>
+                            <td ng-class="{'link': item.FHW_VAE > 0}" ng-click="ctrl.openList('FHW_VAE', item)">{{item.FHW_VAE | emptylabel}}</td>
+                            <td ng-class="{'link': item.ACTIVE_MALARIA > 0}" ng-click="ctrl.openList('ACTIVE_MALARIA', item)">{{item.ACTIVE_MALARIA | emptylabel}}</td>
+                            <td ng-class="{'link': item.PASSIVE_MALARIA > 0}" ng-click="ctrl.openList('PASSIVE_MALARIA', item)">{{item.PASSIVE_MALARIA | emptylabel}}</td>
+                            <td ng-class="{'link': item.COVID_19_SCREENING > 0}" ng-click="ctrl.openList('COVID_19_SCREENING', item)">{{item.COVID_19_SCREENING | emptylabel}}</td>
+                            <td ng-class="{'link': item.CHIP_TB > 0}" ng-click="ctrl.openList('CHIP_TB', item)">{{item.CHIP_TB | emptylabel}}</td>
+                            <td ng-class="{'link': item.CHIP_TB_FOLLOW_UP > 0}" ng-click="ctrl.openList('CHIP_TB_FOLLOW_UP', item)">{{item.CHIP_TB_FOLLOW_UP | emptylabel}}</td>
+                            <td ng-class="{'link': item.HIV_SCREENING> 0}" ng-click="ctrl.openList('HIV_SCREENING', item)">{{item.HIV_SCREENING | emptylabel}}</td>
+                            <td ng-class="{'link': item.KNOWN_POSITIVE> 0}" ng-click="ctrl.openList('KNOWN_POSITIVE', item)">{{item.KNOWN_POSITIVE | emptylabel}}</td>                            
+                            <td ng-class="{'link': item.HIV_POSITIVE > 0}" ng-click="ctrl.openList('HIV_POSITIVE', item)">{{item.HIV_POSITIVE | emptylabel}}</td>
+                            <td ng-class="{'link': item.EMTCT > 0}" ng-click="ctrl.openList('EMTCT', item)">{{item.EMTCT | emptylabel}}</td>
+                            <td ng-class="{'link': item.MALARIA_INDEX > 0}" ng-click="ctrl.openList('MALARIA_INDEX', item)">{{item.MALARIA_INDEX | emptylabel}}</td>
+                            <td ng-class="{'link': item.MALARIA_NON_INDEX > 0}" ng-click="ctrl.openList('MALARIA_NON_INDEX', item)">{{item.MALARIA_NON_INDEX | emptylabel}}</td>                           
+                            <td ng-class="{'link': item.CHIP_GBV_SCREENING > 0}" ng-click="ctrl.openList('CHIP_GBV_SCREENING', item)">{{item.CHIP_GBV_SCREENING | emptylabel}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<div class="no-data-placeholder" ng-if="!ctrl.list || ctrl.list.length == 0">
+    <h5>No Record(s) Found!</h5>
+  </div>
+
+<div class="filter-div">
+    <span style="left: -64px" class="filter-toggle" ng-click="ctrl.toggleFilter()">Filters</span>
+    <div class="row">
+        <div class="col-12">
+            <h5 class="filter-div-title">Select Location</h5>
+        </div>
+    </div>
+    <div class="filter-div-body">
+        <form>
+        <div class="row">
+            <div class="col-12">
+                <ng-form name="ctrl.locationForm">
+                    <location-directive ng-model="ctrl.locationId"
+                        selected-location="ctrl.selectedLocation"
+                        required-upto-level="ctrl.requiredLevel" template-type="'inline'"
+                        fetch-according-to-user-aoi="true"> </location-directive>
+                    <br>
+                </ng-form>
+            </div>
+            <div class="col-12">
+                <div class="form-group pb-4">
+                    <validate for='fromDate' required-msg="Select From Date">
+                        <label for="fromDate" control-label>From Date</label>
+                        <input type="text" datepicker tabindex="8" name="fromDate" form-control
+                            ng-model="ctrl.fromDate" max-date="ctrl.today" required>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <div class="form-group">
+                    <validate for='toDate' required-msg="Select To Date">
+                        <label for="toDate" control-label>To Date</label>
+                        <input type="text" datepicker tabindex="8" name="toDate" form-control
+                            ng-model="ctrl.toDate" max-date="ctrl.today" required>
+                        <placeholder></placeholder>
+                    </validate>
+                </div>
+                <!-- <label for="fromDate">To</label>
+                <input type="date" datepicker name="toDate" id="fromDate"
+                ng-model="ctrl.toDate"> -->
+            </div>
+            <div class="col-12">
+                <hr>
+                <div class="form-group text-right">
+                    <button class="btn btn-secondary close-filter"
+                        ng-click="ctrl.toggleFilter()">Close</button>
+                    <button class="btn btn-primary search-filter" ng-click="ctrl.search()">Search</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+<!-- <div class="filter-div active">
+    <span style="left: -66px" class="filter-toggle" ng-click="ctrl.toggleFilter()">Search</span>
+    <div class="row">
+      <div class="col-12">
+        <h5 class="filter-div-title">Search</h5>
+      </div>
+    </div>
+    <div class="filter-div-body">
+      </div>
+  </div>  -->

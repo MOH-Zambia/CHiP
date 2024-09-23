@@ -1,0 +1,25 @@
+<div ui-tree-handle>
+    {{node.title}}
+    <span ng-if="!['$formData$', '$infoData$', '$utilityData$'].includes(node.title)" class="icon node-edit"
+        ng-click="editNode(node)" data-nodrag>
+        <em class="fa fa-edit"></em>
+    </span>
+    <span ng-if="node.isArray" class="icon mx-1 text-info" data-nodrag>
+        <i class="fa fa-bars" aria-hidden="true" uib-tooltip="This object is an array"></i>
+    </span>
+    <div ng-if="!['$formData$', '$infoData$', '$utilityData$'].includes(node.title)" class="icon pull-right node-remove"
+        ng-click="deleteNode(node,this)" data-nodrag>
+        <em class="fa fa-2x fa-times-circle"></em>
+    </div>
+    <div class="icon pull-right node-add" ng-click="addNode(this)" data-nodrag>
+        <em class="fa fa-2x fa-plus-circle"></em>
+    </div>
+</div>
+<div ui-tree id="tree-root" class="angular-ui-tree">
+    <ol ui-tree-nodes ng-model="node.nodes" class="angular-ui-tree-nodes">
+        <li ng-repeat="node in node.nodes" ui-tree-node
+            ng-include="'app/admin/applicationmanagement/medplatformconfigurator/modals/form-object/nodes-renderer.html'"
+            class="angular-ui-tree-node">
+        </li>
+    </ol>
+</div>

@@ -1,2 +1,0 @@
-alter table ncd_member_breast_detail
-alter column discharge_from_nipple_flag type boolean using discharge_from_nipple_flag::boolean;

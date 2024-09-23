@@ -1,0 +1,47 @@
+<style>
+    .mb-10 {
+        margin-bottom: 10px !important;
+    }
+</style>
+<generate-card-template-directive ng-if="element.type === 'CARD'" class="{{cardClasses}}" config="element.config"
+    elements="element.elements" constraint-config="constraintConfig" sibling-elements="siblingElements"
+    element-index="elementIndex" iterator-indices-map="iteratorIndicesMap">
+    <!-- {{element}} -->
+</generate-card-template-directive>
+<div ng-if="element.type === 'ROW' && element.config.iterationType==='RUNTIME'">
+    <div class="row mb-2">
+        <div class="col-12">
+            <em class="pull-right cursor-pointer fa fa-trash-o fa-2x text-danger" title="Delete"
+                ng-click="deleteElement()">
+            </em>
+        </div>
+    </div>
+    <generate-row-template-directive ng-if="element.type === 'ROW'" class="{{rowClasses}}" config="element.config"
+        elements="element.elements" constraint-config="constraintConfig" sibling-elements="siblingElements"
+        element-index="elementIndex" iterator-indices-map="iteratorIndicesMap">
+        <!-- {{element}} -->
+    </generate-row-template-directive>
+    <hr>
+</div>
+<div ng-if="element.type === 'ROW' && element.config.iterationType!=='RUNTIME'">
+    <generate-row-template-directive ng-if="element.type === 'ROW'" class="{{rowClasses}}" config="element.config"
+        elements="element.elements" constraint-config="constraintConfig" sibling-elements="siblingElements"
+        element-index="elementIndex" iterator-indices-map="iteratorIndicesMap">
+        <!-- {{element}} -->
+    </generate-row-template-directive>
+</div>
+<generate-col-template-directive ng-if="element.type === 'COL'" class="{{colClasses}}" config="element.config"
+    elements="element.elements" constraint-config="constraintConfig" sibling-elements="siblingElements"
+    element-index="elementIndex" iterator-indices-map="iteratorIndicesMap">
+    <!-- {{element}} -->
+</generate-col-template-directive>
+<div ng-if="element.type === 'CUSTOM_HTML'">
+    <span ng-bind-html="::(element.config.html | trustAsHtml)"></span>
+    <!-- {{element}} -->
+</div>
+<div ng-if="element.type === 'TECHO_FORM_FIELD'">
+    <techo-form-field-directive config-json="constraintConfig[element.config.fieldName]" config="element.config"
+        iterator-indices-map="iteratorIndicesMap">
+        <!-- {{element}} -->
+    </techo-form-field-directive>
+</div>

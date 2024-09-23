@@ -1358,8 +1358,20 @@ public class SewaServiceImpl implements SewaService {
                 if (!entry.getValue().equals("-1")) {
                     MemberBean motherEntity = membersWithLoopIdMap.get(Integer.parseInt(entry.getValue()));
                     if (motherEntity != null) {
+                        if (motherEntity.getCurrentGravida() != null) {
+                            motherEntity.setCurrentGravida((short) (motherEntity.getCurrentGravida() + 1));
+                        } else {
+                            motherEntity.setCurrentGravida((short) 1);
+                        }
+                        if (motherEntity.getCurrentPara() != null) {
+                            motherEntity.setCurrentPara((short) (motherEntity.getCurrentPara() + 1));
+                        } else {
+                            motherEntity.setCurrentPara((short) 1);
+                        }
                         childEntity.setMotherUUID(motherEntity.getMemberUuid());
                         memberBeanDao.update(childEntity);
+                        memberBeanDao.update(motherEntity);
+
                     }
                 } else {
                     childEntity.setMotherUUID(null);
@@ -1416,7 +1428,7 @@ public class SewaServiceImpl implements SewaService {
         }
     }
 
-    /*public void updateStockInventoryByMedicineId(Integer id, int amount) {
+    public void updateStockInventoryByMedicineId(Integer id, int amount) {
         if (id == null) {
             throw new IllegalArgumentException("Medicine ID cannot be null");
         }
@@ -1425,12 +1437,16 @@ public class SewaServiceImpl implements SewaService {
             List<StockInventoryBean> stockInventoryBean = stockInventoryBeanDao.queryBuilder().where().eq("medicineId", id).query();
             for (StockInventoryBean stock : stockInventoryBean) {
                 if (stock != null) {
-                    stock.setUsed(stock.getUsed() + amount);
+                    if (stock.getUsed() + amount < stock.getDeliveredQuantity()) {
+                        stock.setUsed(stock.getUsed() + amount);
+                    } else {
+                        stock.setUsed(stock.getDeliveredQuantity());
+                    }
                     stockInventoryBeanDao.update(stock);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }*/
+    }
 }

@@ -1748,3 +1748,8 @@ table.table-bordered-dark th {
  .overflow-y-auto {
     overflow-y: auto 
 }
+
+.ace_editor {
+    height: 200px;
+    font-size: 20px;
+}

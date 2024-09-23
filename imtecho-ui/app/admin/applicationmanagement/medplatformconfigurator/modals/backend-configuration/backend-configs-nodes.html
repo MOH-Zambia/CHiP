@@ -1,0 +1,83 @@
+<style>
+    .selected-node{
+        background-color: powderblue;
+    }
+
+    .selected-node:hover{
+        background-color: powderblue;
+    }
+</style>
+<div ui-tree-handle ng-class="{'selected-node':config.selected, '': !config.selected}">
+    <div class="d-flex align-items-center">
+        <div style="font-size: 1.5rem; padding-right: 10px;">:::</div>
+        <div data-nodrag class="flex-grow-1">
+            <span>
+                <!-- <select
+                    class="form-control cst-form-control"
+                    form-control chosen-directive="queryBuilderListWithParams"
+                    ng-required="true"
+                    name="queryCode"
+                    id="queryCode"
+                    ng-model="config.queryCode"
+                    ng-change="configureQueryColumns(config, config.queryCode)"
+                    ng-options="option.key as option.value for option in queryBuilderListWithParams">
+                    <option value="">--Select Query Builder Code--</option>
+                </select> -->
+                <input 
+                    ng-if="config.queryName"
+                    class="form-control cst-form-control" 
+                    disabled
+                    name="queryCode"
+                    id="queryCode"
+                    ng-model="config.queryName"  
+                />
+                <input 
+                    ng-if="!config.queryName"
+                    class="form-control cst-form-control" 
+                    disabled
+                    name="queryCode"
+                    id="queryCode"
+                    ng-value="'Please enter query name in the right panel!'"  
+                    style="color: crimson;"
+                />
+            </span>
+        </div>
+        <div class="pull-right" ng-if="config.isEventResource" uib-tooltip="This config is an event resource!">
+            <div class="icon node-remove ml-4" data-nodrag style="font-size: 1.5rem;" >
+                <em class="fa fa-tasks"></em>
+            </div>
+        </div>
+        <div class="pull-right" uib-tooltip="Edit Config">
+            <div class="icon node-edit ml-4" data-nodrag
+                ng-click="editConfig(config)" style="font-size: 1.5rem;" >
+                <em class="fa fa-edit"></em>
+            </div>
+        </div>
+        <!-- <div class="pull-right" ng-if="config.queryCode" uib-tooltip="View Query Details">
+            <div class="icon node-edit ml-4" data-nodrag
+                ng-click="showQueryDetails(config)" style="font-size: 1.5rem;" >
+                <em class="fa fa-eye"></em>
+            </div>
+        </div> -->
+        <div class="pull-right" ng-if="config.queryCode">
+            <div class="icon node-edit ml-4" data-nodrag uib-tooltip="Add Sub-Config"
+                ng-click="addConfig(config.subQueries)" style="font-size: 1.5rem;" >
+                <em class="fa fa-plus-circle"></em>
+            </div>
+        </div>
+        <div class="pull-right">
+            <div class="icon node-remove ml-4 mr-2" data-nodrag uib-tooltip="Delete Config"
+                ng-click="removeConfig(config, this)" style="font-size: 1.5rem;" >
+                <em class="fa fa-trash"></em>
+            </div>
+        </div>
+    </div>
+</div>
+<div ui-tree id="tree-root" class="angular-ui-tree">
+    <ol ui-tree-nodes ng-model="config.subQueries" class="angular-ui-tree-nodes">
+        <li ng-repeat="config in config.subQueries" ui-tree-node
+            ng-include="'app/admin/applicationmanagement/medplatformconfigurator/modals/backend-configuration/backend-configs-nodes.html'"
+            class="angular-ui-tree-node">
+        </li>
+    </ol>
+</div>

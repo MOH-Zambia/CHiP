@@ -1,6 +1,7 @@
 package com.argusoft.imtecho.rch.service.impl;
 
 import com.argusoft.imtecho.common.model.UserMaster;
+import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
 import com.argusoft.imtecho.common.util.SystemConstantUtil;
 import com.argusoft.imtecho.config.security.ImtechoSecurityUser;
@@ -36,6 +37,9 @@ import com.argusoft.imtecho.rch.service.ChildService;
 import com.argusoft.imtecho.rch.service.ImmunisationService;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -392,6 +396,38 @@ public class ChildServiceImpl implements ChildService {
         return childServiceMaster.getId();
     }
 
+    @Override
+    public Integer storeChildServiceOcrForm(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+        JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
+        MemberEntity child;
+        ChildServiceMaster childServiceMaster = new ChildServiceMaster();
+        if (jsonObject.has("memberId")) {
+            child = memberDao.retrieveMemberById(jsonObject.get("memberId").getAsInt());
+        } else {
+            child = memberDao.retrieveMemberByUuid(jsonObject.get("memberUUID").getAsString());
+        }
+        FamilyEntity familyEntity = familyDao.retrieveFamilyByFamilyId(child.getFamilyId());
+        childServiceMaster.setServiceDate(new Date(Long.parseLong(jsonObject.get("serviceDate").getAsString())));
+        childServiceMaster.setMemberId(child.getId());
+        childServiceMaster.setIecGiven(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("isIecGiven").getAsString()));
+        childServiceMaster.setHeight(jsonObject.get("height").getAsInt());
+        childServiceMaster.setHavePedalEdema(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("pedalEdema").getAsString()));
+        childServiceMaster.setMidArmCircumference(Float.valueOf(jsonObject.get("muac").getAsString()));
+        childServiceMaster.setExclusivelyBreastfeded(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("exclusivelyBreastfed").getAsString()));
+        childServiceMaster.setIfaSyrupGiven(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("ifaSyrup").getAsString()));
+        childServiceMaster.setWeight(Float.valueOf(jsonObject.get("weight").getAsString()));
+        childServiceMaster.setFamilyId(familyEntity.getId());
+        childServiceMaster.setLatitude(familyEntity.getLatitude());
+        childServiceMaster.setLongitude(familyEntity.getLongitude());
+        childServiceMaster.setLocationId(familyEntity.getLocationId());
+        childServiceMaster.setLocationHierarchyId(1);
+        childServiceMaster.setIsAlive(true);
+        childServiceMaster.setMemberStatus(RchConstants.MEMBER_STATUS_AVAILABLE);
+        childServiceDao.create(childServiceMaster);
+        return 0;
+    }
+
     /**
      * Identify high risk for child.
      *
@@ -602,6 +638,12 @@ public class ChildServiceImpl implements ChildService {
                 break;
             case "7702":
                 if (keyAndAnswersMap.get("12").equals(RchConstants.MEMBER_STATUS_AVAILABLE)) {
+                    if (answer.equalsIgnoreCase("NONE")){
+                        break;
+                    }
+                    if (answer.contains("OTHER")) {
+                        answer = ImtechoUtil.convertAnswersWithOther(answer);
+                    }
                     childServiceMaster.setDelaysObserved(answer);
                 }
                 break;

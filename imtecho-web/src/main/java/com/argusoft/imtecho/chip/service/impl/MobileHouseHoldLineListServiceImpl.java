@@ -1,5 +1,6 @@
 package com.argusoft.imtecho.chip.service.impl;
 
+import com.argusoft.imtecho.chip.service.MobileHouseHoldLineListService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.SystemConstantUtil;
 import com.argusoft.imtecho.dashboard.fhs.constants.FamilyHealthSurveyServiceConstants;
@@ -14,12 +15,12 @@ import com.argusoft.imtecho.fhs.service.FamilyHealthSurveyService;
 import com.argusoft.imtecho.mobile.dto.HouseHoldLineListMobileDto;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.mobile.mapper.HouseHoldLineListMobileMapper;
-import com.argusoft.imtecho.chip.service.MobileHouseHoldLineListService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.*;
 
 @Service
@@ -206,8 +207,27 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 memberEntity.setUniqueHealthId(familyHealthSurveyService.generateMemberUniqueHealthId());
                 memberEntity.setState(FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_NEW);
             }
-
+            if (memberEntity.getMotherId() != null && memberDetails.getMotherId() != null && !memberDetails.getMotherId().equalsIgnoreCase("NOT_AVAILABLE")) {
+                memberEntity.setMotherId(Integer.valueOf(memberDetails.getMotherId()));
+            }
             if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("DEATH"))) {
+                if (memberDetails.getNewHofId() != null) {
+                    memberEntity.setFamilyHeadFlag(Boolean.FALSE);
+                    family.setHeadOfFamily(Integer.valueOf(memberDetails.getNewHofId()));
+                    MemberEntity newHofEntity = memberDao.retrieveMemberById(Integer.parseInt(memberDetails.getNewHofId()));
+                    List<MemberEntity> allMembersInFamily = memberDao.retrieveMemberEntitiesByFamilyId(family.getFamilyId());
+                    if (newHofEntity != null) {
+                        newHofEntity.setFamilyHeadFlag(Boolean.TRUE);
+                    }
+                    if (allMembersInFamily != null && !allMembersInFamily.isEmpty()) {
+                        for (MemberEntity member : allMembersInFamily) {
+                            member.setRelationWithHof(null);
+                        }
+                        memberDao.updateAll(allMembersInFamily);
+                    }
+                    familyDao.update(family);
+                }
+
                 familyHealthSurveyService.markMemberAsDeathZambia(memberDetails.getDeathDate(), memberDetails.getDeathPlace(), memberDetails.getOtherDeathPlace(), memberDetails.getDeathReason(),
                         memberDetails.getOtherDeathReason(), memberDetails.getDeathHealthInfraId(), memberEntity.getId(),
                         family.getId(), family.getAreaId() != null ? family.getAreaId() : family.getLocationId(),
@@ -217,6 +237,9 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             } else {
                 boolean alreadyPregnant = memberEntity.getIsPregnantFlag() != null && memberEntity.getIsPregnantFlag();
                 memberEntity.setIsPregnantFlag(memberDetails.getIsWomanPregnant());
+                if (memberEntity.getIsPregnantFlag()) {
+                    memberEntity.setCurrentGravida(memberEntity.getCurrentGravida() != null ? (short) (memberEntity.getCurrentGravida() + 1) : (short) 1);
+                }
                 memberEntity.setMarkedPregnant(!alreadyPregnant && Boolean.TRUE.equals(memberEntity.getIsPregnantFlag()));
 
                 HouseHoldLineListMobileMapper.convertMemberDetailsToMemberEntity(memberDetails, memberEntity, memberEntity.getId() != null);
@@ -353,6 +376,16 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             if (!entry.getValue().equals("-1")) {
                 MemberEntity motherEntity = membersWithLoopIdMap.get(Integer.parseInt(entry.getValue()));
                 if (motherEntity != null) {
+                    if (motherEntity.getCurrentGravida() != null) {
+                        motherEntity.setCurrentGravida((short) (motherEntity.getCurrentGravida() + 1));
+                    } else {
+                        motherEntity.setCurrentGravida((short) 1);
+                    }
+                    if (motherEntity.getCurrentPara() != null) {
+                        motherEntity.setCurrentPara((short) (motherEntity.getCurrentPara() + 1));
+                    } else {
+                        motherEntity.setCurrentPara((short) 1);
+                    }
                     childEntity.setMotherId(motherEntity.getId());
                 }
             } else {
@@ -435,7 +468,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         sb.append("\n");
         sb.append("\n");
         int count = 1;
-        for (MemberEntity member: memberEntities) {
+        for (MemberEntity member : memberEntities) {
             if (Boolean.TRUE.equals(member.getFamilyHeadFlag())) {
                 StringBuilder familyTitle = new StringBuilder();
                 familyTitle.append(familyEntity.getFamilyId())

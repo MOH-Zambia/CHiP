@@ -659,7 +659,7 @@ public class MigrateOutActivity extends MenuActivity implements View.OnClickList
         levelSpinnerMap.clear();
         levelSelectLocationQueMap.clear();
 
-        List<LocationMasterBean> locationMasterBeans = locationMasterService.getLocationWithNoParent();
+        List<LocationMasterBean> locationMasterBeans = locationMasterService.retrieveLocationMasterBeansByParent(LabelConstants.ZAMBIA_LOCATION_ID);
 
         if (locationMasterBeans.isEmpty()) {
             MaterialTextView selectTextView = MyStaticComponents.generateQuestionView(null, null, context, "No locations found");

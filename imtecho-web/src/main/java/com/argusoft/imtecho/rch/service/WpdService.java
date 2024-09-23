@@ -35,6 +35,7 @@ public interface WpdService {
      */
     Integer storeWpdVisitForm(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
 
+    Integer storeWpdFormForOcr(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user);
 
 
     /**

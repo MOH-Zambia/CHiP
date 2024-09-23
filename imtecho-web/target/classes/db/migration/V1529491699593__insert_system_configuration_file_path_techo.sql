@@ -1,1 +1,0 @@
-insert into system_configuration (system_key,is_active,key_value) values ('FILE_PATH_TECHO',true,'/Repository/');

@@ -759,6 +759,8 @@ public class UtilBean {
                 options.addAll(SharedStructureData.childrenFrom3To6Years);
             } else if (Arrays.toString(split).contains(FormulaConstants.FORMULA_SET_BASIC_MEDICINE_LIST)) {
                 options.addAll(SharedStructureData.basicMedicineList);
+            } else if (Arrays.toString(split).contains(FormulaConstants.FORMULA_SET_DEFAULT_NON_HOF_MEMBER_NAMES_CBDS)) {
+                options.addAll(SharedStructureData.nonHofMemberNameList);
             }
         }
         return options;
@@ -1071,7 +1073,7 @@ public class UtilBean {
             entityFullFormNames.put(FormConstants.FHS_MEMBER_UPDATE_NEW, "Update Member Information");
             entityFullFormNames.put(FormConstants.MOBILE_NUMBER_VERIFICATION, "Mobile Number Verification");
             //TeCHO FHW RCH
-            entityFullFormNames.put(FormConstants.LMP_FOLLOW_UP, "LMP Follow Up Visit");
+            entityFullFormNames.put(FormConstants.LMP_FOLLOW_UP, "Follow Up");
             entityFullFormNames.put(FormConstants.TECHO_FHW_RIM, "Reproductive Info Modification Visit");
             entityFullFormNames.put(FormConstants.CHIP_FP_FOLLOW_UP, "Family Planning Follow Up Visit");
             entityFullFormNames.put(FormConstants.TECHO_FHW_ANC, "Ante Natal Care Visit");
@@ -1186,7 +1188,7 @@ public class UtilBean {
             entityFullFormNames.put(FormConstants.KNOWN_POSITIVE, "Known Positive");
             entityFullFormNames.put(FormConstants.OCR_KNOWN_POSITIVE, "Known Positive (OCR)");
             entityFullFormNames.put(FormConstants.HIV_SCREENING_FU, "Hiv Screening Followup");
-            entityFullFormNames.put(FormConstants.STOCK_MANAGEMENT, "Stock Management");
+            entityFullFormNames.put(FormConstants.STOCK_MANAGEMENT, "Pharmacy");
             entityFullFormNames.put(FormConstants.EMTCT, "EMTCT");
             entityFullFormNames.put(FormConstants.CHIP_ACTIVE_MALARIA, "Active Malaria");
             entityFullFormNames.put(FormConstants.CHIP_ACTIVE_MALARIA_FOLLOW_UP, "Active Malaria Follow Up");
@@ -1229,6 +1231,15 @@ public class UtilBean {
             entityFullFormNames.put(FormConstants.OCR_ANC, "ANC (OCR)");
             entityFullFormNames.put(FormConstants.OCR_CHILD_HIV_SCREENING, "CHILD HIV SCREENING (OCR)");
             entityFullFormNames.put(FormConstants.OCR_ADULT_HIV_SCREENING, "ADULT HIV SCREENING (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_ADD_MEMBER, "Add Member (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_UPDATE_MEMBER, "Member Update (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_HOUSEHOLD_LINE_LIST, "Add Family (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_WPD, "POV (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_PNC, "PNC (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_CS, "CHILD SERVICE (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_GBV, "GBV (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_MALARIA_NON_INDEX, "Malaria Non Index Case (OCR)");
+            entityFullFormNames.put(FormConstants.OCR_MALARIA_INDEX, "Malaria Index Case (OCR)");
         }
         return entityFullFormNames;
     }

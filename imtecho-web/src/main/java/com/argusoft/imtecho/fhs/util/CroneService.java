@@ -9,6 +9,7 @@ import com.argusoft.imtecho.caughtexception.model.CaughtExceptionEntity;
 import com.argusoft.imtecho.caughtexception.service.CaughtExceptionService;
 import com.argusoft.imtecho.common.controller.UserUsageAnalyticsController;
 import com.argusoft.imtecho.common.model.SystemConfiguration;
+import com.argusoft.imtecho.common.service.Dhis2DataService;
 import com.argusoft.imtecho.common.service.ServerManagementService;
 import com.argusoft.imtecho.common.service.SystemConfigurationService;
 import com.argusoft.imtecho.common.util.ConstantUtil;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +64,9 @@ public class CroneService {
 
     @Autowired
     private FamilyDao familyDao;
+
+    @Autowired
+    private Dhis2DataService dhis2DataService;
 
 //    @Autowired
 //    private AbsentVerificationListDao absentVerificationListDao;
@@ -349,5 +354,13 @@ public class CroneService {
         exception.setExceptionStackTrace(ExceptionUtils.getStackTrace(e));
         exception.setExceptionType("Cron Service");
         caughtExceptionService.saveCaughtException(exception);
+    }
+
+    private void syncDataForDhis2(){
+        List<Integer> facilityIds = dhis2DataService.getEnabledFacilities();
+        Date currentDate = new Date();
+        for(Integer facilityId : facilityIds){
+            dhis2DataService.sendData(currentDate, facilityId);
+        }
     }
 }

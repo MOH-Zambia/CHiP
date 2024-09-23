@@ -1,0 +1,52 @@
+<!-- <div class="cst-modal modal fade" id="syncManuallyModal" tabindex="-1" role="dialog" aria-labelledby="syncManuallyModalLabel" aria-hidden="true" > -->
+<!-- <div class="modal-dialog" role="document"> -->
+<!-- <div class="modal-content"> -->
+<div class="modal-header">
+  <h5 class="text">Please Select</h5>
+  <button
+    type="button"
+    class="close"
+    ng-click="mdctrl.cancel()"
+    aria-label="Close"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="overflow: visible;">
+  <form
+    role="form"
+    name="maternalDeathVerificationMoForm"
+    id="maternalDeathVerificationMoForm"
+    novalidate
+  >
+    <div class="form-group">
+      <validate for="month" required-msg="Select a value">
+        <label for="month" control-label>Select Month for Sync</label>
+        <input
+          name="month"
+          id="month"
+          type="text"
+          datepicker
+          form-control
+          ng-model="mdctrl.month"
+          date-options="{minMode: 'month'}"
+          datepicker-mode="'month'"
+          date-month-format="true"
+          ng-required="true"
+        />
+        <placeholder></placeholder>
+      </validate>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" ng-click="mdctrl.cancel()">
+    Close
+  </button>
+  <button type="button" class="btn btn-primary" ng-click="mdctrl.confirmSync()">
+    Sync
+  </button>
+</div>
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->

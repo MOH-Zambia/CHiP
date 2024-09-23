@@ -26,10 +26,10 @@ public class ListValueFieldValueDetailDaoImpl extends GenericDaoImpl<ListValueFi
     public Integer retrieveIdFromConstant(String constant) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<String> cq = cb.createQuery(String.class);
+        CriteriaQuery<Integer> cq = cb.createQuery(Integer.class);
         Root<ListValueFieldValueDetail> root = cq.from(ListValueFieldValueDetail.class);
         cq.select(root.get("id")).where(cb.equal(root.get("constant"), constant));
         return session.createQuery(cq).uniqueResult() != null ?
-                Integer.valueOf(session.createQuery(cq).uniqueResult()) : null;
+                session.createQuery(cq).uniqueResult() : null;
     }
 }

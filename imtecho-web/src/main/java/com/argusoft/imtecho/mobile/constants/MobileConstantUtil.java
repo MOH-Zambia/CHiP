@@ -47,11 +47,19 @@ public class MobileConstantUtil {
     public static final String OCR_LMPFU = "OCR_LMPFU";
     public static final String ANC_VISIT = "FHW_ANC";
     public static final String OCR_ANC = "OCR_ANC";
+    public static final String OCR_WPD = "OCR_WPD";
+    public static final String OCR_PNC = "OCR_PNC";
+    public static final String OCR_CS = "OCR_CS";
+    public static final String OCR_GBV = "OCR_GBV";
+    public static final String OCR_= "OCR_GBV";
     public static final String WPD_VISIT = "FHW_WPD";
     public static final String PNC_VISIT = "FHW_PNC";
     public static final String CHILD_SERVICES_VISIT = "FHW_CS";
     public static final String REPRODUCTIVE_INFO_MODIFICATION_VISIT = "FHW_RIM";
     public static final String OCR_FAMILY_PLANNING = "OCR_FAMILY_PLANNING";
+    public static final String OCR_ADD_MEMBER = "OCR_ADD_MEMBER";
+    public static final String OCR_UPDATE_MEMBER = "OCR_UPDATE_MEMBER";
+    public static final String OCR_HOUSEHOLD_LINE_LIST = "OCR_HOUSEHOLD_LINE_LIST";
     public static final String CAM_REPRODUCTIVE_INFO_MODIFICATION_VISIT = "CAM_RIM";
     public static final String FP_FOLLOW_UP = "CHIP_FP_FOLLOW_UP";
     public static final String VACCINE_ADVERSE_EFFECT_VISIT = "FHW_VAE";
@@ -178,7 +186,7 @@ public class MobileConstantUtil {
     public static final String IMMUNISATION_PCV_1 = "PCV_1";
     public static final String IMMUNISATION_DTP_HEPB_HIB_1 = "DTP_HEPB_HIB_1";
     public static final String IMMUNISATION_DTP_HEPB_HIB_2 = "DTP_HEPB_HIB_2";
-    public static final String IMMUNISATION_PCV_2 ="PCV_2" ;
+    public static final String IMMUNISATION_PCV_2 = "PCV_2";
     public static final String IMMUNISATION_DTP_HEPB_HIB_3 = "DTP_HEPB_HIB_3";
     public static final String IMMUNISATION_PCV_3 = "PCV_3";
     public static final String IMMUNISATION_MR_1 = "MR_1";
@@ -271,6 +279,8 @@ public class MobileConstantUtil {
     //Immunisation Separators for Member Entity
     public static final String IMMUNISATION_DATE_SEPARATOR = "#";
     public static final String IMMUNISATION_NAME_SEPARATOR = ",";
+    public static final String CHIP_GBV_SCREENING = "CHIP_GBV_SCREENING";
+
 
     //Sync Status's status code
     public static final String SUCCESS_VALUE = "S";
@@ -298,6 +308,9 @@ public class MobileConstantUtil {
     public static final String TT_VACCINE = "TTVACCINE";
     public static final String TT_ONE_VACCINE = "TTONEVACCINE";
     public static final String TT_TWO_VACCINE = "TTTWOVACCINE";
+    public static final String AMD = "AMD";
+    public static final String PAIN_KILLER = "PAIN_KILLER";
+    public static final String ORS = "ORS";
 
     // immunizations for imomcare..
     public static final String IMMUNISATION_ROUVAX_MR_0 = "ROUVAX_MR_0";

@@ -122,7 +122,7 @@
             }
 
             $http.defaults.headers.common.title = toState.title;
-            if (toState.name === 'login' || toState.name === 'resetpassword' || toState.name === 'logindownload' || toState.name === 'info'  || toState.name === 'techo.manage.utdashboard') {
+            if (toState.name === 'login' || toState.name === 'resetpassword' || toState.name === 'logindownload' || toState.name === 'info'  || toState.name === 'techo.manage.utdashboard' || toState.name === 'techo.admin.genericForm') {
                 if (localStorage.getItem('token') && toState.name === 'login') {
                     $rootScope.isLoggedIn = true;
                     event.preventDefault();

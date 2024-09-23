@@ -446,22 +446,29 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                                 startDynamicFormActivity(FormConstants.HIV_SCREENING, memberSelected, null);
                                 break;
                             case SERVICE_PNC_MOTHERS:
-                                startDynamicFormActivity(FormConstants.TECHO_FHW_PNC, memberSelected, null);
+                                showAlertAndNavigate(FormConstants.TECHO_FHW_PNC);
+//                                startDynamicFormActivity(FormConstants.TECHO_FHW_PNC, memberSelected, null);
                                 break;
                             case SERVICE_MALARIA_ACTIVE_SCREENING:
                                 if (memberSelected.getIndexCase() != null && memberSelected.getIndexCase()) {
                                     setNearByMembersSelectionScreen(memberSelected);
                                 } else {
-                                    startDynamicFormActivity(FormConstants.MALARIA_NON_INDEX, memberSelected, null);
+                                    showAlertAndNavigate(FormConstants.MALARIA_NON_INDEX);
+//                                    startDynamicFormActivity(FormConstants.MALARIA_NON_INDEX, memberSelected, null);
                                 }
                                 break;
                             case SERVICE_NEARBY_MEMBER_SCREENING:
                                 memberSelected = memberList.get(selectedPeopleIndex);
-                                startDynamicFormActivity(FormConstants.MALARIA_INDEX, memberSelected, null);
+                                if (memberSelected.getIndexCase() != null && memberSelected.getIndexCase()) {
+                                    startDynamicFormActivity(FormConstants.MALARIA_INDEX, memberSelected, null);
+                                } else {
+                                    startDynamicFormActivity(FormConstants.MALARIA_NON_INDEX, memberSelected, null);
+                                }
                                 break;
                             case GBV:
                                 memberSelected = memberList.get(selectedPeopleIndex);
-                                startDynamicFormActivity(FormConstants.CHIP_GBV_SCREENING, memberSelected, null);
+                                showAlertAndNavigate(FormConstants.CHIP_GBV_SCREENING);
+//                                startDynamicFormActivity(FormConstants.CHIP_GBV_SCREENING, memberSelected, null);
                                 break;
                             default:
                                 setVisits();
@@ -474,7 +481,8 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 case MALARIA_INDEX_SCREEN:
                     if (selectedPeopleIndex != -1) {
                         memberSelected = memberList.get(selectedPeopleIndex);
-                        startDynamicFormActivity(FormConstants.MALARIA_INDEX, memberSelected, null);
+                        showAlertAndNavigate(FormConstants.MALARIA_INDEX);
+//                        startDynamicFormActivity(FormConstants.MALARIA_INDEX, memberSelected, null);
                     } else {
                         SewaUtil.generateToast(this, UtilBean.getMyLabel(LabelConstants.PLEASE_SELECT_A_MEMBER));
                     }
@@ -493,7 +501,20 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                                         View.OnClickListener myListener = v1 -> {
                                             if (v1.getId() == BUTTON_POSITIVE) {
                                                 myAlertDialog.dismiss();
-                                                startDynamicFormActivity(formType, memberSelected, null);
+                                                View.OnClickListener myListener1 = view -> {
+                                                    if (view.getId() == BUTTON_POSITIVE) {
+                                                        alertDialog.dismiss();
+                                                        startDynamicFormActivity(formType, memberSelected, null);
+                                                    } else {
+                                                        alertDialog.dismiss();
+                                                        startOCRActivity(formType, memberSelected);
+                                                    }
+                                                };
+
+                                                alertDialog = new MyAlertDialog(this,
+                                                        UtilBean.getMyLabel("Select form filling type"),
+                                                        myListener1, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR", null);
+                                                alertDialog.show();
                                             } else {
                                                 myAlertDialog.dismiss();
                                             }
@@ -504,7 +525,20 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                                                 myListener, DynamicUtils.BUTTON_YES_NO);
                                         myAlertDialog.show();
                                     } else {
-                                        startDynamicFormActivity(formType, memberSelected, null);
+                                        View.OnClickListener myListener1 = view -> {
+                                            if (view.getId() == BUTTON_POSITIVE) {
+                                                alertDialog.dismiss();
+                                                startDynamicFormActivity(formType, memberSelected, null);
+                                            } else {
+                                                alertDialog.dismiss();
+                                                startOCRActivity(formType, memberSelected);
+                                            }
+                                        };
+
+                                        alertDialog = new MyAlertDialog(this,
+                                                UtilBean.getMyLabel("Select form filling type"),
+                                                myListener1, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR", null);
+                                        alertDialog.show();
                                     }
                                     break;
 
@@ -518,6 +552,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                                 case FormConstants.LMP_FOLLOW_UP:
                                 case FormConstants.TECHO_FHW_RIM:
                                 case FormConstants.TECHO_FHW_ANC:
+                                case FormConstants.TECHO_FHW_CS:
                                     View.OnClickListener myListener = view -> {
                                         if (view.getId() == BUTTON_POSITIVE) {
                                             alertDialog.dismiss();
@@ -530,7 +565,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
 
                                     alertDialog = new MyAlertDialog(this,
                                             UtilBean.getMyLabel("Select form filling type"),
-                                            myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR");
+                                            myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR", null);
                                     alertDialog.show();
                                     break;
 
@@ -550,7 +585,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                     if (memberList != null && !memberList.isEmpty()) {
                         if (selectedMemberToUpdateIndex != -1) {
                             memberSelected = memberList.get(selectedMemberToUpdateIndex);
-                            startDynamicFormActivity(FormConstants.FHS_MEMBER_UPDATE_NEW, memberSelected, null);
+                            showAlertAndNavigate(FormConstants.FHS_MEMBER_UPDATE_NEW);
                         } else {
                             SewaUtil.generateToast(this, UtilBean.getMyLabel(LabelConstants.PLEASE_SELECT_A_MEMBER));
                         }
@@ -562,8 +597,11 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 case FAMILY_SELECTION_SCREEN:
                     if (familyList != null && !familyList.isEmpty()) {
                         if (selectedFamilyIndex != -1) {
+                            if (selectedMemberToUpdateIndex == -1) {
+                                memberSelected = null;
+                            }
                             familySelected = familyList.get(selectedFamilyIndex);
-                            startDynamicFormActivity(FormConstants.FHS_MEMBER_UPDATE_NEW, null, familySelected);
+                            showAlertAndNavigate(FormConstants.FHS_MEMBER_UPDATE_NEW);
                         } else {
                             SewaUtil.generateToast(this, UtilBean.getMyLabel(LabelConstants.PLEASE_SELECT_A_FAMILY));
                         }
@@ -638,7 +676,11 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
         View.OnClickListener myListener = view -> {
             if (view.getId() == BUTTON_POSITIVE) {
                 alertDialog.dismiss();
-                startDynamicFormActivity(formConstant, memberSelected, null);
+                if (familySelected != null) {
+                    startDynamicFormActivity(formConstant, memberSelected, familySelected);
+                } else {
+                    startDynamicFormActivity(formConstant, memberSelected, null);
+                }
             } else {
                 alertDialog.dismiss();
                 startOCRActivity(formConstant, memberSelected);
@@ -646,7 +688,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
         };
         alertDialog = new MyAlertDialog(this,
                 UtilBean.getMyLabel("Select form filling type"),
-                myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR");
+                myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR", null);
         alertDialog.show();
     }
 
@@ -1092,12 +1134,14 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                     if (SERVICE_PREGNANT_WOMEN.equalsIgnoreCase(selectedService)) {
                         if (memberDataBean.getEdd() != null) {
                             gender = "EDD - " + sdf.format(memberDataBean.getEdd() != null ? memberDataBean.getEdd() : SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.EDD));
-                        } else {
+                        } else if (memberDataBean.getLmpDate() != null) {
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(new Date(memberDataBean.getLmpDate()));
                             calendar.add(Calendar.DATE, 281);
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                             gender = "EDD - " + sdf.format(calendar.getTime());
+                        } else {
+                            gender = "N/A";
                         }
                     } else {
                         if (memberDataBean.getGender() != null) {
@@ -2319,7 +2363,9 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
     private void startOCRActivity(final String formType, MemberDataBean memberDataBean) {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         try {
-            formMetaDataUtil.setMetaDataForRchFormByFormType(formType, memberDataBean.getId(), memberDataBean.getFamilyId(), null, sharedPref, memberDataBean.getMemberUuid());
+            if (memberDataBean != null) {
+                formMetaDataUtil.setMetaDataForRchFormByFormType(formType, memberDataBean.getId(), memberDataBean.getFamilyId(), null, sharedPref, memberDataBean.getMemberUuid());
+            }
         } catch (DataException e) {
             showProcessDialog();
             View.OnClickListener listener = clickView -> {
@@ -2333,8 +2379,14 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
         }
         myIntent = new Intent(this, OCRActivity_.class);
         myIntent.putExtra(SewaConstants.ENTITY, formType);
-        myIntent.putExtra(FieldNameConstants.UNIQUE_HEALTH_ID, memberSelected.getUniqueHealthId());
-        myIntent.putExtra(FieldNameConstants.MEMBER_UUID, memberSelected.getMemberUuid());
+        if (memberSelected != null) {
+            myIntent.putExtra(FieldNameConstants.UNIQUE_HEALTH_ID, memberSelected.getUniqueHealthId());
+            myIntent.putExtra(FieldNameConstants.MEMBER_UUID, memberSelected.getMemberUuid());
+            myIntent.putExtra(FieldNameConstants.FAMILY_ID, memberSelected.getFamilyId());
+        }
+        if (memberSelected == null) {
+            myIntent.putExtra(FieldNameConstants.FAMILY_ID, familySelected.getFamilyId());
+        }
         startActivityForResult(myIntent, REQUEST_CODE_FOR_OCR_ACTIVITY);
         hideProcessDialog();
     }

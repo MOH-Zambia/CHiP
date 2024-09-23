@@ -30,6 +30,7 @@ import com.argusoft.sewa.android.app.constants.LabelConstants;
 import com.argusoft.sewa.android.app.constants.NotificationConstants;
 import com.argusoft.sewa.android.app.constants.RchConstants;
 import com.argusoft.sewa.android.app.constants.RelatedPropertyNameConstants;
+import com.argusoft.sewa.android.app.core.StockManagementService;
 import com.argusoft.sewa.android.app.core.impl.HealthInfraTypeLocationServiceImpl;
 import com.argusoft.sewa.android.app.core.impl.HealthInfrastructureServiceImpl;
 import com.argusoft.sewa.android.app.core.impl.ImmunisationServiceImpl;
@@ -39,6 +40,7 @@ import com.argusoft.sewa.android.app.core.impl.RchHighRiskServiceImpl;
 import com.argusoft.sewa.android.app.core.impl.SewaFhsServiceImpl;
 import com.argusoft.sewa.android.app.core.impl.SewaServiceImpl;
 import com.argusoft.sewa.android.app.core.impl.SewaServiceRestClientImpl;
+import com.argusoft.sewa.android.app.core.impl.StockManagementServiceImpl;
 import com.argusoft.sewa.android.app.core.impl.TechoServiceImpl;
 import com.argusoft.sewa.android.app.core.impl.VersionServiceImpl;
 import com.argusoft.sewa.android.app.datastructure.FormEngine;
@@ -107,6 +109,8 @@ public class DynamicFormActivity extends MenuActivity implements View.OnClickLis
     VersionServiceImpl versionService;
     @Bean
     HealthInfraTypeLocationServiceImpl healthInfraTypeLocationService;
+    @Bean
+    StockManagementServiceImpl stockManagementService;
 
     private static final String TAG = "DynamicFormActivity";
     private SharedPreferences sharedPref;
@@ -262,7 +266,8 @@ public class DynamicFormActivity extends MenuActivity implements View.OnClickLis
                 locationMasterService,
                 serviceRestClient,
                 versionService,
-                healthInfraTypeLocationService);
+                healthInfraTypeLocationService,
+                stockManagementService);
 
         sewaService.loadQuestionsBySheet(formType);
     }

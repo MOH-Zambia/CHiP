@@ -55,12 +55,17 @@ public interface ClientService {
     List<ReferralDto> getReferrals(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, String householdId, Integer zoneId, Integer cbvId);
 
     /**
-     * Retrieve list of service interactions based on the provided parameters.
+     * Retrieve list of interaction details based on the provided parameters.
      *
-     * @param memberId Member Id
-     * @param serviceStartDate Start date for service
-     * @param serviceEndDate End date for service
-     * @return List of InteractionDto objects matching the criteria
+     * @param facilityCode Facility code
+     * @param serviceStartDate Start date for filtering details based on the service date range.
+     *                         If null, no lower bound date filter is applied.
+     * @param serviceEndDate End date for filtering details based on the service date range.
+     *                       If null, no upper bound date filter is applied.
+     * @param cbvId (Optional) CBV (Community-Based Volunteer) ID for filtering details. If null, no CBV filter is applied.
+     * @param householdId (Optional) Household ID for filtering details. If null, no household filter is applied.
+     * @param zoneId (Optional) Zone ID for filtering details. If null, no zone filter is applied.
+     * @return List of InteractionDto objects that match the specified criteria.
      */
-    InteractionDto getInteractions(Integer memberId, Date serviceStartDate, Date serviceEndDate);
+    List<InteractionDto> getInteractions(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
 }

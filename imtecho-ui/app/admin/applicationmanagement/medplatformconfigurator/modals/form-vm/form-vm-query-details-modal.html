@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h4 class="text">Query Details</h4>
+</div>
+<div class="modal-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h6>Code</h6>
+                <input style="width: 100%;" class="form-control cst-form-control" ng-model="queryBuilderMap[query].code" disabled type="text"/>
+            </div>
+            <div class="col-12 mt-3">
+                <h6>Query</h6>
+                <textarea type="text"
+                class="form-control cst-form-control"
+                disabled rows="15" ng-model="queryBuilderMap[query].query"></textarea>
+            </div>
+            <div class="col-12 mt-3">
+                <h6>Description</h6>
+                <textarea type="text"
+                class="form-control cst-form-control"
+                disabled rows="3" ng-model="queryBuilderMap[query].description"></textarea>
+            </div>
+            <div class="col-12 mt-3" ng-if="availableColumns.length>0">
+                <h6>Column names</h6>
+                <textarea type="text" class="form-control cst-form-control" disabled rows="3"
+                    ng-model="availableColumns"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-secondary" ng-click="close()">Close</button>
+</div>

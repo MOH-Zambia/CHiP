@@ -163,6 +163,8 @@ public class SystemConstantUtil {
     public static final String OCR_CHILD_HIV_SCREENING = "OCR_CHILD_HIV_SCREENING";
     public static final String OCR_ADULT_HIV_SCREENING = "OCR_ADULT_HIV_SCREENING";
     public static final String MALARIA_NON_INDEX = "MALARIA_NON_INDEX";
+    public static final String OCR_NON_INDEX = "OCR_NON_INDEX";
+    public static final String OCR_INDEX = "OCR_INDEX";
     public static final String MALARIA_INDEX = "MALARIA_INDEX";
     public static final String INDEX_INVESTIGATION = "INDEX_INVESTIGATION";
     public static final String KNOWN_POSITIVE = "KNOWN_POSITIVE";

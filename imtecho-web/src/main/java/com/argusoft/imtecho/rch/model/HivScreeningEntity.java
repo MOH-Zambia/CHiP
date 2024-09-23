@@ -18,6 +18,10 @@ public class HivScreeningEntity extends EntityAuditInfo implements Serializable 
     @Basic(optional = false)
     private Integer id;
 
+    @Column(name = "service_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date serviceDate;
+
     @Column(name = "member_id")
     private Integer memberId;
 

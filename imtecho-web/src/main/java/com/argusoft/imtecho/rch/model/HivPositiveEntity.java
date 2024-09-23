@@ -6,6 +6,8 @@
 package com.argusoft.imtecho.rch.model;
 
 import com.argusoft.imtecho.common.model.EntityAuditInfo;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +15,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "rch_preg_hiv_positive_master")
+@Getter
+@Setter
 public class HivPositiveEntity extends EntityAuditInfo implements Serializable {
 
     @Id
@@ -21,6 +25,9 @@ public class HivPositiveEntity extends EntityAuditInfo implements Serializable {
     private Integer id;
     @Column(name = "member_id")
     private Integer memberId;
+    @Column(name = "service_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date serviceDate;
     @Column(name = "family_id")
     private Integer familyId;
     @Column(name = "location_id")
@@ -40,92 +47,4 @@ public class HivPositiveEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "member_status")
     private String memberStatus;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
-    }
-
-    public String getExpectedDeliveryPlace() {
-        return expectedDeliveryPlace;
-    }
-
-    public void setExpectedDeliveryPlace(String expectedDeliveryPlace) {
-        this.expectedDeliveryPlace = expectedDeliveryPlace;
-    }
-
-    public Boolean getOnArt() {
-        return isOnArt;
-    }
-
-    public void setOnArt(Boolean onArt) {
-        isOnArt = onArt;
-    }
-
-    public String getReferralDone() {
-        return isReferralDone;
-    }
-
-    public void setReferralDone(String referralDone) {
-        isReferralDone = referralDone;
-    }
-
-    public String getReferralPlace() {
-        return referralPlace;
-    }
-
-    public void setReferralPlace(String referralPlace) {
-        this.referralPlace = referralPlace;
-    }
-
-    public Integer getFamilyId() {
-        return familyId;
-    }
-
-    public void setFamilyId(Integer familyId) {
-        this.familyId = familyId;
-    }
-
-    public Integer getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Integer locationId) {
-        this.locationId = locationId;
-    }
-
-    public String getReferralReason() {
-        return referralReason;
-    }
-
-    public void setReferralReason(String referralReason) {
-        this.referralReason = referralReason;
-    }
-
-    public String getReferralFor() {
-        return referralFor;
-    }
-
-    public void setReferralFor(String referralFor) {
-        this.referralFor = referralFor;
-    }
-
-    public String getMemberStatus() {
-        return memberStatus;
-    }
-
-    public void setMemberStatus(String memberStatus) {
-        this.memberStatus = memberStatus;
-    }
 }

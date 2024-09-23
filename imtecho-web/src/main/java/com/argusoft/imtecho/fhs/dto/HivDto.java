@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class HivDto {
 
+    private Integer memberId;
     private boolean childHivTest;
     private boolean hivTestResult;
     private boolean childMotherHivPositive;

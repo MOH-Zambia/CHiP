@@ -32,6 +32,7 @@ import com.argusoft.sewa.android.app.util.UtilBean;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,14 +67,17 @@ public class StockRequestComponent extends LinearLayout {
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(0, MATCH_PARENT, 3);
         layoutParams.setMargins(0, 10, 0, 10);
 
-        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(0, WRAP_CONTENT, 3);
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 4);
         textViewParams.setMargins(10, 0, 10, 0);
 
-        LinearLayout.LayoutParams inputTextParams = new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.7f);
+        LinearLayout.LayoutParams textViewParams1 = new LinearLayout.LayoutParams(0, MATCH_PARENT, 2);
+        textViewParams.setMargins(10, 0, 10, 0);
+
+        LinearLayout.LayoutParams inputTextParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 2.5f);
         inputTextParams.setMargins(10, 0, 10, 0);
         inputTextParams.gravity = Gravity.CENTER_VERTICAL;
 
-        LinearLayout.LayoutParams layoutParamsClose = new LinearLayout.LayoutParams(0, MATCH_PARENT, 0.3f);
+        LinearLayout.LayoutParams layoutParamsClose = new LinearLayout.LayoutParams(0, MATCH_PARENT, 0.5f);
         layoutParamsClose.setMargins(10, 10, 10, 10);
         layoutParamsClose.gravity = Gravity.CENTER_VERTICAL;
 
@@ -87,17 +91,24 @@ public class StockRequestComponent extends LinearLayout {
 
         AdapterView.OnItemClickListener adaptorClickListener = (adapterView, view, i, l) -> {
             String selectedItem = adapterView.getItemAtPosition(i).toString();
-            OptionDataBean option = options.get(i);
+            OptionDataBean option = null;
+            for (OptionDataBean o : options) {
+                if (o.getValue().equals(selectedItem)) {
+                    option = o;
+                    break;
+                }
+            }
 
-            if (!stockMap.containsKey(option.getKey())) {
+            if (option != null && !stockMap.containsKey(option.getKey())) {
                 LinearLayout nameAndQuantity = getLinearLayout(context, -1, HORIZONTAL,
                         new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-                nameAndQuantity.setWeightSum(5f);
+                nameAndQuantity.setWeightSum(10f);
 
                 TableRow row = new TableRow(context);
                 MaterialTextView textView = new MaterialTextView(context);
                 textView.setPadding(0, 20, 0, 20);
                 textView.setText(UtilBean.getMyLabel(selectedItem));
+                textView.setGravity(Gravity.CENTER_VERTICAL);
                 textView.setTypeface(Typeface.DEFAULT_BOLD);
                 textView.setLayoutParams(textViewParams);
                 nameAndQuantity.addView(textView);
@@ -113,6 +124,7 @@ public class StockRequestComponent extends LinearLayout {
                     }
 
                     private Timer timer = new Timer();
+
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         timer.cancel();
@@ -134,6 +146,19 @@ public class StockRequestComponent extends LinearLayout {
                     }
                 });
 
+                MaterialTextView availableText = new MaterialTextView(context);
+                availableText.setPadding(0, 20, 0, 20);
+                try {
+                    Integer medicineId = Integer.valueOf(option.getKey());
+                    availableText.setText("Avl. " + SharedStructureData.stockManagementService.getStockAmountById(medicineId).toString());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                availableText.setTypeface(Typeface.DEFAULT_BOLD);
+                availableText.setLayoutParams(textViewParams1);
+                availableText.setGravity(Gravity.CENTER_VERTICAL);
+                nameAndQuantity.addView(availableText);
+
                 qtyInputText.setGravity(Gravity.CENTER_VERTICAL);
                 nameAndQuantity.addView(qtyInputText);
 
@@ -141,8 +166,9 @@ public class StockRequestComponent extends LinearLayout {
                 imageClear.setLayoutParams(layoutParamsClose);
                 nameAndQuantity.addView(imageClear);
 
+                OptionDataBean finalOption = option;
                 imageClear.setOnClickListener(view1 -> {
-                    stockMap.remove(option.getKey());
+                    stockMap.remove(finalOption.getKey());
                     tableLayout.removeView(row);
                     setAnswers();
                 });

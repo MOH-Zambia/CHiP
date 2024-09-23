@@ -10,6 +10,7 @@ import com.argusoft.imtecho.cfhc.model.MemberCFHCEntity;
 import com.argusoft.imtecho.common.dao.UserLocationDao;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.service.SequenceService;
+import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
 import com.argusoft.imtecho.common.util.SystemConstantUtil;
 import com.argusoft.imtecho.config.security.ImtechoSecurityUser;
@@ -25,14 +26,18 @@ import com.argusoft.imtecho.fhs.dao.MemberStateDetailDao;
 import com.argusoft.imtecho.fhs.dto.*;
 import com.argusoft.imtecho.fhs.mapper.FamilyMapper;
 import com.argusoft.imtecho.fhs.mapper.MemberMapper;
-import com.argusoft.imtecho.fhs.model.*;
+import com.argusoft.imtecho.fhs.model.FamilyEntity;
+import com.argusoft.imtecho.fhs.model.FamilyStateDetailEntity;
+import com.argusoft.imtecho.fhs.model.MemberEntity;
+import com.argusoft.imtecho.fhs.model.MemberStateDetailEntity;
 import com.argusoft.imtecho.fhs.service.FamilyHealthSurveyService;
 import com.argusoft.imtecho.location.dao.LocationLevelHierarchyDao;
 import com.argusoft.imtecho.mobile.constants.MobileConstantUtil;
-import com.argusoft.imtecho.mobile.dto.*;
+import com.argusoft.imtecho.mobile.dto.FamilyDataBean;
+import com.argusoft.imtecho.mobile.dto.MemberDataBean;
+import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.mobile.mapper.FamilyDataBeanMapper;
 import com.argusoft.imtecho.mobile.mapper.MemberDataBeanMapper;
-import com.argusoft.imtecho.mobile.model.SyncStatus;
 import com.argusoft.imtecho.mobile.service.MobileUtilService;
 import com.argusoft.imtecho.query.dto.QueryDto;
 import com.argusoft.imtecho.query.service.QueryMasterService;
@@ -42,7 +47,7 @@ import com.argusoft.imtecho.rch.mapper.ChildServiceMapper;
 import com.argusoft.imtecho.rch.model.ChildServiceMaster;
 import com.argusoft.imtecho.rch.service.PncService;
 import com.argusoft.imtecho.rch.service.WpdService;
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -170,7 +175,7 @@ public class FamilyHealthSurveyServiceImpl implements FamilyHealthSurveyService 
 
 
         List<MemberEntity> persistedMembers = new ArrayList<>(membersToUpdate);
-        Map<String, UUID> mapOfAadhaarReferenceKey = new HashMap<String, UUID>();
+//        Map<String, UUID> mapOfAadhaarReferenceKey = new HashMap<String, UUID>();
         if (familyEntity != null) {
             if (familyEntity.getId() == null) {
                 familyEntity.setCreatedOn(new Date());
@@ -315,13 +320,13 @@ public class FamilyHealthSurveyServiceImpl implements FamilyHealthSurveyService 
         }
 
         memberDao.flush();
-        if (mapOfAadhaarReferenceKey.size() > 0) {
-            SyncStatus status = mobileUtilService.retrieveSyncStatusById(syncStatusId);
-            for (Map.Entry<String, UUID> entry : mapOfAadhaarReferenceKey.entrySet()) {
-                status.setRecordString(status.getRecordString().replace(entry.getKey(), entry.getValue().toString()));
-            }
-            mobileUtilService.updateSyncStatus(status);
-        }
+//        if (mapOfAadhaarReferenceKey.size() > 0) {
+//            SyncStatus status = mobileUtilService.retrieveSyncStatusById(syncStatusId);
+//            for (Map.Entry<String, UUID> entry : mapOfAadhaarReferenceKey.entrySet()) {
+//                status.setRecordString(status.getRecordString().replace(entry.getKey(), entry.getValue().toString()));
+//            }
+//            mobileUtilService.updateSyncStatus(status);
+//        }
 
         Integer contactPersonId = getContactPersonIdForFamilyEntity(persistedMembers);
         Integer headOfTheFamilyId = getHOFIdForFamilyEntity(persistedMembers);
@@ -1552,17 +1557,17 @@ public class FamilyHealthSurveyServiceImpl implements FamilyHealthSurveyService 
             case "48":
                 memberEntity.setEducationStatus(answer != null ? Integer.parseInt(answer) : null);
                 break;
-            case "5001":
-                switch (answer) {
-                    case "1":
-                        memberEntity.setAgreedToShareAadhar(Boolean.TRUE);
-                        break;
-                    case "2":
-                        memberEntity.setAgreedToShareAadhar(Boolean.FALSE);
-                        break;
-                    default:
-                }
-                break;
+//            case "5001":
+//                switch (answer) {
+//                    case "1":
+//                        memberEntity.setAgreedToShareAadhar(Boolean.TRUE);
+//                        break;
+//                    case "2":
+//                        memberEntity.setAgreedToShareAadhar(Boolean.FALSE);
+//                        break;
+//                    default:
+//                }
+//                break;
             default:
         }
     }
@@ -2114,6 +2119,221 @@ public class FamilyHealthSurveyServiceImpl implements FamilyHealthSurveyService 
         return returnMap;
     }
 
+    @Override
+    public Integer storeAddMemberFormOCR(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+        JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
+
+        Integer memberId = null;
+        String memberUuid = null;
+        if (jsonObject.get("memberId") != null) {
+            memberId = jsonObject.get("memberId").getAsInt();
+        } else {
+            memberUuid = String.valueOf(jsonObject.get("memberUUID"));
+        }
+        Integer familyId;
+        FamilyEntity familyEntity;
+        MemberEntity memberEntity = memberDao.retrieveMemberById(memberId);
+        if (jsonObject.get("familyId") != null) {
+            familyId = jsonObject.get("familyId").getAsInt();
+            familyEntity = familyDao.retrieveById(familyId);
+        } else {
+            familyEntity = familyDao.retrieveFamilyByFamilyId(memberDao.retrieveById(memberId).getFamilyId());
+        }
+        if (memberEntity == null) {
+            memberEntity = new MemberEntity();
+            memberEntity.setUniqueHealthId(this.generateMemberUniqueHealthId());
+            memberEntity.setFamilyId(familyEntity.getFamilyId());
+            memberEntity.setDob(new Date(Long.parseLong(String.valueOf(jsonObject.get("dob")))));
+            String gender = jsonObject.get("gender").getAsString();
+            switch (gender) {
+                case "male":
+                case "Male":
+                case "MALE":
+                case "M":
+                    memberEntity.setGender("M");
+                    break;
+                case "female":
+                case "Female":
+                case "FEMALE":
+                case "F":
+                    memberEntity.setGender("F");
+                    break;
+            }
+            memberEntity.setFirstName(String.valueOf(jsonObject.get("firstName")));
+            memberEntity.setMiddleName(String.valueOf(jsonObject.get("middleName")));
+            memberEntity.setLastName(String.valueOf(jsonObject.get("lastName")));
+            memberEntity.setMobileNumber(String.valueOf(jsonObject.get("mobileNumber")));
+            memberEntity.setIsPregnantFlag(ImtechoUtil.returnTrueFalseFromInitials(String.valueOf(jsonObject.get("lastName"))));
+            memberEntity.setMemberReligion(String.valueOf(jsonObject.get("religion")));
+            memberEntity.setMemberReligion(String.valueOf(jsonObject.get("religion")));
+            memberEntity.setMemberReligion(String.valueOf(jsonObject.get("religion")));
+            memberEntity.setState(FamilyHealthSurveyServiceConstants.CFHC_MEMBER_STATE_NEW);
+            if (memberEntity.getGender().equalsIgnoreCase("F")) {
+                memberEntity.setLmpDate(new Date(Long.parseLong(jsonObject.get("lmp").getAsString())));
+                memberEntity.setIsPregnantFlag(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("isPregnant").getAsString()));
+            }
+            memberEntity.setMemberReligion(String.valueOf(jsonObject.get("religion")));
+
+        }
+
+        return memberDao.create(memberEntity);
+    }
+
+    @Override
+    public Integer storeHouseholdLineListFormOCR(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+        JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
+        Integer familyId = null;
+        if (jsonObject.has("familyId")) {
+            familyId = jsonObject.get("familyId").getAsInt();
+        }
+        familyId = jsonObject.has("familyId") ? jsonObject.get("familyId").getAsInt() : null;
+        FamilyEntity familyEntity;
+        if (familyId == null) {
+            familyEntity = new FamilyEntity();
+        } else {
+            familyEntity = familyDao.retrieveById(familyId);
+        }
+        if (familyEntity.getFamilyUuid() == null && jsonObject.has("familyUuid")) {
+            familyEntity.setFamilyUuid(jsonObject.get("familyUuid").getAsString());
+        }
+        familyEntity.setFamilyId(generateFamilyId());
+        familyEntity.setHouseNumber(jsonObject.get("houseNumber").getAsString());
+        familyEntity.setAddress1(jsonObject.get("address").getAsString());
+        familyEntity.setTypeOfToilet(jsonObject.get("typeOfToilet").getAsString());
+        familyEntity.setOutdoorCookingPractices(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("outdoorCookingPractices").getAsString()));
+        familyEntity.setHandwashAvailable(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("handWashAvailable").getAsString()));
+        familyEntity.setWasteDisposalAvailable(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("handWashAvailable").getAsString()));
+        familyEntity.setDrinkingWaterSource(jsonObject.get("drinkingWaterSource").getAsString());
+        familyEntity.setDishrackAvailable(jsonObject.get("dishrackAvailable").getAsBoolean());
+        familyEntity.setComplaintOfInsects(jsonObject.get("complaintOfInsects").getAsBoolean());
+        familyEntity.setComplaintOfRodents(jsonObject.get("complaintOfRodents").getAsBoolean());
+        familyEntity.setSeparateLivestockShelter(jsonObject.get("seperateLivestockShelter").getAsBoolean());
+        familyEntity.setLocationId(jsonObject.get("locationId").getAsInt());
+        familyEntity.setAreaId(jsonObject.get("locationId").getAsInt());
+        familyEntity.setState(FamilyHealthSurveyServiceConstants.CFHC_FAMILY_STATE_NEW);
+        familyEntity.setIsIecGiven(jsonObject.get("isIecGiven").getAsBoolean());
+        JsonArray memberDataBean = jsonObject.get("members").getAsJsonArray();
+        int id = familyDao.create(familyEntity);
+        for (int i = 0; i < memberDataBean.size(); i++) {
+            MemberEntity memberEntity = new MemberEntity();
+            JsonElement jsonElement = memberDataBean.get(i);
+            JsonObject member = jsonElement.getAsJsonObject();
+            memberEntity.setFirstName(member.get("firstName").getAsString());
+            memberEntity.setLastName(member.get("lastName").getAsString());
+            memberEntity.setMiddleName(member.get("middleName").getAsString());
+            memberEntity.setDob(new Date(Long.parseLong(member.get("dob").getAsString())));
+            memberEntity.setUniqueHealthId(generateMemberUniqueHealthId());
+            memberEntity.setFamilyId(familyEntity.getFamilyId());
+            String relationWithHof = null;
+            if (member.has("relationWithHof")) {
+                relationWithHof = member.get("relationWithHof").getAsString();
+            } else if (member.get("familyHeadFlag").getAsBoolean()) {
+                relationWithHof = "self";
+            }
+            if (relationWithHof.equalsIgnoreCase("self")) {
+                memberEntity.setFamilyHeadFlag(true);
+            } else {
+                memberEntity.setRelationWithHof(relationWithHof);
+            }
+            memberEntity.setGender(member.get("gender").getAsString());
+            memberEntity.setMobileNumber(member.get("mobileNumber").getAsString());
+            memberEntity.setState(FamilyHealthSurveyServiceConstants.CFHC_MEMBER_STATE_NEW);
+            if (memberEntity.getGender().equalsIgnoreCase("F")) {
+                memberEntity.setIsPregnantFlag(member.get("isPregnant").getAsBoolean());
+            }
+            String maritalStatus = member.has("maritalStatus") ? member.get("maritalStatus").getAsString() : null;
+            if (maritalStatus != null) {
+                maritalStatus.toLowerCase();
+                switch (maritalStatus) {
+                    case "married":
+                        memberEntity.setMaritalStatus(629);
+                        break;
+                    case "unmarried":
+                        memberEntity.setMaritalStatus(630);
+                        break;
+                    case "widow":
+                        memberEntity.setMaritalStatus(641);
+                        break;
+                    case "widower":
+                        memberEntity.setMaritalStatus(643);
+                        break;
+                    case "abandoned":
+                        memberEntity.setMaritalStatus(642);
+                        break;
+                }
+            }
+            memberDao.create(memberEntity);
+            memberDao.flush();
+        }
+        return id;
+
+    }
+
+    @Override
+    public Integer storeUpdateMemberFormOCR(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+        JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
+
+        Integer memberId = null;
+        String memberUuid = null;
+        if (jsonObject.get("memberId") != null) {
+            memberId = jsonObject.get("memberId").getAsInt();
+        } else {
+            memberUuid = String.valueOf(jsonObject.get("memberUUID"));
+        }
+        Integer familyId;
+        FamilyEntity familyEntity;
+        MemberEntity memberEntity = memberDao.retrieveMemberById(memberId);
+        memberEntity.setMemberUUId(memberUuid);
+        if (jsonObject.get("familyId") != null) {
+            familyId = jsonObject.get("familyId").getAsInt();
+            familyEntity = familyDao.retrieveById(familyId);
+        } else {
+            familyEntity = familyDao.retrieveFamilyByFamilyId(memberDao.retrieveById(memberId).getFamilyId());
+        }
+        if (memberEntity == null) {
+            memberEntity = new MemberEntity();
+        }
+
+        memberEntity.setUniqueHealthId(jsonObject.has("uniqueHealthId") ? jsonObject.get("uniqueHealthId").getAsString() : this.generateMemberUniqueHealthId());
+        memberEntity.setFamilyId(familyEntity.getFamilyId());
+        memberEntity.setDob(new Date(Long.parseLong(String.valueOf(jsonObject.get("dob")))));
+        String gender = jsonObject.get("gender").getAsString();
+        switch (gender) {
+            case "male":
+            case "Male":
+            case "MALE":
+            case "M":
+                memberEntity.setGender("M");
+                break;
+            case "female":
+            case "Female":
+            case "FEMALE":
+            case "F":
+                memberEntity.setGender("F");
+                break;
+        }
+        memberEntity.setFirstName(String.valueOf(jsonObject.get("firstName")));
+        memberEntity.setMiddleName(String.valueOf(jsonObject.get("middleName")));
+        memberEntity.setLastName(String.valueOf(jsonObject.get("lastName")));
+        memberEntity.setMobileNumber(String.valueOf(jsonObject.get("mobileNumber")));
+        memberEntity.setIsPregnantFlag(ImtechoUtil.returnTrueFalseFromInitials(String.valueOf(jsonObject.get("lastName"))));
+        memberEntity.setMemberReligion(String.valueOf(jsonObject.get("religion")));
+        memberEntity.setMemberReligion(String.valueOf(jsonObject.get("locationId")));
+        memberEntity.setMemberReligion(String.valueOf(jsonObject.get("religion")));
+        if (memberEntity.getGender().equalsIgnoreCase("F")) {
+            memberEntity.setLmpDate(new Date(Long.parseLong(jsonObject.get("lmp").getAsString())));
+            memberEntity.setIsPregnantFlag(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("isPregnant").getAsString()));
+        }
+        memberEntity.setMemberReligion(String.valueOf(jsonObject.get("religion")));
+
+
+        memberDao.update(memberEntity);
+        return memberEntity.getId();
+    }
+
 //    @Override
 //    public Map<String, String> storeMemberUpdateFormCambodia(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswersMap, UserMaster user) {
 //        Map<String, String> returnMap = new LinkedHashMap<>();
@@ -2329,7 +2549,7 @@ public class FamilyHealthSurveyServiceImpl implements FamilyHealthSurveyService 
         Integer memberId = memberInformationDto.getMemberId();
         if (memberInformationDto.getGender().equals("F")) {
 
-            // get pregnancyRegistrationDetail info 
+            // get pregnancyRegistrationDetail info
             List<PregnancyRegistrationDetailDto> pregnancyRegistrationDetailDtos = this.getPregnancyRegistrationDetailByMemberId(memberId);
             if (!pregnancyRegistrationDetailDtos.isEmpty()) {
                 memberInformationDto.setPregnancyRegistrationDetailDtos(pregnancyRegistrationDetailDtos);

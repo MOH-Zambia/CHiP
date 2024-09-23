@@ -124,8 +124,8 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
 
     @Column(name = "merged_from_family_id")
     private String mergedFromFamilyId;
-    @Column(name = "agreed_to_share_aadhar")
-    private Boolean agreedToShareAadhar;
+//    @Column(name = "agreed_to_share_aadhar")
+//    private Boolean agreedToShareAadhar;
 //    @Column(name = "aadhar_status")
 //    private String aadharStatus;
     @Column(name = "year_of_wedding")
@@ -581,13 +581,13 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
         this.mergedFromFamilyId = mergedFromFamilyId;
     }
 
-    public Boolean getAgreedToShareAadhar() {
-        return agreedToShareAadhar;
-    }
-
-    public void setAgreedToShareAadhar(Boolean agreedToShareAadhar) {
-        this.agreedToShareAadhar = agreedToShareAadhar;
-    }
+//    public Boolean getAgreedToShareAadhar() {
+//        return agreedToShareAadhar;
+//    }
+//
+//    public void setAgreedToShareAadhar(Boolean agreedToShareAadhar) {
+//        this.agreedToShareAadhar = agreedToShareAadhar;
+//    }
 
 //    public String getAadharStatus() {
 //        return aadharStatus;
@@ -1476,7 +1476,7 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
         public static final String CURRENT_DISEASE_DETAILS = "currentDiseaseDetails";
         public static final String EYE_ISSUE_DETAILS = "eyeIssueDetails";
         public static final String MERGED_FROM_FAMILY_ID = "mergedFromFamilyId";
-        public static final String AGREED_TO_SHARE_AADHAR = "agreedToShareAadhar";
+//        public static final String AGREED_TO_SHARE_AADHAR = "agreedToShareAadhar";
         public static final String YEAR_OF_WEDDING = "yearOfWedding";
         public static final String DATE_OF_WEDDING = "dateOfWedding";
         public static final String MOTHER_ID = "motherId";
@@ -1500,7 +1500,7 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
         public static final String CURRENT_PARA = "currentPara";
         public static final String RELATION_WITH_HOF = "relationWithHof";
 
-        public static final String AADHAAR_REFERENCE_KEY = "aadhaarReferenceKey";
+//        public static final String AADHAAR_REFERENCE_KEY = "aadhaarReferenceKey";
 
     }
 

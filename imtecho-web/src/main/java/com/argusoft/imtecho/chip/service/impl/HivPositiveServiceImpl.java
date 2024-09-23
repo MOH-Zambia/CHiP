@@ -146,7 +146,7 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         if (jsonObject.get("memberId") != null) {
             memberId = jsonObject.get("memberId").getAsInt();
         } else {
-            if (jsonObject.get("memberUUID")  != null) {
+            if (jsonObject.get("memberUUID") != null) {
                 memberId = memberDao.retrieveMemberByUuid(String.valueOf(jsonObject.get("memberUUID"))).getId();
             }
         }
@@ -171,8 +171,8 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         hivPositiveEntity.setMemberId(memberId);
         hivPositiveEntity.setLocationId(locationId);
         hivPositiveEntity.setFamilyId(familyId);
-        if (hivPositiveEntity.getReferralDone() != null && !hivPositiveEntity.getReferralDone().isEmpty()) {
-            hivPositiveEntity.setReferralDone(ImtechoUtil.returnYESorNOFromInitials(hivPositiveEntity.getReferralDone()));
+        if (hivPositiveEntity.getIsReferralDone() != null && !hivPositiveEntity.getIsReferralDone().isEmpty()) {
+            hivPositiveEntity.setIsReferralDone(ImtechoUtil.returnYESorNOFromInitials(hivPositiveEntity.getIsReferralDone()));
         }
 
         MemberEntity memberEntity = memberDao.retrieveMemberById(hivPositiveEntity.getMemberId());
@@ -183,7 +183,7 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             memberAdditionalInfo = new MemberAdditionalInfo();
         }
 
-        if ("YES".equalsIgnoreCase(hivPositiveEntity.getReferralDone()) && jsonObject.get("referralPlace") != null) {
+        if ("YES".equalsIgnoreCase(hivPositiveEntity.getIsReferralDone()) && jsonObject.get("referralPlace") != null) {
             hivPositiveEntity.setReferralPlace(jsonObject.get("referralPlace").getAsString());
         }
 
@@ -277,7 +277,7 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         if (jsonObject.get("memberId") != null) {
             memberId = jsonObject.get("memberId").getAsInt();
         } else {
-            if (jsonObject.get("memberUUID")  != null) {
+            if (jsonObject.get("memberUUID") != null) {
                 memberId = memberDao.retrieveMemberByUuid(String.valueOf(jsonObject.get("memberUUID"))).getId();
             }
         }
@@ -478,7 +478,7 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         if (jsonObject.get("memberId") != null) {
             memberId = jsonObject.get("memberId").getAsInt();
         } else {
-            if (jsonObject.get("memberUUID")  != null) {
+            if (jsonObject.get("memberUUID") != null) {
                 memberId = memberDao.retrieveMemberByUuid(String.valueOf(jsonObject.get("memberUUID"))).getId();
             }
         }
@@ -608,38 +608,29 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
         EMTCTEntity emtctEntity = gson.fromJson(parsedRecordBean.getAnswerRecord(), EMTCTEntity.class);
         JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
-
+        MemberEntity memberEntity = null;
         Integer memberId = null;
         if (jsonObject.get("memberId") != null) {
             memberId = jsonObject.get("memberId").getAsInt();
+            memberEntity = memberDao.retrieveMemberById(memberId);
         } else {
-            if (jsonObject.get("memberUUID")  != null) {
-                memberId = memberDao.retrieveMemberByUuid(String.valueOf(jsonObject.get("memberUUID"))).getId();
+            if (jsonObject.get("memberUUID") != null) {
+                memberEntity = memberDao.retrieveMemberByUuid(jsonObject.get("memberUUID").getAsString());
             }
         }
-
-        Integer familyId;
+        if (memberEntity == null) {
+            memberEntity = new MemberEntity();
+        }
+        Integer familyId = null;
         Integer locationId = null;
-        FamilyEntity familyEntity;
+        FamilyEntity familyEntity = familyDao.retrieveFamilyByFamilyId(memberEntity.getFamilyId());
+        familyId = familyEntity.getId();
+        locationId = familyEntity.getAreaId() != null ? familyEntity.getAreaId() : familyEntity.getLocationId();
 
-        if (jsonObject.get("familyId") != null) {
-            familyId = jsonObject.get("familyId").getAsInt();
-            familyEntity = familyDao.retrieveById(familyId);
-        } else {
-            familyEntity = familyDao.retrieveFamilyByFamilyId(memberDao.retrieveById(memberId).getFamilyId());
-            familyId = familyEntity.getId();
-            locationId = familyEntity.getAreaId();
-        }
-
-        if (locationId == null) {
-            locationId = familyEntity.getAreaId();
-        }
-
-        emtctEntity.setMemberId(memberId);
+        emtctEntity.setMemberId(memberEntity.getId());
         emtctEntity.setLocationId(locationId);
         emtctEntity.setFamilyId(familyId);
 
-        MemberEntity memberEntity = memberDao.retrieveMemberById(emtctEntity.getMemberId());
         MemberAdditionalInfo memberAdditionalInfo;
         if (memberEntity.getAdditionalInfo() != null && !memberEntity.getAdditionalInfo().isEmpty()) {
             memberAdditionalInfo = gson.fromJson(memberEntity.getAdditionalInfo(), MemberAdditionalInfo.class);
@@ -671,6 +662,9 @@ public class HivPositiveServiceImpl implements HivPositiveService {
                 case "201":
                     emtctEntity.setDbsTestDone(ImtechoUtil.returnTrueFalseFromInitials(answer));
                     break;
+                case "7513":
+                    emtctEntity.setServiceDate(new Date(Long.parseLong(answer)));
+                    break;
                 case "202":
                     emtctEntity.setDbsResult(answer);
                     break;
@@ -687,6 +681,9 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             switch (key) {
                 case "6":
                     hivScreeningEntity.setChildHivTest(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                    break;
+                case "7513":
+                    hivScreeningEntity.setServiceDate(new Date(Long.parseLong(answer)));
                     break;
                 case "7", "17", "114", "99":
                     hivScreeningEntity.setHivTestResult(ImtechoUtil.returnTrueFalseFromInitials(answer));
@@ -762,6 +759,9 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             case "5":
                 hivKnownPositive.setSeptrin(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
+            case "7513":
+                hivKnownPositive.setServiceDate(new Date(Long.parseLong(answer)));
+                break;
             case "6":
                 hivKnownPositive.setDuration((new Date(Long.parseLong(answer))));
                 break;
@@ -833,18 +833,18 @@ public class HivPositiveServiceImpl implements HivPositiveService {
                 hivPositiveEntity.setExpectedDeliveryPlace(answer);
                 break;
             case "10":
-                hivPositiveEntity.setOnArt(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                hivPositiveEntity.setIsOnArt(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "12":
                 switch (answer) {
                     case "1":
-                        hivPositiveEntity.setReferralDone(RchConstants.REFFERAL_DONE_YES);
+                        hivPositiveEntity.setIsReferralDone(RchConstants.REFFERAL_DONE_YES);
                         break;
                     case "2":
-                        hivPositiveEntity.setReferralDone(RchConstants.REFFERAL_DONE_NO);
+                        hivPositiveEntity.setIsReferralDone(RchConstants.REFFERAL_DONE_NO);
                         break;
                     case "3":
-                        hivPositiveEntity.setReferralDone(RchConstants.REFFERAL_DONE_NOT_REQUIRED);
+                        hivPositiveEntity.setIsReferralDone(RchConstants.REFFERAL_DONE_NOT_REQUIRED);
                         break;
                     default:
                 }

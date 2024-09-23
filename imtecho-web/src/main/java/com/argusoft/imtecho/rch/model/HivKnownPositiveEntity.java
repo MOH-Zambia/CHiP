@@ -18,6 +18,10 @@ public class HivKnownPositiveEntity extends EntityAuditInfo implements Serializa
     @Basic(optional = false)
     private int id;
 
+    @Column(name = "service_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date serviceDate;
+
     @Column(name = "member_id")
     private Integer memberId;
 

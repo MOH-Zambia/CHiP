@@ -41,8 +41,8 @@ public class OCRUtils {
             }
         }
 
-        // If none of the formats match, throw ParseException
-        throw new ParseException("Cannot parse date string : " + dateString, 0);
+        // If none of the formats match, return null;
+        return null;
     }
 
     public static double calculateSimilarity(String s1, String s2) {
@@ -126,7 +126,6 @@ public class OCRUtils {
     public static LinearLayout getButtonAndOcrFormDataLayout() {
         LinearLayout mainLayout = getLinearLayout(context, -1, VERTICAL,
                 new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-
 
 
         return mainLayout;

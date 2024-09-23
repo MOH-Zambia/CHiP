@@ -1,1 +1,0 @@
-ALTER TABLE IF EXISTS location_wise_analytics ADD COLUMN IF NOT EXISTS total_member_over_eighteen bigint;

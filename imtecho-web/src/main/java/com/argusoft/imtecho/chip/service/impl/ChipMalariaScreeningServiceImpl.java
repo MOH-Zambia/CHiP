@@ -1,13 +1,7 @@
 package com.argusoft.imtecho.chip.service.impl;
 
-import com.argusoft.imtecho.chip.dao.ChipMalariaDao;
-import com.argusoft.imtecho.chip.dao.ChipMalariaIndexDao;
-import com.argusoft.imtecho.chip.dao.ChipMalariaNonIndexDao;
-import com.argusoft.imtecho.chip.dao.MalariaInvestigationMasterDao;
-import com.argusoft.imtecho.chip.model.MalariaIndexCaseEntity;
-import com.argusoft.imtecho.chip.model.ChipMalariaEntity;
-import com.argusoft.imtecho.chip.model.MalariaInvestigationMaster;
-import com.argusoft.imtecho.chip.model.MalariaNonIndexEntity;
+import com.argusoft.imtecho.chip.dao.*;
+import com.argusoft.imtecho.chip.model.*;
 import com.argusoft.imtecho.chip.service.ChipMalariaScreeningService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.DateDeserializer;
@@ -20,6 +14,7 @@ import com.argusoft.imtecho.fhs.dao.MemberDao;
 import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
+import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
 import com.argusoft.imtecho.mobile.constants.MobileConstantUtil;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.notification.dao.NotificationTypeMasterDao;
@@ -58,9 +53,15 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
     private EventHandler eventHandler;
     @Autowired
     private MalariaInvestigationMasterDao investigationMasterDao;
+    @Autowired
+    private ListValueFieldValueDetailService listValueFieldValueDetailService;
+    @Autowired
+    private StockInventoryDao stockInventoryDao;
+    UserMaster userMaster;
 
     @Override
     public Integer storeActiveMalariaForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
+        userMaster = user;
         ChipMalariaEntity chipMalariaEntity = new ChipMalariaEntity();
         Integer memberId = null;
         if (keyAndAnswerMap.get("-4") != null && !keyAndAnswerMap.get("-4").equalsIgnoreCase("null")) {
@@ -94,6 +95,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
         chipMalariaEntity.setMemberId(memberId);
         chipMalariaEntity.setLocationId(locationId);
         chipMalariaEntity.setFamilyId(familyId);
+        chipMalariaEntity.setServiceDate(new Date(Long.parseLong(keyAndAnswerMap.get("7513"))));
         chipMalariaEntity.setMalariaType(keyAndAnswerMap.get("-15"));
 
         MemberEntity memberEntity = memberDao.retrieveMemberById(chipMalariaEntity.getMemberId());
@@ -443,6 +445,31 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
         return malariaIndexCaseEntity.getId();
     }
 
+    @Override
+    public Integer storeMalariaIndexCaseOcrForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+        JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
+        MalariaIndexCaseEntity malariaIndexCaseEntity = gson.fromJson(parsedRecordBean.getAnswerRecord(), MalariaIndexCaseEntity.class);
+        malariaIndexCaseEntity.setDaysPassedOfDiagnosis(Integer.valueOf(jsonObject.get("daysSincePatientDiagnosed").getAsString()));
+        malariaIndexCaseEntity.setPatientAdheredToTreatment(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("patientAdheredToTreatment").getAsString()));
+        if (jsonObject.has("treatmentDay")) {
+            malariaIndexCaseEntity.setDayOfTreatment(jsonObject.get("treatmentDay").getAsString());
+        }
+        malariaIndexCaseEntity.setPatientShowingSigns(jsonObject.get("signShown").getAsString());
+        malariaIndexCaseEntity.setWasDbsCollected(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("dbsCollected").getAsString()));
+        if (jsonObject.has("dbsResultAvailable")) {
+            if (ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("dbsResultAvailable").getAsString())) {
+                malariaIndexCaseEntity.setBloodSpotResult(RchConstants.MEMBER_STATUS_AVAILABLE);
+            } else {
+                malariaIndexCaseEntity.setBloodSpotResult(RchConstants.MALARIA_DBS_ANALYSIS);
+            }
+        }
+        malariaIndexCaseEntity.setBloodSplotValue(jsonObject.get("dbsValue").getAsString());
+        chipMalariaIndexDao.create(malariaIndexCaseEntity);
+
+        return 0;
+    }
+
     public Integer storeMalariaIndexInvestigationForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
         MalariaInvestigationMaster investigationMaster = new MalariaInvestigationMaster();
         Integer memberId = null;
@@ -576,6 +603,23 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
     }
 
     @Override
+    public Integer storeMalariaNonIndexOcrForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+        JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
+        MalariaNonIndexEntity malariaNonIndexEntity = new MalariaNonIndexEntity();
+        malariaNonIndexEntity.setDateOfLastSpray(new Date(Long.parseLong(jsonObject.get("lastDateOfSpray").getAsString())));
+        malariaNonIndexEntity.setIndividualsLiving(Integer.valueOf(jsonObject.get("numberOfIndividual").getAsString()));
+        malariaNonIndexEntity.setNonSprayableSurface(jsonObject.get("nonSprayableSurface").getAsString());
+        malariaNonIndexEntity.setSprayableSurface(jsonObject.get("sprayableSurface").getAsString());
+        malariaNonIndexEntity.setPeopleRcdPositive(Integer.valueOf(jsonObject.get("numberOfPeopleTestedPositive").getAsString()));
+        malariaNonIndexEntity.setPeopleTestedInHousehold(Integer.valueOf(jsonObject.get("numberOfPeopleTested").getAsString()));
+        malariaNonIndexEntity.setNumberOfLlinsHanging(Integer.valueOf(jsonObject.get("numberOfLlinInHouse").getAsString()));
+        malariaNonIndexEntity.setTookMedForMalariaPrevention(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("medicineToPreventMalaria").getAsString()));
+        malariaNonIndexEntity.setReceivedAnyOtherPrevention(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("preventiveMeasureTaken").getAsString()));
+        return chipMalariaNonIndexDao.create(malariaNonIndexEntity);
+    }
+
+    @Override
     public Integer storePassiveMalariaForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
         ChipMalariaEntity chipMalariaEntity = new ChipMalariaEntity();
         Integer memberId = null;
@@ -651,6 +695,9 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
             case "6":
                 malariaIndexCaseEntity.setWasVisitConducted(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
+            case "7513":
+                malariaIndexCaseEntity.setServiceDate(new Date(Long.parseLong(answer)));
+                break;
             case "60":
                 malariaIndexCaseEntity.setReasonForNoVisit(answer);
                 break;
@@ -706,9 +753,21 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 malariaIndexCaseEntity.setWentToReferralPlace(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "20":
+                if (answer.equalsIgnoreCase("NONE")) {
+                    break;
+                }
+                if (answer.contains("OTHER")) {
+                    answer = ImtechoUtil.convertAnswersWithOther(answer);
+                }
                 malariaIndexCaseEntity.setPatientShowingSigns(answer);
                 break;
             case "21":
+                if (answer.equalsIgnoreCase("NONE")) {
+                    break;
+                }
+                if (answer.contains("OTHER")) {
+                    answer = ImtechoUtil.convertAnswersWithOther(answer);
+                }
                 malariaIndexCaseEntity.setPatientExperiencingSigns(answer);
                 break;
             case "211":
@@ -768,18 +827,36 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 investigationMaster.setSitePermanence(answer);
                 break;
             case "12":
+                if (answer.equalsIgnoreCase("NONE")){
+                    break;
+                }
+                if (answer.contains("OTHER")) {
+                    answer = ImtechoUtil.convertAnswersWithOther(answer);
+                }
                 investigationMaster.setSiteType(answer);
                 break;
             case "223":
                 investigationMaster.setOtherSiteType(answer);
                 break;
             case "13":
+                if (answer.equalsIgnoreCase("NONE")){
+                    break;
+                }
+                if (answer.contains("OTHER")) {
+                    answer = ImtechoUtil.convertAnswersWithOther(answer);
+                }
                 investigationMaster.setRecommendedActions(answer);
                 break;
             case "323":
                 investigationMaster.setOtherRecommendedActions(answer);
                 break;
             case "14":
+                if (answer.equalsIgnoreCase("NONE")){
+                    break;
+                }
+                if (answer.contains("OTHER")) {
+                    answer = ImtechoUtil.convertAnswersWithOther(answer);
+                }
                 investigationMaster.setActionsTaken(answer);
                 break;
             case "423":
@@ -822,6 +899,11 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
             case "7":
                 malariaNonIndexEntity.setHasConsentSought(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
+            case "7513":
+                malariaNonIndexEntity.setServiceDate(new Date(Long.parseLong(answer)));
+                break;
+            case "6":
+
             case "8":
                 malariaNonIndexEntity.setReasonForNoConsent(answer);
                 break;
@@ -910,8 +992,8 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 memberEntity.setAdditionalInfo(new Gson().toJson(memberAdditionalInfo));
                 break;
             case "695":
-                chipMalariaEntity.setIndexCase(ImtechoUtil.returnTrueFalseFromInitials(answer));
-                memberAdditionalInfo.setIndexCase(chipMalariaEntity.getIndexCase());
+                chipMalariaEntity.setIsIndexCase(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                memberAdditionalInfo.setIndexCase(chipMalariaEntity.getIsIndexCase());
                 memberEntity.setAdditionalInfo(new Gson().toJson(memberAdditionalInfo));
                 break;
             case "8":
@@ -921,7 +1003,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 chipMalariaEntity.setMalariaTreatmentHistory(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "10":
-                chipMalariaEntity.setTreatmentBeingGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipMalariaEntity.setIsTreatmentBeingGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "11":
                 chipMalariaEntity.setReferralPlace(Integer.valueOf(answer));
@@ -951,7 +1033,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 }
                 break;
             case "8989":
-                chipMalariaEntity.setIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipMalariaEntity.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "4501":
                 chipMalariaEntity.setStartedMenstruating(ImtechoUtil.returnTrueFalseFromInitials(answer));
@@ -965,6 +1047,25 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 break;
             case "100":
                 chipMalariaEntity.setTreatmentGiven(answer);
+                if (answer == null) {
+                    break;
+                }
+                if (answer.equalsIgnoreCase("AMD")) {
+                    int amdId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.AMD);
+                    StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(userMaster.getId()), amdId);
+                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                    stockInventoryDao.update(stockInventoryEntity);
+                } else if (answer.equalsIgnoreCase("PAIN_KILLER")) {
+                    int painKillerId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.PAIN_KILLER);
+                    StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(userMaster.getId()), painKillerId);
+                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                    stockInventoryDao.update(stockInventoryEntity);
+                } else if (answer.equalsIgnoreCase("ORS")) {
+                    int orsId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.ORS);
+                    StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(userMaster.getId()), orsId);
+                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                    stockInventoryDao.update(stockInventoryEntity);
+                }
                 break;
             default:
         }
@@ -997,7 +1098,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 chipMalariaEntity.setMalariaTreatmentHistory(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "10":
-                chipMalariaEntity.setTreatmentBeingGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipMalariaEntity.setIsTreatmentBeingGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "11":
                 chipMalariaEntity.setReferralPlace(Integer.valueOf(answer));
@@ -1030,7 +1131,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 chipMalariaEntity.setStartedMenstruating(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "8989":
-                chipMalariaEntity.setIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                chipMalariaEntity.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "4502":
                 chipMalariaEntity.setLmpDate(new Date(Long.parseLong(answer)));

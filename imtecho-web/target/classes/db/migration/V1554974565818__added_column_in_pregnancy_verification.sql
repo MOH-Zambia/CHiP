@@ -1,3 +1,0 @@
-alter table gvk_emri_pregnant_member_responce
-add column phone_number_verification_status text,
-add column new_phone_number_of_beneficiary text;

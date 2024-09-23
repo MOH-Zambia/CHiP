@@ -1,1 +1,0 @@
-insert into menu_config(active,menu_name,navigation_state,menu_type) values('TRUE','Child Service Visit','techo.manage.childServiceSearch','manage');

@@ -31,8 +31,8 @@ public class ConstantUtil {
             Integer.valueOf(applicationPropertiesBundle.getString("serverredirectport"));
     public static final Boolean SERVER_IS_SECURE =
             Boolean.valueOf(applicationPropertiesBundle.getString("serverissecure"));
-    public static final Integer JDBC_MAX_ACTIVE_CONNECTION =
-            Integer.valueOf(jdbcPropertiesBundle.getString("spring.datasource.max-active"));
+//    public static final Integer JDBC_MAX_ACTIVE_CONNECTION =
+//            Integer.valueOf(jdbcPropertiesBundle.getString("spring.datasource.max-active"));
 
     public static final String ALLOW_ORIGIN = applicationPropertiesBundle.getString("allow.origin");
 
@@ -133,8 +133,4 @@ public class ConstantUtil {
     public static final String IBM_ACCESS_URL ="https://api.eu-gb.language-translator.watson.cloud.ibm.com/instances/98adcf9c-495d-4334-834a-a6b3b6f527ca";
     public static final String IBM_VERSION_DATE = "2018-05-01";
     public static final String IBM_ACCESS_KEY = applicationPropertiesBundle.getString("ibm.access.key");
-    public static final String MINIO_URL = applicationPropertiesBundle.getString("minioUrl");
-    public static final String MINIO_ACCESS_KEY = applicationPropertiesBundle.getString("minioAccessKey");
-    public static final String MINIO_SECRET_KEY = applicationPropertiesBundle.getString("minioSecretKey");
-
 }

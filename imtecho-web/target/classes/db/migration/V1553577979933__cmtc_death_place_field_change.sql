@@ -1,2 +1,0 @@
-ALTER TABLE child_cmtc_nrc_admission_detail
-ALTER COLUMN death_place TYPE text;

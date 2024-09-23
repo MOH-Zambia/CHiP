@@ -8,7 +8,10 @@ package com.argusoft.imtecho.mobile.service.impl;
 import com.argusoft.imtecho.caughtexception.model.CaughtExceptionEntity;
 import com.argusoft.imtecho.caughtexception.service.CaughtExceptionService;
 import com.argusoft.imtecho.cfhc.dto.FamilyAvailabilityDataBean;
-import com.argusoft.imtecho.cfhc.service.*;
+import com.argusoft.imtecho.cfhc.service.CFHCService;
+import com.argusoft.imtecho.cfhc.service.CamCFHCService;
+import com.argusoft.imtecho.cfhc.service.FamilyAvailabilityService;
+import com.argusoft.imtecho.cfhc.service.FamilyFolderService;
 import com.argusoft.imtecho.chip.service.*;
 import com.argusoft.imtecho.common.dao.UserDao;
 import com.argusoft.imtecho.common.dao.UserTokenDao;
@@ -38,7 +41,6 @@ import com.argusoft.imtecho.rch.dto.AshaReportedEventDataBean;
 import com.argusoft.imtecho.rch.service.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.extern.java.Log;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -167,7 +169,7 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
         }
 
         if (user != null) {
-            System.out.println("-----------------"+ Arrays.toString(records));
+            System.out.println("-----------------" + Arrays.toString(records));
             return this.saveRecordEntryFromMobileToDB(records, user);
         }
         return new RecordStatusBean[0];
@@ -622,11 +624,22 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                 return lmpFollowUpService.storeLmpFollowUpForm(parsedRecordBean, keyAndAnswerMap);
             case MobileConstantUtil.OCR_LMPFU:
                 return lmpFollowUpService.storeLmpFollowUpFormOCR(parsedRecordBean, keyAndAnswerMap);
+            case MobileConstantUtil.OCR_HOUSEHOLD_LINE_LIST:
+                return familyHealthSurveyService.storeHouseholdLineListFormOCR(parsedRecordBean, keyAndAnswerMap, user);
             case MobileConstantUtil.ANC_VISIT:
                 checkIfFormAlreadySubmitted(Integer.parseInt(parsedRecordBean.getNotificationId()));
                 return ancService.storeAncVisitForm(parsedRecordBean, keyAndAnswerMap, user);
             case MobileConstantUtil.OCR_ANC:
                 return ancService.storeAncVisitFormOCR(parsedRecordBean, keyAndAnswerMap, user);
+            case MobileConstantUtil.OCR_WPD:
+                return wpdService.storeWpdFormForOcr(parsedRecordBean, keyAndAnswerMap, user);
+            case MobileConstantUtil.OCR_PNC:
+                return pncService.storePncOcrForm(parsedRecordBean, keyAndAnswerMap, user);
+            case MobileConstantUtil.OCR_CS:
+                return childService.storeChildServiceOcrForm(parsedRecordBean, keyAndAnswerMap, user);
+            case MobileConstantUtil.OCR_GBV:
+                return gbvService.storeGbvOcrForm(parsedRecordBean, user, keyAndAnswerMap);
+//                case
             case MobileConstantUtil.WPD_VISIT:
                 checkIfFormAlreadySubmitted(Integer.parseInt(parsedRecordBean.getNotificationId()));
                 return wpdService.storeWpdVisitForm(parsedRecordBean, keyAndAnswerMap, user);
@@ -641,6 +654,10 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                 return rimService.storeRimVisitForm(parsedRecordBean, keyAndAnswerMap, user);
             case MobileConstantUtil.OCR_FAMILY_PLANNING:
                 return rimService.storeRimVisitFormOCR(parsedRecordBean, keyAndAnswerMap, user);
+            case MobileConstantUtil.OCR_ADD_MEMBER:
+                return familyHealthSurveyService.storeAddMemberFormOCR(parsedRecordBean, keyAndAnswerMap, user);
+            case MobileConstantUtil.OCR_UPDATE_MEMBER:
+                return familyHealthSurveyService.storeUpdateMemberFormOCR(parsedRecordBean, keyAndAnswerMap, user);
             case MobileConstantUtil.FP_FOLLOW_UP:
                 return rimService.storeFpFollowUpVisitForm(parsedRecordBean, keyAndAnswerMap, user);
             case MobileConstantUtil.VACCINE_ADVERSE_EFFECT_VISIT:
@@ -759,6 +776,10 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                 return chipMalariaScreeningService.storeActiveMalariaFormFollowUp(parsedRecordBean, user, keyAndAnswerMap);
             case SystemConstantUtil.MALARIA_NON_INDEX:
                 return chipMalariaScreeningService.storeMalariaNonIndexForm(parsedRecordBean, user, keyAndAnswerMap);
+            case SystemConstantUtil.OCR_NON_INDEX:
+                return chipMalariaScreeningService.storeMalariaNonIndexOcrForm(parsedRecordBean, user, keyAndAnswerMap);
+            case SystemConstantUtil.OCR_INDEX:
+                return chipMalariaScreeningService.storeMalariaIndexCaseOcrForm(parsedRecordBean, user, keyAndAnswerMap);
             case SystemConstantUtil.MALARIA_INDEX:
                 return chipMalariaScreeningService.storeMalariaIndexCaseForm(parsedRecordBean, user, keyAndAnswerMap);
             case SystemConstantUtil.INDEX_INVESTIGATION:

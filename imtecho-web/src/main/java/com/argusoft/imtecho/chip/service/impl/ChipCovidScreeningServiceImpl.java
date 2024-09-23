@@ -179,19 +179,21 @@ public class ChipCovidScreeningServiceImpl implements ChipCovidScreeningService 
     private void setAnswersToCovidForm(String key, String answer, CovidScreeningEntity covidScreeningEntity, Map<String, String> keyAndAnswerMap) {
         switch (key) {
             case "4":
-                covidScreeningEntity.setDoseOneTaken(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                covidScreeningEntity.setIsDoseOneTaken(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "5":
                 covidScreeningEntity.setDoseOneName(answer);
+                covidScreeningEntity.setIsDoseOneTaken(answer != null);
                 break;
             case "6":
                 covidScreeningEntity.setDoseOneDate(new Date(Long.parseLong(answer)));
                 break;
             case "7":
-                covidScreeningEntity.setDoseTwoTaken(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                covidScreeningEntity.setIsDoseTwoTaken(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "8":
                 covidScreeningEntity.setDoseTwoName(answer);
+                covidScreeningEntity.setIsDoseTwoTaken(answer != null);
                 break;
             case "9":
                 covidScreeningEntity.setDoseTwoDate(new Date(Long.parseLong(answer)));
@@ -200,7 +202,7 @@ public class ChipCovidScreeningServiceImpl implements ChipCovidScreeningService 
                 covidScreeningEntity.setWillingForBoosterVaccine(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "11":
-                covidScreeningEntity.setBoosterDoseGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                covidScreeningEntity.setIsBoosterDoseGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "12":
                 covidScreeningEntity.setBoosterName(answer);
@@ -221,7 +223,7 @@ public class ChipCovidScreeningServiceImpl implements ChipCovidScreeningService 
                 covidScreeningEntity.setAnyReactions(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "8989":
-                covidScreeningEntity.setIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                covidScreeningEntity.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "7514":
                 covidScreeningEntity.setMemberStatus(answer);
@@ -261,7 +263,7 @@ public class ChipCovidScreeningServiceImpl implements ChipCovidScreeningService 
             case "8673":
                 covidScreeningEntity.setReferralPlace(Integer.valueOf(answer));
                 break;
-            case "40":
+            case "41":
                 covidScreeningEntity.setVaccinationStatus(answer);
                 break;
 

@@ -6,6 +6,7 @@ public class LabelConstants {
         throw new IllegalStateException("Utility Class");
     }
 
+    public static final Integer ZAMBIA_LOCATION_ID = 554988;
     public static final String UPGRADING_DATABASES = "Upgrading database. Please wait, do not close the application";
     public static final String APP_DATA_ERROR = "App data error. The data will be reset and synced once again.";
     public static final String APP_UPDATE_STATUS = "App Update status";
@@ -98,6 +99,10 @@ public class LabelConstants {
     public static final String MORE = "More";
     public static final String LESS = "Less";
     public static final String NONE = "None";
+    public static final String HINDU = "Hindu";
+    public static final String MUSLIM = "Muslim";
+    public static final String CHRISTIAN = "Christian";
+    public static final String BUDDHIST = "Buddhist";
     public static final String ZERO_SECONDS = "0s";
 
     public static final String YES = "Yes";
@@ -138,6 +143,7 @@ public class LabelConstants {
     public static final String REQUEST_FOR_STOCK = "Request for stock";
     public static final String APPROVED_REQUESTS = "Delivered Requests";
     public static final String PENDING_REQUESTS = "Acknowledged/Pending Requests";
+    public static final String FOLLOW_UP = "FOLLOW_UP";
 
     public static final String FAMILY_DETAILS = "Family details";
     public static final String FAMILY_ID = "Family Id";
@@ -147,6 +153,7 @@ public class LabelConstants {
     public static final String MEMBER_DETAILS = "Member Details";
     public static final String MEMBER_ID = "Member Id";
     public static final String HEALTH_ID = "Health Id";
+    public static final String NEW_MEMBERS = "Are there any new members to add ?";
 
     public static final String MEMBER_NAME = "Member name";
     public static final String FIRST_NAME = "First name";
@@ -215,6 +222,7 @@ public class LabelConstants {
     public static final String VIEW_QR_CODE = "View QR Code";
     public static final String SCAN_SHEET = "Scan page";
     public static final String ADD_NEW_MEMBER = "Add new member";
+    public static final String SCAN_FAMILY = "Scan family data";
     public static final String ADD_NEW_MEMBER_IN_HH = "Add new member in registered household";
 
     // DataQuality Activity
@@ -803,6 +811,7 @@ public class LabelConstants {
     public static final String UNDER_TREATMENT_FOR_CERVICAL_CANCER = "Currently Under Treatment for Cervical Cancer";
     public static final String HEIGHT = "Height";
     public static final String ENTER_QUANTITY = "Quantity";
+    public static final String EXISTING_STOCK = "Existing Stock";
     public static final String WEIGHT = "Weight";
     public static final String HEIGHT_IN_CMS = "Height (in cms)";
     public static final String WEIGHT_IN_KGS = "Weight (in kgs)";
@@ -1174,6 +1183,11 @@ public class LabelConstants {
     public static final String TT_TWO_VACCINE = "TTTWOVACCINE";
     public static final String IMMUNISATION_GIVEN = "Immunisation Given";
     public static final String DATA_CAPTURED_SUCCESS = "Data Captured Successfully!";
+    public static final String DATE_FOR_MEDICINE = "DATE";
+    public static final String NUMBER = "NUMBER";
+    public static final String BOOL = "BOOL";
+    public static final String LIST = "LIST";
+    public static final String TREATMENT = "TREATMENT";
 
     // HydroxyUrea Lab
     public static String TOTAL_WBC_COUNT = "WBC count";

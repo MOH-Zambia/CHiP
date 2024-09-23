@@ -68,6 +68,8 @@ public class EventFunctionUtil {
                 } else if (Objects.isNull(value)) {
                     parameterReplacedTemplateString = parameterReplacedTemplateString.replace("#" + templateParameter + "#", "null");
                     parameterValue.remove(templateParameter);
+                } else if (templateParameter.equals("limit_offset") && parameterValue.get("limit") != null && parameterValue.get("offSet") != null) {
+                    parameterReplacedTemplateString = parameterReplacedTemplateString.replace("#limit_offset#", "limit " + ":limit" + " offset " + ":offSet ");
                 } else {
                     parameterReplacedTemplateString = parameterReplacedTemplateString.replace("#" + templateParameter + "#", " :" + templateParameter + " ");
                 }

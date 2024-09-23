@@ -30,6 +30,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.argusoft.sewa.android.app.OCR.OCRActivity_;
 import com.argusoft.sewa.android.app.R;
 import com.argusoft.sewa.android.app.component.MyAlertDialog;
 import com.argusoft.sewa.android.app.component.MyStaticComponents;
@@ -52,6 +53,7 @@ import com.argusoft.sewa.android.app.databean.OptionDataBean;
 import com.argusoft.sewa.android.app.databean.QrCodeDataBean;
 import com.argusoft.sewa.android.app.datastructure.SharedStructureData;
 import com.argusoft.sewa.android.app.db.DBConnection;
+import com.argusoft.sewa.android.app.exception.DataException;
 import com.argusoft.sewa.android.app.model.MemberBean;
 import com.argusoft.sewa.android.app.model.VersionBean;
 import com.argusoft.sewa.android.app.util.DynamicUtils;
@@ -106,6 +108,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
     private static final String MEMBER_SELECTION_SCREEN = "membersOfFamilyScreen";
     private static final long DELAY = 500;
     private static final int LIMIT = 30;
+    private static final Integer REQUEST_CODE_FOR_OCR_ACTIVITY = 202;
 
     private LinearLayout globalPanel;
     private LinearLayout bodyLayoutContainer;
@@ -132,6 +135,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
     Map<String, MemberDataBean> headMembersMapWithFamilyIdAsKey;
     MemberDataBean headMember;
     private SearchComponent searchBox;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,7 +206,17 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                 }
             } else if (screen.equals(MEMBER_SELECTION_SCREEN)) {
                 if (selectedMemberToUpdateIndex != -1) {
-                    startDynamicFormActivity(selectedFamily.getMembers().get(selectedMemberToUpdateIndex), selectedFamily);
+                    List<MemberDataBean> familyMembers = new ArrayList<>();
+                    for (MemberDataBean member : selectedFamily.getMembers()) {
+                        if (member.getState() != null && (member.getState().equalsIgnoreCase("com.argusoft.imtecho.member.state.dead") || member.getState().equalsIgnoreCase(FhsConstants.CFHC_MEMBER_STATE_DEAD))) {
+                            continue;
+                        } else {
+                            familyMembers.add(member);
+                        }
+                    }
+                    if (!familyMembers.isEmpty() && familyMembers.get(selectedMemberToUpdateIndex) != null) {
+                        showAlertAndNavigate(FormConstants.FHS_MEMBER_UPDATE_NEW);
+                    }
                 } else {
                     SewaUtil.generateToast(this, "Please select a member to update");
                 }
@@ -222,7 +236,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
 
             AdapterView.OnItemClickListener onItemClickListener = (parent, view, position, id) -> {
                 if (position == 0) {
-                    startFamilyHealthSurvey(null);
+                    showAlertAndNavigate(FormConstants.HOUSE_HOLD_LINE_LIST_NEW);
                 }
             };
 
@@ -394,6 +408,8 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
     }
 
     private void addSelectedFamilyDetails(FamilyDataBean familyDataBean) {
+        selectedMemberToUpdateIndex = -1;
+        bodyLayoutContainer.removeAllViews();
         List<String> states = new ArrayList<>();
         setSubTitle(UtilBean.getMyLabel(LabelConstants.FAMILY_DETAILS));
         states.addAll(FhsConstants.FHS_VERIFIED_CRITERIA_FAMILY_STATES);
@@ -443,12 +459,12 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
         sharedPreferences.edit().clear().apply();
         SharedStructureData.relatedPropertyHashTable.clear();
         setSharedPropertiesAndDataMaps(familyDataBean);
+        myIntent = new Intent(this, DynamicFormActivity_.class);
+        myIntent.putExtra(SewaConstants.ENTITY, FormConstants.HOUSE_HOLD_LINE_LIST_NEW);
+        myIntent.putExtra("isGenerateQr", true);
+        startActivityForResult(myIntent, ActivityConstants.HH_REQUEST_CODE_FOR_NEW_FAMILY);
 
 //      String nextEntity = FormConstants.HOUSE_HOLD_LINE_LIST;
-        String nextEntity = FormConstants.HOUSE_HOLD_LINE_LIST_NEW;
-        myIntent.putExtra(SewaConstants.ENTITY, nextEntity);
-        myIntent.putExtra("isGenerateQr", true);
-        startActivityForResult(myIntent, ActivityConstants.FHS_ACTIVITY_REQUEST_CODE);
         showProcessDialog();
     }
 
@@ -466,12 +482,19 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
             screen = FAMILY_SELECTION_SCREEN;
             hideProcessDialog();
         } else if (requestCode == ActivityConstants.FHW_MEMBER_DEATH_CONF_ACTIVITY_REQUEST_CODE ||
-                requestCode == ActivityConstants.HH_REQUEST_CODE ||
+                requestCode == ActivityConstants.HH_REQUEST_CODE_FOR_EXISTING_FAMILY ||
                 requestCode == ActivityConstants.QR_CODE_REQUEST_CODE) {
             bodyLayoutContainer.removeAllViews();
-            SharedStructureData.currentFamilyDataBean = selectedFamily;
-            addSelectedFamilyDetails(selectedFamily);
-            addOptionForFamily();
+            if (selectedFamily != null) {
+                SharedStructureData.currentFamilyDataBean = selectedFamily;
+                addSelectedFamilyDetails(selectedFamily);
+                addOptionForFamily();
+            }
+            hideProcessDialog();
+        } else if (requestCode == ActivityConstants.HH_REQUEST_CODE_FOR_NEW_FAMILY) {
+            screen = FAMILY_SELECTION_SCREEN;
+            bodyLayoutContainer.removeAllViews();
+            addSearchTextBox();
             hideProcessDialog();
         } else if (requestCode == ActivityConstants.FAMILY_MERGE_ACTIVITY_REQUEST_CODE) {
             boolean isMerged = data.getBooleanExtra("isMerged", false);
@@ -1223,7 +1246,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
 
                 case 1:
                     if (selectedFamily != null) {
-                        startDynamicFormActivity(null, selectedFamily);
+                        showAlertAndNavigate(FormConstants.FHS_MEMBER_UPDATE_NEW);
                     }
                     break;
 
@@ -1281,7 +1304,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
         formMetaDataUtil.setMetaDataForMemberUpdateForm(memberDataBean, familyDataBean, sharedPref);
         myIntent = new Intent(this, DynamicFormActivity_.class);
         myIntent.putExtra(SewaConstants.ENTITY, FormConstants.FHS_MEMBER_UPDATE_NEW);
-        startActivityForResult(myIntent, ActivityConstants.HH_REQUEST_CODE);
+        startActivityForResult(myIntent, ActivityConstants.HH_REQUEST_CODE_FOR_EXISTING_FAMILY);
         hideProcessDialog();
     }
 
@@ -1375,6 +1398,79 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
             retrieveFamilyListFromDB(searchText.replace("'", "''"));
         });
         hideKeyboard();
+    }
+
+    private void showAlertAndNavigate(String formType) {
+        View.OnClickListener myListener = view -> {
+            if (view.getId() == BUTTON_POSITIVE) {
+                alertDialog.dismiss();
+                if (formType.equals(FormConstants.HOUSE_HOLD_LINE_LIST_NEW)) {
+                    startFamilyHealthSurvey(null);
+                } else {
+                    List<MemberDataBean> familyMembers = new ArrayList<>();
+                    for (MemberDataBean member : selectedFamily.getMembers()) {
+                        if (member.getState() != null &&
+                                !member.getState().equalsIgnoreCase("com.argusoft.imtecho.member.state.dead")
+                                && !member.getState().equalsIgnoreCase(FhsConstants.CFHC_MEMBER_STATE_DEAD)) {
+                            familyMembers.add(member);
+                        }
+                    }
+                    if (selectedMemberToUpdateIndex == -1) {
+                        startDynamicFormActivity(null, selectedFamily);
+                    } else if (!familyMembers.isEmpty() && familyMembers.get(selectedMemberToUpdateIndex) != null) {
+                        startDynamicFormActivity(familyMembers.get(selectedMemberToUpdateIndex), selectedFamily);
+                    }
+                }
+
+            } else {
+                alertDialog.dismiss();
+                if (formType.equals(FormConstants.OCR_HOUSEHOLD_LINE_LIST)) {
+                    startOCRActivity(formType, null);
+                }
+                if (selectedMemberToUpdateIndex != -1) {
+                    startOCRActivity(formType, selectedFamily.getMembers().get(selectedMemberToUpdateIndex));
+                } else {
+                    startOCRActivity(formType, null);
+                }
+            }
+        };
+        alertDialog = new MyAlertDialog(this,
+                UtilBean.getMyLabel("Select form filling type"),
+                myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR", null);
+        alertDialog.show();
+    }
+
+    private void startOCRActivity(String formType, MemberDataBean memberDataBean) {
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        try {
+            if (memberDataBean != null) {
+                formMetaDataUtil.setMetaDataForMemberUpdateForm(memberDataBean, selectedFamily, sharedPref);
+            }
+        } catch (DataException e) {
+            showProcessDialog();
+            View.OnClickListener listener = clickView -> {
+                alertDialog.dismiss();
+                navigateToHomeScreen(false);
+            };
+            alertDialog = new MyAlertDialog(this, false,
+                    UtilBean.getMyLabel(LabelConstants.ERROR_TO_REFRESH_ALERT), listener, DynamicUtils.BUTTON_OK);
+            alertDialog.show();
+            return;
+        }
+        myIntent = new Intent(this, OCRActivity_.class);
+        myIntent.putExtra(SewaConstants.ENTITY, formType);
+        if (memberDataBean != null) {
+            myIntent.putExtra(FieldNameConstants.UNIQUE_HEALTH_ID, memberDataBean.getUniqueHealthId());
+            myIntent.putExtra(FieldNameConstants.MEMBER_UUID, memberDataBean.getMemberUuid());
+            myIntent.putExtra(FieldNameConstants.FAMILY_ID, memberDataBean.getFamilyId());
+        }
+        if (memberDataBean == null && selectedFamily != null) {
+            myIntent.putExtra(FieldNameConstants.FAMILY_ID, selectedFamily.getFamilyId());
+        }
+        myIntent.putExtra(FieldNameConstants.LOCATION_ID, locationId);
+
+        startActivityForResult(myIntent, REQUEST_CODE_FOR_OCR_ACTIVITY);
+        hideProcessDialog();
     }
 
     @Override

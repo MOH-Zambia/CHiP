@@ -30,5 +30,10 @@ public class GbvMapper {
         gbvVisit.setPregnantDueToForce(gbvdto.getPregnantDueToForce());
         gbvVisit.setForcedPregnancyLossPast12Months(gbvdto.getForcedPregnancyLossPast12Months());
         gbvVisit.setCoercedOrForcedMarriagePast12Months(gbvdto.getCoercedOrForcedMarriagePast12Months());
+        gbvVisit.setPhotoUniqueId(gbvdto.getPhotoUniqueId());
+        gbvVisit.setGbvType(gbvdto.getTypeOfGbv());
+        gbvVisit.setDifficultyType(gbvdto.getTypeOfDifficulty());
+
+
     }
 }

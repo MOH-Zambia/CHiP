@@ -1,1 +1,0 @@
-ALTER TABLE migration_master RENAME COLUMN district_id to nearest_loc_id; 

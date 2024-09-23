@@ -1,2 +1,0 @@
-alter table chardham_tourist_screening_master
-add column if not exists is_tourist_referred boolean;

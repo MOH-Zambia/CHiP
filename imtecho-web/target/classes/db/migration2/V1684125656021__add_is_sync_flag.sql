@@ -1,1 +1,0 @@
-alter table chardham_tourist_master add column if not exists is_synced_with_tourism_data boolean;

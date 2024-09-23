@@ -35,6 +35,7 @@ public class HouseHoldLineListMobileDto {
     private String motherRelation;
     private String husbandRelation;
     private String uuid;
+
     @Setter
     @Getter
     public static class MemberDetails {
@@ -87,5 +88,7 @@ public class HouseHoldLineListMobileDto {
         private String deathReason;
         private String otherDeathReason;
         private String deathHealthInfraId;
+        private String newHofId;
+        private String motherId;
     }
 }

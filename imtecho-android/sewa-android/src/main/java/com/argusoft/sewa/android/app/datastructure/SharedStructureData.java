@@ -15,6 +15,7 @@ import com.argusoft.sewa.android.app.core.RchHighRiskService;
 import com.argusoft.sewa.android.app.core.SewaFhsService;
 import com.argusoft.sewa.android.app.core.SewaService;
 import com.argusoft.sewa.android.app.core.SewaServiceRestClient;
+import com.argusoft.sewa.android.app.core.StockManagementService;
 import com.argusoft.sewa.android.app.core.TechoService;
 import com.argusoft.sewa.android.app.core.VersionService;
 import com.argusoft.sewa.android.app.databean.FamilyDataBean;
@@ -82,6 +83,7 @@ public class SharedStructureData {
     public static LocationMasterService locationMasterService;
     public static SewaServiceRestClient sewaServiceRestClient;
     public static VersionService versionService;
+    public static StockManagementService stockManagementService;
 
     public static Context context;
 
@@ -109,6 +111,7 @@ public class SharedStructureData {
     public static List<OptionDataBean> givenVaccinesToChild = new ArrayList<>();
     public static List<OptionDataBean> childrenFrom3To6Years = new ArrayList<>();
     public static List<OptionDataBean> basicMedicineList = new ArrayList<>();
+    public static List<OptionDataBean> nonHofMemberNameList = new ArrayList<>();
     public static List<MedicineListItemDataBean> prescribedMedicineList = new ArrayList<>();
     public static List<MedicineListItemDataBean> additionalMedicineList = new ArrayList<>();
     public static Integer totalFamilyMembersCount = 0;
@@ -264,7 +267,8 @@ public class SharedStructureData {
                                             LocationMasterService locationService,
                                             SewaServiceRestClient restClient,
                                             VersionService versionService1,
-                                            HealthInfraTypeLocationService infraTypeLocationService) {
+                                            HealthInfraTypeLocationService infraTypeLocationService,
+                                            StockManagementService stockService) {
         context = c;
         sewaService = service;
         sewaFhsService = fhsService;
@@ -277,6 +281,7 @@ public class SharedStructureData {
         newBindingForMorbidity = 0;
         versionService = versionService1;
         healthInfraTypeLocationService = infraTypeLocationService;
+        stockManagementService = stockService;
     }
 
     public static void resetSharedStructureData() {

@@ -365,9 +365,11 @@ public class DynamicUtils {
                             validationMessage = ValidationFormulaUtil.checkDate(split, answer, counter, validation);
                         } else if (split[0].equalsIgnoreCase(FormulaConstants.VALIDATE_DURATION)) {
                             validationMessage = ValidationFormulaUtil.validateDuration(split, answer, counter, validation);
-                        }/* else if (split[0].equalsIgnoreCase(FormulaConstants.AVAILABLE_TABLETS)) {
+                        } else if (split[0].equalsIgnoreCase(FormulaConstants.AVAILABLE_TABLETS)) {
                             validationMessage = ValidationFormulaUtil.checkAvailableTablets(split, answer, validation);
-                        }*/
+                        } else if(split[0].equalsIgnoreCase(FormulaConstants.VALIDATION_COMPARE_DATE_WITH_GIVEN_DATE_FOR_COVID)){
+                            validationMessage=ValidationFormulaUtil.checkGivenDateForCovid(split,answer,validation);
+                        }
 
                         if (validationMessage != null) {
                             return validationMessage;
@@ -854,7 +856,6 @@ public class DynamicUtils {
                             case FormulaConstants.FORMULA_SET_PROPERTY_AANGANWADI_ID_FROM_PHC_ID:
                                 FormulaUtil.setAanganwadiIdFromPhcId(queFormBean);
                                 break;
-
                             case FormulaConstants.FORMULA_DISPLAY_EARLY_REGISTRATION:
                                 FormulaUtil.displayEarlyRegistration(split, queFormBean, isValid);
                                 break;
@@ -1123,22 +1124,21 @@ public class DynamicUtils {
                     .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID))
                     .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
         }
-        if (FormConstants.HU_MEDICAL_ASSESSMENT.equals(formType)){
+        if (FormConstants.HU_MEDICAL_ASSESSMENT.equals(formType)) {
             answerString.append("-4").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
                     .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID))
                     .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
         }
-        if (FormConstants.HU_FOLLOW_UP.equals(formType)){
+        if (FormConstants.HU_FOLLOW_UP.equals(formType)) {
             answerString.append("-4").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
                     .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID))
                     .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
         }
-        if (FormConstants.HU_PREG_OUTCOME.equals(formType)){
+        if (FormConstants.HU_PREG_OUTCOME.equals(formType)) {
             answerString.append("-4").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
                     .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID))
                     .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
         }
-
 
 
         if (formType != null && FormConstants.RCH_SHEETS.contains(formType)) {
@@ -1328,6 +1328,7 @@ public class DynamicUtils {
         LoggerBean loggerBean = new LoggerBean();
 
         String nameOfBeneficiary = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.BENEFICIARY_NAME_FOR_LOG);
+
         String familyIdForLog = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.FAMILY_ID);
 
         if (nameOfBeneficiary != null) {
@@ -1337,8 +1338,6 @@ public class DynamicUtils {
                     entity.equals(FormConstants.CAM_FHS) || entity.equals(FormConstants.IDSP_NEW_FAMILY) || entity.equals(FormConstants.FAMILY_FOLDER) || entity.equals(FormConstants.HOUSE_HOLD_LINE_LIST_NEW))
                     && (familyIdForLog == null || familyIdForLog.equals(LabelConstants.NOT_AVAILABLE))) {
                 loggerBean.setBeneficiaryName("New Family");
-            } else if (entity.equals(FormConstants.FHS_MEMBER_UPDATE) || entity.equals(FormConstants.FHS_MEMBER_UPDATE_NEW)) {
-                loggerBean.setBeneficiaryName("New Member");
             } else if (entity.equals(FormConstants.ADOLESCENT_HEALTH_SCREENING)) {
                 loggerBean.setBeneficiaryName("New Adolescent Member");
             } else if (entity.equals(FormConstants.SICKLE_CELL_ADD_FAMILY)) {
@@ -1359,7 +1358,7 @@ public class DynamicUtils {
                     loggerBean.setBeneficiaryName("");
                 }
             } else {
-                loggerBean.setBeneficiaryName("");
+                loggerBean.setBeneficiaryName(null);
             }
         }
 
@@ -1406,11 +1405,7 @@ public class DynamicUtils {
         loggerBean.setRecordUrl(WSConstants.CONTEXT_URL_TECHO.trim());
         //loggerBean.setNotificationId(0); // baki
         Log.i(TAG, "LOGGER BEAN : " + loggerBean);
-        Integer loggerBeanId = SharedStructureData.sewaService.createLoggerBean(loggerBean);
-        editor.putString("loggerBeanId", String.valueOf(loggerBeanId));
-        if (loggerBeanId == null) {
-            return;
-        }
+
 
         // store all Audio data structure ....
         Map<String, String> filesToAudioUpload = SharedStructureData.audioFilesToUpload;
@@ -1647,6 +1642,18 @@ public class DynamicUtils {
 
         Log.d("Dynamic Form", "Generated Record : " + SewaTransformer.loginBean.getUserToken()
                 + "\nRecord : " + storeAnswerBean.pack());
+
+        if (nameOfBeneficiary == null) {
+            nameOfBeneficiary = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_NAME_FOR_LOG);
+        }
+
+        loggerBean.setBeneficiaryName(nameOfBeneficiary);
+
+        Integer loggerBeanId = SharedStructureData.sewaService.createLoggerBean(loggerBean);
+        editor.putString("loggerBeanId", String.valueOf(loggerBeanId));
+        if (loggerBeanId == null) {
+            return;
+        }
     }
 
     private static void storeRequiredDataWhenFormIsFilledOffline(String entity, String answerString, StoreAnswerBean storeAnswerBean) {
@@ -1654,17 +1661,22 @@ public class DynamicUtils {
         Gson gson = new Gson();
         String familyID = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.FAMILY_ID);
         String uniqueHealthId = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID);
+        String uuid = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID);
         String memberStatus = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_STATUS);
         String serviceDate = SharedStructureData.relatedPropertyHashTable.get("serviceDate");
         FamilyBean familyBean = SharedStructureData.sewaFhsService.retrieveFamilyBeanByFamilyId(familyID);
-        MemberBean memberBean;
+        MemberBean memberBean = null;
         if (uniqueHealthId != null) {
             memberBean = SharedStructureData.sewaFhsService.retrieveMemberBeanByHealthId(uniqueHealthId);
-        } else {
+        } else if (uuid != null) {
+            memberBean = SharedStructureData.sewaFhsService.retrieveMemberBeanByUUID(uuid);
+        }
+
+        if (memberBean == null) {
             memberBean = new MemberBean();
         }
 
-        if (memberBean != null && memberStatus != null) {
+        if (memberStatus != null) {
             String state = null;
             if (memberStatus.equalsIgnoreCase("DEATH")) {
                 state = FhsConstants.CFHC_MEMBER_STATE_DEAD;
@@ -1715,7 +1727,8 @@ public class DynamicUtils {
             SharedStructureData.sewaService.createFamilyBean(houseHoldLineListMobileDto, memberBean);
         } else if (FormConstants.FHS_MEMBER_UPDATE_NEW.equalsIgnoreCase(entity)) {
             HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
-            if (memberBean != null && SharedStructureData.relatedPropertyHashTable.containsKey(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID)) {
+            if (memberBean != null
+                    && SharedStructureData.relatedPropertyHashTable.containsKey(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID)) {
                 //update member for MEMBER_UPDATE_NEW form
                 for (HouseHoldLineListMobileDto.MemberDetails memberDetails : houseHoldLineListMobileDto.getMemberDetails()) {
                     SharedStructureData.sewaService.updateMemberByUniqueHealthId(memberDetails, memberBean, familyBean);
@@ -1730,7 +1743,7 @@ public class DynamicUtils {
             }
         }
 
-        if (memberBean != null && memberStatus != null && memberStatus.equalsIgnoreCase("DEATH")) {
+        if (memberBean != null && memberStatus != null && memberStatus.equalsIgnoreCase("MIGRATED")) {
             memberBean.setState(FhsConstants.FHS_MEMBER_STATE_MIGRATED);
         }
 
@@ -1738,6 +1751,8 @@ public class DynamicUtils {
             if (memberBean != null) {
                 String isPregnant = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.IS_PREGNANT);
                 String lmpDate = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.LMP_DATE);
+                memberBean.setCurrentGravida(Short.valueOf(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.CURRENT_GRAVIDA)));
+                memberBean.setCurrentPara(Short.valueOf(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.CURRENT_PARA)));
                 if (lmpDate != null) {
                     Date lmp = new Date(Long.parseLong(lmpDate));
                     memberBean.setLmpDate(lmp);
@@ -1761,7 +1776,29 @@ public class DynamicUtils {
                 }
             }
         }
+        if (FormConstants.CHIP_ACTIVE_MALARIA.equalsIgnoreCase(entity)) {
+            if (memberBean != null) {
+                //For retrieving if medicine has been given to patient
+                String amdTablet = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.AMD);
+                String painKiller = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.PAIN_KILLER);
+                String ors = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.ORS);
 
+                //For retrieving ids of each medicine
+                Integer amdId = SharedStructureData.sewaFhsService.getIdOfListValueByConst(RelatedPropertyNameConstants.AMD);
+                Integer painKillerId = SharedStructureData.sewaFhsService.getIdOfListValueByConst(RelatedPropertyNameConstants.PAIN_KILLER);
+                Integer orsId = SharedStructureData.sewaFhsService.getIdOfListValueByConst(RelatedPropertyNameConstants.ORS);
+
+                if (amdTablet != null) {
+                    SharedStructureData.sewaService.updateStockInventoryByMedicineId(amdId, 1);
+                }
+                if (painKiller != null) {
+                    SharedStructureData.sewaService.updateStockInventoryByMedicineId(painKillerId, 1);
+                }
+                if (ors != null) {
+                    SharedStructureData.sewaService.updateStockInventoryByMedicineId(orsId, 1);
+                }
+            }
+        }
         if (FormConstants.TECHO_FHW_ANC.equalsIgnoreCase(entity)) {
             if (memberBean != null) {
                 String hivResult = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.HIV_STATUS_FROM_ANC);
@@ -1769,7 +1806,7 @@ public class DynamicUtils {
                     memberBean.setIsHivPositive(hivResult);
                     SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
                 }
-                /*//For retrieving if medicine has been given to patient
+                //For retrieving if medicine has been given to patient
                 String ifaTabletsGiven = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.IFA_TABLETS);
                 String faTabletsGiven = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.FA_TABLETS);
                 String calciumTabletsGiven = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.CALCIUM_TABLETS);
@@ -1809,7 +1846,7 @@ public class DynamicUtils {
                 }
                 if (ttTwoGiven != null) {
                     SharedStructureData.sewaService.updateStockInventoryByMedicineId(tt2Id, 1);
-                }*/
+                }
             }
         }
 
@@ -1825,8 +1862,16 @@ public class DynamicUtils {
                     if ("1".equalsIgnoreCase(hasDeliveryHappened) && pregnancyOutCome != null) {
                         memberBean.setIsPregnantFlag(Boolean.FALSE);
                     }
+                    if (RelatedPropertyNameConstants.PREGNANCY_OUTCOME_LIVE_BIRTH.equalsIgnoreCase(pregnancyOutCome) || RelatedPropertyNameConstants.PREMATURE.equalsIgnoreCase(pregnancyOutCome) || RelatedPropertyNameConstants.PREGNANCY_OUTCOME_STILL_BIRTH.equalsIgnoreCase(pregnancyOutCome)) {
+                        if (memberBean.getCurrentPara() == null) {
+                            memberBean.setCurrentPara((short) 1);
+                        } else {
+                            memberBean.setCurrentPara((short) (memberBean.getCurrentPara() + 1));
+                        }
+                    }
                     SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
                 }
+
 
                 if (lastDateOfDelivery != null
                         && !lastDateOfDelivery.isEmpty()
@@ -2003,6 +2048,9 @@ public class DynamicUtils {
                     if (queFormBean == null) {
                         firstQuestionId = -1;
                         continue;
+                    }
+                    if (queFormBean.getType().equalsIgnoreCase(GlobalTypes.PHOTO_PICKER)) {
+                        SharedStructureData.finalFilesToUpload.add(queFormBean);
                     }
 
                     if (queFormBean.getIshidden().equalsIgnoreCase(GlobalTypes.TRUE)

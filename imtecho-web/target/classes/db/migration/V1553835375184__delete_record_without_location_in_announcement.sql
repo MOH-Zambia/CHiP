@@ -1,1 +1,0 @@
-delete from announcement_info_master where id not in (select announcement from announcement_location_detail)

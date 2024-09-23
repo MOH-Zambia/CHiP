@@ -1,4 +1,4 @@
-// lazyload config
+    // lazyload config
 (function () {
     const uibootstrap = 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js';
     angular.module('imtecho')
@@ -21,6 +21,7 @@
             'datesuffix.filter': ['app/common/filters/datesuffix.filter.js'],
             // 'chosen.directive': ['app/common/directives/chosen.directive.js'],
             'generalutil.service': ['app/common/services/util/generalutil.js', uibootstrap],
+            'medplat-form.util': ['app/common/services/util/medplat-form-configurator-util.js'],
             'formvalidation.directive': [
                 'app/common/directives/formvalidation/directive.js',
                 '$templateCache:app/common/directives/formvalidation/tmpl.html',
@@ -101,6 +102,7 @@
             'authentication.service': ['app/common/services/authentication.service.js'],
             'paging.service': ['app/common/services/paging.service.js', 'node_modules/ng-infinite-scroll/build/ng-infinite-scroll.min.js'],
             'paging-for-query-builder.service': ['app/common/services/paging-for-query-builder.service.js', 'node_modules/ng-infinite-scroll/build/ng-infinite-scroll.min.js'],
+            'paging-for-form-configurator-query.service': ['app/common/services/paging-for-form-configurator-query.service.js', 'node_modules/ng-infinite-scroll/build/ng-infinite-scroll.min.js'],
             'location-type.constants': ['app/manage/locations/constants/location-type.constants.js'],
             'ngInfiniteScroll': ['node_modules/ng-infinite-scroll/build/ng-infinite-scroll.min.js'],
             'mobilenumber.filter': ['app/common/filters/mobile-filter.filter.js'],
@@ -279,6 +281,8 @@
             'queryExcelSheetGenerator.service': ['app/manage/service/queryExcelSheetGenerator.service.js'],
             'info.controller': ['app/login/controllers/info.controller.js'],
             'info.service': ['app/login/service/info.service.js'],
+            'formList.controller' : ['app/manage/formservice/controllers/formList.controller.js'],
+            'userDetails.controller' : ['app/manage/formservice/controllers/userDetails.controller.js'],
             'sohElementConfiguration.service': ['app/admin/soh/services/element-configuration.service.js'],
             'sohElementConfiguration.controller': ['app/admin/soh/controllers/element-configuration.controller.js'],
             'manageSohElementConfiguration.controller': ['app/admin/soh/controllers/manage-element-configuration.controller.js'],
@@ -337,35 +341,48 @@
             'sohApp.controller': ['app/admin/soh/controllers/soh-application.js'],
             'sohelement.constants': ['app/admin/soh/constants/soh-elelment.constants.js'],
             // 'update-family-area-list.controller': ['app/manage/administration/updatefamilyarea/controller/update-family-area-list.controller.js'],
-            'system-constraint.service': ['app/admin/applicationmanagement/managesystemconstraints/services/system-constraint.service.js'],
-            'system-constraints.controller': ['app/admin/applicationmanagement/managesystemconstraints/controllers/system-constraints.controller.js'],
-            'manage-system-constraint-form.controller': ['app/admin/applicationmanagement/managesystemconstraints/controllers/manage-system-constraint-form.controller.js'],
-            'manage-system-constraint-standard.controller': ['app/admin/applicationmanagement/managesystemconstraints/controllers/manage-system-constraint-standard.controller.js'],
-            'manage-system-constraint-standard-field.controller': ['app/admin/applicationmanagement/managesystemconstraints/controllers/manage-system-constraint-standard-field.controller.js'],
-            'techo-form-field-directive': ['app/common/components/techoFormField/techo-form-field.directive.js'],
-            'manage-health-infrastructure-type.controller': ['app/manage/healthfacilitymapping/controllers/manage-health-infrastructure-type.controller.js'],
-            'update-health-infrastructure-mapping.controller': ["app/manage/healthfacilitymapping/controllers/update-health-infrastructure-mapping.modal.controller.js"],
-            'condition-render-directive': ['app/admin/applicationmanagement/managesystemconstraints/directives/conditionrender/condition-render.directive.js'],
-            'configure-dynamic-template.controller': ['app/admin/applicationmanagement/managesystemconstraints/controllers/configure-dynamic-template.controller.js'],
-            'configure-mobile-template.controller': ['app/admin/applicationmanagement/managesystemconstraints/controllers/configure-mobile-template.controller.js'],
-            'configure-dynamic-template.directives': [
-                'app/admin/applicationmanagement/managesystemconstraints/directives/configuredynamictemplate/element/configure-element-template.directive.js',
-                'app/admin/applicationmanagement/managesystemconstraints/directives/configuredynamictemplate/card/configure-card-template.directive.js',
-                'app/admin/applicationmanagement/managesystemconstraints/directives/configuredynamictemplate/row/configure-row-template.directive.js',
-                'app/admin/applicationmanagement/managesystemconstraints/directives/configuredynamictemplate/col/configure-col-template.directive.js'
+
+            'medplat-form.service': ['app/admin/applicationmanagement/medplatformconfigurator/services/medplat-form.service.js'],
+            'medplat-forms.controller': ['app/admin/applicationmanagement/medplatformconfigurator/controllers/medplat-forms.controller.js'],
+            'medplat-form.controller': ['app/admin/applicationmanagement/medplatformconfigurator/controllers/medplat-form.controller.js'],
+            'medplat-form.directives': [
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/conditionrender/condition-render.directive.js'
             ],
+            'medplat-form.modals': [
+                'app/admin/applicationmanagement/medplatformconfigurator/modals/ace-editor/ace-editor.modal.controller.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/modals/form-object/form-object.modal.controller.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/modals/form-object/edit-form-object.modal.controller.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/modals/form-vm/form-vm.modal.controller.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/modals/events/events.modal.controller.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/modals/execution-sequence/execution-sequence.controller.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/modals/form-vm/form-vm-query-details-modal.controller.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/modals/backend-configuration/backend-configuration.modal.controller.js'
+            ],
+            'medplat-form-web-layout.controller': ['app/admin/applicationmanagement/medplatformconfigurator/controllers/medplat-form-web-layout.controller.js'],
+            'medplat-form-web-layout.directives': [
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/weblayout/element/configure-element-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/weblayout/card/configure-card-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/weblayout/row/configure-row-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/weblayout/col/configure-col-template.directive.js'
+            ],
+            'medplat-form-web-layout.modals': ['app/admin/applicationmanagement/medplatformconfigurator/modals/template-css/medplat-form-template-css.modal.controller.js'],
+            'medplat-form-mobile-layout.controller': ['app/admin/applicationmanagement/medplatformconfigurator/controllers/medplat-form-mobile-layout.controller.js'],
             'generate-dynamic-template.directives': [
-                'app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/dynamictemplate/generate-dynamic-template.directive.js',
-                'app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/repeatable/generate-repeatable-template.directive.js',
-                'app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/element/generate-element-template.directive.js',
-                'app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/card/generate-card-template.directive.js',
-                'app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/row/generate-row-template.directive.js',
-                'app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/col/generate-col-template.directive.js',
-                '$templateCache:app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/repeatable/generate-repeatable-template.html',
-                '$templateCache:app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/element/generate-element-template.html',
-                '$templateCache:app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/card/generate-card-template.html',
-                '$templateCache:app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/row/generate-row-template.html',
-                '$templateCache:app/admin/applicationmanagement/managesystemconstraints/directives/generatedynamictemplate/col/generate-col-template.html'
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/generators/dynamictemplate/generate-dynamic-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/generators/repeatable/generate-repeatable-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/generators/element/generate-element-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/generators/card/generate-card-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/generators/row/generate-row-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/generators/col/generate-col-template.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/generators/field/techo-form-field.directive.js',
+                'app/admin/applicationmanagement/medplatformconfigurator/directives/generators/field/reset-on-hide.directive.js',
+                '$templateCache:app/admin/applicationmanagement/medplatformconfigurator/directives/generators/dynamictemplate/generate-dynamic-template.html',
+                '$templateCache:app/admin/applicationmanagement/medplatformconfigurator/directives/generators/repeatable/generate-repeatable-template.html',
+                '$templateCache:app/admin/applicationmanagement/medplatformconfigurator/directives/generators/element/generate-element-template.html',
+                '$templateCache:app/admin/applicationmanagement/medplatformconfigurator/directives/generators/card/generate-card-template.html',
+                '$templateCache:app/admin/applicationmanagement/medplatformconfigurator/directives/generators/row/generate-row-template.html',
+                '$templateCache:app/admin/applicationmanagement/medplatformconfigurator/directives/generators/col/generate-col-template.html',
+                '$templateCache:app/admin/applicationmanagement/medplatformconfigurator/directives/generators/field/template.html'
             ],
             // 'districtPerformanceDashboardCtrl.controller': ["app/manage/districtperformancedashboard/controllers/district-performance-dashboard-controller.js"],
             'number-format.filter': ["app/common/filters/number-format.filter.js"],
@@ -421,6 +438,9 @@
             'monthly-reporting-form.controller':['app/manage/monthlyreportingform/controller/monthly-reporting-form.controller.js'],
             'monthly-reporting-form-search.controller':['app/manage/monthlyreportingform/controller/monthly-reporting-form-search.controller.js'],
             'monthly-reporting-form.associations': ['app/manage/monthlyreportingform/constants/monthly-reporting-form.associations.js'],
+            'monthly-facility-reporting-form.controller':['app/manage/monthlyfacilityreportingform/controller/monthly-facility-reporting-form.controller.js'],
+            'monthly-facility-reporting-form-search.controller':['app/manage/monthlyfacilityreportingform/controller/monthly-facility-reporting-search.controller.js'],
+            'manualsync.service':['app/manage/monthlyfacilityreportingform/service/manual-sync.service.js'],
             // 'integrated-daily-activity-register' : ['app/manage/integrateddailyactivityregister/controllers/integrated-daily-activity-register.js'],
             // 'integrated-daily-activity-register-search' : ['app/manage/integrateddailyactivityregister/controllers/integrated-daily-activity-register-search.js'],
             // 'form.associations' : ['app/manage/integrateddailyactivityregister/constants/form.associations.js'],
@@ -437,6 +457,25 @@
             'covid-dashboard.controller': ['app/manage/allservicedashboard/controllers/covid-dashboard.controller.js'],
             'tuberculosis-dashboard.controller': ['app/manage/allservicedashboard/controllers/tuberculosis-dashboard.controller.js'],
             'hiv-dashboard.controller': ['app/manage/allservicedashboard/controllers/hiv-dashboard.controller.js'],
-            'bcg-survey.service' : ['app/manage/bcgsurveyform/service/bcg-survey.service.js']
+            'bcg-survey.service' : ['app/manage/bcgsurveyform/service/bcg-survey.service.js'],
+            'ui.ace': [
+                'bower_components/angular-ui-ace/ui-ace.js',
+                'bower_components/ace-builds/src-min-noconflict/ext-language_tools.js',
+                'bower_components/ace-builds/src-min-noconflict/mode-css.js',
+                'bower_components/ace-builds/src-min-noconflict/mode-javascript.js'
+            ],
+            'ui.tree': ['bower_components/angular-ui-tree/dist/angular-ui-tree.js'],
+            'conversation-collection.controller': ['app/manage/llm/conversationcollection/controllers/conversation-collection.controller.js'],
+            'conversation-collection.service': ['app/manage/llm/conversationcollection/services/conversation-collection.service.js'],
+            'speech.service': ['app/manage/llm/medical/services/speech.service.js'],
+            'recorder': ['app/manage/llm/conversationcollection/controllers/recorder.js'],
+            'summary-details.controller': ['app/manage/llm/conversationcollection/controllers/summary-details.controller.js'],
+            'medplat-form-v2.controller': ['app/admin/applicationmanagement/medplatformconfigurator/controllers/medplat-form-V2.controller.js'],
+            'medplat-form-v2.service': ['app/admin/applicationmanagement/medplatformconfigurator/services/medplat-form-V2.service.js'],
+            'medplat-form-generic.controller': ['app/admin/applicationmanagement/medplatformconfigurator/controllers/medplat-form-generic.controller.js'],
+            'medplat-form-flyway.controller': ['app/admin/applicationmanagement/medplatformconfigurator/controllers/medplat-form-flyway-modal.controller.js'],
+            'immunisation.directive': ['app/common/directives/immunisation/immunisation.directive.js'],
+            'immunisation.service': ['app/common/services/immunisation.service.js'],
+    
         });
 }());

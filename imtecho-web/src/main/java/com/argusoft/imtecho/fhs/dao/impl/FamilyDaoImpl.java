@@ -15,7 +15,6 @@ import com.argusoft.imtecho.fhs.dto.*;
 import com.argusoft.imtecho.fhs.mapper.ClientMemberMapper;
 import com.argusoft.imtecho.fhs.mapper.HouseholdMapper;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
-import com.argusoft.imtecho.fhs.model.MemberEntity;
 import com.argusoft.imtecho.location.dto.LocationMasterDto;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
@@ -167,17 +166,23 @@ public class FamilyDaoImpl extends GenericDaoImpl<FamilyEntity, Integer> impleme
             HouseholdDto householdDto = HouseholdMapper.getHouseholdDto(row);
 
             if (includeMembers) {
-                String memberQueryStr = "SELECT m.* " +
-                        "FROM imt_member m " +
-                        "WHERE m.family_id = :householdId";
-                NativeQuery<MemberEntity> memberQuery = session.createNativeQuery(memberQueryStr,MemberEntity.class)
+                String memberQueryStr = "SELECT i.unique_health_id, i.is_pregnant, i.gender, i.lmp, i.other_chronic_disease_treatment, " +
+                        "    i.chronic_disease_treatment, i.under_treatment_chronic, i.other_disability, i.other_chronic, " +
+                        "    i.physical_disability, i.chronic_disease, i.dob, i.menopause_arrived, i.hysterectomy_done, " +
+                        "    (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = i.education_status), " +
+                        "    i.mobile_number,(SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = i.marital_status) as marital_status, i.passport_number, i.nrc_number, " +
+                        "    (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = cast(i.member_religion as int)) as religion, i.last_name, i.middle_name, i.first_name, i.family_planning_method, " +
+                        "    i.haemoglobin, i.weight, i.edd, i.last_method_of_contraception, i.blood_group, i.id, i.immunisation_given " +
+                        "FROM imt_member i " +
+                        "WHERE i.family_id = :householdId";
+                NativeQuery<Object[]> memberQuery = session.createNativeQuery(memberQueryStr)
                         .setParameter("householdId", householdDto.getFamilyId());
 
-                List<MemberEntity> memberResultList = memberQuery.getResultList();
+                List<Object[]> memberResultList = memberQuery.getResultList();
                 List<ClientMemberDto> members = new ArrayList<>();
 
-                for (MemberEntity memberRow : memberResultList) {
-                    members.add(ClientMemberMapper.getMemberDto(memberRow));
+                for (Object memberRow : memberResultList) {
+                    members.add(ClientMemberMapper.getMemberDto((Object[]) memberRow));
                 }
 
                 householdDto.setMembers(members);

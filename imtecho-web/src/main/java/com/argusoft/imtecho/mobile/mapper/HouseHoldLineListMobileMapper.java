@@ -66,8 +66,24 @@ public class HouseHoldLineListMobileMapper {
             memberEntity.setDob(member.getDob() != null ? new Date(member.getDob()) : memberEntity.getDob());
             memberEntity.setMemberUUId(member.getMemberUuid() != null ? member.getMemberUuid() : memberEntity.getMemberUUId());
         }
+        if (member.getChronicDisease() != null) {
+            for (String id : convertSetToCommaSeparatedString(member.getChronicDisease()).split(",")) {
+                if (id.equalsIgnoreCase("OTHER") || id.equalsIgnoreCase("NONE")) {
+                    continue;
+                }
+                if (memberEntity.getChronicDisease() != null) {
+                    if (id.startsWith(" ")) {
+                        id = id.replace(" ", "");
+                    }
+                    if (!memberEntity.getChronicDisease().contains(id)) {
+                        memberEntity.setChronicDisease(memberEntity.getChronicDisease() + "," + id);
+                    }
+                } else {
+                    memberEntity.setChronicDisease(id);
+                }
+            }
+        }
 
-        memberEntity.setChronicDisease(member.getChronicDisease() != null ? (convertSetToCommaSeparatedString(member.getChronicDisease())) : memberEntity.getChronicDisease());
         memberEntity.setPhysicalDisability(member.getDisabilityIds() != null ? (convertSetToCommaSeparatedString(member.getDisabilityIds())) : memberEntity.getPhysicalDisability());
         memberEntity.setOtherChronic(member.getOtherChronicDisease() != null ? member.getOtherChronicDisease() : memberEntity.getOtherChronic());
         memberEntity.setOtherDisability(member.getOtherDisabilities() != null ? member.getOtherDisabilities() : memberEntity.getOtherDisability());
@@ -103,7 +119,7 @@ public class HouseHoldLineListMobileMapper {
             result.append(array[0]);
 
             for (int i = 1; i < array.length; i++) {
-                result.append(", ").append(array[i]);
+                result.append(",").append(array[i]);
             }
         }
 

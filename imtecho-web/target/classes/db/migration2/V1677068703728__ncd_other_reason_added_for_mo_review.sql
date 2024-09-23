@@ -1,2 +1,0 @@
-alter table if exists ncd_mo_review_detail add column if not exists other_reason character varying(200);
-alter table if exists ncd_mo_review_followup_detail add column if not exists other_reason character varying(200);

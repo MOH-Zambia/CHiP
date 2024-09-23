@@ -42,6 +42,7 @@ public class FieldNameConstants {
     public static final String IS_VDRL_POSITIVE = "isVdrlPositive";
     public static final String UNIQUE_ID = "uniqueId";
     public static final String MOTHER_ID = "motherId";
+    public static final String HUSBAND_ID = "husbandId";
     public static final String MOTHER_UUID = "motherUUID";
     public static final String HUSBAND_UUID = "husbandUUID";
     public static final String FIRST_NAME = "firstName";

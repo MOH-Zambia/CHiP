@@ -1,1 +1,0 @@
-Alter table rch_pnc_mother_master drop column if exists calcium_tablets_given, add column calcium_tablets_given integer

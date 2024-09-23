@@ -1,6 +1,5 @@
 package com.argusoft.imtecho.rch.service.impl;
 
-import com.argusoft.imtecho.chip.model.ChipMalariaEntity;
 import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
@@ -31,11 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -203,7 +198,7 @@ public class LmpFollowUpServiceImpl implements LmpFollowUpService {
         if (jsonObject.get("memberId") != null) {
             memberId = jsonObject.get("memberId").getAsInt();
         } else {
-            if (jsonObject.get("memberUUID")  != null) {
+            if (jsonObject.get("memberUUID") != null) {
                 memberId = memberDao.retrieveMemberByUuid(String.valueOf(jsonObject.get("memberUUID"))).getId();
             }
         }
@@ -348,6 +343,13 @@ public class LmpFollowUpServiceImpl implements LmpFollowUpService {
                     lmpFollowUpVisit.setLmp(new Date(Long.parseLong(answer)));
                 }
                 break;
+            case "420":
+                if (keyAndAnswerMap.get("30").equals(RchConstants.MEMBER_STATUS_AVAILABLE)
+                        && keyAndAnswerMap.get("3").equals("1")) {
+                    lmpFollowUpVisit.setIrregularPeriods(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                }
+                break;
+
             case "42":
                 if (keyAndAnswerMap.get("30").equals(RchConstants.MEMBER_STATUS_AVAILABLE)
                         && keyAndAnswerMap.get("3").equals("1") && keyAndAnswerMap.get("41").equals("1")) {

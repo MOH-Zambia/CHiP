@@ -32,7 +32,7 @@ public class UserMapper {
     public static UserMaster convertUserDtoToMaster(UserMasterDto userDto, String roleName) {
 
         UserMaster userMaster = new UserMaster();
-        userMaster.setAadharNumberAvailable(userDto.getAadharNumberAvailable());
+//        userMaster.setAadharNumberAvailable(userDto.getAadharNumberAvailable());
         userMaster.setAddress(userDto.getAddress());
         userMaster.setCode(userDto.getCode());
         userMaster.setContactNumber(userDto.getContactNumber() == null ? userDto.getMobileNumber() : userDto.getContactNumber());
@@ -94,7 +94,7 @@ public class UserMapper {
     public static UserMasterDto convertUserMasterToDto(UserMaster user) {
 
         UserMasterDto userMasterDto = new UserMasterDto();
-        userMasterDto.setAadharNumberAvailable(user.isAadharNumberAvailable());
+//        userMasterDto.setAadharNumberAvailable(user.isAadharNumberAvailable());
         userMasterDto.setAddress(user.getAddress());
         userMasterDto.setCode(user.getCode());
         userMasterDto.setContactNumber(user.getContactNumber());

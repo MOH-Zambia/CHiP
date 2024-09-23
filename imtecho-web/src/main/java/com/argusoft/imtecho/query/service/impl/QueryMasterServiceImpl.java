@@ -16,6 +16,7 @@ import com.argusoft.imtecho.exception.ImtechoUserException;
 import com.argusoft.imtecho.query.dao.QueryMasterDao;
 import com.argusoft.imtecho.query.dto.QueryDto;
 import com.argusoft.imtecho.query.dto.QueryMasterDto;
+import com.argusoft.imtecho.query.dto.QueryWithSQLDto;
 import com.argusoft.imtecho.query.mapper.QueryMasterMapper;
 import com.argusoft.imtecho.query.model.QueryMaster;
 import com.argusoft.imtecho.query.service.QueryMasterService;
@@ -264,6 +265,63 @@ public class QueryMasterServiceImpl implements QueryMasterService {
         }
 
         if (Boolean.FALSE.equals(isSecure) && (queryMaster.getIsPublic() == null || !queryMaster.getIsPublic())) {
+            throw new ImtechoSystemException("You are not authorised to access this resource", 101);
+        }
+    }
+
+    @Override
+    public List<QueryWithSQLDto> executeForFormConfigurator(List<QueryWithSQLDto> queryDtos, boolean isSecure) {
+        queryDtos.sort(Comparator.comparing(QueryWithSQLDto::getSequence));
+        List<QueryWithSQLDto> resultQueryDtos = new LinkedList<>();
+        queryDtos.stream().map(queryDto -> {
+            QueryWithSQLDto queryResultDto = new QueryWithSQLDto();
+            queryResultDto.setCode(queryDto.getCode());
+            queryResultDto.setSequence(queryDto.getSequence());
+            String replacedQuery;
+
+            checkIsSecureForFormConfigurator(isSecure, queryDto);
+
+            Integer userId = !userService.isAnonymous() ? user.getId() : 0;
+            replacedQuery = EventFunctionUtil.replaceParamWithValue(queryDto.getQuery(), queryDto.getParams(), queryDto.getParameters(), userId);
+            try {
+                List<LinkedHashMap<String, Object>> executeQuery = tableService.execute(replacedQuery, queryDto.getParameters());
+                queryResultDto.setResult(executeQuery);
+            } catch (Exception e) {
+                LOGGER.error("Exception In Query");
+                String queryWithCode = "Query Code : " + queryDto.getCode() + "\nQuery : " + replacedQuery + " \n ";
+                LOGGER.error(queryWithCode);
+                throw new ImtechoSystemException(queryWithCode, e);
+            }
+            return queryResultDto;
+        }).forEach(resultQueryDtos::add
+        );
+        return resultQueryDtos;
+    }
+
+    @Override
+    public List<LinkedHashMap<String, Object>> executeFormConfiguratorQuery(QueryDto queryDto) {
+        QueryMaster queryMaster = new QueryMaster();
+        queryMaster.setCode(queryDto.getCode());
+        queryMaster.setQuery(queryDto.getQuery());
+        queryMaster.setParams(EventFunctionUtil.findParamsFromTemplate(queryDto.getQuery()));
+        queryMaster.setReturnsResultSet(Boolean.TRUE);
+        String replacedQuery = EventFunctionUtil.replaceParamWithValue(queryMaster.getQuery(), queryMaster.getParams(), queryDto.getParameters(), user.getId());
+        try {
+            return tableService.execute(replacedQuery, queryDto.getParameters());
+        } catch (Exception e) {
+            LOGGER.error("Exception In Query");
+            String queryWithCode = "Query Code : " + queryDto.getCode() + "\nQuery : " + replacedQuery + " \n ";
+            LOGGER.error(queryWithCode);
+            throw new ImtechoSystemException(queryWithCode, e);
+        }
+    }
+
+    private void checkIsSecureForFormConfigurator(Boolean isSecure, QueryWithSQLDto queryDto) {
+        if (queryDto.getQuery() == null || queryDto.getQuery().isEmpty()) {
+            throw new ImtechoSystemException("The resource with given code not found : " + queryDto.getCode(), 101);
+        }
+
+        if (Boolean.FALSE.equals(isSecure)) {
             throw new ImtechoSystemException("You are not authorised to access this resource", 101);
         }
     }

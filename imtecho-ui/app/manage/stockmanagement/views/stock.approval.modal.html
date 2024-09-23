@@ -30,12 +30,12 @@
                             <td ng-if = "!item.showReason">
                                 <div class="form-group">
                                     <validate for="quantity{{$index}}" required-msg="Please enter quantity"
-                                        min-msg="Minimum allowed quantity is 1"
-                                        max-msg="Maximum allowed qty is {{item.in_stock}}">
+                                        min-msg="Minimum allowed quantity : 1"
+                                        >
                                         <input type="text" form-control required numbers-only
                                             class="form-control cst-form-control" id="quantity{{$index}}"
-                                            name="quantity{{$index}}" min="1" ng-max="item.in_stock !== 0 ? item.in_stock : 0.9"
-                                            ng-pattern="/[^.]{0,2}/" ng-model="item.approvedQuantity" decimalallowed="false"
+                                            name="quantity{{$index}}" min="1" max="{{item.in_stock !== 0 ? item.in_stock : 0.9}}"
+                                            ng-pattern="/[^.]{0,2}/" ng-change="mdctrl.getMaxErrorMessage(item, $index)" ng-model="item.approvedQuantity" decimalallowed="false"
                                             negativeallowed="false">
                                         <placeholder></placeholder>
                                     </validate>

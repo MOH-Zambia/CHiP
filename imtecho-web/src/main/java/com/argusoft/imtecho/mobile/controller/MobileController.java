@@ -14,7 +14,9 @@ import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.course.service.CourseMasterService;
 import com.argusoft.imtecho.course.service.LmsMobileEventSubmissionService;
 import com.argusoft.imtecho.document.service.DocumentService;
-import com.argusoft.imtecho.exception.*;
+import com.argusoft.imtecho.exception.ImtechoForbiddenException;
+import com.argusoft.imtecho.exception.ImtechoSystemException;
+import com.argusoft.imtecho.exception.ImtechoUserException;
 import com.argusoft.imtecho.fhs.dto.MemberDto;
 import com.argusoft.imtecho.fhs.model.FailedHealthIdDataEntity;
 import com.argusoft.imtecho.fhs.service.FailedHealthIdDataService;
@@ -38,7 +40,6 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,6 +140,9 @@ public class MobileController extends GenericSessionUtilService {
     @Autowired
     private BcgVaccineService bcgVaccineService;
     private final Client client = Client.create();
+    @Autowired
+    private MobileFileUploadService mobileFileUploadService;
+
 
     @GetMapping(value = MobileApiPathConstants.GET_ANDROID_VERSION)
     public String retrieveAndroidVersion(HttpServletRequest request) {
@@ -175,6 +179,12 @@ public class MobileController extends GenericSessionUtilService {
     @GetMapping(value = MobileApiPathConstants.GET_FONT_SIZE)
     public String retrieveFontSize(@RequestParam("fontSizeType") String fontSizeType) {
         return mobileFhsService.retrieveFontSize(fontSizeType);
+    }
+
+    @RequestMapping(value = MobileApiPathConstants.TECHO_UPLOAD_MEDIA, consumes = javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA, method = RequestMethod.POST)
+    public RecordStatusBean uploadFile(@RequestPart("file") MultipartFile file,
+                                       @RequestPart("uploadFileDataBean") UploadFileDataBean uploadFileDataBeans) {
+        return mobileFileUploadService.uploadMediaFromMobile(file, uploadFileDataBeans);
     }
 
     @PostMapping(value = MobileApiPathConstants.TECHO_IS_USER_IN_PRODUCTION)
@@ -689,7 +699,6 @@ public class MobileController extends GenericSessionUtilService {
     public Map<String, Object> retrieveMemberByPhoneNumber(@RequestParam("mobilenumber") String mobileNumber) {
         return familyHealthSurveyService.retrieveMemberByPhoneNumber(mobileNumber);
     }
-
 
 
     @GetMapping(value = "drtecho/checkmobilenumber")

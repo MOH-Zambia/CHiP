@@ -23,6 +23,7 @@ import com.argusoft.sewa.android.app.model.MigratedFamilyBean;
 import com.argusoft.sewa.android.app.model.MigratedMembersBean;
 import com.argusoft.sewa.android.app.model.NotificationBean;
 import com.argusoft.sewa.android.app.model.QuestionBean;
+import com.argusoft.sewa.android.app.model.StockInventoryBean;
 import com.argusoft.sewa.android.app.util.GlobalTypes;
 import com.argusoft.sewa.android.app.util.Log;
 import com.argusoft.sewa.android.app.util.SewaConstants;
@@ -42,6 +43,7 @@ public class SewaTransformer {
 
     public static LoginBean loginBean;
     private static SewaTransformer transformer;
+    public static StockInventoryBean stockInventoryBean;
 
     private SewaTransformer() {
     }

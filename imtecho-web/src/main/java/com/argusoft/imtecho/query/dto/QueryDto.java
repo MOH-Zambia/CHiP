@@ -5,6 +5,10 @@
  */
 package com.argusoft.imtecho.query.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -13,50 +17,15 @@ import java.util.List;
  * @author vaishali
  * @since 02/09/2020 10:30
  */
+@Getter
+@Setter
+@ToString
 public class QueryDto {
-    
+
     private String code;
-    private List<LinkedHashMap<String,Object>> result;
-    private LinkedHashMap<String,Object> parameters;
+    private String query;
+    private List<LinkedHashMap<String, Object>> result;
+    private LinkedHashMap<String, Object> parameters;
     private Integer sequence;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String queryCode) {
-        this.code = queryCode;
-    }
-
-    public List<LinkedHashMap<String, Object>> getResult() {
-        return result;
-    }
-
-    public void setResult(List<LinkedHashMap<String, Object>> resultList) {
-        this.result = resultList;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
-
-    public LinkedHashMap<String, Object> getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(LinkedHashMap<String, Object> parameters) {
-        this.parameters = parameters;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "QueryDto{" + "code=" + code + ", result=" + result + ", parameters=" + parameters + ", sequence=" + sequence + '}';
-    }
 }
+

@@ -163,19 +163,7 @@
             service.getAssignedFeature = function (state) {
                 var assignedFeatureDeffer = $q.defer();
                 menuDefer.promise.then(function () {
-                    if (linearMenuItems[state] != null && !linearMenuItems[state].systemConstraintConfigs) {
-                        let promises = [];
-                        promises.push($http.get(`${APP_CONFIG.apiPath}/systemConstraint/configs/${linearMenuItems[state].id}`));
-                        promises.push($http.get(`${APP_CONFIG.apiPath}/systemConstraint/webTemplateConfigs/${linearMenuItems[state].id}`));
-                        $q.all(promises).then(responses => {
-                            linearMenuItems[state].systemConstraintConfigs = responses[0].data;
-                            linearMenuItems[state].webTemplateConfigs = responses[1].data;
-                        }, console.error).finally(function () {
-                            assignedFeatureDeffer.resolve(linearMenuItems[state]);
-                        });
-                    } else {
-                        assignedFeatureDeffer.resolve(linearMenuItems[state]);
-                    }
+                    assignedFeatureDeffer.resolve(linearMenuItems[state]);
                 });
                 return assignedFeatureDeffer.promise;
             };

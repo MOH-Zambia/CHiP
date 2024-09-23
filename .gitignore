@@ -1,0 +1,10 @@
+/imtecho-android/*.iml
+/imtecho-android/*.gradle
+imtecho-android/*.externalNativeBuild
+/imtecho-android/*.DS_Store
+/imtecho-android/.idea
+/imtecho-android/build
+/imtecho-android/.gradle
+/imtecho-android/.nb-gradle
+/imtecho-android/captures
+imtecho-android/local.properties

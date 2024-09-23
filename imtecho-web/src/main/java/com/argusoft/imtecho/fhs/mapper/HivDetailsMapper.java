@@ -1,32 +1,32 @@
 package com.argusoft.imtecho.fhs.mapper;
 
 import com.argusoft.imtecho.fhs.dto.HivDto;
-import com.argusoft.imtecho.rch.model.HivScreeningEntity;
 
 public class HivDetailsMapper {
 
     /**
      * Convert HivScreeningEntity to HivDto.
      *
-     * @param hivScreening Entity of HIV screening.
+     * @param row Object array representing a database row.
      * @return Returns details of HIV screening.
      */
-    public static HivDto getHivDto(HivScreeningEntity hivScreening){
+    public static HivDto getHivDto(Object[] row){
         HivDto dto = new HivDto();
-        dto.setChildHivTest(hivScreening.isChildHivTest());
-        dto.setHivTestResult(hivScreening.isHivTestResult());
-        dto.setChildMotherHivPositive(hivScreening.isChildMotherHivPositive());
-        dto.setChildHasTbSymptoms(hivScreening.isChildHasTbSymptoms());
-        dto.setChildSick(hivScreening.isChildSick());
-        dto.setChildRashes(hivScreening.isChildRashes());
-        dto.setPusNearEar(hivScreening.isPusNearEar());
-        dto.setEverToldHivPositive(hivScreening.isEverToldHivPositive());
-        dto.setTestedForHivIn12Months(hivScreening.isTestedForHivIn12Months());
-        dto.setSymptoms(hivScreening.isSymptoms());
-        dto.setPrivatePartsSymptoms(hivScreening.isPrivatePartsSymptoms());
-        dto.setExposedToHiv(hivScreening.isExposedToHiv());
-        dto.setUnprotectedSexInLast6Months(hivScreening.isUnprotectedSexInLast6Months());
-        dto.setPregnantOrBreastfeeding(hivScreening.isPregnantOrBreastfeeding());
+        dto.setMemberId((Integer) row[1]);
+        dto.setChildHivTest((Boolean) row[2]);
+        dto.setHivTestResult((Boolean) row[3]);
+        dto.setChildMotherHivPositive((Boolean) row[6]);
+        dto.setChildHasTbSymptoms((Boolean) row[8]);
+        dto.setChildSick((Boolean) row[9]);
+        dto.setChildRashes((Boolean) row[10]);
+        dto.setPusNearEar((Boolean) row[11]);
+        dto.setEverToldHivPositive((Boolean) row[14]);
+        dto.setTestedForHivIn12Months((Boolean) row[17]);
+        dto.setSymptoms((Boolean) row[18]);
+        dto.setPrivatePartsSymptoms((Boolean) row[19]);
+        dto.setExposedToHiv((Boolean) row[20]);
+        dto.setUnprotectedSexInLast6Months((Boolean) row[21]);
+        dto.setPregnantOrBreastfeeding((Boolean) row[22]);
 
         return dto;
     }

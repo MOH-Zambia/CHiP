@@ -74,8 +74,8 @@ public class UserMaster extends EntityAuditInfo implements Serializable {
     private State state;
     @Column(name = "code", length = 255)
     private String code;
-    @Column(name = "aadhar_number_encrypted", length = 255)
-    private String aadharNumberEncrypted;
+//    @Column(name = "aadhar_number_encrypted", length = 255)
+//    private String aadharNumberEncrypted;
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
     private RoleMaster role;
@@ -127,11 +127,11 @@ public class UserMaster extends EntityAuditInfo implements Serializable {
     @Column(name = "first_time_password_changed")
     private Boolean firstTimePasswordChanged;
 
-    @Column(name = "aadhaar_reference_key")
-    private UUID aadhaarReferenceKey;
+//    @Column(name = "aadhaar_reference_key")
+//    private UUID aadhaarReferenceKey;
 
-    @Column(name = "aadhar_number_available")
-    private Boolean aadharNumberAvailable;
+//    @Column(name = "aadhar_number_available")
+//    private Boolean aadharNumberAvailable;
 
     @Column(name = "is_user_smag_trained")
     private Boolean isUserSmagTrained;
@@ -256,13 +256,13 @@ public class UserMaster extends EntityAuditInfo implements Serializable {
         this.code = code;
     }
 
-    public String getAadharNumberEncrypted() {
-        return aadharNumberEncrypted != null ? AESEncryption.getInstance().decrypt(aadharNumberEncrypted) : null;
-    }
-
-    public void setAadharNumberEncrypted(String aadharNumberEncrypted) {
-        this.aadharNumberEncrypted = AESEncryption.getInstance().encrypt(aadharNumberEncrypted);
-    }
+//    public String getAadharNumberEncrypted() {
+//        return aadharNumberEncrypted != null ? AESEncryption.getInstance().decrypt(aadharNumberEncrypted) : null;
+//    }
+//
+//    public void setAadharNumberEncrypted(String aadharNumberEncrypted) {
+//        this.aadharNumberEncrypted = AESEncryption.getInstance().encrypt(aadharNumberEncrypted);
+//    }
 
     public RoleMaster getRole() {
         return role;
@@ -432,21 +432,21 @@ public class UserMaster extends EntityAuditInfo implements Serializable {
         this.firstTimePasswordChanged = firstTimePasswordChanged;
     }
 
-    public UUID getAadhaarReferenceKey() {
-        return aadhaarReferenceKey;
-    }
+//    public UUID getAadhaarReferenceKey() {
+//        return aadhaarReferenceKey;
+//    }
+//
+//    public void setAadhaarReferenceKey(UUID aadhaarReferenceKey) {
+//        this.aadhaarReferenceKey = aadhaarReferenceKey;
+//    }
 
-    public void setAadhaarReferenceKey(UUID aadhaarReferenceKey) {
-        this.aadhaarReferenceKey = aadhaarReferenceKey;
-    }
-
-    public Boolean isAadharNumberAvailable() {
-        return aadharNumberAvailable;
-    }
-
-    public void setAadharNumberAvailable(Boolean aadharNumberAvailable) {
-        this.aadharNumberAvailable = aadharNumberAvailable;
-    }
+//    public Boolean isAadharNumberAvailable() {
+//        return aadharNumberAvailable;
+//    }
+//
+//    public void setAadharNumberAvailable(Boolean aadharNumberAvailable) {
+//        this.aadharNumberAvailable = aadharNumberAvailable;
+//    }
 
     public Boolean getUserSmagTrained() {
         return isUserSmagTrained;
@@ -498,8 +498,8 @@ public class UserMaster extends EntityAuditInfo implements Serializable {
         public static final String CONVOXID = "convoxId";
         public static final String ACTIVE = "ACTIVE";
 
-        public static final String AADHAAR_REFERENCE_KEY = "aadhaarReferenceKey";
-        public static final String AADHAAR_NUMBER_ENCRYPTED = "aadharNumberEncrypted";
+//        public static final String AADHAAR_REFERENCE_KEY = "aadhaarReferenceKey";
+//        public static final String AADHAAR_NUMBER_ENCRYPTED = "aadharNumberEncrypted";
     }
 
     /**
@@ -507,7 +507,7 @@ public class UserMaster extends EntityAuditInfo implements Serializable {
      */
     @Override
     public String toString() {
-        return "UserMaster{" + "id=" + id + ", userName=" + userName + ", password=" + password + ", emailId=" + emailId + ", convoxId=" + convoxId + ", contactNumber=" + contactNumber + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName + ", gender=" + gender + ", address=" + address + ", prefferedLanguage=" + prefferedLanguage + ", dateOfBirth=" + dateOfBirth + ", state=" + state + ", code=" + code  + ", aadharNumberEncrypted=" + aadharNumberEncrypted + ", role=" + role + ", roleId=" + roleId + ", SERVER_TYPE=" + serverType + ", searchText=" + searchText + ", title=" + title + ", imeiNumber=" + imeiNumber + ", techoPhoneNumber=" + techoPhoneNumber + ", noOfAttempts=" + noOfAttempts + ", rchInstitutionId=" + rchInstitutionId + ", pin=" + pin +'}';
+        return "UserMaster{" + "id=" + id + ", userName=" + userName + ", password=" + password + ", emailId=" + emailId + ", convoxId=" + convoxId + ", contactNumber=" + contactNumber + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName + ", gender=" + gender + ", address=" + address + ", prefferedLanguage=" + prefferedLanguage + ", dateOfBirth=" + dateOfBirth + ", state=" + state + ", code=" + code  + ", role=" + role + ", roleId=" + roleId + ", SERVER_TYPE=" + serverType + ", searchText=" + searchText + ", title=" + title + ", imeiNumber=" + imeiNumber + ", techoPhoneNumber=" + techoPhoneNumber + ", noOfAttempts=" + noOfAttempts + ", rchInstitutionId=" + rchInstitutionId + ", pin=" + pin +'}';
     }
 
     /**
