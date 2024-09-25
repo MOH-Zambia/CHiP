@@ -1206,8 +1206,18 @@ public class FormMetaDataUtil {
 
                 mother = null;
                 try {
-                    if (memberBean.getMotherId() != null) {
-                        mother = memberBeanDao.queryBuilder().where().eq("actualID", memberBean.getMotherId()).queryForFirst();
+                    if (memberBean.getMotherId() != null || memberBean.getMotherUUID() != null) {
+                        if (memberBean.getMotherId() != null) {
+                            mother = memberBeanDao.queryBuilder().where().eq("actualID", memberBean.getMotherId()).queryForFirst();
+                        }
+                        if (mother == null && memberBean.getMotherUUID() != null) {
+                            mother = memberBeanDao.queryBuilder().where().eq("memberUuid", memberBean.getMotherUUID()).queryForFirst();
+                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MOTHER_NAME, UtilBean.getMemberFullName(mother));
+                            String religion = fhsService.getValueOfListValuesById(mother.getMemberReligion());
+                            if (religion != null) {
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.RELIGION, religion);
+                            }
+                        }
                     }
                 } catch (SQLException e) {
                     Log.e(getClass().getSimpleName(), null, e);
@@ -1317,7 +1327,7 @@ public class FormMetaDataUtil {
                 }
 
                 SharedStructureData.vaccineGivenDateMap.clear();
-                if (memberBean.getImmunisationGiven() != null && memberBean.getImmunisationGiven().length() > 0) {
+                if (memberBean.getImmunisationGiven() != null && !memberBean.getImmunisationGiven().isEmpty()) {
                     Map<String, Date> vaccineGivenDateMapTemp = new HashMap<>();
                     StringTokenizer vaccineTokenizer = new StringTokenizer(memberBean.getImmunisationGiven(), ",");
                     while (vaccineTokenizer.hasMoreElements()) {
@@ -1330,23 +1340,14 @@ public class FormMetaDataUtil {
                         }
                     }
 
-                    if (vaccineGivenDateMapTemp.size() > 0) {
+                    if (!vaccineGivenDateMapTemp.isEmpty()) {
                         SharedStructureData.vaccineGivenDateMap = vaccineGivenDateMapTemp;
                     }
                 }
 
-                if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                    String religion = fhsService.getValueOfListValuesById(memberBean.getMemberReligion());
-                    if (religion != null) {
-                        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.RELIGION, religion);
-                    }
-                } else {
-                    if (familyDataBean.getReligion() != null) {
-                        String religion = fhsService.getValueOfListValuesById(familyDataBean.getReligion());
-                        if (religion != null) {
-                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.RELIGION, religion);
-                        }
-                    }
+                String religion = fhsService.getValueOfListValuesById(memberBean.getMemberReligion());
+                if (religion != null) {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.RELIGION, religion);
                 }
 
                 if (familyDataBean.getCaste() != null) {
@@ -1367,6 +1368,11 @@ public class FormMetaDataUtil {
                 }
                 if (memberAdditionalInfo.getRchId() != null) {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.RCH_ID, memberAdditionalInfo.getRchId());
+                }
+
+                if (memberBean.getBirthWeight() != null) {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.BIRTH_WEIGHT, memberBean.getBirthWeight().toString());
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.BIRTH_WEIGHT_DISPLAY, memberBean.getBirthWeight().toString() + " " + UtilBean.getMyLabel("Kgs"));
                 }
 
                 break;
