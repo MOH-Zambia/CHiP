@@ -50,7 +50,9 @@ public class HouseHoldLineListMobileMapper {
         memberBean.setFirstName(member.getFirstName() != null ? member.getFirstName() : memberBean.getFirstName());
         memberBean.setMiddleName(member.getMiddleName() != null ? member.getMiddleName() : memberBean.getMiddleName());
         memberBean.setLastName(member.getLastName() != null ? member.getLastName() : memberBean.getLastName());
-        SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MEMBER_NAME_FOR_LOG, UtilBean.getMemberFullName(memberBean));
+        if (memberBean.getFamilyHeadFlag() != null && memberBean.getFamilyHeadFlag()) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MEMBER_NAME_FOR_LOG, UtilBean.getMemberFullName(memberBean));
+        }
         memberBean.setMemberReligion(member.getReligion() != null ? member.getReligion() : memberBean.getMemberReligion());
         memberBean.setNrcNumber(member.getNRCNumber() != null ? member.getNRCNumber() : memberBean.getNrcNumber());
         memberBean.setPassportNumber(member.getPassportNumber() != null ? member.getPassportNumber() : memberBean.getPassportNumber());

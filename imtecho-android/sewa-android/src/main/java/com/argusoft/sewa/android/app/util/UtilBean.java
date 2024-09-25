@@ -1957,11 +1957,11 @@ public class UtilBean {
                 aadharIcon.setImageResource(R.drawable.ic_tab_aadhar_card);
                 imageLayout.addView(aadharIcon);
             }
-            if (memberDataBean.getMobileNumber() != null) {
+            /*if (memberDataBean.getMobileNumber() != null) {
                 ImageView smartphoneIcon = new ImageView(context);
                 smartphoneIcon.setImageResource(R.drawable.ic_tab_smartphone);
                 imageLayout.addView(smartphoneIcon);
-            }
+            }*/
             if (imageLayout.getChildCount() > 0) {
                 imageLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                 imageLayout.layout(0, 0, imageLayout.getMeasuredWidth(), imageLayout.getMeasuredHeight());
