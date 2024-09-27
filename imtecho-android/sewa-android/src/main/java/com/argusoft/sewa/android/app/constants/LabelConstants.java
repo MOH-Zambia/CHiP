@@ -810,7 +810,7 @@ public class LabelConstants {
     public static final String DIAGNOSED_FOR_CERVICAL_CANCER = "Ever Diagnosed for Cervical Cancer";
     public static final String UNDER_TREATMENT_FOR_CERVICAL_CANCER = "Currently Under Treatment for Cervical Cancer";
     public static final String HEIGHT = "Height";
-    public static final String ENTER_QUANTITY = "Quantity";
+    public static final String ENTER_QUANTITY = "Qty";
     public static final String EXISTING_STOCK = "Existing Stock";
     public static final String WEIGHT = "Weight";
     public static final String HEIGHT_IN_CMS = "Height (in cms)";

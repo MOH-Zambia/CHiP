@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.3'
-        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.gms:google-services:4.4.2'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,20 +20,6 @@ allprojects {
         google()
         mavenCentral()
         jcenter()
-        maven {
-            url = uri("https://maven.pkg.github.com/sunfox-technologies/spandan_ecg_android_sdk")
-            credentials {
-                username = "sewa_rural"
-                password = "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"
-            }
-        }
-        maven {
-            url = uri("https://maven.pkg.github.com/sunfox-technologies/sericom")
-            credentials {
-                username = "sewa_rural"
-                password = "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"
-            }
-        }
     }
 }
 
