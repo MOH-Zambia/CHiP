@@ -67,13 +67,13 @@ public class StockRequestComponent extends LinearLayout {
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(0, MATCH_PARENT, 3);
         layoutParams.setMargins(0, 10, 0, 10);
 
-        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 4);
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 5);
         textViewParams.setMargins(10, 0, 10, 0);
 
         LinearLayout.LayoutParams textViewParams1 = new LinearLayout.LayoutParams(0, MATCH_PARENT, 2);
         textViewParams.setMargins(10, 0, 10, 0);
 
-        LinearLayout.LayoutParams inputTextParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 2.5f);
+        LinearLayout.LayoutParams inputTextParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 1.5f);
         inputTextParams.setMargins(10, 0, 10, 0);
         inputTextParams.gravity = Gravity.CENTER_VERTICAL;
 

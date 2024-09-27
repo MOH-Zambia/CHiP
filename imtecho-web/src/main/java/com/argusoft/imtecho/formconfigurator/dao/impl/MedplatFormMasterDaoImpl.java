@@ -41,11 +41,11 @@ public class MedplatFormMasterDaoImpl extends GenericDaoImpl<MedplatFormMaster, 
                 "\tselect \n" +
                 "\tmedplat_form_master.\"uuid\" as \"uuid2\",\n" +
                 "\tmedplat_form_version_history.modified_by,\n" +
-                "\tmedplat_form_version_history.modified_on,\n" +
-                "\tconcat(concat_ws(' ', um_user.first_name, um_user.middle_name, um_user.last_name), '<br>',  '(', um_user.user_name, ')' ) as \"user\"\n" +
+                "\tmedplat_form_version_history.modified_on\n" +
+//                "\tconcat(concat_ws(' ', um_user.first_name, um_user.middle_name, um_user.last_name), '<br>',  '(', um_user.user_name, ')' ) as \"user\"\n" +
                 "\tfrom medplat_form_master \n" +
                 "\tinner join medplat_form_version_history on medplat_form_master.uuid = medplat_form_version_history.form_master_uuid \n" +
-                "\tinner join um_user on um_user.id = medplat_form_version_history.modified_by \n" +
+//                "\tinner join um_user on um_user.id = medplat_form_version_history.modified_by \n" +
                 "\twhere medplat_form_master.state = 'ACTIVE' and medplat_form_version_history.version = 'DRAFT'\n" +
                 ") select * from latest_modified_data inner join forms_data on latest_modified_data.uuid2 = forms_data.uuid ";
 
@@ -67,7 +67,7 @@ public class MedplatFormMasterDaoImpl extends GenericDaoImpl<MedplatFormMaster, 
                 .addScalar("menuName", StandardBasicTypes.STRING)
                 .addScalar("availableVersion", StandardBasicTypes.STRING)
                 .addScalar("description", StandardBasicTypes.STRING)
-                .addScalar("user", StandardBasicTypes.STRING)
+//                .addScalar("user", StandardBasicTypes.STRING)
                 .addScalar("modified_by", StandardBasicTypes.INTEGER)
                 .addScalar("modified_on", StandardBasicTypes.DATE)
                 .setResultTransformer(Transformers.aliasToBean(MedplatFormMasterDto.class));

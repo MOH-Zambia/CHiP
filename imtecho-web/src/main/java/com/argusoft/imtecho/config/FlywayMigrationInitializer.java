@@ -16,7 +16,7 @@ public class FlywayMigrationInitializer {
 
     public void migrate() {
         String scriptLocation = "db/migration2";
-        String implLocation = "db/" + ConstantUtil.IMPLEMENTATION_TYPE + File.separator;
+        String implLocation = "db/" + ConstantUtil.IMPLEMENTATION_TYPE + "/";
         Flyway flyway = Flyway.configure()
                 .locations(scriptLocation, implLocation)
                 .baselineOnMigrate(Boolean.TRUE)
