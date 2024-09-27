@@ -147,7 +147,7 @@ debug {
 }
 ```
 
-4.Run the Project
+4. Run the Project
 After resolving the dependencies, you can run the project using the Run button in Android Studio. Make sure your Android device or emulator is connected and set up properly.
 
 
