@@ -204,7 +204,7 @@ public class Application extends SpringBootServletInitializer {
 
         if (ConstantUtil.IMPLEMENTATION_TYPE.equals(ConstantUtil.TELANGANA_IMPLEMENTATION)
             || ConstantUtil.IMPLEMENTATION_TYPE.equals(ConstantUtil.MEDPLAT_IMPLEMENTATION)) {
-            inputStream = new ClassPathResource("telangana-firebase-service-account.json").getInputStream();
+            inputStream = new ClassPathResource("").getInputStream();
             GoogleCredentials googleCredentials = GoogleCredentials
                     .fromStream(inputStream);
             FirebaseOptions firebaseOptions = FirebaseOptions

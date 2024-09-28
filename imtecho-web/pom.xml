@@ -521,7 +521,7 @@
                 <server.implementation.type>chip</server.implementation.type>
 
                 <jdbc.url>localhost</jdbc.url>
-                <jdbc.database>CHiP</jdbc.database>
+                <jdbc.database>chip_prod_backup</jdbc.database>
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>argusadmin</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
@@ -532,7 +532,7 @@
                 <hibernate.formatsql>true</hibernate.formatsql>
                 <spring.resourceslocation>file:../</spring.resourceslocation>
 
-                <repository.path>/home/shrinivasana/Repository/</repository.path>
+                <repository.path>/home/utkarsh/Repository/</repository.path>
                 <firebasejson.path>/home/kunjan/Firebase/</firebasejson.path>
 
                 <email.server>smtp.gmail.com</email.server>
@@ -540,7 +540,7 @@
                 <email.userName>no-reply@infodocrx.com</email.userName>
                 <email.password>testing123_delete</email.password>
                 <email.from>no-reply@infodocrx.com</email.from>
-                <email.replyTo>hshah@argusoft.com</email.replyTo>
+                <email.replyTo>abcd@gmail.com</email.replyTo>
                 <email.isSecure>true</email.isSecure>
 
                 <ssl.keystore.enable>false</ssl.keystore.enable>
@@ -552,7 +552,6 @@
 
                 <rch.data.push.cron.job>false</rch.data.push.cron.job>
 
-                <ibm.access.key>WXI-fgndQ07mYNqMEHcTC5CnqZvqfxy2IjgD-4fgY9z5</ibm.access.key>
 
             </properties>
             <activation>
@@ -594,7 +593,7 @@
                 <email.userName>no-reply@infodocrx.com</email.userName>
                 <email.password>testing123</email.password>
                 <email.from>no-reply@infodocrx.com</email.from>
-                <email.replyTo>hshah@argusoft.com</email.replyTo>
+                <email.replyTo>abcd@gmail.com</email.replyTo>
                 <email.isSecure>true</email.isSecure>
 
                 <ssl.keystore.enable>true</ssl.keystore.enable>
@@ -644,7 +643,7 @@
                 <email.userName>no-reply@infodocrx.com</email.userName>
                 <email.password>testing123</email.password>
                 <email.from>no-reply@infodocrx.com</email.from>
-                <email.replyTo>hshah@argusoft.com</email.replyTo>
+                <email.replyTo>abcd@gmail.com</email.replyTo>
                 <email.isSecure>true</email.isSecure>
 
                 <ssl.keystore.enable>false</ssl.keystore.enable>
@@ -694,7 +693,7 @@
                 <email.userName>no-reply@infodocrx.com</email.userName>
                 <email.password>testing123</email.password>
                 <email.from>no-reply@infodocrx.com</email.from>
-                <email.replyTo>hshah@argusoft.com</email.replyTo>
+                <email.replyTo>abcd@gmail.com</email.replyTo>
                 <email.isSecure>true</email.isSecure>
 
                 <ssl.keystore.enable>true</ssl.keystore.enable>
@@ -744,7 +743,7 @@
                 <email.userName>no-reply@infodocrx.com</email.userName>
                 <email.password>testing123</email.password>
                 <email.from>no-reply@infodocrx.com</email.from>
-                <email.replyTo>hshah@argusoft.com</email.replyTo>
+                <email.replyTo>abcd@gmail.com</email.replyTo>
                 <email.isSecure>true</email.isSecure>
 
                 <ssl.keystore.enable>false</ssl.keystore.enable>
