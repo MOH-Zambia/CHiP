@@ -12,6 +12,7 @@ Make sure you have the following tools installed on your machine before starting
   - [DBeaver](https://dbeaver.io/download/)
 - [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) (IDE)
+- [Android Studio](https://developer.android.com/studio?gad_source=1&gclid=Cj0KCQjwr9m3BhDHARIsANut04YAW9aT0Oz_aZHbFckuJ3Tcy766nX7RPRIOPdWhGpdjk_x_uMRuSnwaAj0rEALw_wcB&gclsrc=aw.ds) (IDE)
 
 ## Steps to Set Up the Project
 
