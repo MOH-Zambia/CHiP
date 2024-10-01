@@ -236,6 +236,8 @@
             'mark-as-lfu.modal.controller': ['app/manage/membermigration/controllers/mark-as-lfu.modal.controller.js'],
             'facility-performance.controller': ['app/manage/facilitydataentry/facilityperformance/controllers/facility-performance.controller.js'],
             'facility-performance-dynamic.controller': ['app/manage/facilitydataentry/facilityperformance/dynamic/controllers/facility-performance.controller.js'],
+            'manage-health-infrastructure-type.controller': ['app/manage/healthfacilitymapping/controllers/manage-health-infrastructure-type.controller.js'],
+            'update-health-infrastructure-mapping.controller': ["app/manage/healthfacilitymapping/controllers/update-health-infrastructure-mapping.modal.controller.js"],
             'facility-performance.service': ['app/manage/facilitydataentry/facilityperformance/services/facility-performance.service.js'],
             'mobile-management.controller': ["app/manage/mobileManagement/controllers/mobile-management.controller.js"],
             'mobile-library.controller': ['app/manage/mobilelibrary/controllers/mobile-library.controller.js'],
