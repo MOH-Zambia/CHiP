@@ -75,7 +75,7 @@
                 queryCode : 'fhw_anc'
             },
             {
-                formCode: 'FHW_PNC',
+                formCode: 'RCH_FACILITY_PNC',
                 queryCode: 'fhw_pnc'
             },
             {
