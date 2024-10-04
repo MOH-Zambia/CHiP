@@ -31,20 +31,6 @@
             });
         };
 
-        $ctrl.getAllTeams = function () {
-            Mask.show();
-            QueryDAO.execute({
-                code: "team_all_types_for_roles",
-                parameters: {
-                }
-            }).then(function (res) {
-                $ctrl.teamTypes = res.result;
-            }).finally(function () {
-                Mask.hide();
-
-            });
-        };
-
         $ctrl.getAllInfrastructureType = function () {
             Mask.show();
             QueryDAO.execute({
@@ -108,7 +94,6 @@
         };
 
         $ctrl.getManagedRoles();
-        $ctrl.getAllTeams();
         $ctrl.getLocationTypes();
         $ctrl.getAllInfrastructureType();
         $ctrl.getAllCategory();
