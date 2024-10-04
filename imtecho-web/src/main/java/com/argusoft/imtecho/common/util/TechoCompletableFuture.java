@@ -19,14 +19,14 @@ public class TechoCompletableFuture {
 
     static {
         mobileGetDetailThreadPool = new ThreadPoolTaskExecutor();
-        mobileGetDetailThreadPool.setCorePoolSize(100);
-        mobileGetDetailThreadPool.setMaxPoolSize(150);
+        mobileGetDetailThreadPool.setCorePoolSize(10);
+        mobileGetDetailThreadPool.setMaxPoolSize(15);
         mobileGetDetailThreadPool.setKeepAliveSeconds(1000 * 60);
         mobileGetDetailThreadPool.initialize();
 
         mobileGetDetailAshaThreadPool = new ThreadPoolTaskExecutor();
-        mobileGetDetailAshaThreadPool.setCorePoolSize(25);
-        mobileGetDetailAshaThreadPool.setMaxPoolSize(50);
+        mobileGetDetailAshaThreadPool.setCorePoolSize(10);
+        mobileGetDetailAshaThreadPool.setMaxPoolSize(15);
         mobileGetDetailAshaThreadPool.setKeepAliveSeconds(1000 * 60);
         mobileGetDetailAshaThreadPool.initialize();
     }

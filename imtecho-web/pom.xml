@@ -674,8 +674,8 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>300</jdbc.maxActiveConnection>
-                <jdbc.maxPoolSize>3000</jdbc.maxPoolSize>
+                <jdbc.maxActiveConnection>30</jdbc.maxActiveConnection>
+                <jdbc.maxPoolSize>200</jdbc.maxPoolSize>
 
                 <repository.path>/home/pathserver1/Repository/</repository.path>
                 <firebasejson.path>/home/pathserver1/Firebase/</firebasejson.path>
@@ -724,8 +724,8 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>300</jdbc.maxActiveConnection>
-                <jdbc.maxPoolSize>3000</jdbc.maxPoolSize>
+                <jdbc.maxActiveConnection>30</jdbc.maxActiveConnection>
+                <jdbc.maxPoolSize>200</jdbc.maxPoolSize>
 
                 <repository.path>/home/pathserver2/Repository/</repository.path>
                 <firebasejson.path>/home/pathserver2/Firebase/</firebasejson.path>

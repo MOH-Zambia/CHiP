@@ -15,7 +15,7 @@
         };
 
         locationTypeCtrl.onAddEditClick = (id) => {
-            $state.go('techo.manage.managelocationtypedynamic', { id });
+            $state.go('techo.manage.managelocationtype', { id });
         };
 
         locationTypeCtrl.togglelocationType = (locationType) => {
