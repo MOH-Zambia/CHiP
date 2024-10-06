@@ -24,6 +24,7 @@ public class HouseHoldLineListMobileMapper {
         familyEntity.setTypeOfToilet(houseHoldLineListMobileDto.getHouseNumber() != null ? houseHoldLineListMobileDto.getHouseNumber() : familyEntity.getHouseNumber());
         familyEntity.setHandwashAvailable(houseHoldLineListMobileDto.getHandWashAvailable() != null ? houseHoldLineListMobileDto.getHandWashAvailable() : familyEntity.getHandwashAvailable());
         familyEntity.setWasteDisposalAvailable(houseHoldLineListMobileDto.getIsWasteDisposalAvailable() != null ? houseHoldLineListMobileDto.getIsWasteDisposalAvailable() : familyEntity.getWasteDisposalAvailable());
+        familyEntity.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? convertSetToCommaSeparatedString(houseHoldLineListMobileDto.getWasteDisposalType()) : familyEntity.getWasteDisposalMethod());
         familyEntity.setOtherWasteDisposal(houseHoldLineListMobileDto.getOtherWasteDisposalType() != null ? houseHoldLineListMobileDto.getOtherWasteDisposalType() : familyEntity.getOtherWasteDisposal());
         familyEntity.setWaterSafetyMeetsStandard(houseHoldLineListMobileDto.getIsWaterSafe() != null ? houseHoldLineListMobileDto.getIsWaterSafe() : familyEntity.getWaterSafetyMeetsStandard());
         familyEntity.setDrinkingWaterSource(houseHoldLineListMobileDto.getWaterSource() != null ? houseHoldLineListMobileDto.getWaterSource() : familyEntity.getDrinkingWaterSource());
@@ -115,16 +116,18 @@ public class HouseHoldLineListMobileMapper {
     public static String convertSetToCommaSeparatedString(String[] array) {
         StringBuilder result = new StringBuilder();
 
-        if (array.length > 0) {
-            result.append(array[0]);
-
-            for (int i = 1; i < array.length; i++) {
-                result.append(",").append(array[i]);
+        for (String s : array) {
+            if (!"OTHER".equals(s) && !"NONE".equals(s)) {
+                if (!result.isEmpty()) {
+                    result.append(",");
+                }
+                result.append(s);
             }
         }
 
         return result.toString();
     }
+
 
     private static String checkGenderFromNumber(String gender) {
         return switch (gender) {
