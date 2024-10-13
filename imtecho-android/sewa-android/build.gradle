@@ -40,8 +40,8 @@ android {
         debug {
             shrinkResources false
             minifyEnabled false
-            buildConfigField "String", 'BASE_URL', "\"http://192.1.150.30:8181/\""
-            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.1.150.30:8181/\""
+            buildConfigField "String", 'BASE_URL', "\"https://chip.moh.gov.zm/\""
+            buildConfigField "String", 'BASE_URL_TRAINING',"\"https://chip.moh.gov.zm/\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -66,9 +66,9 @@ android {
             applicationId "com.argusoft.chip.android.app"
             minSdkVersion 21
             targetSdkVersion 32
-            versionCode 128
-            versionName "1.0.28"
-            buildConfigField 'String', 'RELEASE_DATE', "\"7th October 2024\""
+            versionCode 129
+            versionName "1.0.29"
+            buildConfigField 'String', 'RELEASE_DATE', "\"13th October 2024\""
             buildConfigField 'String', 'DB_NAME', "\"chip_final.db\""
             buildConfigField 'String', 'APK_NAME', "\"chip_app\""
             buildConfigField 'int', 'DATABASE_VERSION', "17"

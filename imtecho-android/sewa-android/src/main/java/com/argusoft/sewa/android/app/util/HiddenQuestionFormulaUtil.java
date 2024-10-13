@@ -2140,12 +2140,13 @@ public class HiddenQuestionFormulaUtil {
         //For adding female married members
         // Marital Status code for MARRIED is 629 and for WIDOW is 641 in DB. Needs to change if changed in DB
         if (gender != null && gender.equals("2")) {
-            if (maritalStatus != null && (maritalStatus.equals("629"))) {
+            if (maritalStatus != null/* && (maritalStatus.equals("629"))*/) {
                 Objects.requireNonNull(femaleMarriedMembers).add(loopCounter);
 
-                if (SharedStructureData.relatedPropertyHashTable.get(
-                        UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.HUSBAND_ID, queFormBean.getLoopCounter())) == null
-                        && (relationWithHof != null && !relationWithHof.equalsIgnoreCase("WIFE"))) {
+                if (SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.HUSBAND_ID, queFormBean.getLoopCounter())) == null
+                        && (relationWithHof != null && !relationWithHof.equalsIgnoreCase("WIFE"))
+                        && UtilBean.calculateAge(new Date(Long.parseLong(Objects.requireNonNull(SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.DOB, queFormBean.getLoopCounter())))))) > 15
+                        && maritalStatus.equals("629")) {
                     Objects.requireNonNull(wifeMembers).add(loopCounter);
                 } else if (Objects.requireNonNull(wifeMembers).contains(loopCounter)) {
                     wifeMembers.remove(loopCounter);
@@ -2209,82 +2210,95 @@ public class HiddenQuestionFormulaUtil {
         editor.putStringSet(key, members);
     }
 
-    public static void checkIfAnyChildExisits(QueFormBean queFormBean) {
+    public static void checkIfAnyChildExists(QueFormBean queFormBean) {
         removeMemberCountForRemovedMember();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SharedStructureData.context);
+
         Set<String> femaleMarriedMembers = sharedPreferences.getStringSet(RelatedPropertyNameConstants.LOOP_COUNTER_FOR_FEMALE_MARRIED_MEMBERS, null);
         Set<String> membersUnderTwenty = sharedPreferences.getStringSet(RelatedPropertyNameConstants.LOOP_COUNTER_FOR_ALIVE_MEMBERS, null);
 
-        if (membersUnderTwenty != null && !membersUnderTwenty.isEmpty()
-                && femaleMarriedMembers != null && !femaleMarriedMembers.isEmpty()) {
+        if (membersUnderTwenty != null && !membersUnderTwenty.isEmpty() &&
+                femaleMarriedMembers != null && !femaleMarriedMembers.isEmpty()) {
 
-            String counter;
-            String motherCounter;
+            Calendar calendar = Calendar.getInstance();
+
             for (String loopCounter : membersUnderTwenty) {
-                counter = loopCounter;
-                if (counter.equals("0")) {
-                    counter = "";
-                }
+                String counter = loopCounter.equals("0") ? "" : loopCounter;
 
+                // Get dob of the child
                 String dob = SharedStructureData.relatedPropertyHashTable.get("dob" + counter);
+                if (dob == null) continue;
 
-                if (dob != null) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(Long.parseLong(dob));
-                    calendar.add(Calendar.YEAR, -12);
+                // Calculate the date 15 years before this member's birthdate
+                calendar.setTimeInMillis(Long.parseLong(dob));
+                calendar.add(Calendar.YEAR, -12);
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                long dateBefore12Years = calendar.getTimeInMillis();
+
+                for (String motherLoopCounter : femaleMarriedMembers) {
+                    if (loopCounter.equals(motherLoopCounter)) continue;
+
+                    String motherCounter = motherLoopCounter.equals("0") ? "" : motherLoopCounter;
+
+                    // Get hofDob and dob of the mother. If hofDob is present, use it, otherwise use dob.
+                    String motherDob = SharedStructureData.relatedPropertyHashTable.get("hofDob" + motherCounter);
+                    if (motherDob == null) {
+                        // If no hofDob, use dob
+                        motherDob = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.DOB + motherCounter);
+                    }
+
+                    if (motherDob == null) continue;
+
+                    // Check if the mother's dob (or hofDob) is more than 15 years before the child's dob
+                    calendar.setTimeInMillis(Long.parseLong(motherDob));
                     calendar.set(Calendar.HOUR_OF_DAY, 0);
                     calendar.set(Calendar.MINUTE, 0);
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
-                    long dateBefore12years = calendar.getTime().getTime();
 
-                    for (String motherLoopCounter : femaleMarriedMembers) {
-                        if (loopCounter.equals(motherLoopCounter)) {
-                            continue;
-                        }
-
-                        motherCounter = motherLoopCounter;
-                        if (motherLoopCounter.equals("0")) {
-                            motherCounter = "";
-                        }
-
-                        dob = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.DOB + motherCounter);
-                        if (dob != null) {
-                            calendar.setTimeInMillis(Long.parseLong(dob));
-                            calendar.set(Calendar.HOUR_OF_DAY, 0);
-                            calendar.set(Calendar.MINUTE, 0);
-                            calendar.set(Calendar.SECOND, 0);
-                            calendar.set(Calendar.MILLISECOND, 0);
-                            if (calendar.getTimeInMillis() <= dateBefore12years) {
-                                queFormBean.setAnswer(queFormBean.getOptions().get(0).getKey());
-                                queFormBean.setNext(queFormBean.getOptions().get(0).getNext());
-                                QueFormBean next = SharedStructureData.mapIndexQuestion.get(Integer.valueOf(queFormBean.getNext()));
-                                if (next != null) {
-                                    LinearLayout motherChildRelationshipView = MyStaticComponents.getLinearLayout(SharedStructureData.context, 10001, LinearLayout.VERTICAL, null);
-                                    motherChildRelationshipView.addView(MyStaticComponents.generateQuestionView(null, null, SharedStructureData.context, next.getQuestion()));
-                                    motherChildRelationshipView.addView(MyDynamicComponents.getMotherChildRelationshipView(SharedStructureData.context, next));
-                                    next.setQuestionTypeView(motherChildRelationshipView);
-                                    next.setQuestionUIFrame(motherChildRelationshipView);
-                                    PageFormBean pageFormBean = SharedStructureData.mapIndexPage.get(Integer.valueOf(next.getPage()));
-                                    if (pageFormBean != null) {
-                                        LinearLayout pageLayout = pageFormBean.getPageLayout(true, 0);
-                                        if (pageLayout != null) {
-                                            pageLayout.removeAllViews();
-                                            pageLayout.addView(motherChildRelationshipView);
-                                        }
-                                    }
-                                }
-                                return;
-                            }
-                        }
+                    if (calendar.getTimeInMillis() <= dateBefore12Years) {
+                        // If condition matches, set the answer and proceed
+                        queFormBean.setAnswer(queFormBean.getOptions().get(0).getKey());
+                        queFormBean.setNext(queFormBean.getOptions().get(0).getNext());
+                        displayMotherChildRelationshipView(queFormBean);
+                        return;
                     }
                 }
             }
         }
 
+        // If no condition matches, set the alternate answer
         queFormBean.setAnswer(queFormBean.getOptions().get(1).getKey());
         queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
     }
+
+    private static void displayMotherChildRelationshipView(QueFormBean queFormBean) {
+        QueFormBean next = SharedStructureData.mapIndexQuestion.get(Integer.valueOf(queFormBean.getNext()));
+        if (next != null) {
+            LinearLayout motherChildRelationshipView = MyStaticComponents.getLinearLayout(
+                    SharedStructureData.context, 10001, LinearLayout.VERTICAL, null);
+            motherChildRelationshipView.addView(
+                    MyStaticComponents.generateQuestionView(null, null, SharedStructureData.context, next.getQuestion()));
+            motherChildRelationshipView.addView(
+                    MyDynamicComponents.getMotherChildRelationshipView(SharedStructureData.context, next));
+
+            next.setQuestionTypeView(motherChildRelationshipView);
+            next.setQuestionUIFrame(motherChildRelationshipView);
+
+            PageFormBean pageFormBean = SharedStructureData.mapIndexPage.get(Integer.valueOf(next.getPage()));
+            if (pageFormBean != null) {
+                LinearLayout pageLayout = pageFormBean.getPageLayout(true, 0);
+                if (pageLayout != null) {
+                    pageLayout.removeAllViews();
+                    pageLayout.addView(motherChildRelationshipView);
+                }
+            }
+        }
+    }
+
 
     public static void checkIfAnyFemaleMarriedMembersExists(QueFormBean queFormBean) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SharedStructureData.context);
@@ -2548,9 +2562,10 @@ public class HiddenQuestionFormulaUtil {
         if (nextQuestionId != null) {
             List<MemberDataBean> memberDataBeans = SharedStructureData.sewaFhsService.retrieveMemberDataBeansExceptArchivedAndDeadByFamilyId(SharedStructureData.currentFamilyDataBean.getFamilyId());
             for (MemberDataBean memberDataBean : memberDataBeans) {
-                if (memberDataBean.getGender() != null && memberDataBean.getGender().equalsIgnoreCase("F")
-                        && memberDataBean.getMaritalStatus() != null
-                        && (memberDataBean.getMaritalStatus().equals("629") || memberDataBean.getMaritalStatus().equals("641"))) {
+                if (memberDataBean.getGender() != null
+                        && memberDataBean.getGender().equalsIgnoreCase("F")
+                        /*&& memberDataBean.getMaritalStatus() != null
+                        && (memberDataBean.getMaritalStatus().equals("629") || memberDataBean.getMaritalStatus().equals("641")*/) {
                     mothers.add(memberDataBean);
                 }
             }

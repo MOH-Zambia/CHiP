@@ -1742,40 +1742,54 @@ public class ValidationFormulaUtil {
         }
         String medicineConstant = split[1];
         String type = split[2];
-        if (SharedStructureData.relatedPropertyHashTable.get(medicineConstant) == null) {
+
+        // Check if the medicineConstant exists in the hash table, or if it is Albendazole
+        if (SharedStructureData.relatedPropertyHashTable.get(medicineConstant) == null
+                && !answer.equalsIgnoreCase("0")) {
             if (medicineConstant.equalsIgnoreCase(LabelConstants.ALBENDAZOLE)) {
                 return null;
             }
             return UtilBean.getMyLabel(validation.getMessage());
         }
+
         if (!SharedStructureData.relatedPropertyHashTable.containsKey(medicineConstant)) {
             return null;
         }
+
         String medicine = SharedStructureData.relatedPropertyHashTable.get(medicineConstant);
         int tabletAmount = 0;
+
+        // Parse the medicine amount, if it exists
         if (medicine.matches("\\d+")) {
             tabletAmount = Integer.parseInt(medicine);
         } else if (SharedStructureData.relatedPropertyHashTable.containsKey(medicine)) {
             tabletAmount = Integer.parseInt(SharedStructureData.relatedPropertyHashTable.get(medicine));
         }
+
         switch (type) {
             case LabelConstants.DATE_FOR_MEDICINE:
-                if (tabletAmount == 0) {
+                if (tabletAmount == 0 && !answer.equalsIgnoreCase("0")) {
                     return UtilBean.getMyLabel(validation.getMessage());
                 }
                 return null;
+
             case LabelConstants.NUMBER:
-                if (Integer.parseInt(answer) > tabletAmount) {
+                // Allow if answer is 0 or answer <= tabletAmount
+                if (Integer.parseInt(answer) > tabletAmount && !answer.equals("0")) {
                     return UtilBean.getMyLabel(validation.getMessage());
                 }
                 return null;
+
             case LabelConstants.BOOL:
+                // Allow when answer is 0 or tabletAmount > 0
                 if (answer.equalsIgnoreCase("1") && tabletAmount == 0) {
                     return UtilBean.getMyLabel(validation.getMessage());
                 }
                 return null;
+
             case LabelConstants.LIST:
-                if (!answer.equalsIgnoreCase("NONE") && tabletAmount == 0) {
+                // Allow when answer is NONE or tabletAmount > 0
+                if (!answer.equalsIgnoreCase("NONE") && tabletAmount == 0 && !answer.equals("0")) {
                     return UtilBean.getMyLabel(validation.getMessage());
                 }
         }

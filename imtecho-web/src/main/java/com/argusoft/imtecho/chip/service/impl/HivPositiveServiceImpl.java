@@ -685,7 +685,7 @@ public class HivPositiveServiceImpl implements HivPositiveService {
                 case "7513":
                     hivScreeningEntity.setServiceDate(new Date(Long.parseLong(answer)));
                     break;
-                case "7", "17", "114", "99":
+                case "7", "17", "99":
                     hivScreeningEntity.setHivTestResult(ImtechoUtil.returnTrueFalseFromInitials(answer));
                     break;
                 case "8":

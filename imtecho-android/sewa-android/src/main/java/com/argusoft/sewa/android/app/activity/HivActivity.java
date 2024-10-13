@@ -271,6 +271,7 @@ public class HivActivity extends MenuActivity implements View.OnClickListener, P
                 UtilBean.getMyLabel("Select form filling type"),
                 myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR", null);
         alertDialog.show();
+        hideProcessDialog();
     }
 
     private void startOCRActivity(final String formType, MemberDataBean memberDataBean) {

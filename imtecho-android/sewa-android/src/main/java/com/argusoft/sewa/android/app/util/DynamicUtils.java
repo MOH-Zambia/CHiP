@@ -580,7 +580,7 @@ public class DynamicUtils {
                             HiddenQuestionFormulaUtil.checkAgeLessThan20(queFormBean);
                             break;
                         case FormulaConstants.FORMULA_CHECK_IF_ANY_CHILD_EXISIS:
-                            HiddenQuestionFormulaUtil.checkIfAnyChildExisits(queFormBean);
+                            HiddenQuestionFormulaUtil.checkIfAnyChildExists(queFormBean);
                             break;
                         case FormulaConstants.FORMULA_CHECK_IF_ANY_FEMALE_MARRIED_MEMBER_EXISIS:
                             HiddenQuestionFormulaUtil.checkIfAnyFemaleMarriedMembersExists(queFormBean);

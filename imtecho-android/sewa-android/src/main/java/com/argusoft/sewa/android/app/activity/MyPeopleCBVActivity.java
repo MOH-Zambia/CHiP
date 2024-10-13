@@ -690,6 +690,8 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 UtilBean.getMyLabel("Select form filling type"),
                 myListener, DynamicUtils.BUTTON_YES_NO, "Manual", "OCR", null);
         alertDialog.show();
+
+        hideProcessDialog();
     }
 
     @UiThread
@@ -2063,19 +2065,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
 
         bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, this, LabelConstants.MARITAL_STATUS));
         bodyLayoutContainer.addView(MyStaticComponents.generateAnswerView(this, UtilBean.getNotAvailableIfNull(fhsService.getValueOfListValuesById(memberSelected.getMaritalStatus()))));
-
-        bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, this, LabelConstants.JSY_BENEFICIARY));
-        bodyLayoutContainer.addView(MyStaticComponents.generateAnswerView(this,
-                UtilBean.getMyLabel(UtilBean.returnYesNoNotAvailableFromBoolean(memberSelected.getJsyBeneficiary()))));
-
-        bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, this, LabelConstants.KPSY_BENEFICIARY));
-        bodyLayoutContainer.addView(MyStaticComponents.generateAnswerView(this,
-                UtilBean.getMyLabel(UtilBean.returnYesNoNotAvailableFromBoolean(memberSelected.getKpsyBeneficiary()))));
-
-
-        bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, this, LabelConstants.IAY_BENEFICIARY));
-        bodyLayoutContainer.addView(MyStaticComponents.generateAnswerView(this,
-                UtilBean.getMyLabel(UtilBean.returnYesNoNotAvailableFromBoolean(memberSelected.getIayBeneficiary()))));
     }
 
     private void addPreviousPregnancyDetailsRchRegister() {

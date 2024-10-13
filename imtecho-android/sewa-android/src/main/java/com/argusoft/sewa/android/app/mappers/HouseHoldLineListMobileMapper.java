@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HouseHoldLineListMobileMapper {
     public HouseHoldLineListMobileMapper() {
@@ -173,8 +174,11 @@ public class HouseHoldLineListMobileMapper {
 
         //only update following info if member is getting registered for the first time
         if (!isFromUpdate) {
-            if (SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID) != null && !SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID).equalsIgnoreCase("NOT_AVAILABLE")) {
-                memberBean.setMotherId(Long.valueOf(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID)));
+            if (SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID) != null
+                    && !"NOT_AVAILABLE".equalsIgnoreCase(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID))
+                    && !"null".equalsIgnoreCase(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID))
+            ) {
+                memberBean.setMotherId(Long.valueOf(Objects.requireNonNull(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ID))));
             }
             memberBean.setGender(member.getGender() != null ? checkGenderFromNumber(member.getGender()) : memberBean.getGender());
             memberBean.setDob(member.getDob() != null ? new Date(member.getDob()) : memberBean.getDob());

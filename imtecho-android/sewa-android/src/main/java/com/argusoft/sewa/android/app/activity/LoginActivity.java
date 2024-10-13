@@ -57,6 +57,8 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author kelvin
@@ -110,19 +112,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void setUpViewContent() {
-        if (GlobalTypes.FLAVOUR_UTTARAKHAND.equals(BuildConfig.FLAVOR)) {
-            setContentView(R.layout.activity_login_uttarakhand);
-        } else if (GlobalTypes.FLAVOUR_DNHDD.equals(BuildConfig.FLAVOR)) {
-            setContentView(R.layout.activity_login_dnhdd);
-        } else if (GlobalTypes.FLAVOUR_TELANGANA.equals(BuildConfig.FLAVOR)) {
-            setContentView(R.layout.activity_login_telangana);
-        } else if (GlobalTypes.FLAVOUR_CHIP.equals(BuildConfig.FLAVOR)) {
-            setContentView(R.layout.activity_login_chip);
-        }  else if (GlobalTypes.FLAVOUR_IMOMCARE.equals(BuildConfig.FLAVOR)) {
-            setContentView(R.layout.activity_login_imomcare);
-        } else {
-            setContentView(R.layout.activity_login_medplat);
-        }
+        setContentView(R.layout.activity_login_chip);
     }
 
     @UiThread
@@ -376,7 +366,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         cbRememberMe = findViewById(R.id.cbRememberMe);
         loginButton = findViewById(R.id.loginButton);
         TextView textView = findViewById(R.id.versionView);
-        String version = "v. " + BuildConfig.VERSION_NAME;
+        String version = "v. " + BuildConfig.VERSION_NAME + " [ "+printHostOrIp(BuildConfig.BASE_URL)+" ]";
         textView.setText(version);
         loginButton.setOnClickListener(this);
         if (SewaTransformer.loginBean != null) {
@@ -393,6 +383,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+
+    public String printHostOrIp(String url) {
+        // Regex pattern to capture the hostname or IP
+        String regex = "^(https?://)?([a-zA-Z0-9.-]+)(:[0-9]+)?(/.*)?$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(url);
+
+        if (matcher.find()) {
+            String hostOrIp = matcher.group(2);  // Capture group 2 contains the host/IP
+            return hostOrIp;
+        } else {
+            return "";
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -443,7 +448,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String loginResponse = sewaService.validateUser(loginUsername, loginPassword, inProduction, cbRememberMe.isChecked());
                             onLoginComplete(loginResponse, inProduction);
                         } else {
-                            runOnUiThread(() ->{
+                            runOnUiThread(() -> {
                                 if (SharedStructureData.NETWORK_MESSAGE != null && SharedStructureData.NETWORK_MESSAGE.equalsIgnoreCase(SewaConstants.NETWORK_NOT_PROPER)) {
                                     SewaUtil.generateToast(this, LabelConstants.USER_SERVER_CHECKING_FAIL);
                                 } else {
