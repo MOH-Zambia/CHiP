@@ -285,6 +285,7 @@ public class AncServiceImpl implements AncService {
         if (keyAndAnswerMap.containsKey("8672") && keyAndAnswerMap.get("30").equalsIgnoreCase(RchConstants.MEMBER_STATUS_AVAILABLE)) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 ancVisit.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                ancVisit.setReferralInfraId(Integer.valueOf(keyAndAnswerMap.get("-20")));
             }
         }
 
@@ -303,8 +304,10 @@ public class AncServiceImpl implements AncService {
             if (ConstantUtil.IMPLEMENTATION_TYPE.equalsIgnoreCase("chip")) {
                 int ttVaccineId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.TT_VACCINE);
                 StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(user.getId()), ttVaccineId);
-                stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
-                stockInventoryDao.update(stockInventoryEntity);
+                if (stockInventoryEntity != null) {
+                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                    stockInventoryDao.update(stockInventoryEntity);
+                }
             }
             ImmunisationMaster immunisationMaster = new ImmunisationMaster(familyId, memberId, MobileConstantUtil.MOTHER_BENEFICIARY,
                     MobileConstantUtil.ANC_VISIT, ancVisit.getId(), Integer.valueOf(parsedRecordBean.getNotificationId()),
@@ -323,8 +326,11 @@ public class AncServiceImpl implements AncService {
             if (ConstantUtil.IMPLEMENTATION_TYPE.equalsIgnoreCase("chip")) {
                 int ttTwoVaccineId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.TT_TWO_VACCINE);
                 StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(user.getId()), ttTwoVaccineId);
-                stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
-                stockInventoryDao.update(stockInventoryEntity);
+                if (stockInventoryEntity != null) {
+                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                    stockInventoryDao.update(stockInventoryEntity);
+                }
+
             }
             ImmunisationMaster immunisationMaster = new ImmunisationMaster(familyId, memberId, MobileConstantUtil.MOTHER_BENEFICIARY,
                     MobileConstantUtil.ANC_VISIT, ancVisit.getId(), Integer.valueOf(parsedRecordBean.getNotificationId()),
@@ -343,8 +349,10 @@ public class AncServiceImpl implements AncService {
             if (ConstantUtil.IMPLEMENTATION_TYPE.equalsIgnoreCase("chip")) {
                 int ttOneVaccineId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.TT_ONE_VACCINE);
                 StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(user.getId()), ttOneVaccineId);
-                stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
-                stockInventoryDao.update(stockInventoryEntity);
+                if (stockInventoryEntity != null) {
+                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                    stockInventoryDao.update(stockInventoryEntity);
+                }
             }
             ImmunisationMaster immunisationMaster = new ImmunisationMaster(familyId, memberId, MobileConstantUtil.MOTHER_BENEFICIARY,
                     MobileConstantUtil.ANC_VISIT, ancVisit.getId(), Integer.valueOf(parsedRecordBean.getNotificationId()),
@@ -658,8 +666,10 @@ public class AncServiceImpl implements AncService {
                     if (listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.IFA) != null) {
                         int ifaId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.IFA);
                         StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(user), ifaId);
-                        stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + Integer.parseInt(answer.split("\\.")[0]));
-                        stockInventoryDao.update(stockInventoryEntity);
+                        if (stockInventoryEntity != null) {
+                            stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + Integer.parseInt(answer.split("\\.")[0]));
+                            stockInventoryDao.update(stockInventoryEntity);
+                        }
                     }
                 }
                 break;
@@ -669,8 +679,10 @@ public class AncServiceImpl implements AncService {
                     if (listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.FA) != null) {
                         int faId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.FA);
                         StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(user), faId);
-                        stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + Integer.parseInt(answer.split("\\.")[0]));
-                        stockInventoryDao.update(stockInventoryEntity);
+                        if (stockInventoryEntity != null) {
+                            stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + Integer.parseInt(answer.split("\\.")[0]));
+                            stockInventoryDao.update(stockInventoryEntity);
+                        }
                     }
                 }
                 break;
@@ -680,8 +692,10 @@ public class AncServiceImpl implements AncService {
                     if (listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.CALCIUM) != null) {
                         int calciumId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.CALCIUM);
                         StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(user), calciumId);
-                        stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + Integer.parseInt(answer.split("\\.")[0]));
-                        stockInventoryDao.update(stockInventoryEntity);
+                        if (stockInventoryEntity != null) {
+                            stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + Integer.parseInt(answer.split("\\.")[0]));
+                            stockInventoryDao.update(stockInventoryEntity);
+                        }
                     }
                 }
                 break;
@@ -739,8 +753,10 @@ public class AncServiceImpl implements AncService {
                         if (listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.ALBENDAZOLE) != null) {
                             int albendazoleId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.ALBENDAZOLE);
                             StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(user), albendazoleId);
-                            stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
-                            stockInventoryDao.update(stockInventoryEntity);
+                            if (stockInventoryEntity != null) {
+                                stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                                stockInventoryDao.update(stockInventoryEntity);
+                            }
                         }
                     }
                 }

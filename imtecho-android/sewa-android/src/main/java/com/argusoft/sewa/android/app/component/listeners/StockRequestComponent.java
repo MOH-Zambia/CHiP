@@ -70,10 +70,10 @@ public class StockRequestComponent extends LinearLayout {
         LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 5);
         textViewParams.setMargins(10, 0, 10, 0);
 
-        LinearLayout.LayoutParams textViewParams1 = new LinearLayout.LayoutParams(0, MATCH_PARENT, 2);
-        textViewParams.setMargins(10, 0, 10, 0);
+       /* LinearLayout.LayoutParams textViewParams1 = new LinearLayout.LayoutParams(0, MATCH_PARENT, 2);
+        textViewParams.setMargins(10, 0, 10, 0);*/
 
-        LinearLayout.LayoutParams inputTextParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 1.5f);
+        LinearLayout.LayoutParams inputTextParams = new LinearLayout.LayoutParams(0, MATCH_PARENT, 3.5f);
         inputTextParams.setMargins(10, 0, 10, 0);
         inputTextParams.gravity = Gravity.CENTER_VERTICAL;
 
@@ -155,9 +155,9 @@ public class StockRequestComponent extends LinearLayout {
                     throw new RuntimeException(e);
                 }
                 availableText.setTypeface(Typeface.DEFAULT_BOLD);
-                availableText.setLayoutParams(textViewParams1);
+               // availableText.setLayoutParams(textViewParams1);
                 availableText.setGravity(Gravity.CENTER_VERTICAL);
-                nameAndQuantity.addView(availableText);
+               // nameAndQuantity.addView(availableText);
 
                 qtyInputText.setGravity(Gravity.CENTER_VERTICAL);
                 nameAndQuantity.addView(qtyInputText);
@@ -213,18 +213,34 @@ public class StockRequestComponent extends LinearLayout {
 
     private boolean checkValidations() {
         answerMap.clear();
+
+        // Check if any medicines are selected
         if (stockMap.isEmpty()) {
             queFormBean.setMandatorymessage("Please select medicines to request for stock");
             return false;
         }
+
+        // Loop through each entry in stockMap
         for (Map.Entry<String, TextInputLayout> entry : stockMap.entrySet()) {
-            if (Objects.requireNonNull(entry.getValue().getEditText()).getText().toString().trim().isEmpty()) {
-                queFormBean.setMandatorymessage("Please enter quantity for " + SharedStructureData.sewaFhsService.getValueOfListValuesById(entry.getKey()));
+            String quantityString = Objects.requireNonNull(entry.getValue().getEditText())
+                    .getText().toString().trim();
+
+            // Check if the quantity is empty or zero
+            if (quantityString.isEmpty()) {
+                queFormBean.setMandatorymessage("Please enter quantity for " +
+                        SharedStructureData.sewaFhsService.getValueOfListValuesById(entry.getKey()));
+                return false;
+            } else if (quantityString.equals("0")) {
+                queFormBean.setMandatorymessage("Quantity cannot be 0 for " +
+                        SharedStructureData.sewaFhsService.getValueOfListValuesById(entry.getKey()));
                 return false;
             } else {
-                answerMap.put(entry.getKey(), entry.getValue().getEditText().getText().toString().trim());
+                // Add valid quantity to the answerMap
+                answerMap.put(entry.getKey(), quantityString);
             }
         }
-        return true;
+
+        return true; // All validations passed
     }
+
 }

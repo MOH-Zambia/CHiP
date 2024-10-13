@@ -2195,20 +2195,24 @@ public class SewaFhsServiceImpl implements SewaFhsService {
 
 
     @Override
-    public List<FamilyDataBean> retrieveFamilyDataBeansByAshaArea
-            (List<Integer> locationIds, Integer villageId, CharSequence searchString, long limit,
-             long offset, LinkedHashMap<String, String> qrData) {
+    public List<FamilyDataBean> retrieveFamilyDataBeansByAshaArea(
+            List<Integer> locationIds, Integer villageId, CharSequence searchString, long limit,
+            long offset, LinkedHashMap<String, String> qrData) {
+
         List<FamilyDataBean> familyDataBeans = new ArrayList<>();
 
+        // Override searchString if a QR scan was done
         if (Objects.equals(qrData.get(FieldNameConstants.IS_QR_SCAN), "true") &&
-                qrData.containsKey(FieldNameConstants.FAMILY_ID))
+                qrData.containsKey(FieldNameConstants.FAMILY_ID)) {
             searchString = qrData.get(FieldNameConstants.FAMILY_ID);
-        try {
-            List<FamilyBean> familyBeans;
+        }
 
-            if (locationIds != null && !locationIds.isEmpty()) {
-                QueryBuilder<MemberBean, Integer> memberQB = memberBeanDao.queryBuilder();
-                Where<MemberBean, Integer> where = memberQB.where();
+        try {
+            QueryBuilder<MemberBean, Integer> memberQB = memberBeanDao.queryBuilder();
+            Where<MemberBean, Integer> where = memberQB.where();
+
+            // Filter based on the searchString and inactive criteria
+            if (searchString != null && searchString.length() > 0) {
                 where.and(
                         where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
                         where.or(
@@ -2222,40 +2226,39 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                                 where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
                         )
                 );
-                familyBeans = familyBeanDao.queryBuilder().limit(limit).offset(offset)
-                        .join(FieldNameConstants.FAMILY_ID, FieldNameConstants.FAMILY_ID, memberQB).distinct().where()
-                        .in(FieldNameConstants.AREA_ID, locationIds)
-                        .and().in(FieldNameConstants.STATE, FhsConstants.FHS_ACTIVE_CRITERIA_FAMILY_STATES).query();
             } else {
-                QueryBuilder<MemberBean, Integer> memberQB = memberBeanDao.queryBuilder();
-                Where<MemberBean, Integer> where = memberQB.where();
-                where.and(
-                        where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
-                        where.or(
-                                where.like(FieldNameConstants.UNIQUE_HEALTH_ID, "%" + searchString + "%"),
-                                where.like(FieldNameConstants.FIRST_NAME, "%" + searchString + "%"),
-                                where.like(FieldNameConstants.MIDDLE_NAME, "%" + searchString + "%"),
-                                where.like(FieldNameConstants.LAST_NAME, "%" + searchString + "%"),
-                                where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),
-                                where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),
-                                where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),
-                                where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%")
-                        )
-                );
-                familyBeans = familyBeanDao.queryBuilder().limit(limit).offset(offset)
-                        .join(FieldNameConstants.FAMILY_ID, FieldNameConstants.FAMILY_ID, memberQB).distinct().where()
-                        .in(FieldNameConstants.AREA_ID, villageId)
-                        .and().in(FieldNameConstants.STATE, FhsConstants.FHS_ACTIVE_CRITERIA_FAMILY_STATES).query();
+                // If searchString is null or empty, just ensure inactive states are filtered out
+                where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES);
             }
 
+            // Prepare the familyBeans query based on locationIds or villageId
+            QueryBuilder<FamilyBean, Integer> familyQB = familyBeanDao.queryBuilder()
+                    .limit(limit).offset(offset)
+                    .join(FieldNameConstants.FAMILY_ID, FieldNameConstants.FAMILY_ID, memberQB).distinct();
+
+            // Filter based on locationIds or villageId
+            Where<FamilyBean, Integer> familyWhere = familyQB.where();
+            if (locationIds != null && !locationIds.isEmpty()) {
+                familyWhere.in(FieldNameConstants.AREA_ID, locationIds);
+            } else if (villageId != null) {
+                familyWhere.in(FieldNameConstants.AREA_ID, villageId);
+            }
+            familyWhere.and().in(FieldNameConstants.STATE, FhsConstants.FHS_ACTIVE_CRITERIA_FAMILY_STATES);
+
+            // Execute the query
+            List<FamilyBean> familyBeans = familyWhere.query();
+
+            // Map the familyBeans to familyDataBeans
             for (FamilyBean familyBean : familyBeans) {
                 familyDataBeans.add(new FamilyDataBean(familyBean, null));
             }
         } catch (SQLException e) {
             Log.e(TAG, null, e);
         }
+
         return familyDataBeans;
     }
+
 
     @Override
     public MemberBean retrieveMemberBeanByActualId(Long id) {

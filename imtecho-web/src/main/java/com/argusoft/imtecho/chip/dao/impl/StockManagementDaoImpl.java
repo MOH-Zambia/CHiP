@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,19 +71,25 @@ public class StockManagementDaoImpl extends GenericDaoImpl<StockManagementEntity
          
                     """.formatted(status, stockManagementDataBean.getApprovedQuantity(), healthInfraId, stockManagementDataBean.getReason(), stockManagementDataBean.getMedicineId(), stockManagementDataBean.getId());
 
-                StockInventoryEntity stockInventoryEntity = new StockInventoryEntity();
-                stockInventoryEntity.setRequestedBy(userId);
-                stockInventoryEntity.setMedicineId(stockManagementDataBean.getMedicineId());
-                stockInventoryEntity.setUsed(0);
-                stockInventoryEntity.setApprovedBy(healthInfraId);
-                stockInventoryEntity.setHealthInfraId(healthInfraId);
-                stockInventoryEntity.setMedicineStockAmount(stockManagementDataBean.getApprovedQuantity());
+                StockInventoryEntity stockInventoryEntity = getStockInventoryEntity(healthInfraId, userId, stockManagementDataBean);
                 stockInventoryDao.createOrUpdate(stockInventoryEntity);
             }
 
             NativeQuery<Integer> q = session.createNativeQuery(query);
             q.executeUpdate();
         }
+    }
+
+    @NotNull
+    private static StockInventoryEntity getStockInventoryEntity(Integer healthInfraId, Integer userId, StockManagementDataBean stockManagementDataBean) {
+        StockInventoryEntity stockInventoryEntity = new StockInventoryEntity();
+        stockInventoryEntity.setRequestedBy(userId);
+        stockInventoryEntity.setMedicineId(stockManagementDataBean.getMedicineId());
+        stockInventoryEntity.setUsed(0);
+        stockInventoryEntity.setApprovedBy(healthInfraId);
+        stockInventoryEntity.setHealthInfraId(healthInfraId);
+        stockInventoryEntity.setMedicineStockAmount(stockManagementDataBean.getApprovedQuantity());
+        return stockInventoryEntity;
     }
 
     public List<StockManagementDataBean> getStockManagementDataBeans(Long requestedBy, Boolean getApproved) {

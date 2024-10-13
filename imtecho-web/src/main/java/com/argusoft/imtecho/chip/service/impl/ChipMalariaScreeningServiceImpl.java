@@ -827,7 +827,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 investigationMaster.setSitePermanence(answer);
                 break;
             case "12":
-                if (answer.equalsIgnoreCase("NONE")){
+                if (answer.equalsIgnoreCase("NONE")) {
                     break;
                 }
                 if (answer.contains("OTHER")) {
@@ -839,7 +839,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 investigationMaster.setOtherSiteType(answer);
                 break;
             case "13":
-                if (answer.equalsIgnoreCase("NONE")){
+                if (answer.equalsIgnoreCase("NONE")) {
                     break;
                 }
                 if (answer.contains("OTHER")) {
@@ -851,7 +851,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 investigationMaster.setOtherRecommendedActions(answer);
                 break;
             case "14":
-                if (answer.equalsIgnoreCase("NONE")){
+                if (answer.equalsIgnoreCase("NONE")) {
                     break;
                 }
                 if (answer.contains("OTHER")) {
@@ -1053,18 +1053,24 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 if (answer.equalsIgnoreCase("AMD")) {
                     int amdId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.AMD);
                     StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(userMaster.getId()), amdId);
-                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
-                    stockInventoryDao.update(stockInventoryEntity);
+                    if (stockInventoryEntity != null) {
+                        stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                        stockInventoryDao.update(stockInventoryEntity);
+                    }
                 } else if (answer.equalsIgnoreCase("PAIN_KILLER")) {
                     int painKillerId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.PAIN_KILLER);
                     StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(userMaster.getId()), painKillerId);
-                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
-                    stockInventoryDao.update(stockInventoryEntity);
+                    if (stockInventoryEntity != null) {
+                        stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                        stockInventoryDao.update(stockInventoryEntity);
+                    }
                 } else if (answer.equalsIgnoreCase("ORS")) {
                     int orsId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.ORS);
                     StockInventoryEntity stockInventoryEntity = stockInventoryDao.retrieveByUserIdAndMedicineId(Long.valueOf(userMaster.getId()), orsId);
-                    stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
-                    stockInventoryDao.update(stockInventoryEntity);
+                    if (stockInventoryEntity != null) {
+                        stockInventoryEntity.setUsed(stockInventoryEntity.getUsed() + 1);
+                        stockInventoryDao.update(stockInventoryEntity);
+                    }
                 }
                 break;
             default:

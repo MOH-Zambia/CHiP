@@ -1699,136 +1699,129 @@ public class MyDynamicComponents {
 
         queFormBean.setAnswer(null);
 
-        if (membersUnderTwenty != null && !membersUnderTwenty.isEmpty()
-                && femaleMarriedMembers != null && !femaleMarriedMembers.isEmpty()) {
+        if (membersUnderTwenty != null && !membersUnderTwenty.isEmpty() &&
+                femaleMarriedMembers != null && !femaleMarriedMembers.isEmpty()) {
 
             String counter;
             String motherCounter;
             final Map<Integer, List<OptionTagBean>> motherOptionListMap = new HashMap<>();
+
             for (String loopCounter : membersUnderTwenty) {
-                counter = loopCounter;
-                if (counter.equals("0")) {
-                    counter = "";
-                }
+                counter = loopCounter.equals("0") ? "" : loopCounter;
 
                 String dob = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.DOB + counter);
+                if (dob == null) continue;
 
-                if (dob != null) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(Long.parseLong(dob));
-                    calendar.add(Calendar.YEAR, -12);
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
-                    long dateBefore12years = calendar.getTime().getTime();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(Long.parseLong(dob));
+                calendar.add(Calendar.YEAR, -12); // 12 years before the child's dob
+                long dateBefore12Years = calendar.getTimeInMillis();
 
-                    List<String> stringOptions = new ArrayList<>();
-                    List<OptionTagBean> motherOptions = new ArrayList<>();
-                    stringOptions.add(UtilBean.getMyLabel(GlobalTypes.SELECT));
-                    OptionTagBean select = new OptionTagBean();
-                    select.setKey("-2");
-                    select.setValue(UtilBean.getMyLabel(GlobalTypes.SELECT));
-                    motherOptions.add(select);
+                List<String> stringOptions = new ArrayList<>();
+                List<OptionTagBean> motherOptions = new ArrayList<>();
+                stringOptions.add(UtilBean.getMyLabel(GlobalTypes.SELECT));
+                OptionTagBean select = new OptionTagBean();
+                select.setKey("-2");
+                select.setValue(UtilBean.getMyLabel(GlobalTypes.SELECT));
+                motherOptions.add(select);
 
-                    for (String motherLoopCounter : femaleMarriedMembers) {
-                        if (loopCounter.equals(motherLoopCounter)) {
-                            continue;
-                        }
+                for (String motherLoopCounter : femaleMarriedMembers) {
+                    if (loopCounter.equals(motherLoopCounter)) continue;
 
-                        motherCounter = motherLoopCounter;
-                        if (motherLoopCounter.equals("0")) {
-                            motherCounter = "";
-                        }
+                    motherCounter = motherLoopCounter.equals("0") ? "" : motherLoopCounter;
 
-                        dob = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.DOB + motherCounter);
-                        if (dob != null) {
-                            calendar.setTimeInMillis(Long.parseLong(dob));
-                            calendar.set(Calendar.HOUR_OF_DAY, 0);
-                            calendar.set(Calendar.MINUTE, 0);
-                            calendar.set(Calendar.SECOND, 0);
-                            calendar.set(Calendar.MILLISECOND, 0);
-                            if (calendar.getTimeInMillis() <= dateBefore12years) {
-                                String motherName = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.FIRST_NAME + motherCounter)
-                                        + " " + SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.LAST_NAME + motherCounter);
-
-                                OptionTagBean option = new OptionTagBean();
-                                option.setKey(motherLoopCounter);
-                                option.setValue(motherName);
-                                motherOptions.add(option);
-                                stringOptions.add(UtilBean.getMyLabel(motherName));
-                            }
-                        }
+                    // Get hofDob and dob for the mother
+                    String motherDob = SharedStructureData.relatedPropertyHashTable.get("hofDob" + motherCounter);
+                    if (motherDob == null) {
+                        // If no hofDob is available, use dob
+                        motherDob = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.DOB + motherCounter);
                     }
 
-                    if (motherOptions.size() == 1) {
-                        continue;
+                    if (motherDob != null) {
+                        calendar.setTimeInMillis(Long.parseLong(motherDob));
+                        if (calendar.getTimeInMillis() <= dateBefore12Years) {
+                            String motherName = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.FIRST_NAME + motherCounter)
+                                    + " " + SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.LAST_NAME + motherCounter);
+
+                            OptionTagBean option = new OptionTagBean();
+                            option.setKey(motherLoopCounter);
+                            option.setValue(motherName);
+                            motherOptions.add(option);
+                            stringOptions.add(UtilBean.getMyLabel(motherName));
+                        }
                     }
-
-                    stringOptions.add(UtilBean.getMyLabel(LabelConstants.NOT_AVAILABLE));
-                    stringOptions.add(UtilBean.getMyLabel(LabelConstants.NOT_APPLICABLE));
-                    OptionTagBean option1 = new OptionTagBean();
-                    option1.setKey("-1");
-                    option1.setValue(UtilBean.getMyLabel(LabelConstants.NOT_AVAILABLE));
-                    OptionTagBean option2 = new OptionTagBean();
-                    option2.setKey("-1");
-                    option2.setValue(UtilBean.getMyLabel(LabelConstants.NOT_APPLICABLE));
-                    motherOptions.add(option1);
-                    motherOptions.add(option2);
-                    queFormBean.setOptions(motherOptions);
-                    motherOptionListMap.put(Integer.valueOf(loopCounter), motherOptions);
-
-                    String childName = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.FIRST_NAME + counter)
-                            + " " + SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.LAST_NAME + counter);
-                    motherChildView.addView(MyStaticComponents.generateInstructionView(context, childName));
-
-                    final Spinner motherSpinner = getSpinner(context, queFormBean, Integer.parseInt(loopCounter));
-                    motherSpinner.setAdapter(createAdapter(stringOptions));
-                    motherChildView.addView(motherSpinner);
-                    motherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                            List<OptionTagBean> options = motherOptionListMap.get(motherSpinner.getId());
-                            OptionTagBean selectedOption = Objects.requireNonNull(options).get(position);
-                            String selectedOptionKey = selectedOption.getKey();
-
-                            String answer = (String) queFormBean.getAnswer();
-                            Map<String, String> answerMap = new HashMap<>();
-                            Type type = new TypeToken<HashMap<String, String>>() {
-                            }.getType();
-                            Gson gson = new Gson();
-                            if (!selectedOptionKey.equals("-2")) {
-                                if (answer != null) {
-                                    answerMap = gson.fromJson(answer, type);
-                                }
-                                answerMap.put(String.valueOf(motherSpinner.getId()), selectedOptionKey);
-                            } else {
-                                if (answer != null) {
-                                    answerMap = gson.fromJson(answer, type);
-                                    answerMap.remove(String.valueOf(motherSpinner.getId()));
-                                }
-                            }
-
-                            if (!answerMap.isEmpty()) {
-                                queFormBean.setAnswer(gson.toJson(answerMap));
-                            } else {
-                                queFormBean.setAnswer(null);
-                            }
-
-                            if (String.valueOf(motherSpinner.getId()).equals(selectedOptionKey)) {
-                                SewaUtil.generateToast(context, UtilBean.getMyLabel(LabelConstants.SELECT_DIFFERENT_MOTHER_FOR_CHILD));
-                            }
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                            //add something
-                        }
-                    });
                 }
-            }
 
+                if (motherOptions.size() == 1) {
+                    continue;
+                }
+
+                // Add Not Available and Not Applicable options
+                stringOptions.add(UtilBean.getMyLabel(LabelConstants.NOT_AVAILABLE));
+                stringOptions.add(UtilBean.getMyLabel(LabelConstants.NOT_APPLICABLE));
+
+                OptionTagBean option1 = new OptionTagBean();
+                option1.setKey("-1");
+                option1.setValue(UtilBean.getMyLabel(LabelConstants.NOT_AVAILABLE));
+                OptionTagBean option2 = new OptionTagBean();
+                option2.setKey("-1");
+                option2.setValue(UtilBean.getMyLabel(LabelConstants.NOT_APPLICABLE));
+
+                motherOptions.add(option1);
+                motherOptions.add(option2);
+
+                queFormBean.setOptions(motherOptions);
+                motherOptionListMap.put(Integer.valueOf(loopCounter), motherOptions);
+
+                String childName = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.FIRST_NAME + counter)
+                        + " " + SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.LAST_NAME + counter);
+                motherChildView.addView(MyStaticComponents.generateInstructionView(context, childName));
+
+                final Spinner motherSpinner = getSpinner(context, queFormBean, Integer.parseInt(loopCounter));
+                motherSpinner.setAdapter(createAdapter(stringOptions));
+                motherChildView.addView(motherSpinner);
+
+                motherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        List<OptionTagBean> options = motherOptionListMap.get(motherSpinner.getId());
+                        OptionTagBean selectedOption = Objects.requireNonNull(options).get(position);
+                        String selectedOptionKey = selectedOption.getKey();
+
+                        String answer = (String) queFormBean.getAnswer();
+                        Map<String, String> answerMap = new HashMap<>();
+                        Type type = new TypeToken<HashMap<String, String>>() {}.getType();
+                        Gson gson = new Gson();
+
+                        if (!selectedOptionKey.equals("-2")) {
+                            if (answer != null) {
+                                answerMap = gson.fromJson(answer, type);
+                            }
+                            answerMap.put(String.valueOf(motherSpinner.getId()), selectedOptionKey);
+                        } else {
+                            if (answer != null) {
+                                answerMap = gson.fromJson(answer, type);
+                                answerMap.remove(String.valueOf(motherSpinner.getId()));
+                            }
+                        }
+
+                        if (!answerMap.isEmpty()) {
+                            queFormBean.setAnswer(gson.toJson(answerMap));
+                        } else {
+                            queFormBean.setAnswer(null);
+                        }
+
+                        if (String.valueOf(motherSpinner.getId()).equals(selectedOptionKey)) {
+                            SewaUtil.generateToast(context, UtilBean.getMyLabel(LabelConstants.SELECT_DIFFERENT_MOTHER_FOR_CHILD));
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // No action required here
+                    }
+                });
+            }
 
             if (motherOptionListMap.isEmpty()) {
                 motherChildView.addView(MyStaticComponents.generateInstructionView(context, LabelConstants.NO_CHILD_PRESENT));
@@ -1839,6 +1832,7 @@ public class MyDynamicComponents {
         }
         return motherChildView;
     }
+
 
     public static LinearLayout getHusbandWifeRelationshipView(final Context context, final QueFormBean queFormBean) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);

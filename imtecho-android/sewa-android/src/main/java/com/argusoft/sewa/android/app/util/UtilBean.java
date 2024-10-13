@@ -1262,8 +1262,8 @@ public class UtilBean {
     }
 
     public static boolean isValidNRCFormat(String string) {
-        if (string != null && string.trim().length() > 0) {
-            String pattern = "^\\d{6}/\\d{2}/\\d$";
+        if (string != null && !string.trim().isEmpty()) {
+            String pattern = "^\\d{6}/\\d{2}/[1-3]$";
             return string.matches(pattern);
         }
         return true;
