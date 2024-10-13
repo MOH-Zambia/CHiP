@@ -14,8 +14,6 @@ public class GbvMapper {
         gbvVisit.setServiceDate(new Date(gbvdto.getServiceDate()));
         gbvVisit.setMobileStartDate(new Date(gbvdto.getMobileStartDate()));
         gbvVisit.setMobileEndDate(new Date(gbvdto.getMobileEndDate()));
-        gbvVisit.setMemberId(Integer.valueOf(gbvdto.getMemberId()));
-        gbvVisit.setFamilyId(Integer.valueOf(gbvdto.getFamilyId()));
         gbvVisit.setLatitude(gbvdto.getCurrentLatitude());
         gbvVisit.setLongitude(gbvdto.getCurrentLongitude());
         gbvVisit.setCaseDate(new Date(gbvdto.getCaseDate()));

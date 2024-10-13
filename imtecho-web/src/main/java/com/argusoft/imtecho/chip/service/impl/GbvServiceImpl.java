@@ -53,12 +53,28 @@ public class GbvServiceImpl implements GbvService {
     @Override
     public Integer storeGbvForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
         GbvDto gbvDto = gson.fromJson(parsedRecordBean.getAnswerRecord(), GbvDto.class);
-        MemberEntity memberEntity = memberDao.retrieveMemberById(Integer.valueOf(gbvDto.getMemberId()));
-        FamilyEntity familyEntity = familyDao.retrieveFamilyByFamilyId(memberEntity.getFamilyId());
+
+
+        Integer memberId = null;
+        if (gbvDto.getMemberId() != null && !gbvDto.getMemberId().equalsIgnoreCase("null")) {
+            memberId = Integer.valueOf(gbvDto.getMemberId());
+        } else {
+            if (gbvDto.getMemberUuid() != null
+                    && !gbvDto.getMemberUuid().equalsIgnoreCase("null")) {
+                memberId = memberDao.retrieveMemberByUuid(gbvDto.getMemberUuid()).getId();
+            }
+        }
+
+        FamilyEntity familyEntity;
+
+        MemberEntity memberEntity = memberDao.retrieveMemberById(memberId);
+        familyEntity = familyDao.retrieveFamilyByFamilyId(memberEntity.getFamilyId());
         GbvVisit gbvVisit = new GbvVisit();
         LocationLevelHierarchy locationLevelHierarchy = locationLevelHierarchyDao.retrieveByLocationId(familyEntity.getLocationId());
         gbvVisit.setLocationHierarchyId(locationLevelHierarchy.getId());
         gbvVisit.setLocationId(familyEntity.getAreaId() != null ? familyEntity.getAreaId() : familyEntity.getLocationId());
+        gbvVisit.setMemberId(memberEntity.getId());
+        gbvVisit.setFamilyId(familyEntity.getId());
         GbvMapper.mapDtoToGbvVisit(gbvDto, gbvVisit);
         return gbvDao.create(gbvVisit);
 
@@ -72,8 +88,8 @@ public class GbvServiceImpl implements GbvService {
         MemberEntity member = null;
         if (jsonObject.has("memberId")) {
             member = memberDao.retrieveMemberById(jsonObject.get("memberId").getAsInt());
-        } else if (jsonObject.has("memberUUID")) {
-            member = memberDao.retrieveMemberByUuid(jsonObject.get("memberUUID").getAsString());
+        } else if (jsonObject.has("memberUuid")) {
+            member = memberDao.retrieveMemberByUuid(jsonObject.get("memberUuid").getAsString());
         }
         FamilyEntity family = familyDao.retrieveFamilyByFamilyId(member.getFamilyId());
         gbvVisit.setMemberId(member.getId());

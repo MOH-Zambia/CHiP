@@ -76,8 +76,8 @@ public abstract class MyWorkLogAdapter extends BaseAdapter {
             LinearLayout llChild = layout.findViewById(R.id.llChild);
 
             ImageView status = layout.findViewById(R.id.work_log_status_image);
-            if(log.getUploadFileDataBean() != null && !log.getUploadFileDataBean().isEmpty()){
-                for(UploadFileDataBean uploadFileDataBean : log.getUploadFileDataBean()){
+            if (log.getUploadFileDataBean() != null && !log.getUploadFileDataBean().isEmpty()) {
+                for (UploadFileDataBean uploadFileDataBean : log.getUploadFileDataBean()) {
                     llChild.addView(addChildView(uploadFileDataBean));
                 }
             }
@@ -137,17 +137,17 @@ public abstract class MyWorkLogAdapter extends BaseAdapter {
         return view;
     }
 
-    private CardView addChildView(UploadFileDataBean uploadFileDataBean){
+    private CardView addChildView(UploadFileDataBean uploadFileDataBean) {
         CardView layout = (CardView) LayoutInflater.from(context).inflate(R.layout.worklog_list_child_view, null);
         ImageView status = layout.findViewById(R.id.work_log_file_status_image);
         ImageView btnRetry = layout.findViewById(R.id.work_log_file_retry);
         TextView btnStatus = layout.findViewById(R.id.work_log_status);
 
-        if(uploadFileDataBean.getFileType() != null && uploadFileDataBean.getFileType().contains("image")){
+        if (uploadFileDataBean.getFileType() != null && uploadFileDataBean.getFileType().contains("image")) {
             status.setImageResource(R.drawable.ic_image);
-        }else if(uploadFileDataBean.getFileType() != null && uploadFileDataBean.getFileType().contains("pdf")){
+        } else if (uploadFileDataBean.getFileType() != null && uploadFileDataBean.getFileType().contains("pdf")) {
             status.setImageResource(R.drawable.ic_pdf);
-        }else{
+        } else {
             status.setImageResource(R.drawable.ic_pdf);
         }
         status.setImageTintList(ContextCompat.getColorStateList(context, R.color.colorPrimary));
@@ -156,12 +156,12 @@ public abstract class MyWorkLogAdapter extends BaseAdapter {
                 uploadFileDataBean.getStatus().equalsIgnoreCase(GlobalTypes.STATUS_ERROR)) {
             try {
                 File imgFile = new File(uploadFileDataBean.getFilePath());
-                if(imgFile.exists()){
-                    if(uploadFileDataBean.getFileType() != null && uploadFileDataBean.getFileType().contains("image")) {
+                if (imgFile.exists()) {
+                    if (uploadFileDataBean.getFileType() != null && uploadFileDataBean.getFileType().contains("image")) {
                         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                         status.setImageBitmap(myBitmap);
                         status.setImageTintList(null);
-                    }else if(uploadFileDataBean.getFileType() != null && uploadFileDataBean.getFileType().contains("pdf")){
+                    } else if (uploadFileDataBean.getFileType() != null && uploadFileDataBean.getFileType().contains("pdf")) {
                         ParcelFileDescriptor fileDescriptor = ParcelFileDescriptor.open(imgFile, ParcelFileDescriptor.MODE_READ_ONLY);
                         PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
                         PdfRenderer.Page pdfPage = pdfRenderer.openPage(0);
@@ -176,44 +176,44 @@ public abstract class MyWorkLogAdapter extends BaseAdapter {
 
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        if(uploadFileDataBean.getStatus().equalsIgnoreCase(GlobalTypes.STATUS_SUCCESS)){
+        if (uploadFileDataBean.getStatus().equalsIgnoreCase(GlobalTypes.STATUS_SUCCESS)) {
             btnStatus.setText("Synced");
-            btnStatus.setBackgroundColor(ContextCompat.getColor(context,R.color.colorAccent));
+            btnStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
             btnStatus.setOnClickListener(null);
-        }else if((uploadFileDataBean.getStatus().equalsIgnoreCase(GlobalTypes.STATUS_PENDING) ||
-                uploadFileDataBean.getStatus().equalsIgnoreCase(GlobalTypes.STATUS_ERROR))&&
-                uploadFileDataBean.getParentStatus().equalsIgnoreCase(GlobalTypes.STATUS_SUCCESS)){
+        } else if ((uploadFileDataBean.getStatus().equalsIgnoreCase(GlobalTypes.STATUS_PENDING) ||
+                uploadFileDataBean.getStatus().equalsIgnoreCase(GlobalTypes.STATUS_ERROR)) &&
+                uploadFileDataBean.getParentStatus().equalsIgnoreCase(GlobalTypes.STATUS_SUCCESS)) {
             btnStatus.setText("Retry");
             btnStatus.setOnClickListener(v -> {
                 retryUploading(uploadFileDataBean);
                 notifyDataSetChanged();
             });
-            btnStatus.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
-        }else {
+            btnStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        } else {
             btnStatus.setText("Pending");
             btnStatus.setOnClickListener(null);
-            btnStatus.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
+            btnStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
         }
 
         TextView date = layout.findViewById(R.id.work_log_file_date);
         if (uploadFileDataBean.getFileName() != null) {
-            if(uploadFileDataBean.getFileType() != null){
-                if(uploadFileDataBean.getFileType().equalsIgnoreCase("image/png")){
+            if (uploadFileDataBean.getFileType() != null) {
+                if (uploadFileDataBean.getFileType().equalsIgnoreCase("image/png")) {
                     date.setText(uploadFileDataBean.getFileName().concat(".png"));
-                }else if(uploadFileDataBean.getFileType().equalsIgnoreCase("image/jpeg")){
+                } else if (uploadFileDataBean.getFileType().equalsIgnoreCase("image/jpeg")) {
                     date.setText(uploadFileDataBean.getFileName().concat(".jpeg"));
-                }else if(uploadFileDataBean.getFileType().equalsIgnoreCase("image/jpg")){
+                } else if (uploadFileDataBean.getFileType().equalsIgnoreCase("image/jpg")) {
                     date.setText(uploadFileDataBean.getFileName().concat(".jpg"));
-                }else if(uploadFileDataBean.getFileType().equalsIgnoreCase("application/pdf")){
+                } else if (uploadFileDataBean.getFileType().equalsIgnoreCase("application/pdf")) {
                     date.setText(uploadFileDataBean.getFileName().concat(".pdf"));
-                }else {
+                } else {
                     date.setText(uploadFileDataBean.getFileName());
                 }
-            }else {
+            } else {
                 date.setText(uploadFileDataBean.getFileName());
             }
             date.setVisibility(View.VISIBLE);

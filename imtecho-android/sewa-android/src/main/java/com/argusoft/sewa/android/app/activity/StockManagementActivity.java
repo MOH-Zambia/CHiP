@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -517,6 +518,14 @@ public class StockManagementActivity extends MenuActivity implements View.OnClic
                     break;
             }
         }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_refresh).setVisible(false);
+        menu.findItem(R.id.menu_announcement).setVisible(false);
+        menu.findItem(R.id.menu_about).setVisible(false);
         return true;
     }
 }

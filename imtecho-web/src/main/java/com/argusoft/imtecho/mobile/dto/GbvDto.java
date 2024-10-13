@@ -10,6 +10,7 @@ public class GbvDto {
     private long mobileStartDate;
     private long mobileEndDate;
     private String memberId;
+    private String memberUuid;
     private String familyId;
     private String currentLatitude;
     private String currentLongitude;
@@ -204,5 +205,13 @@ public class GbvDto {
 
     public void setCoercedOrForcedMarriagePast12Months(boolean coercedOrForcedMarriagePast12Months) {
         this.coercedOrForcedMarriagePast12Months = coercedOrForcedMarriagePast12Months;
+    }
+
+    public String getMemberUuid() {
+        return memberUuid;
+    }
+
+    public void setMemberUuid(String memberUuid) {
+        this.memberUuid = memberUuid;
     }
 }

@@ -230,7 +230,7 @@ public class DBConnection extends OrmLiteSqliteOpenHelper {
             if (oldVersion < 16) {
                 databaseUpdatableTablesList.add(ListValueBean.class);
             }
-            if (oldVersion < 17) {
+            if (oldVersion < 18) {
                 databaseUpdatableTablesList.add(UploadFileDataBean.class);
             }
         }

@@ -1261,7 +1261,7 @@ public class SewaServiceImpl implements SewaService {
 
 
     @Override
-    public void createUploadFileDataBean(QueFormBean queFormBean, String formType, String memberId, String checkSum) {
+    public void createUploadFileDataBean(QueFormBean queFormBean, String formType, String memberId, String checkSum, String memberUuid) {
         String[] fileUniqueId = ((String) queFormBean.getAnswer()).split(",");
 
         for (String s : fileUniqueId) {
@@ -1283,6 +1283,9 @@ public class SewaServiceImpl implements SewaService {
             uploadFileDataBean.setFileType(FileUtils.getInstance().getMimeType(image));
             if (memberId != null && !memberId.isEmpty()) {
                 uploadFileDataBean.setMemberId(Long.valueOf(memberId));
+            }
+            if (memberUuid != null && !memberUuid.isEmpty()) {
+                uploadFileDataBean.setMemberUuid(memberUuid);
             }
             uploadFileDataBean.setQuestionId(queFormBean.getId());
             try {
@@ -1430,23 +1433,38 @@ public class SewaServiceImpl implements SewaService {
 
     public void updateStockInventoryByMedicineId(Integer id, int amount) {
         if (id == null) {
-            throw new IllegalArgumentException("Medicine ID cannot be null");
+            // Log the error and exit the method early if the Medicine ID is null
+            Log.e("Medicine stock error", "Medicine ID cannot be null");
+            return;  // Exit the method
         }
+
         try {
-            // Assuming there is a method in stockInventoryBeanDao to fetch records by medicineId
-            List<StockInventoryBean> stockInventoryBean = stockInventoryBeanDao.queryBuilder().where().eq("medicineId", id).query();
-            for (StockInventoryBean stock : stockInventoryBean) {
+            // Fetch records by medicineId from the DAO
+            List<StockInventoryBean> stockInventoryBeanList = stockInventoryBeanDao
+                    .queryBuilder()
+                    .where()
+                    .eq("medicineId", id)
+                    .query();
+
+            if (stockInventoryBeanList == null || stockInventoryBeanList.isEmpty()) {
+                // Log if no records are found for the given Medicine ID
+                Log.e("Medicine stock error", "No stock inventory found for Medicine ID: " + id);
+                return;  // Exit the method
+            }
+
+            for (StockInventoryBean stock : stockInventoryBeanList) {
                 if (stock != null) {
-                    if (stock.getUsed() + amount < stock.getDeliveredQuantity()) {
-                        stock.setUsed(stock.getUsed() + amount);
-                    } else {
-                        stock.setUsed(stock.getDeliveredQuantity());
-                    }
-                    stockInventoryBeanDao.update(stock);
+                    // Update the 'used' quantity
+                    int newUsedAmount = Math.min(stock.getUsed() + amount, stock.getDeliveredQuantity());
+                    stock.setUsed(newUsedAmount);
+                    stockInventoryBeanDao.update(stock);  // Update the stock entry
                 }
             }
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // Log the exception without throwing
+            Log.e("Medicine stock error", "Error updating stock inventory for Medicine ID: " + id + ". Error: " + e.getMessage());
         }
     }
+
 }

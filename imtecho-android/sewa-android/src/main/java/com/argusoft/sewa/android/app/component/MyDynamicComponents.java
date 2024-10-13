@@ -3159,11 +3159,13 @@ public class MyDynamicComponents {
             ImageView actionButton = MyStaticComponents.getImageView(context, 1, R.drawable.camera, null);
             myPhotoPicker.addView(actionButton);
             actionButton.setOnClickListener(listener);
-            ImageView takenPicture = MyStaticComponents.getImageView(context, GlobalTypes.PHOTO_CAPTURE_ACTIVITY,
+            ImageView takenPicture = MyStaticComponents.getImageView(
+                    context,
+                    GlobalTypes.PHOTO_CAPTURE_ACTIVITY,
                     R.drawable.no_image_available,
-                    new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            takenPicture.setVisibility(View.GONE);
-            takenPicture.setScaleType(ImageView.ScaleType.FIT_XY);
+                    new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            );
+            takenPicture.setVisibility(View.GONE); // Initially hidden
             myPhotoPicker.addView(takenPicture, layoutParams);
         } else {
             List<String> pathList = new ArrayList<>();

@@ -126,9 +126,14 @@ public class CustomPhotoCaptureActivity extends AppCompatActivity {
         if (imageCapture == null) return;
         progressLayout.setVisibility(View.VISIBLE);
         captureButton.setVisibility(View.GONE);
-        String photoName =
-                SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID) + "_" + new Date().getTime() + GlobalTypes.IMAGE_CAPTURE_FORMAT;
-        System.out.println("******************************     " + photoName);
+        String photoName;
+        if (SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID) != null) {
+            photoName = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID) + "_" + new Date().getTime() + GlobalTypes.IMAGE_CAPTURE_FORMAT;
+        } else if (SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID) != null) {
+            photoName = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID) + "_" + new Date().getTime() + GlobalTypes.IMAGE_CAPTURE_FORMAT;
+        } else {
+            photoName = "";
+        }
         File photoFile = new File(SewaConstants.getDirectoryPath(this, SewaConstants.DIR_IMAGE), photoName);
 
         ImageCapture.OutputFileOptions outputOptions = new ImageCapture.OutputFileOptions.Builder(photoFile).build();
@@ -153,7 +158,7 @@ public class CustomPhotoCaptureActivity extends AppCompatActivity {
                                 takenImage.setVisibility(View.VISIBLE);
                                 takenImage.setImageBitmap(bitmap);
                                 queFormBean.setAnswer(uniqueId);
-                                SharedStructureData.imageFilesToUpload.put(uniqueId,photoName);
+                                SharedStructureData.imageFilesToUpload.put(uniqueId, photoName);
                             } else {
                                 Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                                 try {
@@ -165,7 +170,7 @@ public class CustomPhotoCaptureActivity extends AppCompatActivity {
                                 View parentLayout = (View) queFormBean.getQuestionTypeView();
                                 RecyclerView recyclerView = parentLayout.findViewById(R.id.recyclerView);
                                 ImageGridLayoutAdapter imageGridLayoutAdapter = ((ImageGridLayoutAdapter) Objects.requireNonNull(recyclerView.getAdapter()));
-                                imageGridLayoutAdapter.addImage(uniqueId,photoName);
+                                imageGridLayoutAdapter.addImage(uniqueId, photoName);
                                 SharedStructureData.imageFilesToUpload.put(uniqueId, photoName);
                                 queFormBean.setAnswer(imageGridLayoutAdapter.getUniqueIdList());
                             }

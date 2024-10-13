@@ -301,6 +301,7 @@ public class FormConstants {
         stringList.add(FormConstants.STOCK_MANAGEMENT);
         stringList.add(FormConstants.EMTCT);
         stringList.add(FormConstants.CHIP_INDEX_INVESTIGATION);
+        stringList.add(FormConstants.CHIP_GBV_SCREENING);
         return stringList;
     }
 

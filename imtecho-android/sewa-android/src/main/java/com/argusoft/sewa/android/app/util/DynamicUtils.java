@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 
 import androidx.core.widget.NestedScrollView;
 
-import com.argusoft.sewa.android.app.BuildConfig;
 import com.argusoft.sewa.android.app.R;
 import com.argusoft.sewa.android.app.component.MyStaticComponents;
 import com.argusoft.sewa.android.app.constants.FhsConstants;
@@ -367,8 +366,8 @@ public class DynamicUtils {
                             validationMessage = ValidationFormulaUtil.validateDuration(split, answer, counter, validation);
                         } else if (split[0].equalsIgnoreCase(FormulaConstants.AVAILABLE_TABLETS)) {
                             validationMessage = ValidationFormulaUtil.checkAvailableTablets(split, answer, validation);
-                        } else if(split[0].equalsIgnoreCase(FormulaConstants.VALIDATION_COMPARE_DATE_WITH_GIVEN_DATE_FOR_COVID)){
-                            validationMessage=ValidationFormulaUtil.checkGivenDateForCovid(split,answer,validation);
+                        } else if (split[0].equalsIgnoreCase(FormulaConstants.VALIDATION_COMPARE_DATE_WITH_GIVEN_DATE_FOR_COVID)) {
+                            validationMessage = ValidationFormulaUtil.checkGivenDateForCovid(split, answer, validation);
                         }
 
                         if (validationMessage != null) {
@@ -1155,21 +1154,19 @@ public class DynamicUtils {
             answerString.append("-7").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
                     .append(sharedPref.getString(RelatedPropertyNameConstants.CUR_PREG_REG_DET_ID, null))
                     .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
-            if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                answerString.append("-55").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
-                        .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.UUID))
-                        .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
-                answerString.append("-44").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
-                        .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID))
-                        .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
-                System.out.println("AFTER SUBMITTING FORM IN UUID -44 =====" + SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID));
-                answerString.append("-20").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
-                        .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.USER_ASSIGNED_HEALTH_INFRA_ID))
-                        .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
-                answerString.append("-21").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
-                        .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.GPS_LOCATION))
-                        .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
-            }
+            answerString.append("-55").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
+                    .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.UUID))
+                    .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
+            answerString.append("-44").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
+                    .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID))
+                    .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
+            System.out.println("AFTER SUBMITTING FORM IN UUID -44 =====" + SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID));
+            answerString.append("-20").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
+                    .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.USER_ASSIGNED_HEALTH_INFRA_ID))
+                    .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
+            answerString.append("-21").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
+                    .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.GPS_LOCATION))
+                    .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
         }
 
 
@@ -1615,6 +1612,7 @@ public class DynamicUtils {
         }
 
         String memberId = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ID);
+        String memberUuid = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID);
         if (memberId != null) {
             storeAnswerBean.setMemberId(Long.valueOf(memberId));
         }
@@ -1625,7 +1623,7 @@ public class DynamicUtils {
 
         if (SharedStructureData.finalFilesToUpload != null && !SharedStructureData.finalFilesToUpload.isEmpty()) {
             for (QueFormBean queFormBean : SharedStructureData.finalFilesToUpload) {
-                SharedStructureData.sewaService.createUploadFileDataBean(queFormBean, entity, memberId, checkSum.toString());
+                SharedStructureData.sewaService.createUploadFileDataBean(queFormBean, entity, memberId, checkSum.toString(), memberUuid);
             }
         }
 

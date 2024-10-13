@@ -56,6 +56,9 @@ public class SyncStatusFileUpload implements Serializable {
     @Column(name = "member_id")
     private Integer memberId;
 
+    @Column(name = "member_uuid")
+    private String memberUuid;
+
     @Column(name = "exception")
     private String exception;
 }

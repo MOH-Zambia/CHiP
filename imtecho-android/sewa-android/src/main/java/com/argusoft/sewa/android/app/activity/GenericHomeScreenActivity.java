@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
@@ -378,5 +379,12 @@ public class GenericHomeScreenActivity extends HomeScreenMenuActivity implements
                 ((Activity) context).finish();
             });
         });
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_announcement).setVisible(false);
+        menu.findItem(R.id.menu_home).setVisible(false);
+        return true;
     }
 }

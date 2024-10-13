@@ -45,6 +45,8 @@ public class UploadFileDataBean extends BaseEntity {
     @DatabaseField
     private Long memberId;
     @DatabaseField
+    private String memberUuid;
+    @DatabaseField
     private Integer questionId;
 
     public String getRecordUrl() {
@@ -165,6 +167,14 @@ public class UploadFileDataBean extends BaseEntity {
 
     public void setQuestionId(Integer questionId) {
         this.questionId = questionId;
+    }
+
+    public String getMemberUuid() {
+        return memberUuid;
+    }
+
+    public void setMemberUuid(String memberUuid) {
+        this.memberUuid = memberUuid;
     }
 
     @NonNull

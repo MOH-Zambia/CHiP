@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -1009,5 +1010,13 @@ public class NotificationCBVActivity extends MenuActivity implements View.OnClic
             retrieveInitialNotificationsFromDB(selectedNotificationCode, null, LIMIT, offset, null);
         }
         hideKeyboard();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_refresh).setVisible(false);
+        menu.findItem(R.id.menu_announcement).setVisible(false);
+        menu.findItem(R.id.menu_about).setVisible(false);
+        return true;
     }
 }

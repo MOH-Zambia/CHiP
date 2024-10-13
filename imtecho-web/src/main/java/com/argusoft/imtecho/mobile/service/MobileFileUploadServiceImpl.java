@@ -78,7 +78,12 @@ public class MobileFileUploadServiceImpl implements MobileFileUploadService {
             syncStatus.setPath(uploadFileDataBean.getPath());
             syncStatus.setFormType(uploadFileDataBean.getFormType());
             syncStatus.setNoOfAttempt(uploadFileDataBean.getNoOfAttemp());
-            syncStatus.setMemberId(Math.toIntExact(uploadFileDataBean.getMemberId()));
+            if (uploadFileDataBean.getMemberId() != null) {
+                syncStatus.setMemberId(Math.toIntExact(uploadFileDataBean.getMemberId()));
+            }
+            if (uploadFileDataBean.getMemberUuid() != null) {
+                syncStatus.setMemberUuid(uploadFileDataBean.getMemberUuid());
+            }
             syncStatus.setUserName(uploadFileDataBean.getUserName());
             syncStatus.setToken(uploadFileDataBean.getToken());
             syncStatus.setStatus(MobileConstantUtil.PENDING_VALUE);

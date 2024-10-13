@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -2662,5 +2663,13 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
             }
         });
         hideKeyboard();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_refresh).setVisible(false);
+        menu.findItem(R.id.menu_announcement).setVisible(false);
+        menu.findItem(R.id.menu_about).setVisible(false);
+        return true;
     }
 }

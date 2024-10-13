@@ -2,6 +2,7 @@ package com.argusoft.sewa.android.app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -219,5 +220,11 @@ public class LocationSelectionActivity extends MenuActivity implements View.OnCl
             }
         }
     }
-
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_refresh).setVisible(false);
+        menu.findItem(R.id.menu_announcement).setVisible(false);
+        menu.findItem(R.id.menu_about).setVisible(false);
+        return true;
+    }
 }

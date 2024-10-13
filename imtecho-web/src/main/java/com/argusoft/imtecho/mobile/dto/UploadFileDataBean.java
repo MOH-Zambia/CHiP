@@ -35,6 +35,10 @@ public class UploadFileDataBean {
 
     @Getter
     @Setter
+    private String memberUuid;
+
+    @Getter
+    @Setter
     private Integer questionId;
 
     public String getToken() {

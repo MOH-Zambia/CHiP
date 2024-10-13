@@ -101,7 +101,7 @@ public interface SewaService {
 
     void addFireBaseToken();
 
-    void createUploadFileDataBean(QueFormBean queFormBean, String formType, String memberId, String checkSum);
+    void createUploadFileDataBean(QueFormBean queFormBean, String formType, String memberId, String checkSum, String memberUuid);
 
     void createFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, MemberBean memberBean);
 
