@@ -564,7 +564,7 @@ public class HivActivity extends MenuActivity implements View.OnClickListener, P
                     String age = "N/A";
                     int week;
                     int year;
-                    String gender = memberDataBean.getGender().equalsIgnoreCase("M") ? LabelConstants.MALE : LabelConstants.FEMALE;
+                    String gender = "M".equalsIgnoreCase(memberDataBean.getGender()) ? LabelConstants.MALE : LabelConstants.FEMALE;
                     if (memberDataBean.getDob() != null) {
                         week = UtilBean.getNumberOfWeeks(new Date(memberDataBean.getDob()), new Date());
                         year = UtilBean.calculateAgeYearMonthDay(memberDataBean.getDob())[0];

@@ -2617,7 +2617,7 @@ public class HiddenQuestionFormulaUtil {
         if (nextQuestionId != null) {
             List<MemberDataBean> memberDataBeans = SharedStructureData.sewaFhsService.retrieveMemberDataBeansExceptArchivedAndDeadByFamilyId(SharedStructureData.currentFamilyDataBean.getFamilyId());
             for (MemberDataBean memberDataBean : memberDataBeans) {
-                if (memberDataBean.getGender() != null && memberDataBean.getGender().equalsIgnoreCase("M")
+                if (memberDataBean.getGender() != null && "M".equalsIgnoreCase(memberDataBean.getGender())
                         && memberDataBean.getMaritalStatus() != null
                         && (memberDataBean.getMaritalStatus().equals("629"))) {
                     husband.add(memberDataBean);
