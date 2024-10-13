@@ -1147,7 +1147,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                         }
                     } else {
                         if (memberDataBean.getGender() != null) {
-                            gender = memberDataBean.getGender().equalsIgnoreCase("M") ? LabelConstants.MALE : LabelConstants.FEMALE;
+                            gender = "M".equalsIgnoreCase(memberDataBean.getGender()) ? LabelConstants.MALE : LabelConstants.FEMALE;
                         } else {
                             gender = "N/A";
                         }
@@ -1174,7 +1174,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                     int year;
                     String gender;
                     if (memberDataBean.getGender() != null) {
-                        gender = memberDataBean.getGender().equalsIgnoreCase("M") ? LabelConstants.MALE : LabelConstants.FEMALE;
+                        gender = "M".equalsIgnoreCase(memberDataBean.getGender()) ? LabelConstants.MALE : LabelConstants.FEMALE;
                     } else {
                         gender = "N/A";
                     }
@@ -1218,7 +1218,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                         int year;
                         String gender;
                         if (memberDataBean.getGender() != null) {
-                            gender = memberDataBean.getGender().equalsIgnoreCase("M") ? LabelConstants.MALE : LabelConstants.FEMALE;
+                            gender = "M".equalsIgnoreCase(memberDataBean.getGender()) ? LabelConstants.MALE : LabelConstants.FEMALE;
                         } else {
                             gender = "N/A";
                         }
