@@ -23,18 +23,12 @@
 
                 <ImageView
                     android:id="@+id/ivLogo"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:contentDescription="@string/techo"
                     android:gravity="center"
-                    android:src="@mipmap/chip_app_icon"/>
-                <TextView
-                    android:id="@+id/versionView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/versionTextColor"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:src="@drawable/coa" />
+
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -91,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/remember_me"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginButton"
@@ -111,33 +105,35 @@
         </LinearLayout>
 
         <!--Footer-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
             android:gravity="bottom"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginBottom="10dp"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
+            <ImageView
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="10dp">
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/medplat"
+                android:gravity="bottom|end"
+                android:src="@drawable/chip_logo" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/medplat"
-                    android:gravity="bottom|end"
-                    android:src="@drawable/medplat" />
+            <TextView
+                android:id="@+id/versionView"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:textColor="@color/versionTextColor"
+                android:textSize="12sp"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold" />
 
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

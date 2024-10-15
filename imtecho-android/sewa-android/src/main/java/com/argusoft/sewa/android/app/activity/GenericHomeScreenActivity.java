@@ -383,7 +383,7 @@ public class GenericHomeScreenActivity extends HomeScreenMenuActivity implements
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_announcement).setVisible(false);
+        menu.findItem(R.id.menu_announcement).setVisible(true);
         menu.findItem(R.id.menu_home).setVisible(false);
         return true;
     }

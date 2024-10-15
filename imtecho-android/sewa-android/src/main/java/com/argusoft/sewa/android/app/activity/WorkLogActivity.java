@@ -143,7 +143,7 @@ public class WorkLogActivity extends MenuActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.menu_refresh).setVisible(false);
+        menu.findItem(R.id.menu_refresh).setVisible(true);
         menu.findItem(R.id.menu_about).setVisible(false);
         menu.findItem(R.id.menu_home).setVisible(true);
         return true;

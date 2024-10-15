@@ -15,12 +15,13 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/ListTitleView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="5dp"
             android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/listTitleColor"
             android:text="@string/app_name"
             android:textAlignment="center"
             android:textSize="25sp" />
@@ -33,7 +34,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="5dp"
             android:contentDescription="@string/techo"
-            android:src="@mipmap/chip_app_icon" />
+            android:src="@drawable/chip_welcome_logo" />
 
         <TextView
             android:id="@+id/version"
@@ -74,7 +75,7 @@
             android:gravity="center"
             android:text="@string/in_collaboration_with"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <LinearLayout

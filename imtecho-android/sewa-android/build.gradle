@@ -66,9 +66,9 @@ android {
             applicationId "com.argusoft.chip.android.app"
             minSdkVersion 21
             targetSdkVersion 32
-            versionCode 129
-            versionName "1.0.29"
-            buildConfigField 'String', 'RELEASE_DATE', "\"13th October 2024\""
+            versionCode 130
+            versionName "1.0.30"
+            buildConfigField 'String', 'RELEASE_DATE', "\"15th October 2024\""
             buildConfigField 'String', 'DB_NAME', "\"chip_final.db\""
             buildConfigField 'String', 'APK_NAME', "\"chip_app\""
             buildConfigField 'int', 'DATABASE_VERSION', "18"

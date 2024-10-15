@@ -1483,7 +1483,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_refresh).setVisible(false);
+        menu.findItem(R.id.menu_refresh).setVisible(true);
         menu.findItem(R.id.menu_announcement).setVisible(false);
         menu.findItem(R.id.menu_about).setVisible(false);
         return true;

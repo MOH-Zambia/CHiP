@@ -19,7 +19,9 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_margin="10dp"
-            android:contentDescription="@string/techo" />
+            android:padding="16dp"
+            android:src="@drawable/chip_welcome_logo"
+            android:contentDescription="@string/techo_description_chip" />
 
         <TextView
             style="@style/ListTitleView"
@@ -40,7 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
             android:gravity="center"
-            android:text="@string/techo_description_telugu"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="15sp" />
