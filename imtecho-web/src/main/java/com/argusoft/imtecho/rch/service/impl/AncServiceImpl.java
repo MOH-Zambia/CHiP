@@ -197,8 +197,10 @@ public class AncServiceImpl implements AncService {
 
             for (String childId : split) {
                 if (!childId.equals("ADDNEW") && !childId.isEmpty()) {
-                    MemberEntity childMember = memberDao.retrieveById(Integer.valueOf(childId));
-                    childMember.setMotherId(memberId);
+                    if(!childId.startsWith("UN")) {
+                        MemberEntity childMember = memberDao.retrieveById(Integer.valueOf(childId));
+                        childMember.setMotherId(memberId);
+                    }
                 }
             }
 
