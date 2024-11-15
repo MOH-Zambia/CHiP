@@ -1931,4 +1931,139 @@ public class MemberDaoImpl extends GenericDaoImpl<MemberEntity, Integer> impleme
 
         return wpdChildDetails;
     }
+
+    @Override
+    public List<ReferredPatientsDto> getReferredPatients(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, String householdId, Integer zoneId, Integer cbvId) {
+        Timestamp startDateWithTime = null;
+        Timestamp endDateWithTime = null;
+
+        if (serviceStartDate != null) {
+            startDateWithTime = new Timestamp(serviceStartDate.getTime());
+            startDateWithTime.setHours(0);
+        }
+
+        if (serviceEndDate != null) {
+            endDateWithTime = new Timestamp(serviceEndDate.getTime());
+            endDateWithTime.setHours(23);
+        }
+
+        StringBuilder queryBuilder = new StringBuilder(
+                "WITH cte_member_details AS ( " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'MALARIA' AS refer_type " +
+                        "    FROM malaria_details " +
+                        "    WHERE is_referral_done IS NOT NULL AND referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'TUBERCULOSIS' AS refer_type " +
+                        "    FROM tuberculosis_screening_details " +
+                        "    WHERE is_referral_done IS NOT NULL AND referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, is_referral_done, created_on, created_by, 'COVID' AS refer_type " +
+                        "    FROM covid_screening_details " +
+                        "    WHERE is_referral_done IS NOT NULL AND referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'ANC' AS refer_type " +
+                        "    FROM rch_anc_master " +
+                        "    WHERE referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'CHILD SERVICE' AS refer_type " +
+                        "    FROM rch_child_service_master " +
+                        "    WHERE referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, child_id AS member_id, referral_place, referral_reason, referral_for, child_referral_done AS is_referral_done, created_on, created_by, 'PNC CHILD' AS refer_type " +
+                        "    FROM rch_pnc_child_master " +
+                        "    WHERE child_referral_done IS NOT NULL AND referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, mother_id AS member_id, referral_place, referral_reason, referral_for, 'YES' AS is_referral_done, created_on, created_by, 'PNC MOTHER' AS refer_type " +
+                        "    FROM rch_pnc_mother_master " +
+                        "    WHERE referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, referral_done AS is_referral_done, created_on, created_by, 'WPD MOTHER' AS refer_type " +
+                        "    FROM rch_wpd_mother_master " +
+                        "    WHERE referral_done IS NOT NULL AND referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, member_id, referral_place, referral_reason, referral_for, referral_done AS is_referral_done, created_on, created_by, 'WPD CHILD' AS refer_type " +
+                        "    FROM rch_wpd_child_master " +
+                        "    WHERE referral_done IS NOT NULL AND referral_place = :facilityCode " +
+                        "    UNION ALL " +
+                        "    SELECT id, member_id, referral_place, 'hiv' AS referral_reason, NULL AS referral_for, 'yes' AS is_referral_done, created_on, created_by, 'HIV' AS refer_type " +
+                        "    FROM rch_hiv_screening_master " +
+                        "    WHERE referral_place = :facilityCode " +
+                        "), max_service_date AS ( " +
+                        "    SELECT member_id, refer_type, MAX(created_on) AS created_on " +
+                        "    FROM cte_member_details " +
+                        "    GROUP BY member_id, refer_type " +
+                        ") " +
+                        "SELECT m.unique_health_id, m.first_name, m.middle_name, m.last_name, m.dob, m.gender, m.mobile_number," +
+                        " (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = CAST(m.marital_status AS INT)) as marital_status, " +
+                        "m.nrc_number, " +
+                        "    CASE " +
+                        "        WHEN cmd.is_referral_done = 'YES' THEN " +
+                        "            CASE " +
+                        "                WHEN cmd.referral_for IS NULL OR cmd.referral_for = 'OTHER' THEN 'OTHER : ' || cmd.referral_reason " +
+                        "                ELSE cmd.referral_for || ' : ' || (SELECT lvfvd.value FROM listvalue_field_value_detail lvfvd WHERE lvfvd.id = CAST(cmd.referral_for AS INT)) " +
+                        "            END " +
+                        "        ELSE NULL " +
+                        "    END AS reason, " +
+                        "    cmd.refer_type, " +
+                        "    DATE(TO_CHAR(cmd.created_on, 'YYYY-MM-DD HH24:MI:SS')), cmd.referral_place, cmd.created_by, m.religion, get_location_hierarchy(f.location_id), " +
+                        "h.name,  u.user_name,  ul.loc_id, lm.name as loc_name, cmd.id " +
+                        "FROM imt_member m " +
+                        "INNER JOIN cte_member_details cmd ON m.id = cmd.member_id " +
+                        "INNER JOIN max_service_date msd ON msd.member_id = cmd.member_id AND msd.created_on = cmd.created_on AND cmd.refer_type = msd.refer_type " +
+                        "INNER JOIN health_infrastructure_details h on h.id = cmd.referral_place "+
+                        "INNER JOIN imt_family f ON m.family_id = f.family_id " +
+                        "INNER JOIN um_user u on u.id = cmd.created_by " +
+                        "INNER JOIN um_user_location ul ON ul.user_id = u.id " +
+                        "INNER JOIN location_master lm ON lm.id = ul.loc_id " +
+                        "WHERE cmd.referral_place = :facilityCode "
+        );
+
+        if (startDateWithTime != null && endDateWithTime != null) {
+            queryBuilder.append("AND cmd.created_on BETWEEN :serviceStartDate AND :serviceEndDate ");
+        }
+
+        if (cbvId != null) {
+            queryBuilder.append("AND m.created_by = :cbvId ");
+        }
+
+        if (householdId != null) {
+            queryBuilder.append("AND m.family_id = :householdId ");
+        }
+
+        if (zoneId != null) {
+            queryBuilder.append("AND f.location_id = :zoneId ");
+        }
+
+        queryBuilder.append("ORDER BY m.created_on DESC");
+
+        Session session = sessionFactory.openSession();
+        NativeQuery<Object[]> nativeQuery = session.createNativeQuery(queryBuilder.toString())
+                .setParameter("facilityCode", facilityCode);
+
+        if (startDateWithTime != null && endDateWithTime != null) {
+            nativeQuery.setParameter("serviceStartDate", startDateWithTime);
+            nativeQuery.setParameter("serviceEndDate", endDateWithTime);
+        }
+
+        if (cbvId != null) {
+            nativeQuery.setParameter("cbvId", cbvId);
+        }
+
+        if (householdId != null) {
+            nativeQuery.setParameter("householdId", householdId);
+        }
+
+        if (zoneId != null) {
+            nativeQuery.setParameter("zoneId", zoneId);
+        }
+
+        List<Object[]> resultList = nativeQuery.getResultList();
+        List<ReferredPatientsDto> referrals = new ArrayList<>();
+
+        for (Object[] row : resultList) {
+            referrals.add(ReferredPatientsMapper.getReferredPatientsDto(row));
+        }
+
+        return referrals;
+    }
 }

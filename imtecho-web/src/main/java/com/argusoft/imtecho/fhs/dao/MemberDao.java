@@ -517,5 +517,5 @@ public interface MemberDao extends GenericDao<MemberEntity, Integer> {
      */
     List<WpdChildDetailsDto> getWpdChildDetails(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
 
-
+    List<ReferredPatientsDto> getReferredPatients(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, String householdId, Integer zoneId, Integer cbvId);
     }
