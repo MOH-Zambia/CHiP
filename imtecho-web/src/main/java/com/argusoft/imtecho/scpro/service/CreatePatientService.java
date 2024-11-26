@@ -8,9 +8,11 @@ public interface CreatePatientService {
 
     void createPatient(MemberDetailsDTO memberDetailsDTO);
 
-    void getPatientStatus(String requestId);
+    void getPatientStatus();
 
     void createReferral(ReferralDTO referralDTO);
 
     void getReferralStatus(String requestId);
+
+    void getPatientsFromImt();
 }

@@ -13,15 +13,22 @@ public class SCProController {
     @Autowired
     CreatePatientService createPatientService;
 
+    @GetMapping(value = "/getPatientFromImt")
+            public void getPatientFromImt()
+    {
+        createPatientService.getPatientsFromImt();
+    }
+
+
     @PostMapping(value = "/createPatient")
    public void createPatient (@RequestBody MemberDetailsDTO memberDetailsDTO)
     {
         createPatientService.createPatient(memberDetailsDTO);
     }
 
-    @GetMapping( value = "/getCreatedPatient/{requestId}")
-    public void getCreatedPatient(@PathVariable String requestId ){
-        createPatientService.getPatientStatus(requestId);
+    @GetMapping( value = "/getCreatedPatient")
+    public void getCreatedPatient(){
+        createPatientService.getPatientStatus();
     }
 
     @PostMapping(value = "/createReferral")

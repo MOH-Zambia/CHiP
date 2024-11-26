@@ -1,5 +1,7 @@
 package com.argusoft.imtecho.scpro.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MemberDetailsDTO  {
@@ -77,8 +79,12 @@ public class MemberDetailsDTO  {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDateOfBirth(String dateOfBirth) {
+        try {
+            this.dateOfBirth = new SimpleDateFormat("yyyy-MM-dd").parse(dateOfBirth);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid date format for dateOfBirth. Expected format: yyyy-MM-dd");
+        }
     }
 
     public String getMobileNumber() {
