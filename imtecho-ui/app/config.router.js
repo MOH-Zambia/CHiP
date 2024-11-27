@@ -2430,7 +2430,7 @@
                     resolve: load([
                         'monthly-facility-reporting-form-search.controller',
                         'user.service',
-                        'paging.service',
+                        'paging-for-query-builder.service',
                         'manualsync.service'
                     ])
                 }).state('techo.manage.integrateddailyregister', {

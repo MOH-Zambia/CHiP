@@ -105,6 +105,17 @@
                     fetch-upto-level = "6"
                   >
                   </location-directive>
+                  <div class="form-group">
+                    <label>Health Infrastructure</label>
+                    <select
+                    chosen-directive="ctrl.healthInfras"
+                    id="healthInfras"
+                    ng-model="ctrl.selectedHealthInfra"
+                    ng-options="infra.id as infra.name for infra in ctrl.healthInfras"
+                  >
+                    <option value="">-- Select --</option>
+                  </select>
+                  </div>
                 </div>
     
                 <div class="col-12">
