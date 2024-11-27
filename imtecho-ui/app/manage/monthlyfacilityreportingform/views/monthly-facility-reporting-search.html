@@ -1,63 +1,110 @@
 <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <div class="no-data-placeholder" ng-if="!ctrl.facilities || ctrl.facilities.length == 0">
-          <h5>No Record(s) Found!</h5>
+  <div class="row">
+      <!-- Add this block at the top -->
+ 
+          
+      <div class="row mb-3" style="margin-left:auto ;">
+        <div class="col-12">
+          
+            <div class="form-group d-flex align-items-center">
+              <label for="month" class="control-label mr-3">Select Month for Sync</label>
+                <input
+                    name="month"
+                    id="month"
+                    type="text"
+                    datepicker
+                    style="width: auto;"
+                    ng-model="ctrl.month"
+                    date-options="{minMode: 'month'}"
+                    datepicker-mode="'month'"
+                    date-month-format="true"
+                    ng-required="true"
+                    ng-change="ctrl.onMonthChange(ctrl.month)"
+                />
+                <button type="button" class="btn btn-primary" ng-click="ctrl.syncAll()">Sync All</button>
+            </div>
         </div>
-        <div class="cst-table table-responsive table-set-height">
-          <table aria-describedby="table"
-            class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed">
-            <thead class="cst-thead">
-            <tr>
-              <th class="small-col">S.N.</th>
-              <th class="medium-col">Health Facility</th>
-              <th class="medium-col">District Name</th>
-              <th class="medium-col">Province Name</th>
-              <th style="width: 9.5%;">State</th>
-              <th id="Actions" style="width: 7.5%;">Action</i>
-              </th>
-            </tr>
-            </thead>
-            <tbody class="cst-tbody" >
-              <tr ng-repeat="facility in ctrl.facilities">
-                <td>{{$index + 1}}</td>
-                <td>{{facility.facility_name}}</td>
-                <td>{{facility.district_name?facility.district_name:"N/A"}}</td>
-                <td>{{facility.province_name?facility.province_name:"N/A"}}</td>
-                <td>{{ facility.is_enabled ? 'Enabled' : 'Disabled' }}</td>
-                <td class="action-cell">
-                  <ul class="action-item"> 
-                    <li>
-                      <a class="fa fa-eye" aria-hidden="true" style="font-size:1.5rem;"
-                          ng-click="ctrl.previewClicked(facility.facility_id)">
-                    </a>
-                    </li>
-                    <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <a class="fa fa-ellipsis-h"></a>
-                        <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
-                            aria-labelledby="moreDropdown" x-placement="bottom-end">
-                            <li ng-if="facility.is_enabled === false"
-                            ng-click="ctrl.toggleState(facility)">
-                                <a><strong>Mark as </strong> Enabled</a>
-                            </li>
-                            <li ng-if="facility.is_enabled === true"
-                            ng-click="ctrl.toggleState(facility)">
-                                <a><strong>Mark as </strong> Disabled</a>
-                            </li>
-                            <li ng-click="ctrl.showModal(facility.facility_id)">
-                                <a>Sync Manually</a>
-                            </li>
-                        </ul>
-                    </li>
-                  </ul>     
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
+    
+      <!-- End of added block -->
+
+      <div class="col-12">
+          <div class="no-data-placeholder" ng-if="!ctrl.facilities || ctrl.facilities.length == 0">
+              <h5>No Record(s) Found!</h5>
+          </div>
+          <div class="cst-table table-responsive table-set-height" id="facility-scroll">
+              <table aria-describedby="table" class="table table-sm table-striped table-bordered filter-table table-fixed header-fixed">
+                  <thead class="cst-thead">
+                      <tr>
+                        
+                          <th class="small-col">S.N.</th>
+                          <th class="medium-col">Health Facility</th>
+                          <th class="medium-col">District Name</th>
+                          <th class="medium-col">Province Name</th>
+                          <th style="width: 9.5%;">State</th>
+                          <th id="Actions" style="width: 7.5%;">Action</th>
+                          <th style="width: 2%;">
+                            <label style="display: flex; align-items: center; justify-content: center;">
+                                <input type="checkbox" 
+                                       style="width: 16px; height: 16px; cursor: pointer; border: 1px solid #6c6a6a;"
+                                       icheck ng-model="ctrl.selectAll" 
+                                       ng-change="ctrl.toggleAll()">
+                            </label>
+                        </th>
+                      </tr>
+                  </thead>
+                  <tbody class="cst-tbody" infinite-scroll-distance="0" infinite-scroll="ctrl.retrieveFacility()"
+                         infinite-scroll-container='"#facility-scroll"' infinite-scroll-immediate-check="true">
+                      <tr ng-repeat="facility in ctrl.facilities">
+                          
+                          <td>{{$index + 1}}</td>
+                          <td>{{facility.facility_name}}</td>
+                          <td>{{facility.district_name ? facility.district_name : "N/A"}}</td>
+                          <td>{{facility.province_name ? facility.province_name : "N/A"}}</td>
+                          <td>{{ facility.is_enabled ? 'Enabled' : 'Disabled' }}</td>
+                          <td class="action-cell">
+                              <ul class="action-item">
+                                  <li>
+                                      <a class="fa fa-eye" aria-hidden="true" style="font-size:1.5rem;"
+                                         ng-click="ctrl.previewClicked(facility.facility_id)">
+                                      </a>
+                                  </li>
+                                  <li class="dropdown-toggle" id="moreDropdown" data-toggle="dropdown"
+                                      aria-haspopup="true" aria-expanded="false">
+                                      <a class="fa fa-ellipsis-h"></a>
+                                      <ul class="dropdown-menu dropdown-menu-right more-action-dropdown"
+                                          aria-labelledby="moreDropdown" x-placement="bottom-end">
+                                          <li ng-if="facility.is_enabled === false"
+                                              ng-click="ctrl.toggleState(facility)">
+                                              <a><strong>Mark as </strong> Enabled</a>
+                                          </li>
+                                          <li ng-if="facility.is_enabled === true"
+                                              ng-click="ctrl.toggleState(facility)">
+                                              <a><strong>Mark as </strong> Disabled</a>
+                                          </li>
+                                          <li ng-click="ctrl.showModal(facility.facility_id)">
+                                              <a>Sync Manually</a>
+                                          </li>
+                                      </ul>
+                                  </li>
+                              </ul>
+                          </td>
+                          <td>
+                            <label style="display: inline-block; cursor: pointer;">
+                                <input 
+                                    type="checkbox" 
+                                    style="margin-right: 5px;" 
+                                    ng-model="facility.isSelected" 
+                                    ng-change="ctrl.changeSelection(facility.facility_id, facility.isSelected)" 
+                                />
+                            </label>
+                        </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
 </div>
 
 <div class="filter-div">

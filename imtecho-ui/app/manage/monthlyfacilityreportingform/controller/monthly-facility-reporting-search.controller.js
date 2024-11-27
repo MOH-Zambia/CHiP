@@ -1,14 +1,16 @@
 (function () {
     function 
-    MonthlyFacilityReportingFormSearch(Mask, GeneralUtil, $state, AuthenticateService, QueryDAO, $uibModal, toaster) {
+    MonthlyFacilityReportingFormSearch(Mask, GeneralUtil, $state,ManualSyncService, AuthenticateService,PagingForQueryBuilderService, QueryDAO, $uibModal, toaster) {
         let ctrl = this;
         ctrl.month;
-
+        ctrl.selectedFacilities = [];
+        ctrl.pagingService = PagingForQueryBuilderService.initialize();
         ctrl.init = function () {
             AuthenticateService.getLoggedInUser().then(function (res) {
                 ctrl.currentUser = res.data;
                 ctrl.locationId = ctrl.currentUser.minLocationId;
-                ctrl.retrieveFacility();
+                
+                ctrl.retrieveFacility(true);
             });
             
             ctrl.toggleFilter();
@@ -28,28 +30,35 @@
             ctrl.toggleFilter();
         };
 
-        ctrl.retrieveFacility = function () {
+        ctrl.retrieveFacility = function (reset) {
+            if (reset) {
+                ctrl.pagingService.resetOffSetAndVariables();
+            }
             let dto = 
                 {
                     code: 'get_all_health_facilities',
                     parameters: {
-                        locationId: ctrl.locationId
+                        locationId: ctrl.locationId,
+                        limit: ctrl.pagingService.limit,
+                    offSet: ctrl.pagingService.offSet
                     }
                 }
             Mask.show();
-            QueryDAO.executeQuery(dto).then(function(res) {
+
+            PagingForQueryBuilderService.getNextPage(QueryDAO.execute, dto, ctrl.facilities, null).then((response) => {
+                ctrl.facilities = response;
                 
-                     ctrl.facilities = res.result;
-                    }
-                
-            , GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+            }).catch((error) => {
+                GeneralUtil.showMessageOnApiCallFailure(error);
+            }).finally(() => {
                 Mask.hide();
             });
+       
         }
 
         ctrl.searchData = function () {
             ctrl.locationId = ctrl.selectedLocationId;
-            ctrl.retrieveFacility();
+            ctrl.retrieveFacility(true);
         };
 
         ctrl.showModal = function(facilityId){
@@ -107,6 +116,74 @@
                     Mask.hide();
                 });
             });
+        };
+
+
+        ctrl.changeSelection = function (facility,fact) {
+            if (fact) {
+                
+                if (!ctrl.selectedFacilities.includes(facility)) {
+                    ctrl.selectedFacilities.push(facility);
+
+                    
+                }
+            } else {
+                ctrl.selectedFacilities = ctrl.selectedFacilities.filter(function (id) {
+                    return id !== facility;
+                });
+            }
+        
+            
+        };
+
+        ctrl.toggleAll = function () {
+            if (ctrl.selectAll) {
+            
+                ctrl.selectedFacilities = [];
+
+                ctrl.facilities.forEach((facility) => {
+                    ctrl.selectedFacilities.push(facility.facility_id);
+                    facility.isSelected = true;
+                })
+                
+            } else {
+            
+
+                ctrl.selectedFacilities = [];
+
+                ctrl.facilities.forEach((facility) => {
+                    facility.isSelected = false;
+                })
+            }
+        
+        };
+
+        ctrl.onMonthChange = function(selectedMonth) {
+            if (selectedMonth) {
+                var formattedDate = moment(selectedMonth).format('MM/DD/YYYY')
+                
+            } 
+        };
+
+        ctrl.syncAll = function () {
+            if (!ctrl.month) {
+                toaster.pop('error', 'Error', 'Please select a month for syncing.');
+                return;
+            }
+
+            var formattedDate = moment(ctrl.month).format('MM/DD/YYYY');
+
+            ManualSyncService.sendMultipleData(formattedDate, ctrl.selectedFacilities).then(function (response) {
+                
+                toaster.pop('success', 'Success', 'Data synchronized successfully.');
+                
+            }).catch(function (error) {
+                toaster.pop('error', 'Error', 'Data synchronization failed.');
+              
+            });
+        
+            
+            
         };
 
 
