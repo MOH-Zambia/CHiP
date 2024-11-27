@@ -1,5 +1,5 @@
 (function () {
-    function HouseholdDashboardController(QueryDAO, Mask, GeneralUtil,AuthenticateService) {
+    function HouseholdDashboardController($scope, QueryDAO, Mask, GeneralUtil,AuthenticateService) {
         let ctrl = this;
         
         ctrl.init = () => {
@@ -8,15 +8,21 @@
                 ctrl.selectedLocationId = ctrl.currentUser.minLocationId;
                 ctrl.chartCount();
                 ctrl.tableCount();
+                ctrl.getHealthInfra();
 
             });
            }
+
+           
 
         ctrl.onSearch = () =>
             {
                 ctrl.chartCount();
                 ctrl.tableCount();
                 ctrl.toggleFilter();
+                // ctrl.getHealthInfra()
+                console.log(ctrl.selectedHealthInfra);
+                
             }
 
         ctrl.toggleFilter = () => {
@@ -28,6 +34,40 @@
             angular.element('.cst-backdrop').fadeToggle();
             angular.element('.filter-div').toggleClass('active');
         };
+
+        $scope.$watch('ctrl.selectedLocationId', function(newVal, oldVal) {
+          if (newVal && oldVal) {
+            let healthInfraDto = {
+              code:'fetch_health_infra_acc_to_locations',
+              parameters: {
+                location_id: ctrl.selectedLocationId 
+                }
+            }
+            Mask.show();
+            QueryDAO.executeQuery(healthInfraDto).then(function(res){
+              console.log(res.result);
+              ctrl.healthInfras = res.result;
+            },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+              Mask.hide();
+           })
+          }
+        });
+
+        ctrl.getHealthInfra = ()=>{
+          let healthInfraDto = {
+            code:'fetch_health_infra_acc_to_locations',
+            parameters: {
+              location_id: ctrl.selectedLocationId 
+              }
+          }
+
+          QueryDAO.executeQuery(healthInfraDto).then(function(res){
+            console.log(res.result);
+            ctrl.healthInfras = res.result;
+          },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+            Mask.hide();
+         })
+        } 
 
 
         ctrl.chartCount = () => {
@@ -59,7 +99,10 @@
             }, GeneralUtil.showMessageOnApiCallFailure).finally(function () {
                Mask.hide();
             });
+
+           
         }
+
 
         ctrl.setPieChart = (pieResult) => {
             ctrl.pieChartColors = [

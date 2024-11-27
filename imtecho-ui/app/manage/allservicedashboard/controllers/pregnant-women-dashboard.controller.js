@@ -1,5 +1,5 @@
 (function () {
-    function PregnantWomenDashboardController(QueryDAO, Mask, GeneralUtil,AuthenticateService) {
+    function PregnantWomenDashboardController($scope,QueryDAO, Mask, GeneralUtil,AuthenticateService) {
         let ctrl = this;
 
     
@@ -9,7 +9,7 @@
                 ctrl.selectedLocationId = ctrl.currentUser.minLocationId;
                 ctrl.chartCount();
                 ctrl.tableCount();
-
+                ctrl.getHealthInfra();
             });
              }
 
@@ -20,6 +20,41 @@
                 ctrl.toggleFilter();
             }
 
+            $scope.$watch('ctrl.selectedLocationId', function(newVal, oldVal) {
+                if (newVal && oldVal) {
+                  let healthInfraDto = {
+                    code:'fetch_health_infra_acc_to_locations',
+                    parameters: {
+                      location_id: ctrl.selectedLocationId 
+                      }
+                  }
+                  Mask.show();
+                  QueryDAO.executeQuery(healthInfraDto).then(function(res){
+                    console.log(res.result);
+                    ctrl.healthInfras = res.result;
+                  },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+                    Mask.hide();
+                 })
+                }
+              });
+      
+              ctrl.getHealthInfra = ()=>{
+                let healthInfraDto = {
+                  code:'fetch_health_infra_acc_to_locations',
+                  parameters: {
+                    location_id: ctrl.selectedLocationId 
+                    }
+                }
+      
+                QueryDAO.executeQuery(healthInfraDto).then(function(res){
+                  console.log(res.result);
+                  ctrl.healthInfras = res.result;
+                },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+                  Mask.hide();
+               })
+              } 
+              
+            
         ctrl.toggleFilter = () => {
             if (angular.element('.filter-div').hasClass('active')) {
                 angular.element('body').css("overflow", "auto");
