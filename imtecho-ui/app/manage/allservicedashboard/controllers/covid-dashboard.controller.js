@@ -63,12 +63,22 @@
                     angular.element('.cst-backdrop').fadeToggle();
                     angular.element('.filter-div').toggleClass('active');
                 };
+
+                ctrl.getLocationDetails = function () {
+                    const selectedInfra = ctrl.healthInfras?.find(
+                        infra => infra.id === ctrl.selectedHealthInfra
+                    );
+          
+                    
+                    return selectedInfra?.location_id ? selectedInfra.location_id : null; // Change to 'name' if you need the name
+                };    
         ctrl.chartCount = () =>
             {
+                ctrl.selectedHealthInfraLocation=ctrl.getLocationDetails();
                 let pieQueryDto = {
                     code: 'fetch_covid_pie_chart_data',
                     parameters: {
-                        location_id: ctrl.selectedLocationId   
+                        location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId   
                     }
                 };
                 Mask.show();
@@ -182,10 +192,11 @@
 
         ctrl.tableCount = () =>
             {
+                ctrl.selectedHealthInfraLocation=ctrl.getLocationDetails();
                 let tableQueryDto = {
                     code: 'fetch_covid_table_data',
                     parameters: {
-                        location_id: ctrl.selectedLocationId   
+                        location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId   
                     }
                 };
                 Mask.show();

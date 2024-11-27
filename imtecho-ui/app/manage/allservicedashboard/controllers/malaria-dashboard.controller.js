@@ -30,7 +30,6 @@
                   }
                   Mask.show();
                   QueryDAO.executeQuery(healthInfraDto).then(function(res){
-                    console.log(res.result);
                     ctrl.healthInfras = res.result;
                   },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
                     Mask.hide();
@@ -47,7 +46,6 @@
                 }
       
                 QueryDAO.executeQuery(healthInfraDto).then(function(res){
-                  console.log(res.result);
                   ctrl.healthInfras = res.result;
                 },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
                   Mask.hide();
@@ -64,14 +62,24 @@
                 angular.element('.cst-backdrop').fadeToggle();
                 angular.element('.filter-div').toggleClass('active');
             };
+
+            ctrl.getLocationDetails = function () {
+                const selectedInfra = ctrl.healthInfras?.find(
+                    infra => infra.id === ctrl.selectedHealthInfra
+                );
+      
+                
+                return selectedInfra?.location_id ? selectedInfra.location_id : null; // Change to 'name' if you need the name
+            };    
     
 
         ctrl.chartCount = () =>
             {
+                ctrl.selectedHealthInfraLocation=ctrl.getLocationDetails();
                 let pieQueryDto = {
                     code: 'fetch_malaria_pie_chart_data',
                     parameters: {
-                        location_id: ctrl.selectedLocationId   
+                        location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId  
                     }
                 };
                 Mask.show();
@@ -85,7 +93,7 @@
                 let barQueryDto = {
                     code: 'fetch_malaria_bar_chart_data',
                     parameters: {
-                        location_id: ctrl.selectedLocationId   
+                        location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId   
                     }
                 };
     
@@ -178,10 +186,11 @@
 
             ctrl.tableCount = () =>
                 {
+                    ctrl.selectedHealthInfraLocation=ctrl.getLocationDetails();
                     let tableQueryDto = {
                         code: 'fetch_malaria_table_data',
                         parameters: {
-                            location_id: ctrl.selectedLocationId   
+                            location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId   
                         }
                     };
                     Mask.show();
