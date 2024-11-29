@@ -1,9 +1,6 @@
 package com.argusoft.imtecho.common.service;
 
-import com.argusoft.imtecho.fhs.dto.ClientMemberDto;
-import com.argusoft.imtecho.fhs.dto.HouseholdDto;
-import com.argusoft.imtecho.fhs.dto.InteractionDto;
-import com.argusoft.imtecho.fhs.dto.ReferralDto;
+import com.argusoft.imtecho.fhs.dto.*;
 
 import java.util.Date;
 import java.util.List;
@@ -68,4 +65,6 @@ public interface ClientService {
      * @return List of InteractionDto objects that match the specified criteria.
      */
     List<InteractionDto> getInteractions(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, Integer cbvId, String householdId, Integer zoneId);
+
+    List<ReferredPatientsDto> getReferredPatients(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, String householdId, Integer zoneId, Integer cbvId);
 }
