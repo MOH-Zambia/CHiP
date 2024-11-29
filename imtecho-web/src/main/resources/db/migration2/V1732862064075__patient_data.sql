@@ -1,4 +1,4 @@
-CREATE TABLE your_table_name (
+CREATE TABLE if NOT exists patient_data (
     id BIGINT NOT NULL,
     referral_id VARCHAR(255),
     created_on TIMESTAMP WITHOUT TIME ZONE,
@@ -12,4 +12,4 @@ CREATE TABLE your_table_name (
 
 
 ALTER TABLE imt_member
-ADD COLUMN nupn TEXT;
+ADD COLUMN if NOT exists nupn TEXT;
