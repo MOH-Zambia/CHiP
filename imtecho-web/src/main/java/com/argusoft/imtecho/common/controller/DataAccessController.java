@@ -3,15 +3,13 @@ package com.argusoft.imtecho.common.controller;
 
 import com.argusoft.imtecho.common.service.ClientService;
 import com.argusoft.imtecho.exception.DateValidationException;
-import com.argusoft.imtecho.fhs.dto.ClientMemberDto;
-import com.argusoft.imtecho.fhs.dto.HouseholdDto;
-import com.argusoft.imtecho.fhs.dto.InteractionDto;
-import com.argusoft.imtecho.fhs.dto.ReferralDto;
+import com.argusoft.imtecho.fhs.dto.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @RestController
-//@RequestMapping("/chipIntegration")
+@RequestMapping("/chipIntegration")
 @Tag(name = "Chip Integration API", description = "APIs related to chip integration")
 public class DataAccessController {
 
@@ -111,9 +109,32 @@ public class DataAccessController {
             validateDates(serviceStartDate, serviceEndDate);
         }
         List<ReferralDto> referrals = clientService.getReferrals(facilityCode, serviceStartDate, serviceEndDate, householdId, zoneId, cbvId);
+        for (ReferralDto referral : referrals) {
+            System.out.println("ID: " + referral.getUniqueId());
+
+        }
         return ResponseEntity.ok(referrals);
     }
 
+    @GetMapping("/getReferredPatients")
+    public ResponseEntity<List<ReferredPatientsDto>> getReferredPatients(
+            @RequestParam Integer facilityCode,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date serviceStartDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date serviceEndDate,
+            @RequestParam(required = false) String householdId,
+            @RequestParam(required = false) Integer zoneId,
+            @RequestParam(required = false) Integer cbvId
+    ) {
+        if(serviceStartDate != null && serviceEndDate != null) {
+            validateDates(serviceStartDate, serviceEndDate);
+        }
+        List<ReferredPatientsDto> referrals = clientService.getReferredPatients(facilityCode, serviceStartDate, serviceEndDate, householdId, zoneId, cbvId);
+//        for (ReferredPatientsDto referral : referrals) {
+//            //System.out.println("ID: " + referral.getUniqueId());
+//
+//        }
+        return ResponseEntity.ok(referrals);
+    }
 
     /**
      * Endpoint to retrieve a list of interaction details based on the provided parameters.
