@@ -38,6 +38,7 @@ public class HouseHoldLineListMobileMapper {
         familyEntity.setLatitude(houseHoldLineListMobileDto.getCurrentLatitude() != null ? houseHoldLineListMobileDto.getCurrentLatitude() : familyEntity.getLatitude());
         familyEntity.setLongitude(houseHoldLineListMobileDto.getCurrentLongitude() != null ? houseHoldLineListMobileDto.getCurrentLongitude() : familyEntity.getLongitude());
         familyEntity.setFamilyUuid(houseHoldLineListMobileDto.getUuid() != null ? houseHoldLineListMobileDto.getUuid() : familyEntity.getFamilyUuid());
+        familyEntity.setVipType(houseHoldLineListMobileDto.getVipType() != null ? houseHoldLineListMobileDto.getVipType() : familyEntity.getVipType());
     }
 
     public static void convertMemberDetailsToMemberEntity(HouseHoldLineListMobileDto.MemberDetails member, MemberEntity memberEntity, boolean isFromUpdate) {
@@ -61,6 +62,7 @@ public class HouseHoldLineListMobileMapper {
         memberEntity.setCurrentStudyingStandard(member.getChildStandard() != null ? member.getChildStandard() : memberEntity.getCurrentStudyingStandard());
         memberEntity.setDateOfWedding(member.getLivingWithPartner() != null ? new Date(member.getLivingWithPartner()) : memberEntity.getDateOfWedding());
         memberEntity.setWhyNoTreatment(member.getWhyNoTreatment() != null ? member.getWhyNoTreatment() : memberEntity.getWhyNoTreatment());
+        memberEntity.setHavingNHIMACard(member.getNhimaCard() != null ? member.getNhimaCard() : memberEntity.getHavingNHIMACard());
 
         if (!isFromUpdate) {
             memberEntity.setGender(member.getGender() != null ? checkGenderFromNumber(member.getGender()) : memberEntity.getGender());

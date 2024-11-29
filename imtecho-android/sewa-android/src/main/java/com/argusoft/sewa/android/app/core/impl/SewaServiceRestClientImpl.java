@@ -28,7 +28,7 @@ import com.argusoft.sewa.android.app.restclient.RestHttpException;
 import com.argusoft.sewa.android.app.restclient.impl.ApiManager;
 import com.argusoft.sewa.android.app.restclient.impl.RestConstantMsg;
 import com.argusoft.sewa.android.app.transformer.SewaTransformer;
-import com.argusoft.sewa.android.app.util.FileUtilsNewKt;
+import com.argusoft.sewa.android.app.util.FileUtils;
 import com.argusoft.sewa.android.app.util.GlobalTypes;
 import com.argusoft.sewa.android.app.util.Log;
 import com.argusoft.sewa.android.app.util.SewaUtil;
@@ -374,7 +374,7 @@ public class SewaServiceRestClientImpl implements SewaServiceRestClient {
     }
 
     public RecordStatusBean uploadMediaToServer(UploadFileDataBean bean, File file) throws IOException {
-        Call<RecordStatusBean> call = apiManager.getInstance().uploadMediaToServer(MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(file, MediaType.parse(FileUtilsNewKt.getMimeType(file)))), bean);
+        Call<RecordStatusBean> call = apiManager.getInstance().uploadMediaToServer(MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(file, MediaType.parse(FileUtils.getMimeType(file)))), bean);
         Response<RecordStatusBean> response = call.execute();
         if (response.isSuccessful()) {
             return response.body();

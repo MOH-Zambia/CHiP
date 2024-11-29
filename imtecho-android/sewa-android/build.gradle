@@ -1,11 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 final BUILD_DATE = new Date().format('ddMMM')
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
     flavorDimensions "default"
+    namespace 'com.argusoft.sewa.android.app'
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         multiDexEnabled true
         ndk {
@@ -24,24 +27,17 @@ android {
         checkReleaseBuilds false
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-//    signingConfigs {
-//        release {
-//            storeFile file("/home/prateek/Documents/Work2/imtecho/imtecho-android/sewa-android/sewa.keystroke")
-//            storePassword "argusadmin"
-//            keyAlias "sewa"
-//            keyPassword "argusadmin"
-//        }
-//    }
+
     buildTypes {
 
         debug {
             shrinkResources false
             minifyEnabled false
-            buildConfigField "String", 'BASE_URL', "\"http://10.28.5.44:8181/\""
-            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://10.28.5.44:8181/\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.1.150.30:8181/\""
+            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.1.150.30:8181/\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -57,7 +53,6 @@ android {
             minifyEnabled false
             crunchPngs false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
         }
     }
 

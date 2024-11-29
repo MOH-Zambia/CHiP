@@ -409,6 +409,23 @@ public class FileUtils {
         return type;
     }
 
+    public static String getMimeType(File file) {
+        String extension = getFileExtension(file);
+        if (!extension.isEmpty()) {
+            String mimeType = MimeTypeMap.getSingleton()
+                    .getMimeTypeFromExtension(extension.substring(1));
+            return mimeType != null ? mimeType : "application/octet-stream";
+        } else {
+            return "application/octet-stream";
+        }
+    }
+
+    private static String getFileExtension(File file) {
+        String name = file.getName();
+        int lastDot = name.lastIndexOf('.');
+        return (lastDot == -1) ? "" : name.substring(lastDot);
+    }
+
     public String convertBitmapToFile(Bitmap bitmap, String path) {
         File file = new File(path);
         try {

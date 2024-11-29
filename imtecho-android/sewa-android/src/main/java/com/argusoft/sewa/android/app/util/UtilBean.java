@@ -1914,16 +1914,11 @@ public class UtilBean {
             textView.setTextSize(16);
             textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             String stringBuilder;
-            if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                if (memberDataBean.getState() != null && (memberDataBean.getState().equalsIgnoreCase(FhsConstants.CFHC_MEMBER_STATE_DEAD) || memberDataBean.getState().equalsIgnoreCase("com.argusoft.imtecho.member.state.dead"))) {
-                    stringBuilder = memberDataBean.getUniqueHealthId() + " - " + UtilBean.getMemberFullName(memberDataBean) + " | " + memberDataBean.getGender() + " (Deceased)";
-                } else {
-                    stringBuilder = memberDataBean.getUniqueHealthId() + " - " + UtilBean.getMemberFullName(memberDataBean) + " | " + memberDataBean.getGender();
-                }
+            if (memberDataBean.getState() != null && (memberDataBean.getState().equalsIgnoreCase(FhsConstants.CFHC_MEMBER_STATE_DEAD) || memberDataBean.getState().equalsIgnoreCase("com.argusoft.imtecho.member.state.dead"))) {
+                stringBuilder = memberDataBean.getUniqueHealthId() + " - " + UtilBean.getMemberFullName(memberDataBean) + " | " + memberDataBean.getGender() + " (Deceased)";
             } else {
                 stringBuilder = memberDataBean.getUniqueHealthId() + " - " + UtilBean.getMemberFullName(memberDataBean) + " | " + memberDataBean.getGender();
             }
-
             String replace = stringBuilder.replace(" null", "");
             replace = replace.replace("null ", "");
             replace = replace.trim();

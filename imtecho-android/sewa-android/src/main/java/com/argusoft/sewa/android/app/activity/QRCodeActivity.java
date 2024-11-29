@@ -1,5 +1,7 @@
 package com.argusoft.sewa.android.app.activity;
 
+import static com.argusoft.sewa.android.app.R.id.buttonShare;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -165,13 +167,11 @@ public class QRCodeActivity extends MenuActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonDownload:
-                saveImageToGallery(UtilBean.getBitmapFromView(detailsView));
-                break;
-            case R.id.buttonShare:
-                shareQrCode(UtilBean.getBitmapFromView(detailsView));
-                break;
+        int id = v.getId();
+        if (id == R.id.buttonDownload) {
+            saveImageToGallery(UtilBean.getBitmapFromView(detailsView));
+        } else if (id == R.id.buttonShare) {
+            shareQrCode(UtilBean.getBitmapFromView(detailsView));
         }
     }
 

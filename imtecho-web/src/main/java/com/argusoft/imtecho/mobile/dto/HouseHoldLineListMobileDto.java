@@ -35,6 +35,7 @@ public class HouseHoldLineListMobileDto {
     private String motherRelation;
     private String husbandRelation;
     private String uuid;
+    private String vipType;
 
     @Setter
     @Getter
@@ -90,5 +91,7 @@ public class HouseHoldLineListMobileDto {
         private String deathHealthInfraId;
         private String newHofId;
         private String motherId;
+        private Boolean nhimaCard;
+
     }
 }

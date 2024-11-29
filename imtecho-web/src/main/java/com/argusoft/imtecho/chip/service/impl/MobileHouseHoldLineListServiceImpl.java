@@ -189,7 +189,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         }
 
         for (HouseHoldLineListMobileDto.MemberDetails memberDetails : houseHoldLineListMobileDto.getMemberDetails()) {
-            if (memberDetails.getUniqueHealthId() != null) {
+            if (memberDetails.getUniqueHealthId() != null || memberDetails.getMemberUuid() != null) {
                 //first search if members unique health id is present if not search with uuid
                 memberEntity = memberDao.retrieveMemberByUniqueHealthId(memberDetails.getUniqueHealthId());
                 if (memberEntity == null) {
@@ -207,7 +207,9 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 memberEntity.setUniqueHealthId(familyHealthSurveyService.generateMemberUniqueHealthId());
                 memberEntity.setState(FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_NEW);
             }
-            if (memberEntity.getMotherId() != null && memberDetails.getMotherId() != null && !memberDetails.getMotherId().equalsIgnoreCase("NOT_AVAILABLE")) {
+            if (memberEntity.getMotherId() != null && memberDetails.getMotherId() != null
+                    && !memberDetails.getMotherId().equalsIgnoreCase("NOT_AVAILABLE")
+                    && !memberDetails.getMotherId().equalsIgnoreCase("null")) {
                 memberEntity.setMotherId(Integer.valueOf(memberDetails.getMotherId()));
             }
             if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("DEATH"))) {
@@ -215,16 +217,10 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                     memberEntity.setFamilyHeadFlag(Boolean.FALSE);
                     family.setHeadOfFamily(Integer.valueOf(memberDetails.getNewHofId()));
                     MemberEntity newHofEntity = memberDao.retrieveMemberById(Integer.parseInt(memberDetails.getNewHofId()));
-                    List<MemberEntity> allMembersInFamily = memberDao.retrieveMemberEntitiesByFamilyId(family.getFamilyId());
                     if (newHofEntity != null) {
                         newHofEntity.setFamilyHeadFlag(Boolean.TRUE);
                     }
-                    if (allMembersInFamily != null && !allMembersInFamily.isEmpty()) {
-                        for (MemberEntity member : allMembersInFamily) {
-                            member.setRelationWithHof(null);
-                        }
-                        memberDao.updateAll(allMembersInFamily);
-                    }
+
                     familyDao.update(family);
                 }
 
@@ -250,75 +246,73 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                     memberDao.update(memberEntity);
                 } else {
                     memberDao.create(memberEntity);
+                    if (memberDetails.getUniqueHealthId() == null) {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(memberEntity.getUniqueHealthId());
+                        sb.append("-");
+                        sb.append(memberEntity.getFirstName());
+                        sb.append(" ");
+                        if (memberEntity.getMiddleName() != null && !memberEntity.getMiddleName().isEmpty()) {
+                            sb.append(memberEntity.getMiddleName());
+                            sb.append(" ");
+                        }
+                        sb.append(memberEntity.getLastName());
+                        returnMap.put("memberId", sb.toString());
+
+                        sb = new StringBuilder();
+                        sb.append("New Member Added");
+                        sb.append("\n");
+                        sb.append("\n");
+                        sb.append("Family ID : ");
+                        sb.append(memberEntity.getFamilyId());
+                        sb.append("\n");
+                        sb.append("Member ID : ");
+                        sb.append(memberEntity.getUniqueHealthId());
+                        sb.append("\n");
+                        sb.append("Member Name : ");
+                        sb.append(memberEntity.getFirstName());
+                        sb.append(" ");
+                        if (memberEntity.getMiddleName() != null && !memberEntity.getMiddleName().isEmpty()) {
+                            sb.append(memberEntity.getMiddleName());
+                            sb.append(" ");
+                        }
+                        sb.append(memberEntity.getLastName());
+                        returnMap.put("message", sb.toString());
+                    }
+
+                    if (memberEntity.isDuplicateNrc()) {
+                        StringBuilder sb1 = new StringBuilder();
+                        sb1.append("\n");
+                        sb1.append(" ");
+                        sb1.append(String.format("Entered NRC number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicateNrcNumber()));
+                        sb1.append(" ");
+                        sb1.append("\n");
+                        returnMap.put("message", sb1.toString());
+                    }
+
+                    if (memberEntity.isDuplicatePassport()) {
+                        StringBuilder sb2 = new StringBuilder();
+                        sb2.append("\n");
+                        sb2.append(" ");
+                        sb2.append(String.format("Entered passport number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicatePassportNumber()));
+                        sb2.append(" ");
+                        sb2.append("\n");
+                        returnMap.put("message", sb2.toString());
+                    }
+
+                    if (memberEntity.isDuplicateBirthCert()) {
+                        StringBuilder sb2 = new StringBuilder();
+                        sb2.append("\n");
+                        sb2.append(" ");
+                        sb2.append(String.format("Entered birth certificate Number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicateBirthCertNumber()));
+                        sb2.append(" ");
+                        sb2.append("\n");
+                        returnMap.put("message", sb2.toString());
+                    }
                 }
             }
 
             returnMap.put("createdInstanceId", memberEntity.getId().toString());
-
-            if (memberDetails.getUniqueHealthId() == null) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(memberEntity.getUniqueHealthId());
-                sb.append("-");
-                sb.append(memberEntity.getFirstName());
-                sb.append(" ");
-                if (memberEntity.getMiddleName() != null && !memberEntity.getMiddleName().isEmpty()) {
-                    sb.append(memberEntity.getMiddleName());
-                    sb.append(" ");
-                }
-                sb.append(memberEntity.getLastName());
-                returnMap.put("memberId", sb.toString());
-
-                sb = new StringBuilder();
-                sb.append("New Member Added");
-                sb.append("\n");
-                sb.append("\n");
-                sb.append("Family ID : ");
-                sb.append(memberEntity.getFamilyId());
-                sb.append("\n");
-                sb.append("Member ID : ");
-                sb.append(memberEntity.getUniqueHealthId());
-                sb.append("\n");
-                sb.append("Member Name : ");
-                sb.append(memberEntity.getFirstName());
-                sb.append(" ");
-                if (memberEntity.getMiddleName() != null && !memberEntity.getMiddleName().isEmpty()) {
-                    sb.append(memberEntity.getMiddleName());
-                    sb.append(" ");
-                }
-                sb.append(memberEntity.getLastName());
-                returnMap.put("message", sb.toString());
-            }
-
-            if (memberEntity.isDuplicateNrc()) {
-                StringBuilder sb1 = new StringBuilder();
-                sb1.append("\n");
-                sb1.append(" ");
-                sb1.append(String.format("Entered NRC number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicateNrcNumber()));
-                sb1.append(" ");
-                sb1.append("\n");
-                returnMap.put("message", sb1.toString());
-            }
-
-            if (memberEntity.isDuplicatePassport()) {
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append("\n");
-                sb2.append(" ");
-                sb2.append(String.format("Entered passport number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicatePassportNumber()));
-                sb2.append(" ");
-                sb2.append("\n");
-                returnMap.put("message", sb2.toString());
-            }
-
-            if (memberEntity.isDuplicateBirthCert()) {
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append("\n");
-                sb2.append(" ");
-                sb2.append(String.format("Entered birth certificate Number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicateBirthCertNumber()));
-                sb2.append(" ");
-                sb2.append("\n");
-                returnMap.put("message", sb2.toString());
-            }
-
             memberDao.flush();
             if (Boolean.TRUE.equals(memberEntity.isMarkedPregnant())) {
                 eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.PREGNANCY_MARK, memberEntity.getId()));
