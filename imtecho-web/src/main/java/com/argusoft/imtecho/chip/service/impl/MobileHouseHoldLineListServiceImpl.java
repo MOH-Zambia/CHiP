@@ -180,7 +180,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
     public Map<String, String> storeMemberUpdateFormZambia(ParsedRecordBean parsedRecordBean, UserMaster user) {
         Map<String, String> returnMap = new LinkedHashMap<>();
         MemberEntity memberEntity;
-        FamilyEntity family;
+        FamilyEntity family = null;
         HouseHoldLineListMobileDto houseHoldLineListMobileDto = gson.fromJson(parsedRecordBean.getAnswerRecord(), HouseHoldLineListMobileDto.class);
 
         String familyUUid = null;
@@ -189,7 +189,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         }
 
         for (HouseHoldLineListMobileDto.MemberDetails memberDetails : houseHoldLineListMobileDto.getMemberDetails()) {
-            if (memberDetails.getUniqueHealthId() != null || memberDetails.getMemberUuid() != null) {
+            if (memberDetails.getUniqueHealthId() != null) {
                 //first search if members unique health id is present if not search with uuid
                 memberEntity = memberDao.retrieveMemberByUniqueHealthId(memberDetails.getUniqueHealthId());
                 if (memberEntity == null) {
