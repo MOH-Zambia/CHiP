@@ -1535,13 +1535,13 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
 
     public String getFullName() {
         if (Objects.nonNull(this.getMiddleName()) && Objects.nonNull(this.getLastName())) {
-            return this.getFirstName().trim() + " " + this.getMiddleName().trim() + " " + this.getLastName().trim();
+            return this.getFirstName() + " " + this.getMiddleName().trim() + " " + this.getLastName().trim();
         } else if (Objects.nonNull(this.getLastName())) {
-            return this.getFirstName().trim() + " " + this.getLastName().trim();
+            return this.getFirstName() + " " + this.getLastName().trim();
         } else if (Objects.nonNull(this.getMiddleName())) {
-            return this.getFirstName().trim() + " " + this.getMiddleName().trim();
+            return this.getFirstName() + " " + this.getMiddleName().trim();
         } else {
-            return this.getFirstName().trim();
+            return this.getFirstName();
         }
     }
 }
