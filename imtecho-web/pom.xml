@@ -521,7 +521,7 @@
                 <server.implementation.type>chip</server.implementation.type>
 
                 <jdbc.url>localhost</jdbc.url>
-                <jdbc.database>chip_prod_backup</jdbc.database>
+                <jdbc.database>chip_prod_backup_test</jdbc.database>
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>argusadmin</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
@@ -714,7 +714,7 @@
             <properties>
                 <server.port>443</server.port>
                 <server.redirect.port>80</server.redirect.port>
-                <server.is.secure>false</server.is.secure>
+                <server.is.secure>true</server.is.secure>
                 <server.droptype>P</server.droptype>
                 <server.type>LIVE</server.type>
                 <server.implementation.type>chip</server.implementation.type>
