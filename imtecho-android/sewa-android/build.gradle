@@ -36,12 +36,19 @@ android {
         debug {
             shrinkResources false
             minifyEnabled false
-            buildConfigField "String", 'BASE_URL', "\"http://192.1.150.30:8181/\""
-            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.1.150.30:8181/\""
+            buildConfigField "String", 'BASE_URL', "\"http://102.23.121.121/\""
+            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://102.23.121.121/\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         staging {
+            shrinkResources false
+            minifyEnabled false
+            crunchPngs false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        training {
             shrinkResources false
             minifyEnabled false
             crunchPngs false
