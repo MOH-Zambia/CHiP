@@ -780,9 +780,6 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                     malariaIndexCaseEntity.setOtherShowingSigns(answer);
                 }
                 break;
-            case "219":
-                malariaIndexCaseEntity.setWasDbsCollected(ImtechoUtil.returnTrueFalseFromInitials(answer));
-                break;
             case "220":
                 malariaIndexCaseEntity.setBloodSpotResult(answer);
                 break;

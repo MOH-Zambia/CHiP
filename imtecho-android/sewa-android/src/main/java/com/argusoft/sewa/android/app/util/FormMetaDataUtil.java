@@ -476,7 +476,7 @@ public class FormMetaDataUtil {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_BPL, LabelConstants.NO);
         }
 
-        if (memberBean.getMobileNumber() != null && !memberBean.getMobileNumber().equals("T")) {
+        if (!memberBean.getMobileNumber().isEmpty() && memberBean.getMobileNumber() != null && !memberBean.getMobileNumber().equals("T") ) {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_PHONE_NUMBER, memberBean.getMobileNumber());
         } else if (familyDataBean.getContactPersonId() != null) {
             try {
@@ -2043,7 +2043,7 @@ public class FormMetaDataUtil {
             if (memberDataBean.getBirthCertNumber() != null) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.BIRTH_CERTIFICATE_NUMBER, memberDataBean.getBirthCertNumber());
             }
-            if (memberDataBean.getMobileNumber() != null && !memberDataBean.getMobileNumber().equals("T")) {
+            if (!memberDataBean.getMobileNumber().isEmpty() && memberDataBean.getMobileNumber() != null && !memberDataBean.getMobileNumber().equals("T")) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_PHONE_NUMBER, memberDataBean.getMobileNumber());
             } else if (familyDataBean.getContactPersonId() != null) {
                 try {

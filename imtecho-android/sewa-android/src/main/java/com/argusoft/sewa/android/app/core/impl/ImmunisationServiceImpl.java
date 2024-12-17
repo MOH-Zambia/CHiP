@@ -1200,6 +1200,16 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             default:
         }
 
+        // Adjusting dates for avoiding overly strict date validation
+        Calendar adjustment = Calendar.getInstance();
+
+        adjustment.setTime(lbw);
+        adjustment.add(Calendar.DATE, -7);
+        lbw = adjustment.getTime();
+        adjustment.setTime(ubw);
+        adjustment.add(Calendar.DATE, 7);
+        ubw = adjustment.getTime();
+
         if (!isForNextDueDate) {
             isMissed = !UtilBean.clearTimeFromDate(lbw).equals(currentDate) && !UtilBean.clearTimeFromDate(lbw).before(currentDate);
         } else {
