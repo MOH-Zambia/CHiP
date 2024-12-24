@@ -8,10 +8,12 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Build;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -158,6 +160,25 @@ public class SearchComponent extends LinearLayout {
         clearButton = mainLayout.findViewById(R.id.clearButton);
         clearButton.setOnClickListener(getClearButtonClickListener());
 
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (clearButton.getVisibility() == View.VISIBLE) {
+                    searchButton.setVisibility(View.VISIBLE);
+                    clearButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+
         if (searchTypes != null && !searchTypes.isEmpty()) {
             selectedType = searchTypes.get(0);
             searchTypeButton.setVisibility(VISIBLE);
@@ -166,7 +187,6 @@ public class SearchComponent extends LinearLayout {
         }
         setSearchBoxAccordingToType();
     }
-
     private OnClickListener getSearchTypeClickListener() {
         return view -> {
             if (searchTypes != null && !searchTypes.isEmpty()) {

@@ -2105,6 +2105,12 @@ public class UtilBean {
 
     public static String getFamilyFullAddress(FamilyDataBean familyDataBean) {
         StringBuilder stringBuilder = new StringBuilder();
+
+        if (familyDataBean.getHouseNumber() != null && !familyDataBean.getHouseNumber().isEmpty()) {
+            stringBuilder.append(familyDataBean.getHouseNumber());
+            stringBuilder.append(", ");
+        }
+
         if (familyDataBean.getAddress1() != null || familyDataBean.getAddress2() != null) {
             if (familyDataBean.getAddress1() != null) {
                 stringBuilder.append(familyDataBean.getAddress1());
