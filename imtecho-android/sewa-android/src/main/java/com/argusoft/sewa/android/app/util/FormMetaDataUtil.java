@@ -476,7 +476,7 @@ public class FormMetaDataUtil {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_BPL, LabelConstants.NO);
         }
 
-        if (!memberBean.getMobileNumber().isEmpty() && memberBean.getMobileNumber() != null && !memberBean.getMobileNumber().equals("T") ) {
+        if (memberBean.getMobileNumber() != null && !memberBean.getMobileNumber().isEmpty() && !memberBean.getMobileNumber().equals("T") ) {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_PHONE_NUMBER, memberBean.getMobileNumber());
         } else if (familyDataBean.getContactPersonId() != null) {
             try {
