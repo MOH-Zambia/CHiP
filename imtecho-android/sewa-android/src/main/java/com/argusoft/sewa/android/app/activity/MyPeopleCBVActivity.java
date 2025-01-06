@@ -2558,7 +2558,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                     setSubTitle(UtilBean.getMemberFullName(memberSelected));
                     addSearchTextBox();
                     retrieveMemberListByServiceType(selectedService, null, false);
-                    setMemberSelectionScreen(selectedService, false);
                     break;
 
                 case MANAGE_FAMILY_MIGRATIONS_SCREEN:
@@ -2583,6 +2582,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 case MEMBER_SELECTION_SCREEN:
                 case MIGRATED_MEMBERS_SCREEN:
                 case RCH_REGISTER_MEMBER_SCREEN:
+                case SERVICE_NEARBY_MEMBER_SCREENING:
                     selectedServiceIndex = -1;
                     showProcessDialog();
                     bodyLayoutContainer.removeAllViews();
