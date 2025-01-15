@@ -34,7 +34,7 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
 
     private static final Logger log = LoggerFactory.getLogger(Dhis2DataServiceImpl.class);
 
-    private static final String DHIS2_USERNAME = "Tedson.Simwanza1";
+    private static final String DHIS2_USERNAME = "CBHIS";
     private static final String DHIS2_PASSWORD = "Newp@ss2";
 
     @Override
