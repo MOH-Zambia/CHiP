@@ -47,7 +47,7 @@ public class Dhis2CallLogInterceptor implements ClientHttpRequestInterceptor {
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) {
         ClientHttpResponse response;
-        log.info("Dhis2 Request body: {} => {}", new String(body, StandardCharsets.UTF_8), request.getURI());
+//        log.info("Dhis2 Request body: {} => {}", new String(body, StandardCharsets.UTF_8), request.getURI());
 
         try {
             response = execution.execute(request, body);
