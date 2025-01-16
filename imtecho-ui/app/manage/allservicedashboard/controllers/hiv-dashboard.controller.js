@@ -1,5 +1,5 @@
 (function () {
-    function HivDashboardController(QueryDAO,Mask,GeneralUtil,AuthenticateService) {
+    function HivDashboardController($scope,QueryDAO,Mask,GeneralUtil,AuthenticateService) {
         let ctrl = this;
 
         ctrl.init = () => {
@@ -8,6 +8,7 @@
                 ctrl.selectedLocationId = ctrl.currentUser.minLocationId;
                 ctrl.chartCount();
                 ctrl.tableCount();
+                ctrl.getHealthInfra();
 
             });
             }
@@ -18,6 +19,38 @@
                     ctrl.tableCount();
                     ctrl.toggleFilter();
             }
+
+            $scope.$watch('ctrl.selectedLocationId', function(newVal, oldVal) {
+                if (newVal && oldVal) {
+                  let healthInfraDto = {
+                    code:'fetch_health_infra_acc_to_locations',
+                    parameters: {
+                      location_id: ctrl.selectedLocationId 
+                      }
+                  }
+                  Mask.show();
+                  QueryDAO.executeQuery(healthInfraDto).then(function(res){
+                    ctrl.healthInfras = res.result;
+                  },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+                    Mask.hide();
+                 })
+                }
+              });
+      
+              ctrl.getHealthInfra = ()=>{
+                let healthInfraDto = {
+                  code:'fetch_health_infra_acc_to_locations',
+                  parameters: {
+                    location_id: ctrl.selectedLocationId 
+                    }
+                }
+      
+                QueryDAO.executeQuery(healthInfraDto).then(function(res){
+                  ctrl.healthInfras = res.result;
+                },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+                  Mask.hide();
+               })
+              }     
         
         ctrl.toggleFilter = () => {
                 if (angular.element('.filter-div').hasClass('active')) {
@@ -29,12 +62,22 @@
                 angular.element('.filter-div').toggleClass('active');
             };
 
+            ctrl.getLocationDetails = function () {
+                const selectedInfra = ctrl.healthInfras?.find(
+                    infra => infra.id === ctrl.selectedHealthInfra
+                );
+      
+                
+                return selectedInfra?.location_id ? selectedInfra.location_id : null; // Change to 'name' if you need the name
+            };    
+
         ctrl.chartCount = () =>
             {
+                ctrl.selectedHealthInfraLocation=ctrl.getLocationDetails();
                 let pieQueryDto = {
                     code: 'fetch_hiv_pie_chart_data',
                     parameters: {
-                        location_id: ctrl.selectedLocationId   
+                        location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId   
                     }
                 };
                 Mask.show();
@@ -48,7 +91,7 @@
                 let barQueryDto = {
                     code: 'fetch_hiv_bar_chart_data',
                     parameters: {
-                        location_id: ctrl.selectedLocationId   
+                        location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId   
                     }
                 };
                
@@ -145,10 +188,11 @@
 
          ctrl.tableCount = () =>
             {
+                ctrl.selectedHealthInfraLocation=ctrl.getLocationDetails();
                 let tableQueryDto = {
                     code: 'fetch_hiv_table_data',
                     parameters: {
-                        location_id: ctrl.selectedLocationId   
+                        location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId   
                     }
                 };
                 Mask.show();

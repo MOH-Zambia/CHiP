@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -35,7 +33,7 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
 
     private static final Logger log = LoggerFactory.getLogger(Dhis2DataServiceImpl.class);
 
-    private static final String DHIS2_USERNAME = "Tedson.Simwanza1";
+    private static final String DHIS2_USERNAME = "CBHIS";
     private static final String DHIS2_PASSWORD = "Newp@ss2";
 
     @Override
@@ -54,6 +52,39 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
         log.info("Response body: {}", response.getStatusCode());
 
         return response.getStatusCode().toString();
+    }
+
+    @Override
+    public String sendMultipleData(Date monthEnd,List<Integer> facilityIds){
+        Map<Integer, String> facilityResponses = new HashMap<>();
+
+        for (Integer facilityId : facilityIds) {
+            try {
+                String jsonString = dhis2Dao.getData(monthEnd, facilityId);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.setBasicAuth(DHIS2_USERNAME, DHIS2_PASSWORD);
+
+                HttpEntity<String> entity = new HttpEntity<>(jsonString, headers);
+                restTemplate.setInterceptors(Collections.singletonList(new Dhis2CallLogInterceptor(dhis2Dao, monthEnd)));
+
+                ResponseEntity<String> response = restTemplate.exchange(
+                        dhis2ConstantsUtil.getDhis2Api(), HttpMethod.POST, entity, String.class);
+
+                log.info("Response for facility ID {}: {}", facilityId, response.getStatusCode());
+                facilityResponses.put(facilityId, response.getStatusCode().toString());
+            } catch (Exception e) {
+                log.error("Error processing facility ID {}: {}", facilityId, e.getMessage(), e);
+                facilityResponses.put(facilityId, "FAILED");
+            }
+        }
+        if (facilityResponses.size() == facilityIds.size()) {
+            log.info("All facility IDs processed successfully");
+            return "200 OK";
+        } else {
+            return "PARTIAL_SUCCESS"; // Indicating partial success
+        }
     }
 
 
