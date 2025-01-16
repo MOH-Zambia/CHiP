@@ -4,6 +4,7 @@ import com.argusoft.imtecho.common.dao.Dhis2Dao;
 import com.argusoft.imtecho.common.interceptor.Dhis2CallLogInterceptor;
 import com.argusoft.imtecho.common.service.Dhis2DataService;
 import com.argusoft.imtecho.common.util.Dhis2ConstantsUtil;
+import com.argusoft.imtecho.exception.ImtechoSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,7 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
             log.info("All facility IDs processed successfully");
             return "200 OK";
         } else {
-            return "PARTIAL_SUCCESS"; // Indicating partial success
+            throw new ImtechoSystemException("Error syncing DHIS data.",500);
         }
     }
 
