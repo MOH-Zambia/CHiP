@@ -60,26 +60,15 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
 
         for (Integer facilityId : facilityIds) {
             try {
-                String jsonString = dhis2Dao.getData(monthEnd, facilityId);
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.setBasicAuth(DHIS2_USERNAME, DHIS2_PASSWORD);
-
-                HttpEntity<String> entity = new HttpEntity<>(jsonString, headers);
-                restTemplate.setInterceptors(Collections.singletonList(new Dhis2CallLogInterceptor(dhis2Dao, monthEnd)));
-
-                ResponseEntity<String> response = restTemplate.exchange(
-                        dhis2ConstantsUtil.getDhis2Api(), HttpMethod.POST, entity, String.class);
-
-                log.info("Response for facility ID {}: {}", facilityId, response.getStatusCode());
-                facilityResponses.put(facilityId, response.getStatusCode().toString());
+                String response = this.sendData(monthEnd,facilityId);
+                log.info("Response for facility ID {}: {}", facilityId, response);
+                facilityResponses.put(facilityId, response);
             } catch (Exception e) {
                 log.error("Error processing facility ID {}: {}", facilityId, e.getMessage(), e);
                 facilityResponses.put(facilityId, "FAILED");
             }
         }
-        if (facilityResponses.size() == facilityIds.size()) {
+        if (!facilityResponses.containsValue("FAILED")) {
             log.info("All facility IDs processed successfully");
             return "200 OK";
         } else {
