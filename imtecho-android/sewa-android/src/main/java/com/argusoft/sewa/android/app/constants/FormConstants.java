@@ -26,6 +26,7 @@ public class FormConstants {
     public static final String HOUSE_HOLD_LINE_LIST_NEW = "HOUSE_HOLD_LINE_LIST_NEW";
     public static final String FAMILY_FOLDER = "FAMILY_FOLDER";
     public static final String FAMILY_FOLDER_MEMBER_UPDATE = "FAMILY_FOLDER_MEMBER_UPDATE";
+    public static final String FAMILY_UPDATE = "FAMILY_UPDATE";
     public static final String LOCKED_FAMILY = "LOCKED_FAMILY";
     public static final String FHS_MEMBER_UPDATE = "MEMBER_UPDATE";
     public static final String FHS_MEMBER_UPDATE_NEW = "MEMBER_UPDATE_NEW";
@@ -242,6 +243,7 @@ public class FormConstants {
         stringList.add(FormConstants.HOUSE_HOLD_LINE_LIST);
         stringList.add(FormConstants.HOUSE_HOLD_LINE_LIST_NEW);
         stringList.add(FormConstants.FAMILY_FOLDER_MEMBER_UPDATE);
+        stringList.add(FormConstants.FAMILY_UPDATE);
         stringList.add(FormConstants.CAM_FHS);
         stringList.add(FormConstants.CAM_FHS_MEMBER_UPDATE);
         return stringList;
@@ -310,6 +312,7 @@ public class FormConstants {
         stringList.add(FormConstants.HOUSE_HOLD_LINE_LIST_NEW);
         stringList.add(FormConstants.FHS_MEMBER_UPDATE_NEW);
         stringList.add(FormConstants.CHIP_GBV_SCREENING);
+        stringList.add(FormConstants.FAMILY_UPDATE);
         return stringList;
     }
 
