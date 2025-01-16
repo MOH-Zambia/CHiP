@@ -49,7 +49,9 @@ public interface SewaFhsService {
 
     List<MemberDataBean> retrieveMemberDataBeansByFamily(String familyId);
 
-    List<MemberDataBean> retrieveMembersWithin150mOfActiveMalariaCases(String locationId, String lat, String lng);
+    List<MemberDataBean> retrieveMemberDataBeansByFamilyWithSearch(String familyId, CharSequence searchString);
+
+    List<MemberDataBean> retrieveMembersWithin150mOfActiveMalariaCases(String locationId, String lat, String lng, CharSequence searchString);
 
     Map<String, MemberDataBean> retrieveHeadMemberDataBeansByFamilyId(List<String> familyIds);
 

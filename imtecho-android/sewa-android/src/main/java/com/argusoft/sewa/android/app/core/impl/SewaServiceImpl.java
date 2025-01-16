@@ -758,7 +758,7 @@ public class SewaServiceImpl implements SewaService {
         List<LoggerBean> loggerBeans = null;
         try {
             Calendar instance = Calendar.getInstance();
-            instance.add(Calendar.DATE, -15);
+            instance.add(Calendar.DATE, -35);
             instance.set(Calendar.HOUR, 0);
             instance.set(Calendar.MINUTE, 0);
             instance.set(Calendar.SECOND, 0);

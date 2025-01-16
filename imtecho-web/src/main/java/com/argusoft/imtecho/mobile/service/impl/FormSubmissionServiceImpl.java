@@ -601,6 +601,16 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                     parsedRecordBean.setMessage(returnMap.get(message));
                 }
                 return createdInstanceId;
+            case MobileConstantUtil.FAMILY_UPDATE:
+                returnMap = mobileHouseHoldLineListService.storeFamilyUpdateFormZambia(parsedRecordBean, user);
+                createdInstanceId = Integer.valueOf(returnMap.get("createdInstanceId"));
+                if (returnMap.get("memberId") != null) {
+                    parsedRecordBean.setGeneratedId(returnMap.get("memberId"));
+                }
+                if (returnMap.get(message) != null) {
+                    parsedRecordBean.setMessage(returnMap.get(message));
+                }
+                return createdInstanceId;
             case MobileConstantUtil.AADHAR_UPDATION:
                 AadharUpdationBean aadharUpdationBean = new GsonBuilder()
                         .registerTypeAdapter(Date.class, MobileConstantUtil.jsonDateDeserializerStringFormat)

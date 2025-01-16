@@ -212,6 +212,12 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                     && !memberDetails.getMotherId().equalsIgnoreCase("null")) {
                 memberEntity.setMotherId(Integer.valueOf(memberDetails.getMotherId()));
             }
+            if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("ARCHIVE"))) {
+                memberEntity.setModifiedBy(user.getId());
+                memberEntity.setModifiedOn(new Date());
+                memberEntity.setFamilyHeadFlag(Boolean.FALSE);
+                this.updateMember(memberEntity, memberEntity.getState(), FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_ARCHIVED);
+            }
             if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("DEATH"))) {
                 if (memberDetails.getNewHofId() != null) {
                     memberEntity.setFamilyHeadFlag(Boolean.FALSE);
@@ -320,6 +326,39 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             return returnMap;
         }
         return null;
+    }
+
+    @Override
+    public Map<String, String> storeFamilyUpdateFormZambia(ParsedRecordBean parsedRecordBean, UserMaster user) {
+        Map<String, String> returnMap = new LinkedHashMap<>();
+        StringBuilder returnMessage = new StringBuilder();
+        HouseHoldLineListMobileDto houseHoldLineListMobileDto = gson.fromJson(parsedRecordBean.getAnswerRecord(), HouseHoldLineListMobileDto.class);
+
+        //Updating Family Details
+        FamilyEntity family = new FamilyEntity();
+        if (houseHoldLineListMobileDto.getFamilyNumber() != null && !houseHoldLineListMobileDto.getFamilyNumber().isEmpty()) {
+            family = familyDao.retrieveFamilyByFamilyId(houseHoldLineListMobileDto.getFamilyNumber());
+            HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyEntity(houseHoldLineListMobileDto, family);
+            family.setState(getFamilyStateAccordingToPreviousState(family.getState()));
+        }
+
+        familyDao.update(family);
+        familyDao.flush();
+
+        returnMessage.append("Family ID : ");
+        returnMessage.append(family.getFamilyId());
+        returnMessage.append("\n");
+        returnMap.put("message", returnMessage.toString());
+        returnMap.put("createdInstanceId", family.getId().toString());
+        return returnMap;
+    }
+
+    @Override
+    public void updateMember(MemberEntity memberEntity, String fromState, String toState) {
+        if (toState != null && !memberEntity.getState().equals(toState)) {
+            memberEntity.setState(toState);
+        }
+        memberDao.update(memberEntity);
     }
 
     @Override

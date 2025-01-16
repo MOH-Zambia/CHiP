@@ -2270,4 +2270,31 @@ public class FormMetaDataUtil {
         SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_QR_ENABLED, "1");
         editor.apply();
     }
+
+    public void setMetaDataForFamilyUpdateForm(FamilyDataBean familyDataBean, SharedPreferences sharedPreferences) {
+        SimpleDateFormat sdf = new SimpleDateFormat(GlobalTypes.DATE_DD_MM_YYYY_FORMAT, Locale.getDefault());
+        sharedPreferences.edit().clear().apply();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (familyDataBean != null) {
+            editor.putString(RelatedPropertyNameConstants.FAMILY_ID, familyDataBean.getId());
+            if (familyDataBean.getAreaId() != null) {
+                editor.putString(RelatedPropertyNameConstants.LOCATION_ID, familyDataBean.getAreaId());
+            } else {
+                editor.putString(RelatedPropertyNameConstants.LOCATION_ID, familyDataBean.getLocationId());
+            }
+        }
+
+        SharedStructureData.relatedPropertyHashTable.clear();
+        SharedStructureData.currentFamilyDataBean = familyDataBean;
+
+        if (familyDataBean != null && familyDataBean.getFamilyId() != null) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ADDRESS, UtilBean.getFamilyFullAddress(familyDataBean));
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UUID, familyDataBean.getUuid());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_ID, familyDataBean.getFamilyId());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY, familyDataBean.getHeadMemberName());
+        }
+        editor.apply();
+    }
+
 }

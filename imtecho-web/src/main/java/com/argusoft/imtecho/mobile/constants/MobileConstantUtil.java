@@ -36,6 +36,7 @@ public class MobileConstantUtil {
 
     public static final String FAMILY_HEALTH_SURVEY = "FHS";
     public static final String FAMILY_FOLDER = "FAMILY_FOLDER";
+    public static final String FAMILY_UPDATE = "FAMILY_UPDATE";
     public static final String HOUSE_HOLD_LINE_LIST = "HOUSE_HOLD_LINE_LIST";
     public static final String HOUSE_HOLD_LINE_LIST_NEW = "HOUSE_HOLD_LINE_LIST_NEW";
     public static final String FAMILY_FOLDER_MEMBER_UPDATE = "FAMILY_FOLDER_MEMBER_UPDATE";

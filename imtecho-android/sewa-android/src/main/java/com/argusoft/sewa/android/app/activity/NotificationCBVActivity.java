@@ -592,7 +592,7 @@ public class NotificationCBVActivity extends MenuActivity implements View.OnClic
                     List<MemberDataBean> nearbyMembers = new ArrayList<>(fhsService.retrieveMembersWithin150mOfActiveMalariaCases(
                             locationIdForAllFam,
                             familyDataBean.getLatitude(),
-                            familyDataBean.getLongitude()));
+                            familyDataBean.getLongitude(), null));
                     membersOfNearbyHouseHold.addAll(nearbyMembers);
                 }
             }
