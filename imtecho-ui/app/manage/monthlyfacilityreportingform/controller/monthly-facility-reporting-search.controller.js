@@ -171,6 +171,7 @@
                 return;
             }
 
+            Mask.show();
             var formattedDate = moment(ctrl.month).format('MM/DD/YYYY');
 
             ManualSyncService.sendMultipleData(formattedDate, ctrl.selectedFacilities).then(function (response) {
@@ -180,6 +181,8 @@
             }).catch(function (error) {
                 toaster.pop('error', 'Error', 'Data synchronization failed.');
               
+            }).finally(() => {
+                Mask.hide();
             });
         
             
@@ -199,7 +202,7 @@
 
 
 (function () {
-    function MonthlySyncModalController($uibModalInstance, message, ManualSyncService, facilityId, toaster) {
+    function MonthlySyncModalController($uibModalInstance, message, ManualSyncService, facilityId, toaster, Mask) {
         var mdctrl = this;
         
         if (angular.isString(message)) {
@@ -221,6 +224,7 @@
                 toaster.pop('error', 'Error', 'Please select a month for syncing.');
                 return;
             }
+            Mask.show();
 
             var formattedDate = moment(mdctrl.month).format('MM/DD/YYYY');
 
@@ -230,6 +234,8 @@
             }).catch(function (error) {
                 toaster.pop('error', 'Error', 'Data synchronization failed.');
                 $uibModalInstance.close();
+            }).finally(() => {
+                Mask.hide();
             });
             
         };
