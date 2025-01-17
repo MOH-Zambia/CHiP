@@ -1431,6 +1431,16 @@ public class SewaServiceImpl implements SewaService {
         }
     }
 
+    @Override
+    public void updateFamilyByUUID(HouseHoldLineListMobileDto familyDetails, FamilyBean familyBean) {
+        try {
+            HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyBean(familyDetails, familyBean);
+            familyBeanDao.update(familyBean);
+        } catch (SQLException e) {
+            Log.e(getClass().getSimpleName(), null, e);
+        }
+    }
+
     public void updateStockInventoryByMedicineId(Integer id, int amount) {
         if (id == null) {
             // Log the error and exit the method early if the Medicine ID is null

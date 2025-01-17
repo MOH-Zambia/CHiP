@@ -1663,6 +1663,9 @@ public class DynamicUtils {
         String memberStatus = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_STATUS);
         String serviceDate = SharedStructureData.relatedPropertyHashTable.get("serviceDate");
         FamilyBean familyBean = SharedStructureData.sewaFhsService.retrieveFamilyBeanByFamilyId(familyID);
+        if (familyBean == null) {
+            familyBean = SharedStructureData.sewaFhsService.retrieveFamilyBeanByFamilyUuid(uuid);
+        }
         MemberBean memberBean = null;
         if (uniqueHealthId != null) {
             memberBean = SharedStructureData.sewaFhsService.retrieveMemberBeanByHealthId(uniqueHealthId);
@@ -1723,6 +1726,9 @@ public class DynamicUtils {
                 && "1".equalsIgnoreCase(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.NEW_FAMILY))) {
             HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
             SharedStructureData.sewaService.createFamilyBean(houseHoldLineListMobileDto, memberBean);
+        } else if (FormConstants.FAMILY_UPDATE.equals(entity)) {
+            HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
+            SharedStructureData.sewaService.updateFamilyByUUID(houseHoldLineListMobileDto, familyBean);
         } else if (FormConstants.FHS_MEMBER_UPDATE_NEW.equalsIgnoreCase(entity)) {
             HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
             if (memberBean != null

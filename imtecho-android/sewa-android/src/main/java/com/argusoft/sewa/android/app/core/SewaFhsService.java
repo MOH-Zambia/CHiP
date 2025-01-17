@@ -180,4 +180,6 @@ public interface SewaFhsService {
     void markMemberBcgSurveyStatus(Long memberId);
 
     FamilyBean retrieveFamilyBeanByFamilyId(String familyId);
+
+    FamilyBean retrieveFamilyBeanByFamilyUuid(String uuid);
 }

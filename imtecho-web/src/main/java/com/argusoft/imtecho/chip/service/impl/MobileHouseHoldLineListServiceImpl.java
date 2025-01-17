@@ -63,7 +63,6 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         } else {
             family = familyDao.retrieveFamilyByFamilyId(houseHoldLineListMobileDto.getFamilyNumber());
             HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyEntity(houseHoldLineListMobileDto, family);
-            family.setState(getFamilyStateAccordingToPreviousState(family.getState()));
         }
 
         List<MemberEntity> membersEntitiesInFamily = new LinkedList<>();
@@ -339,7 +338,6 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         if (houseHoldLineListMobileDto.getUuid() != null && !houseHoldLineListMobileDto.getUuid().isEmpty()) {
             family = familyDao.retrieveFamilyByUuid(houseHoldLineListMobileDto.getUuid());
             HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyEntity(houseHoldLineListMobileDto, family);
-            family.setState(getFamilyStateAccordingToPreviousState(family.getState()));
         }
 
         familyDao.update(family);

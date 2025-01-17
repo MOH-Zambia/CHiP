@@ -3816,4 +3816,17 @@ public class SewaFhsServiceImpl implements SewaFhsService {
         }
         return null;
     }
+
+    @Override
+    public FamilyBean retrieveFamilyBeanByFamilyUuid(String uuid) {
+        try {
+            if (uuid != null) {
+                return familyBeanDao.queryBuilder().where().eq(FieldNameConstants.FAMILY_ID, uuid).queryForFirst();
+            }
+            return null;
+        } catch (SQLException e) {
+            Log.e(getClass().getSimpleName(), null, e);
+        }
+        return null;
+    }
 }
