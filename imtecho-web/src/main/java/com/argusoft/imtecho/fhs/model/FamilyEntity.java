@@ -219,9 +219,6 @@ public class FamilyEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "is_iec_given")
     private Boolean isIecGiven;
 
-    @Column(name = "vip_type")
-    private String vipType;
-
     public void setWasteDisposalDetails(Set<Integer> wasteDisposalDetails) {
         this.wasteDisposalDetails = wasteDisposalDetails;
         setWasteDisposalMethod(MemberDataBeanMapper.convertSetToCommaSeparatedString(this.wasteDisposalDetails, ","));

@@ -2129,7 +2129,7 @@ public class DynamicUtils {
             answerObject.put("locationId", SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.AREA_ID));
         }
 
-        if (formType.equalsIgnoreCase(FormConstants.FHS_MEMBER_UPDATE_NEW)) {
+        if (formType.equalsIgnoreCase(FormConstants.FHS_MEMBER_UPDATE_NEW) || formType.equalsIgnoreCase(FormConstants.FAMILY_UPDATE)) {
             answerObject.put("uuid", SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.UUID));
         }
     }

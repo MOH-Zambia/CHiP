@@ -38,7 +38,6 @@ public class HouseHoldLineListMobileMapper {
         familyEntity.setLatitude(houseHoldLineListMobileDto.getCurrentLatitude() != null ? houseHoldLineListMobileDto.getCurrentLatitude() : familyEntity.getLatitude());
         familyEntity.setLongitude(houseHoldLineListMobileDto.getCurrentLongitude() != null ? houseHoldLineListMobileDto.getCurrentLongitude() : familyEntity.getLongitude());
         familyEntity.setFamilyUuid(houseHoldLineListMobileDto.getUuid() != null ? houseHoldLineListMobileDto.getUuid() : familyEntity.getFamilyUuid());
-        familyEntity.setVipType(houseHoldLineListMobileDto.getVipType() != null ? houseHoldLineListMobileDto.getVipType() : familyEntity.getVipType());
     }
 
     public static void convertMemberDetailsToMemberEntity(HouseHoldLineListMobileDto.MemberDetails member, MemberEntity memberEntity, boolean isFromUpdate) {
