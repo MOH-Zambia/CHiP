@@ -783,7 +783,44 @@ public class SewaFhsServiceImpl implements SewaFhsService {
     }
 
     @Override
-    public List<MemberDataBean> retrieveMembersWithin150mOfActiveMalariaCases(String locationId, String lat, String lng) {
+    public List<MemberDataBean> retrieveMemberDataBeansByFamilyWithSearch(String familyId, CharSequence searchString) {
+        List<MemberDataBean> memberDataBeans = new ArrayList<>();
+        Where<MemberBean, Integer> where = memberBeanDao.queryBuilder().orderBy(FieldNameConstants.FAMILY_HEAD_FLAG, Boolean.FALSE).where();
+
+        try {
+            List<MemberBean> memberBeans;
+            if (searchString != null) {
+                memberBeans =
+                        where.and(
+                                where.eq(FieldNameConstants.FAMILY_ID, familyId),
+                                where.or(
+                                        where.like(FieldNameConstants.UNIQUE_HEALTH_ID, "%" + searchString + "%"),   //Search By UniqueHealthId
+                                        where.like(FieldNameConstants.FIRST_NAME, "%" + searchString + "%"),         //Search By FirstName
+                                        where.like(FieldNameConstants.MIDDLE_NAME, "%" + searchString + "%"),       //Search By MiddleName
+                                        where.like(FieldNameConstants.LAST_NAME, "%" + searchString + "%"),         //Search By LastName
+                                        where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),          //Search By FamilyId
+                                        where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
+                                        where.like(FieldNameConstants.NRC_NUMBER, "%" + searchString + "%"),    //Search by nrc
+                                        where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%"),       //Search By HealthId,
+                                        where.like(FieldNameConstants.SEARCH_STRING, "%" + searchString + "%"),
+                                        where.like(FieldNameConstants.PASSPORT_NUMBER, "%" + searchString + "%")
+                                )
+                        ).query();
+            } else {
+                memberBeans = where.eq(FieldNameConstants.FAMILY_ID, familyId).query();
+            }
+
+            for (MemberBean bean : memberBeans) {
+                memberDataBeans.add(new MemberDataBean(bean));
+            }
+        } catch (SQLException ex) {
+            Log.e(TAG, null, ex);
+        }
+        return memberDataBeans;
+    }
+
+    @Override
+    public List<MemberDataBean> retrieveMembersWithin150mOfActiveMalariaCases(String locationId, String lat, String lng, CharSequence searchString) {
         List<MemberDataBean> memberDataBeans = new ArrayList<>();
         List<String> familyIds = new ArrayList<>();
         try {
@@ -812,7 +849,7 @@ public class SewaFhsServiceImpl implements SewaFhsService {
                         Double.parseDouble(bean.getLatitude()), Double.parseDouble(bean.getLongitude()));
                 if (distance <= (double) 150) {
                     if (!familyIds.contains(bean.getFamilyId())) {
-                        memberDataBeans.addAll(retrieveMemberDataBeansByFamily(bean.getFamilyId()));
+                        memberDataBeans.addAll(retrieveMemberDataBeansByFamilyWithSearch(bean.getFamilyId(), searchString));
                         familyIds.add(bean.getFamilyId());
                     }
                 }
@@ -3772,6 +3809,19 @@ public class SewaFhsServiceImpl implements SewaFhsService {
         try {
             if (familyId != null) {
                 return familyBeanDao.queryBuilder().where().eq(FieldNameConstants.FAMILY_ID, familyId).queryForFirst();
+            }
+            return null;
+        } catch (SQLException e) {
+            Log.e(getClass().getSimpleName(), null, e);
+        }
+        return null;
+    }
+
+    @Override
+    public FamilyBean retrieveFamilyBeanByFamilyUuid(String uuid) {
+        try {
+            if (uuid != null) {
+                return familyBeanDao.queryBuilder().where().eq(FieldNameConstants.FAMILY_ID, uuid).queryForFirst();
             }
             return null;
         } catch (SQLException e) {

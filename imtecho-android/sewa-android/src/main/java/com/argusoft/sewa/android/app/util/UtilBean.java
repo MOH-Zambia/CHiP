@@ -1063,6 +1063,7 @@ public class UtilBean {
             entityFullFormNames.put(FormConstants.HOUSE_HOLD_LINE_LIST_NEW, "Household Line List");
             entityFullFormNames.put(FormConstants.FAMILY_FOLDER, "Family Folder");
             entityFullFormNames.put(FormConstants.FAMILY_FOLDER_MEMBER_UPDATE, "Update Member Information");
+            entityFullFormNames.put(FormConstants.FAMILY_UPDATE, "Update Family Information");
             entityFullFormNames.put(FormConstants.LOCKED_FAMILY, "Locked Family");
             entityFullFormNames.put(FormConstants.AADHAR_UPDATION, "Aadhar Updation");
             entityFullFormNames.put(FormConstants.AADHAR_PHONE_UPDATION, "Aadhar and Phone Updation");

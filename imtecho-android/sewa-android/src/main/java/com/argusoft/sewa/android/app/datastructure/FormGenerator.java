@@ -526,10 +526,10 @@ public class FormGenerator {
                     }
                 }
                 defaultValue = SharedStructureData.relatedPropertyHashTable.get(relatedPropertyName);
-                if (defaultValue == null || defaultValue.trim().length() == 0 || defaultValue.trim().equalsIgnoreCase("null")) {
+                if (defaultValue == null || defaultValue.trim().isEmpty() || defaultValue.trim().equalsIgnoreCase("null")) {
                     defaultValue = GlobalTypes.NOT_AVAILABLE;
                 } else {
-                    if (defaultValue.contains("F")) {
+                    if (defaultValue.contains("F") && !defaultValue.contains("FM")) {
                         defaultValue = defaultValue.split("/")[1];
                     } else if (defaultValue.equals("T")) {
                         defaultValue="Not Available";
@@ -546,9 +546,6 @@ public class FormGenerator {
                 }
             } else {
                 labelFormula = MyStaticComponents.generateAnswerView(context, defaultValue);
-                if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_UTTARAKHAND)) {
-                    labelFormula.setPadding(0, 0, 0, 40);
-                }
             }
             queFormBean.setQuestionTypeView(labelFormula);
 
