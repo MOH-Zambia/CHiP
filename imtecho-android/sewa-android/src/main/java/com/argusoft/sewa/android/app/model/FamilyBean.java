@@ -147,6 +147,30 @@ public class FamilyBean extends BaseEntity implements Serializable {
     private String typeOfToilet;
 
     @DatabaseField
+    private Boolean outdoorCookingPractices;
+
+    @DatabaseField
+    private Boolean wasteDisposalAvailable;
+
+    @DatabaseField
+    private String wasteDisposalMethod;
+
+    @DatabaseField
+    private Boolean waterSafetyMeetsStandard;
+
+    @DatabaseField
+    private Boolean dishrackAvailable;
+
+    @DatabaseField
+    private Boolean complaintOfInsects;
+
+    @DatabaseField
+    private Boolean complaintOfRodents;
+
+    @DatabaseField
+    private Boolean separateLivestockShelter;
+
+    @DatabaseField
     private String fuelForCooking;
 
     @DatabaseField
@@ -209,6 +233,14 @@ public class FamilyBean extends BaseEntity implements Serializable {
         this.bplFlag = familyDataBean.getBplFlag();
         this.anganwadiId = familyDataBean.getAnganwadiId();
         this.toiletAvailableFlag = familyDataBean.getToiletAvailableFlag();
+        this.outdoorCookingPractices = familyDataBean.getOutdoorCookingPractices();
+        this.wasteDisposalAvailable = familyDataBean.getWasteDisposalAvailable();
+        this.wasteDisposalMethod = familyDataBean.getWasteDisposalMethod();
+        this.waterSafetyMeetsStandard = familyDataBean.getWaterSafetyMeetsStandard();
+        this.dishrackAvailable = familyDataBean.getDishrackAvailable();
+        this.complaintOfInsects = familyDataBean.getComplaintOfInsects();
+        this.complaintOfRodents = familyDataBean.getComplaintOfRodents();
+        this.separateLivestockShelter = familyDataBean.getSeparateLivestockShelter();
         this.isVerifiedFlag = familyDataBean.getIsVerifiedFlag();
         this.type = familyDataBean.getType();
         this.state = familyDataBean.getState();
@@ -732,10 +764,141 @@ public class FamilyBean extends BaseEntity implements Serializable {
         isHoldIdPoor = holdIdPoor;
     }
 
+    public Boolean getOutdoorCookingPractices() {
+        return outdoorCookingPractices;
+    }
+
+    public void setOutdoorCookingPractices(Boolean outdoorCookingPractices) {
+        this.outdoorCookingPractices = outdoorCookingPractices;
+    }
+
+    public Boolean getWasteDisposalAvailable() {
+        return wasteDisposalAvailable;
+    }
+
+    public void setWasteDisposalAvailable(Boolean wasteDisposalAvailable) {
+        this.wasteDisposalAvailable = wasteDisposalAvailable;
+    }
+
+    public String getWasteDisposalMethod() {
+        return wasteDisposalMethod;
+    }
+
+    public void setWasteDisposalMethod(String wasteDisposalMethod) {
+        this.wasteDisposalMethod = wasteDisposalMethod;
+    }
+
+    public Boolean getWaterSafetyMeetsStandard() {
+        return waterSafetyMeetsStandard;
+    }
+
+    public void setWaterSafetyMeetsStandard(Boolean waterSafetyMeetsStandard) {
+        this.waterSafetyMeetsStandard = waterSafetyMeetsStandard;
+    }
+
+    public Boolean getDishrackAvailable() {
+        return dishrackAvailable;
+    }
+
+    public void setDishrackAvailable(Boolean dishrackAvailable) {
+        this.dishrackAvailable = dishrackAvailable;
+    }
+
+    public Boolean getComplaintOfInsects() {
+        return complaintOfInsects;
+    }
+
+    public void setComplaintOfInsects(Boolean complaintOfInsects) {
+        this.complaintOfInsects = complaintOfInsects;
+    }
+
+    public Boolean getComplaintOfRodents() {
+        return complaintOfRodents;
+    }
+
+    public void setComplaintOfRodents(Boolean complaintOfRodents) {
+        this.complaintOfRodents = complaintOfRodents;
+    }
+
+    public Boolean getSeparateLivestockShelter() {
+        return separateLivestockShelter;
+    }
+
+    public void setSeparateLivestockShelter(Boolean separateLivestockShelter) {
+        this.separateLivestockShelter = separateLivestockShelter;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return "FamilyBean{" + "actualId=" + actualId + ", familyId=" + familyId + ", houseNumber=" + houseNumber + ", locationId=" + locationId + ", address1=" + address1 + ", address2=" + address2 + ", religion=" + religion + ", caste=" + caste + ", bplFlag=" + bplFlag + ", anganwadiId=" + anganwadiId + ", toiletAvailableFlag=" + toiletAvailableFlag + ", isVerifiedFlag=" + isVerifiedFlag + ", type=" + type + ", state=" + state + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", createdOn=" + createdOn + ", updatedOn=" + updatedOn + ", assignedTo=" + assignedTo + '}';
+        return "FamilyBean{" +
+                "actualId='" + actualId + '\'' +
+                ", familyId='" + familyId + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", locationId='" + locationId + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", religion='" + religion + '\'' +
+                ", caste='" + caste + '\'' +
+                ", bplFlag=" + bplFlag +
+                ", anganwadiId='" + anganwadiId + '\'' +
+                ", toiletAvailableFlag=" + toiletAvailableFlag +
+                ", isVerifiedFlag=" + isVerifiedFlag +
+                ", type='" + type + '\'' +
+                ", state='" + state + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", createdOn=" + createdOn +
+                ", updatedOn=" + updatedOn +
+                ", assignedTo=" + assignedTo +
+                ", maaVatsalyaNumber='" + maaVatsalyaNumber + '\'' +
+                ", rsbyCardNumber='" + rsbyCardNumber + '\'' +
+                ", comment='" + comment + '\'' +
+                ", vulnerableFlag=" + vulnerableFlag +
+                ", seasonalMigrantFlag=" + seasonalMigrantFlag +
+                ", isReverificationFlag=" + isReverificationFlag +
+                ", areaId='" + areaId + '\'' +
+                ", contactPersonId=" + contactPersonId +
+                ", anganwadiUpdateFlag=" + anganwadiUpdateFlag +
+                ", anyMemberCbacDone=" + anyMemberCbacDone +
+                ", lastFhsDate=" + lastFhsDate +
+                ", lastMemberNcdScreeningDate=" + lastMemberNcdScreeningDate +
+                ", rationCardNumber='" + rationCardNumber + '\'' +
+                ", bplCardNumber='" + bplCardNumber + '\'' +
+                ", lastIdspScreeningDate=" + lastIdspScreeningDate +
+                ", lastIdsp2ScreeningDate=" + lastIdsp2ScreeningDate +
+                ", isProvidingConsent=" + isProvidingConsent +
+                ", vulnerabilityCriteria='" + vulnerabilityCriteria + '\'' +
+                ", eligibleForPmjay=" + eligibleForPmjay +
+                ", typeOfHouse='" + typeOfHouse + '\'' +
+                ", drinkingWaterSource='" + drinkingWaterSource + '\'' +
+                ", otherTypeOfHouse='" + otherTypeOfHouse + '\'' +
+                ", typeOfToilet='" + typeOfToilet + '\'' +
+                ", outdoorCookingPractices=" + outdoorCookingPractices +
+                ", wasteDisposalAvailable=" + wasteDisposalAvailable +
+                ", wasteDisposalMethod='" + wasteDisposalMethod + '\'' +
+                ", waterSafetyMeetsStandard=" + waterSafetyMeetsStandard +
+                ", dishrackAvailable=" + dishrackAvailable +
+                ", complaintOfInsects=" + complaintOfInsects +
+                ", complaintOfRodents=" + complaintOfRodents +
+                ", separateLivestockShelter=" + separateLivestockShelter +
+                ", fuelForCooking='" + fuelForCooking + '\'' +
+                ", electricityAvailability='" + electricityAvailability + '\'' +
+                ", vehicleDetails='" + vehicleDetails + '\'' +
+                ", houseOwnershipStatus='" + houseOwnershipStatus + '\'' +
+                ", annualIncome='" + annualIncome + '\'' +
+                ", pendingAbhaCount=" + pendingAbhaCount +
+                ", rationCardColor='" + rationCardColor + '\'' +
+                ", pmjayOrHealthInsurance='" + pmjayOrHealthInsurance + '\'' +
+                ", anyoneTravelledForeign=" + anyoneTravelledForeign +
+                ", residenceStatus='" + residenceStatus + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", eligibleWomenCount=" + eligibleWomenCount +
+                ", eligibleChildrenCount=" + eligibleChildrenCount +
+                ", isHoldIdPoor=" + isHoldIdPoor +
+                '}';
     }
 
     @Override

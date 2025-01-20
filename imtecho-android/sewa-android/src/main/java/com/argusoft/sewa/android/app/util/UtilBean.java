@@ -1063,6 +1063,7 @@ public class UtilBean {
             entityFullFormNames.put(FormConstants.HOUSE_HOLD_LINE_LIST_NEW, "Household Line List");
             entityFullFormNames.put(FormConstants.FAMILY_FOLDER, "Family Folder");
             entityFullFormNames.put(FormConstants.FAMILY_FOLDER_MEMBER_UPDATE, "Update Member Information");
+            entityFullFormNames.put(FormConstants.FAMILY_UPDATE, "Update Family Information");
             entityFullFormNames.put(FormConstants.LOCKED_FAMILY, "Locked Family");
             entityFullFormNames.put(FormConstants.AADHAR_UPDATION, "Aadhar Updation");
             entityFullFormNames.put(FormConstants.AADHAR_PHONE_UPDATION, "Aadhar and Phone Updation");
@@ -2105,6 +2106,12 @@ public class UtilBean {
 
     public static String getFamilyFullAddress(FamilyDataBean familyDataBean) {
         StringBuilder stringBuilder = new StringBuilder();
+
+        if (familyDataBean.getHouseNumber() != null && !familyDataBean.getHouseNumber().isEmpty()) {
+            stringBuilder.append(familyDataBean.getHouseNumber());
+            stringBuilder.append(", ");
+        }
+
         if (familyDataBean.getAddress1() != null || familyDataBean.getAddress2() != null) {
             if (familyDataBean.getAddress1() != null) {
                 stringBuilder.append(familyDataBean.getAddress1());

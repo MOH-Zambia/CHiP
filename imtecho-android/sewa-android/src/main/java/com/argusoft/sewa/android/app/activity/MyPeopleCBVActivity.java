@@ -273,8 +273,17 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
 
     @UiThread
     public void setNearByMembersSelectionScreen(MemberDataBean memberSelected) {
-        bodyLayoutContainer.removeAllViews();
         selectedService = SERVICE_NEARBY_MEMBER_SCREENING;
+        bodyLayoutContainer.removeAllViews();
+        List<String> options = new ArrayList<>();
+        options.add(UtilBean.getMyLabel(LabelConstants.ENTOMOLOGICAL_INVESTIGATION));
+        AdapterView.OnItemClickListener onButtonClickListener = (parent, view, position, id) -> {
+            startDynamicFormActivity(FormConstants.CHIP_INDEX_INVESTIGATION, memberSelected, null);
+        };
+        ListView buttonList = MyStaticComponents.getButtonList(context, options, onButtonClickListener);
+        bodyLayoutContainer.addView(buttonList);
+        bodyLayoutContainer.addView(MyStaticComponents.getOrTextView(context));
+        addSearchTextBox();
         screen = MALARIA_INDEX_SCREEN;
         retrieveMemberListByServiceType(selectedService, null, false);
 
@@ -998,7 +1007,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 memberList = fhsService.retrievePositiveMembersForMalaria(selectedAshaAreas, selectedVillage, s, limit, offset, qrScanFilter);
                 break;
             case SERVICE_NEARBY_MEMBER_SCREENING:
-                memberList = fhsService.retrieveMembersWithin150mOfActiveMalariaCases(familySelected.getLocationId(), familySelected.getLatitude(), familySelected.getLongitude());
+                memberList = fhsService.retrieveMembersWithin150mOfActiveMalariaCases(familySelected.getLocationId(), familySelected.getLatitude(), familySelected.getLongitude(), s);
                 //memberList.addAll(fhsService.retrieveMemberDataBeansByFamily(memberSelected.getFamilyId()));
                 break;
             case GBV:
@@ -1504,13 +1513,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
             } else if (selectedService.equalsIgnoreCase(SERVICE_MALARIA_ACTIVE_SCREENING)) {
                 pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MALARIA_POSITIVE_SCREENING);
             } else if (selectedService.equalsIgnoreCase(SERVICE_NEARBY_MEMBER_SCREENING)) {
-                List<String> options = new ArrayList<>();
-                options.add(UtilBean.getMyLabel(LabelConstants.ENTOMOLOGICAL_INVESTIGATION));
-                AdapterView.OnItemClickListener onButtonClickListener = (parent, view, position, id) -> {
-                    startDynamicFormActivity(FormConstants.CHIP_INDEX_INVESTIGATION, memberSelected, null);
-                };
-                ListView buttonList = MyStaticComponents.getButtonList(context, options, onButtonClickListener);
-                bodyLayoutContainer.addView(buttonList);
                 pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MEMBERS_FOR_NEARBY_SCREENING);
             } else if (selectedService.equalsIgnoreCase(GBV)) {
                 pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MEMBERS_FOR_GBV_SCREENING);
@@ -2558,7 +2560,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                     setSubTitle(UtilBean.getMemberFullName(memberSelected));
                     addSearchTextBox();
                     retrieveMemberListByServiceType(selectedService, null, false);
-                    setMemberSelectionScreen(selectedService, false);
                     break;
 
                 case MANAGE_FAMILY_MIGRATIONS_SCREEN:
@@ -2583,6 +2584,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 case MEMBER_SELECTION_SCREEN:
                 case MIGRATED_MEMBERS_SCREEN:
                 case RCH_REGISTER_MEMBER_SCREEN:
+                case SERVICE_NEARBY_MEMBER_SCREENING:
                     selectedServiceIndex = -1;
                     showProcessDialog();
                     bodyLayoutContainer.removeAllViews();

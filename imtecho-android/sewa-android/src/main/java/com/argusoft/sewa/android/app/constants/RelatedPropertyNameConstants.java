@@ -37,6 +37,14 @@ public class RelatedPropertyNameConstants {
     public static final String BPL_CARD_NUMBER = "bplCardNumber";
     public static final String BPL_FLAG = "bplFlag";
     public static final String TOILET_AVAILABLE_FLAG = "toiletAvailableFlag";
+    public static final String OUTDOOR_COOKING_PRACTICES = "outdoorCookingPractices";
+    public static final String WASTE_DISPOSAL_AVAILABLE_FLAG = "wasteDisposalAvailableFlag";
+    public static final String WASTE_DISPOSAL_METHOD = "wasteDisposalMethod";
+    public static final String IS_WATER_SAFE = "isWaterSafe";
+    public static final String DISHRACK_AVAILABLE_FLAG = "dishrackAvailableFlag";
+    public static final String INSECTS_FOUND = "complaintOfInsects";
+    public static final String RODENTS_FOUND = "complaintOfRodents";
+    public static final String SEPARATE_LIVESTOCK_SHELTER = "separateLivestockShelter";
     public static final String VULNERABLE_FLAG = "vulnerableFlag";
     public static final String SEASONAL_MIGRANT_FAMILY = "seasonalMigrantFlag";
     public static final String IS_PROVIDING_CONSENT = "isProvidingConsent";

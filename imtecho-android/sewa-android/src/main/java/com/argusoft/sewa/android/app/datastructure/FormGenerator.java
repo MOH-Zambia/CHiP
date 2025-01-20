@@ -519,16 +519,17 @@ public class FormGenerator {
             String defaultValue = GlobalTypes.NOT_AVAILABLE;
             if (queFormBean.getRelatedpropertyname() != null && queFormBean.getRelatedpropertyname().trim().length() > 0) {
                 relatedPropertyName = queFormBean.getRelatedpropertyname().trim();
-                if (!relatedPropertyName.equalsIgnoreCase(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER)) {
+                if (!relatedPropertyName.equalsIgnoreCase(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER)
+                && !relatedPropertyName.equalsIgnoreCase(RelatedPropertyNameConstants.USER_ASSIGNED_HEALTH_INFRA_NAME)) {
                     if (queFormBean.getLoopCounter() > 0 && !queFormBean.isIgnoreLoop()) {
                         relatedPropertyName += queFormBean.getLoopCounter();
                     }
                 }
                 defaultValue = SharedStructureData.relatedPropertyHashTable.get(relatedPropertyName);
-                if (defaultValue == null || defaultValue.trim().length() == 0 || defaultValue.trim().equalsIgnoreCase("null")) {
+                if (defaultValue == null || defaultValue.trim().isEmpty() || defaultValue.trim().equalsIgnoreCase("null")) {
                     defaultValue = GlobalTypes.NOT_AVAILABLE;
                 } else {
-                    if (defaultValue.contains("F")) {
+                    if (defaultValue.contains("F") && !defaultValue.contains("FM")) {
                         defaultValue = defaultValue.split("/")[1];
                     } else if (defaultValue.equals("T")) {
                         defaultValue="Not Available";
@@ -545,9 +546,6 @@ public class FormGenerator {
                 }
             } else {
                 labelFormula = MyStaticComponents.generateAnswerView(context, defaultValue);
-                if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_UTTARAKHAND)) {
-                    labelFormula.setPadding(0, 0, 0, 40);
-                }
             }
             queFormBean.setQuestionTypeView(labelFormula);
 

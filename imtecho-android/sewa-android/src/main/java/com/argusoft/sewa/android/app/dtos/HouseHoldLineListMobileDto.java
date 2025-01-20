@@ -6,7 +6,7 @@ public class HouseHoldLineListMobileDto {
     private String currentLatitude;
     private String currentLongitude;
     private Integer locationId;
-    private Integer familyNumber;
+    private String familyNumber;
     private String familyHead;
     private String familyAvailable;
     private String houseNumber;
@@ -55,11 +55,11 @@ public class HouseHoldLineListMobileDto {
         this.locationId = locationId;
     }
 
-    public Integer getFamilyNumber() {
+    public String getFamilyNumber() {
         return familyNumber;
     }
 
-    public void setFamilyNumber(Integer familyNumber) {
+    public void setFamilyNumber(String familyNumber) {
         this.familyNumber = familyNumber;
     }
 
