@@ -345,7 +345,6 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
 
         returnMessage.append("Family ID : ");
         returnMessage.append(family.getFamilyId());
-        returnMessage.append("\n");
         returnMap.put("message", returnMessage.toString());
         returnMap.put("createdInstanceId", family.getId().toString());
         return returnMap;

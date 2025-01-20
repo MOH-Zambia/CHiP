@@ -12,6 +12,7 @@ import com.argusoft.sewa.android.app.model.MemberBean;
 import com.argusoft.sewa.android.app.util.UtilBean;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -30,8 +31,17 @@ public class HouseHoldLineListMobileMapper {
 
         familyBean.setHouseNumber(houseHoldLineListMobileDto.getHouseNumber() != null ? houseHoldLineListMobileDto.getHouseNumber() : familyBean.getHouseNumber());
         familyBean.setAddress1(houseHoldLineListMobileDto.getHouseAddress() != null ? houseHoldLineListMobileDto.getHouseAddress() : familyBean.getAddress1());
-        familyBean.setTypeOfToilet(houseHoldLineListMobileDto.getHouseNumber() != null ? houseHoldLineListMobileDto.getHouseNumber() : familyBean.getHouseNumber());
+        familyBean.setTypeOfToilet(houseHoldLineListMobileDto.getToiletType() != null ? houseHoldLineListMobileDto.getToiletType() : familyBean.getTypeOfToilet());
         familyBean.setDrinkingWaterSource(houseHoldLineListMobileDto.getWaterSource() != null ? houseHoldLineListMobileDto.getWaterSource() : familyBean.getDrinkingWaterSource());
+        familyBean.setDrinkingWaterSource(houseHoldLineListMobileDto.getWaterSource() != null ? houseHoldLineListMobileDto.getWaterSource() : familyBean.getDrinkingWaterSource());
+        familyBean.setOutdoorCookingPractices(houseHoldLineListMobileDto.getCookingPractices() != null ? houseHoldLineListMobileDto.getCookingPractices() : familyBean.getOutdoorCookingPractices());
+        familyBean.setWasteDisposalAvailable(houseHoldLineListMobileDto.getWasteDisposalAvailable() != null ? houseHoldLineListMobileDto.getWasteDisposalAvailable() : familyBean.getWasteDisposalAvailable());
+        familyBean.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? Arrays.toString(houseHoldLineListMobileDto.getWasteDisposalType()) : familyBean.getWasteDisposalMethod());
+        familyBean.setWaterSafetyMeetsStandard(houseHoldLineListMobileDto.getWaterSafe() != null ? houseHoldLineListMobileDto.getWaterSafe() : familyBean.getWaterSafetyMeetsStandard());
+        familyBean.setDishrackAvailable(houseHoldLineListMobileDto.getDishrackAvailable() != null ? houseHoldLineListMobileDto.getDishrackAvailable() : familyBean.getDishrackAvailable());
+        familyBean.setComplaintOfInsects(houseHoldLineListMobileDto.getInsectsFound() != null ? houseHoldLineListMobileDto.getInsectsFound() : familyBean.getComplaintOfInsects());
+        familyBean.setComplaintOfRodents(houseHoldLineListMobileDto.getRodentsFound() != null ? houseHoldLineListMobileDto.getRodentsFound() : familyBean.getComplaintOfRodents());
+        familyBean.setSeparateLivestockShelter(houseHoldLineListMobileDto.getLivestockShelterFound() != null ? houseHoldLineListMobileDto.getLivestockShelterFound() : familyBean.getSeparateLivestockShelter());
         familyBean.setLatitude(houseHoldLineListMobileDto.getCurrentLatitude() != null ? houseHoldLineListMobileDto.getCurrentLatitude() : familyBean.getLatitude());
         familyBean.setLongitude(houseHoldLineListMobileDto.getCurrentLongitude() != null ? houseHoldLineListMobileDto.getCurrentLongitude() : familyBean.getLongitude());
         familyBean.setUuid(houseHoldLineListMobileDto.getUuid() != null ? houseHoldLineListMobileDto.getUuid() : familyBean.getUuid());

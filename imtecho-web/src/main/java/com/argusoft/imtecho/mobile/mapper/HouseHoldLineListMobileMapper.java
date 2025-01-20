@@ -21,7 +21,7 @@ public class HouseHoldLineListMobileMapper {
         familyEntity.setHouseNumber(houseHoldLineListMobileDto.getHouseNumber() != null ? houseHoldLineListMobileDto.getHouseNumber() : familyEntity.getHouseNumber());
         familyEntity.setAddress1(houseHoldLineListMobileDto.getHouseAddress() != null ? houseHoldLineListMobileDto.getHouseAddress() : familyEntity.getAddress1());
         familyEntity.setOutdoorCookingPractices(houseHoldLineListMobileDto.getCookingPractices() != null ? houseHoldLineListMobileDto.getCookingPractices() : familyEntity.getOutdoorCookingPractices());
-        familyEntity.setTypeOfToilet(houseHoldLineListMobileDto.getHouseNumber() != null ? houseHoldLineListMobileDto.getHouseNumber() : familyEntity.getHouseNumber());
+        familyEntity.setTypeOfToilet(houseHoldLineListMobileDto.getToiletType() != null ? houseHoldLineListMobileDto.getToiletType() : familyEntity.getTypeOfToilet());
         familyEntity.setHandwashAvailable(houseHoldLineListMobileDto.getHandWashAvailable() != null ? houseHoldLineListMobileDto.getHandWashAvailable() : familyEntity.getHandwashAvailable());
         familyEntity.setWasteDisposalAvailable(houseHoldLineListMobileDto.getIsWasteDisposalAvailable() != null ? houseHoldLineListMobileDto.getIsWasteDisposalAvailable() : familyEntity.getWasteDisposalAvailable());
         familyEntity.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? convertSetToCommaSeparatedString(houseHoldLineListMobileDto.getWasteDisposalType()) : familyEntity.getWasteDisposalMethod());

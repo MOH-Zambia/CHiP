@@ -36,8 +36,8 @@ android {
         debug {
             shrinkResources false
             minifyEnabled false
-            buildConfigField "String", 'BASE_URL', "\"http://102.23.121.121/\""
-            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://102.23.121.121/\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.1.150.154:8181/\""
+            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.1.150.154:8181/\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -70,10 +70,10 @@ android {
             targetSdkVersion 32
             versionCode 132
             versionName "1.0.32"
-            buildConfigField 'String', 'RELEASE_DATE', "\"7th January 2025\""
+            buildConfigField 'String', 'RELEASE_DATE', "\"20th January 2025\""
             buildConfigField 'String', 'DB_NAME', "\"chip_final.db\""
             buildConfigField 'String', 'APK_NAME', "\"chip_app\""
-            buildConfigField 'int', 'DATABASE_VERSION', "18"
+            buildConfigField 'int', 'DATABASE_VERSION', "19"
             resValue "string", "app_name", "CHiP"
             manifestPlaceholders = [
                     appIcon     : "@mipmap/chip_app_icon",
