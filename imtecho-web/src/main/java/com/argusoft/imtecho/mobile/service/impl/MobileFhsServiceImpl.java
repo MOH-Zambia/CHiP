@@ -1606,32 +1606,6 @@ public class MobileFhsServiceImpl extends GenericSessionUtilService implements M
         List<String> formNames = mobileFormDao.getFileNames();
 
         Map<String, List<ComponentTagDto>> retrievedXlsData = new HashMap<>();
-        Map<String, List<ComponentTagDto>> retrievedXlsDataFhw = new HashMap<>();
-        SystemConstantUtil.FHW_SHEETS.forEach((String sheetName) -> {
-            List<ComponentTagDto> componentTagDtos = xlsToDtoConversion.xlsConversionMain(sheetName, mobileFormVersion.getKeyValue());
-            retrievedXlsDataFhw.put(sheetName, componentTagDtos);
-            // This will create or Update all the Xls form of Mobile to MobileFormMaster and store it to database
-//            if (!mobileFormMastersCreated.contains(sheetName)) {
-//                mobileFormMasterService.createMobileFormMaster(componentTagDtos, sheetName);
-//                mobileFormMastersCreated.add(sheetName);
-//            }
-//            retrievedXlsDataFhw.put(sheetName, mobileFormMasterService.retrieveMobileFormBySheet(sheetName));
-        });
-        SystemConstantUtil.xlsDataFhw = retrievedXlsDataFhw;
-
-        Map<String, List<ComponentTagDto>> retrievedXlsDataAsha = new HashMap<>();
-        SystemConstantUtil.ASHA_SHEETS.forEach((String sheetName) -> {
-            List<ComponentTagDto> componentTagDtos = xlsToDtoConversion.xlsConversionMain(sheetName, mobileFormVersion.getKeyValue());
-            retrievedXlsDataAsha.put(sheetName, componentTagDtos);
-            // This will create or Update all the Xls form of Mobile to MobileFormMaster and store it to database
-//            if (!mobileFormMastersCreated.contains(sheetName)) {
-//                mobileFormMasterService.createMobileFormMaster(componentTagDtos, sheetName);
-//                mobileFormMastersCreated.add(sheetName);
-//            }
-//            retrievedXlsDataAsha.put(sheetName, mobileFormMasterService.retrieveMobileFormBySheet(sheetName));
-        });
-        SystemConstantUtil.xlsDataAsha = retrievedXlsDataAsha;
-
         List<String> mobileForms = systemConstraintService.getActiveMobileForms();
         formNames.forEach((String sheetName) -> {
             List<ComponentTagDto> componentTagDtos;

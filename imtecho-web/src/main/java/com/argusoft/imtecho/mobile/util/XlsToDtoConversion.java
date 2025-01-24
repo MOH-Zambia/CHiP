@@ -31,6 +31,9 @@ public class XlsToDtoConversion {
 
     public List<ComponentTagDto> xlsConversionMain(String sheetName, String formVersion) {
         String xml = this.generateXML(sheetName, formVersion);
+        if (xml == null) {
+            return null;
+        }
         XStream xStream = new XStream();
         xStream.alias("sewa", SewaTagDto.class);
         xStream.alias("form", FormTagDto.class);
