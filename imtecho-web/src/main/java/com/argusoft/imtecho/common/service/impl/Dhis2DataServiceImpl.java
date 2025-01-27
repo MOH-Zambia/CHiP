@@ -1,10 +1,12 @@
 package com.argusoft.imtecho.common.service.impl;
 
 import com.argusoft.imtecho.common.dao.Dhis2Dao;
+import com.argusoft.imtecho.common.dto.DHISDataElement;
 import com.argusoft.imtecho.common.interceptor.Dhis2CallLogInterceptor;
 import com.argusoft.imtecho.common.service.Dhis2DataService;
 import com.argusoft.imtecho.common.util.Dhis2ConstantsUtil;
 import com.argusoft.imtecho.exception.ImtechoSystemException;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBasicAuth(DHIS2_USERNAME, DHIS2_PASSWORD);
 
-        HttpEntity<String> entity = new HttpEntity<>(jsonString, headers);
+        HttpEntity<DHISDataElement> entity = new HttpEntity<>(new Gson().fromJson(jsonString, DHISDataElement.class), headers);
         restTemplate.setInterceptors(Collections.singletonList(new Dhis2CallLogInterceptor(dhis2Dao, monthEnd)));
 
         ResponseEntity<String> response = restTemplate.exchange(
@@ -56,12 +58,12 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
     }
 
     @Override
-    public String sendMultipleData(Date monthEnd,List<Integer> facilityIds){
+    public String sendMultipleData(Date monthEnd, List<Integer> facilityIds) {
         Map<Integer, String> facilityResponses = new HashMap<>();
 
         for (Integer facilityId : facilityIds) {
             try {
-                String response = this.sendData(monthEnd,facilityId);
+                String response = this.sendData(monthEnd, facilityId);
                 log.info("Response for facility ID {}: {}", facilityId, response);
                 facilityResponses.put(facilityId, response);
             } catch (Exception e) {
@@ -73,12 +75,12 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
             log.info("All facility IDs processed successfully");
             return "200 OK";
         } else {
-            throw new ImtechoSystemException("Error syncing DHIS data.",500);
+            throw new ImtechoSystemException("Error syncing DHIS data.", 500);
         }
     }
 
 
-    public List<Integer> getEnabledFacilities(){
+    public List<Integer> getEnabledFacilities() {
         return dhis2Dao.getEnabledFacilities();
     }
 
