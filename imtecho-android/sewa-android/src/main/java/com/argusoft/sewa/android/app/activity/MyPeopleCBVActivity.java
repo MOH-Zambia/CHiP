@@ -2653,17 +2653,15 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
 
     @Override
     public void onClearClick() {
-        runOnUiThread(() -> {
-            showProcessDialog();
-            if (selectedService.equals(SERVICE_ADD_NEW_MEMBER)
-                    || selectedService.equals(SERVICE_UPDATE_MEMBER)) {
-                retrieveMemberListForUpdateBySearch(null);
-            } else if (selectedService.equals(SERVICE_RCH_REGISTER)) {
-                retrieveMemberListForRchRegister(null);
-            } else {
-                retrieveMemberListByServiceType(selectedService, null, false);
-            }
-        });
+        showProcessDialog();
+        if (selectedService.equals(SERVICE_ADD_NEW_MEMBER)
+                || selectedService.equals(SERVICE_UPDATE_MEMBER)) {
+            retrieveMemberListForUpdateBySearch(null);
+        } else if (selectedService.equals(SERVICE_RCH_REGISTER)) {
+            retrieveMemberListForRchRegister(null);
+        } else {
+            retrieveMemberListByServiceType(selectedService, null, false);
+        }
         hideKeyboard();
     }
 

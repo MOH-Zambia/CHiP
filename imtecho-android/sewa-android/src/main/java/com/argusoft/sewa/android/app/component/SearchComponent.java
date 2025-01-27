@@ -142,13 +142,9 @@ public class SearchComponent extends LinearLayout {
         searchBox = mainLayout.findViewById(R.id.searchBox);
 
         editText = new AppCompatEditText(context);
-        if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-            editText.setBackground(ContextCompat.getDrawable(context, R.drawable.chardham_edit_text_background));
-            editText.setPadding(20, 20, 20, 20);
-            editText.setMaxLines(2);
-        } else {
-            editText.setBackground(ContextCompat.getDrawable(context, R.drawable.line_background_bottom));
-        }
+        editText.setBackground(ContextCompat.getDrawable(context, R.drawable.chardham_edit_text_background));
+        editText.setPadding(20, 20, 20, 20);
+        editText.setMaxLines(2);
 
 
         dateComponent = new DateComponent(context, "Select date here");
