@@ -29,7 +29,7 @@ public class OcrServiceImpl implements OcrService {
         String formJson = null;
         try {
             formJson = ocrFormBeanDao.queryForEq(FieldNameConstants.FORM_NAME, formName).get(0).getFormJson();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Log.e(OcrServiceImpl.class.getName(), e.getMessage());
             SewaUtil.generateToast(context, e.getMessage());
             return null;
