@@ -17,4 +17,12 @@ public class Dhis2ConstantsUtil {
     public String getDhis2Api(){
         return systemConfigurationService.retrieveSystemConfigurationByKey("DHIS2_API_URL").getKeyValue();
     }
+
+    public String getUsername(){
+        return systemConfigurationService.retrieveSystemConfigurationByKey("DHIS2_USERNAME").getKeyValue();
+    }
+
+    public String getPassword(){
+        return systemConfigurationService.retrieveSystemConfigurationByKey("DHIS2_PASSWORD").getKeyValue();
+    }
 }

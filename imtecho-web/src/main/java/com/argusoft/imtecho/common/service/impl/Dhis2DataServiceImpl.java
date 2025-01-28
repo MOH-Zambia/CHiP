@@ -36,16 +36,13 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
 
     private static final Logger log = LoggerFactory.getLogger(Dhis2DataServiceImpl.class);
 
-    private static final String DHIS2_USERNAME = "CBHIS";
-    private static final String DHIS2_PASSWORD = "Newp@ss2";
-
     @Override
     public String sendData(Date monthEnd, Integer facilityId) {
         String jsonString = dhis2Dao.getData(monthEnd, facilityId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBasicAuth(DHIS2_USERNAME, DHIS2_PASSWORD);
+        headers.setBasicAuth(dhis2ConstantsUtil.getUsername(), dhis2ConstantsUtil.getPassword());
 
         HttpEntity<DHISDataElement> entity = new HttpEntity<>(new Gson().fromJson(jsonString, DHISDataElement.class), headers);
         restTemplate.setInterceptors(Collections.singletonList(new Dhis2CallLogInterceptor(dhis2Dao, monthEnd)));
