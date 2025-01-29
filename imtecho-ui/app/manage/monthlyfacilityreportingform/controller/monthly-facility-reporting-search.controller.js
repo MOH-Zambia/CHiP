@@ -204,6 +204,7 @@
 (function () {
     function MonthlySyncModalController($uibModalInstance, message, ManualSyncService, facilityId, toaster, Mask) {
         var mdctrl = this;
+        mdctrl.maxMonth= new Date();
         
         if (angular.isString(message)) {
             this.message = message;
