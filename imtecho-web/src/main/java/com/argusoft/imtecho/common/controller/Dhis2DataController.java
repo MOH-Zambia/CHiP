@@ -31,4 +31,10 @@ public class Dhis2DataController {
         return dataService.sendMultipleData(monthEnd,facilityIds);
     }
 
+    @GetMapping("/sendAll")
+    public String sendAllDataToDhis2(@RequestParam Date monthEnd){
+        return dataService.sendAllData(monthEnd);
+
+    }
+
 }

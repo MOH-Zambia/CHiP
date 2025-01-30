@@ -3,6 +3,7 @@
     MonthlyFacilityReportingFormSearch(Mask, GeneralUtil, $state,ManualSyncService, AuthenticateService,PagingForQueryBuilderService, QueryDAO, $uibModal, toaster) {
         let ctrl = this;
         ctrl.month;
+        ctrl.maxMonth= new Date();
         ctrl.selectedFacilities = [];
         ctrl.pagingService = PagingForQueryBuilderService.initialize();
         ctrl.init = function () {
@@ -137,24 +138,13 @@
         };
 
         ctrl.toggleAll = function () {
-            if (ctrl.selectAll) {
+
+            ctrl.selectedFacilities = [];
+
+            ctrl.facilities.forEach((facility) => {
+                facility.isSelected = false;
+            })
             
-                ctrl.selectedFacilities = [];
-
-                ctrl.facilities.forEach((facility) => {
-                    ctrl.selectedFacilities.push(facility.facility_id);
-                    facility.isSelected = true;
-                })
-                
-            } else {
-            
-
-                ctrl.selectedFacilities = [];
-
-                ctrl.facilities.forEach((facility) => {
-                    facility.isSelected = false;
-                })
-            }
         
         };
 
@@ -163,6 +153,34 @@
                 var formattedDate = moment(selectedMonth).format('MM/DD/YYYY')
                 
             } 
+        };
+
+        ctrl.syncMultiple = function () {
+            if (!ctrl.month) {
+                toaster.pop('error', 'Error', 'Please select a month for syncing.');
+                return;
+            }
+            if (ctrl.selectedFacilities.length == 0){
+                toaster.pop('error', 'Error', 'Please select facilities for sync.');
+                return;
+            }
+
+            Mask.show();
+            var formattedDate = moment(ctrl.month).format('MM/DD/YYYY');
+
+            ManualSyncService.sendMultipleData(formattedDate, ctrl.selectedFacilities).then(function (response) {
+                
+                toaster.pop('success', 'Success', 'Data synchronized successfully.');
+                
+            }).catch(function (error) {
+                toaster.pop('error', 'Error', 'Data synchronization failed.');
+              
+            }).finally(() => {
+                Mask.hide();
+            });
+        
+            
+            
         };
 
         ctrl.syncAll = function () {
@@ -174,7 +192,7 @@
             Mask.show();
             var formattedDate = moment(ctrl.month).format('MM/DD/YYYY');
 
-            ManualSyncService.sendMultipleData(formattedDate, ctrl.selectedFacilities).then(function (response) {
+            ManualSyncService.sendAll(formattedDate).then(function (response) {
                 
                 toaster.pop('success', 'Success', 'Data synchronized successfully.');
                 
