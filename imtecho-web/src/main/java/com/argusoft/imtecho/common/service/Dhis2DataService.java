@@ -10,4 +10,6 @@ public interface Dhis2DataService {
     String sendMultipleData(Date monthEnd,List<Integer> facilityIds);
 
     List<Integer> getEnabledFacilities();
+
+    String sendAllData(Date monthEnd);
 }

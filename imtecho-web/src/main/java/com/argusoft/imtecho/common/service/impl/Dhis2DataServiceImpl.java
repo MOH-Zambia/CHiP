@@ -81,4 +81,26 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
         return dhis2Dao.getEnabledFacilities();
     }
 
+    @Override
+    public String sendAllData(Date monthEnd) {
+        Map<Integer, String> facilityResponses = new HashMap<>();
+        List<Integer> facilityIds = getEnabledFacilities();
+        for (Integer facilityId : facilityIds) {
+            try {
+                String response = this.sendData(monthEnd, facilityId);
+                log.info("Response for facility ID {}: {}", facilityId, response);
+                facilityResponses.put(facilityId, response);
+            } catch (Exception e) {
+                log.error("Error processing facility ID {}: {}", facilityId, e.getMessage(), e);
+                facilityResponses.put(facilityId, "FAILED");
+            }
+        }
+        if (!facilityResponses.containsValue("FAILED")) {
+            log.info("All facility IDs processed successfully");
+            return "200 OK";
+        } else {
+            throw new ImtechoSystemException("Error syncing DHIS data.", 500);
+        }
+    }
+
 }
