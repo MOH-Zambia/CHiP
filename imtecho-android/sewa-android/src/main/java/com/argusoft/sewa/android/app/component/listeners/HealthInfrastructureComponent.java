@@ -488,7 +488,7 @@ public class HealthInfrastructureComponent extends LinearLayout implements Adapt
         spinner.setOnItemSelectedListener(getOnItemSelectedListenerForHierarchy());
 
         String name = SharedStructureData.locationMasterService.getLocationTypeNameByType(locationType);
-        MaterialTextView selectTextView = MyStaticComponents.generateQuestionView(null, null, context, "Select " + name.toLowerCase());
+        MaterialTextView selectTextView = MyStaticComponents.generateQuestionView(null, null, context, String.format("Select %s", name != null ? name.toLowerCase() : ""));
         hierarchyLayout.addView(selectTextView);
         hierarchyLayout.addView(spinner);
         levelSpinnerMap.put(level, spinner);
@@ -569,7 +569,7 @@ public class HealthInfrastructureComponent extends LinearLayout implements Adapt
             spinner.setOnItemSelectedListener(getOnItemSelectedListenerForHierarchy());
 
             String name = SharedStructureData.locationMasterService.getLocationTypeNameByType(locationBeans.get(0).getType());
-            MaterialTextView selectTextView = MyStaticComponents.generateQuestionView(null, null, context, "Select " + name.toLowerCase());
+            MaterialTextView selectTextView = MyStaticComponents.generateQuestionView(null, null, context, String.format("Select %s", name != null ? name.toLowerCase() : ""));
             hierarchyLayout.addView(selectTextView);
             hierarchyLayout.addView(spinner);
             levelSpinnerMap.put(newLevel, spinner);

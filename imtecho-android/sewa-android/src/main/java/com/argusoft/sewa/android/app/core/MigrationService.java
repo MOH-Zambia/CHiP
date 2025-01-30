@@ -33,6 +33,7 @@ public interface MigrationService {
     Map<Integer, String> retrieveHierarchyOfVillage(LocationMasterBean locationMasterBean);
 
     List<MemberBean> retrieveChildrenUnder5YearsByMotherId(Long motherId);
+    List<MemberBean> retrieveChildrenUnder5YearsByMotherUUID(String motherUUID);
 
     List<FamilyDataBean> retrieveFamilyListBySearchForMigration(String search);
 

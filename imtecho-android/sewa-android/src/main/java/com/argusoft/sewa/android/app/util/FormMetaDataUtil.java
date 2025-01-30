@@ -476,7 +476,7 @@ public class FormMetaDataUtil {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_BPL, LabelConstants.NO);
         }
 
-        if (memberBean.getMobileNumber() != null && !memberBean.getMobileNumber().isEmpty() && !memberBean.getMobileNumber().equals("T") ) {
+        if (memberBean.getMobileNumber() != null && !memberBean.getMobileNumber().isEmpty() && !memberBean.getMobileNumber().equals("T")) {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_PHONE_NUMBER, memberBean.getMobileNumber());
         } else if (familyDataBean.getContactPersonId() != null) {
             try {
@@ -613,7 +613,7 @@ public class FormMetaDataUtil {
                 List<MemberBean> allChildrenOfMother = null;
                 MemberBean wifeOf;
                 if (memberBean.getActualId() != null) {
-                    if (memberBean.getGender().equals(GlobalTypes.MALE)) {
+                    if (GlobalTypes.MALE.equalsIgnoreCase(memberBean.getGender())) {
                         wifeOf = memberBeanDao.queryBuilder().where()
                                 .eq(FieldNameConstants.HUSBAND_ID, memberBean.getActualId())
                                 .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
@@ -2231,7 +2231,7 @@ public class FormMetaDataUtil {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MOTHER_ID, String.valueOf(memberDataBean.getMotherId()));
             }
 
-            if (memberDataBean.getGender() != null && memberDataBean.getGender().equals("F")
+            if (memberDataBean.getGender() != null && "F".equals(memberDataBean.getGender())
                     && memberDataBean.getMaritalStatus() != null && memberDataBean.getMaritalStatus().equals("629")) {
                 SharedStructureData.membersUnderTwenty = getMembersLessThan20(memberDataBean.getFamilyId(), memberDataBean);
                 if (!SharedStructureData.membersUnderTwenty.isEmpty()) {
