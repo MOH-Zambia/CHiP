@@ -1053,12 +1053,6 @@ public class MyDynamicComponents {
             spinner.setId(id);
         }
 
-        if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_UTTARAKHAND)) {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-            layoutParams.setMargins(0, 0, 0, 40);
-            spinner.setLayoutParams(layoutParams);
-        }
-
         return spinner;
     }
 
@@ -2641,10 +2635,7 @@ public class MyDynamicComponents {
                 IdConstants.WEIGHT_BOX_CHECKBOX_ID,
                 false);
         myCheBox.setOnCheckedChangeListener(myListener);
-
-        if (!BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-            mainLayout.addView(myCheBox);
-        }
+        mainLayout.addView(myCheBox);
 
         LinearLayout inputLayout;
 

@@ -73,10 +73,7 @@ public class LmsCourseListActivity extends MenuActivity {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        ImageView courseImageView = findViewById(R.id.lmsCourseViewImage);
-        if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_UTTARAKHAND)){
-            courseImageView.setImageResource(R.drawable.uttarakhand_theme);
-        }
+
         setBodyDetail();
     }
 

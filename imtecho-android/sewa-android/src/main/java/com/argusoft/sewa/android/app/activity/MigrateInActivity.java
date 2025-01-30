@@ -221,10 +221,6 @@ public class MigrateInActivity extends MenuActivity implements View.OnClickListe
             switch (screenName) {
                 case MEMBER_QUESTION_SCREEN:
                     if (Boolean.TRUE.equals(checkValidationForMemberQuestionScreen())) {
-                        if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-                            setVillageSelectionScreen();
-                            return;
-                        }
                         setFirstQuestionScreen();
                     }
                     break;
@@ -579,40 +575,33 @@ public class MigrateInActivity extends MenuActivity implements View.OnClickListe
         }
         bodyLayoutContainer.addView(dobDatePicker);
 
-        if (!BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-            bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, context,
-                    UtilBean.getMyLabel(LabelConstants.ENTER + " " + LabelConstants.HEALTH_ID)));
-            if (healthIdEditText == null) {
-                healthIdEditText = MyStaticComponents.getEditText(context, LabelConstants.HEALTH_ID,
-                        1007, 11, InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-            }
-            bodyLayoutContainer.addView(healthIdEditText);
+        bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, context,
+                UtilBean.getMyLabel(LabelConstants.ENTER + " " + LabelConstants.HEALTH_ID)));
+        if (healthIdEditText == null) {
+            healthIdEditText = MyStaticComponents.getEditText(context, LabelConstants.HEALTH_ID,
+                    1007, 11, InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         }
+        bodyLayoutContainer.addView(healthIdEditText);
         bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, context,
                 UtilBean.getMyLabel(LabelConstants.ENTER + " " + LabelConstants.PHONE_NUMBER)));
         if (phoneEditText == null) {
             phoneEditText = MyStaticComponents.getEditText(context, LabelConstants.PHONE_NUMBER, 1009, 10, InputType.TYPE_CLASS_NUMBER);
         }
         bodyLayoutContainer.addView(phoneEditText);
-
-        if (!BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-            bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, context,
-                    UtilBean.getMyLabel(LabelConstants.ENTER + " " + LabelConstants.BANK_ACCOUNT_NUMBER)));
-            if (bankAccountEditText == null) {
-                bankAccountEditText = MyStaticComponents.getEditText(context, LabelConstants.BANK_ACCOUNT_NUMBER, 1012, 16, InputType.TYPE_CLASS_NUMBER);
-            }
-            bodyLayoutContainer.addView(bankAccountEditText);
+        bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, context,
+                UtilBean.getMyLabel(LabelConstants.ENTER + " " + LabelConstants.BANK_ACCOUNT_NUMBER)));
+        if (bankAccountEditText == null) {
+            bankAccountEditText = MyStaticComponents.getEditText(context, LabelConstants.BANK_ACCOUNT_NUMBER, 1012, 16, InputType.TYPE_CLASS_NUMBER);
         }
+        bodyLayoutContainer.addView(bankAccountEditText);
 
-        if (!BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-            bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, context,
-                    UtilBean.getMyLabel(LabelConstants.ENTER + " " + LabelConstants.IFSC_CODE)));
-            if (ifscEditText == null) {
-                ifscEditText = MyStaticComponents.getEditText(context, LabelConstants.IFSC_CODE, 1013, 11,
-                        InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-            }
-            bodyLayoutContainer.addView(ifscEditText);
+        bodyLayoutContainer.addView(MyStaticComponents.generateQuestionView(null, null, context,
+                UtilBean.getMyLabel(LabelConstants.ENTER + " " + LabelConstants.IFSC_CODE)));
+        if (ifscEditText == null) {
+            ifscEditText = MyStaticComponents.getEditText(context, LabelConstants.IFSC_CODE, 1013, 11,
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         }
+        bodyLayoutContainer.addView(ifscEditText);
 
         if (pregnantQuestionView == null) {
             pregnantQuestionView = MyStaticComponents.generateQuestionView(null, null, context, LabelConstants.CONFORMATION_TO_PREGNANCY_OF_BENEFICIARY);
@@ -680,8 +669,6 @@ public class MigrateInActivity extends MenuActivity implements View.OnClickListe
                 validationTagBeans.add(new ValidationTagBean(FormulaConstants.VALIDATION_CHECK_MOBILE_NUMBER, null));
                 validationTagBeans.add(new ValidationTagBean(FormulaConstants.VALIDATION_CHECK_NUMBER_FORMAT, null));
                 validation = DynamicUtils.checkValidation(phoneNumber, 0, validationTagBeans);
-            } else if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)){
-                validation = LabelConstants.PHONE_NUMBER_REQUIRED_ALERT;
             }
             if (validation != null) {
                 SewaUtil.generateToast(context, UtilBean.getMyLabel(validation));
@@ -1085,22 +1072,14 @@ public class MigrateInActivity extends MenuActivity implements View.OnClickListe
                     break;
                 case FAMILY_SELECTION_SCREEN:
                 case VILLAGE_SELECTION_SCREEN:
-                    if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-                        setMemberQuestionsScreen();
-                    } else {
-                        setFamilyQuestionScreen();
-                    }
+                    setFamilyQuestionScreen();
                     break;
                 case FINAL_SCREEN:
                     nextButton.setText(GlobalTypes.EVENT_NEXT);
-                    if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-                        setVillageSelectionScreen();
+                    if (stayingWithFamilyRadioGroup.getCheckedRadioButtonId() == RADIO_BUTTON_ID_YES) {
+                        setFamilySelectionScreen();
                     } else {
-                        if (stayingWithFamilyRadioGroup.getCheckedRadioButtonId() == RADIO_BUTTON_ID_YES) {
-                            setFamilySelectionScreen();
-                        } else {
-                            setVillageSelectionScreen();
-                        }
+                        setVillageSelectionScreen();
                     }
                     break;
 

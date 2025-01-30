@@ -1725,14 +1725,13 @@ public class DynamicUtils {
         if (FormConstants.HOUSE_HOLD_LINE_LIST_NEW.equalsIgnoreCase(entity)
                 && "1".equalsIgnoreCase(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.NEW_FAMILY))) {
             HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
-            SharedStructureData.sewaService.createFamilyBean(houseHoldLineListMobileDto, memberBean);
+            SharedStructureData.sewaService.createFamilyBean(houseHoldLineListMobileDto, memberBean, false);
         } else if (FormConstants.FAMILY_UPDATE.equals(entity)) {
             HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
-            SharedStructureData.sewaService.updateFamilyByUUID(houseHoldLineListMobileDto, familyBean);
+            SharedStructureData.sewaService.updateFamilyByUUID(houseHoldLineListMobileDto, familyBean, true);
         } else if (FormConstants.FHS_MEMBER_UPDATE_NEW.equalsIgnoreCase(entity)) {
             HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
-            if (memberBean != null
-                    && SharedStructureData.relatedPropertyHashTable.containsKey(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID)) {
+            if (SharedStructureData.relatedPropertyHashTable.containsKey(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID)) {
                 //update member for MEMBER_UPDATE_NEW form
                 for (HouseHoldLineListMobileDto.MemberDetails memberDetails : houseHoldLineListMobileDto.getMemberDetails()) {
                     SharedStructureData.sewaService.updateMemberByUniqueHealthId(memberDetails, memberBean, familyBean);

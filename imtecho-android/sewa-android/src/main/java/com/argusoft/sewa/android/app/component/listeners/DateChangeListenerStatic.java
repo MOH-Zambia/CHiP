@@ -36,9 +36,6 @@ public class DateChangeListenerStatic implements DatePickerDialog.OnDateSetListe
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, dayOfMonth, 0, 0, 0);
-        if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_UTTARAKHAND)) {
-            calendar.set(Calendar.MILLISECOND, 0);
-        }
         String validationMessage = DynamicUtils.checkValidation(String.valueOf(calendar.getTime().getTime()), 0, validations);
         if (validationMessage != null) {
             txtDate.setText(UtilBean.getMyLabel(GlobalTypes.SELECT_DATE_TEXT));

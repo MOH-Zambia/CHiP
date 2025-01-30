@@ -23,7 +23,7 @@ public class HouseHoldLineListMobileMapper {
         throw new IllegalStateException("Utility Class");
     }
 
-    public static void convertHouseHoldLineListDtoToFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, FamilyBean familyBean) {
+    public static void convertHouseHoldLineListDtoToFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, FamilyBean familyBean, boolean isFamilyUpdate) {
         if (houseHoldLineListMobileDto.getLocationId() != null) {
             familyBean.setLocationId(String.valueOf(houseHoldLineListMobileDto.getLocationId()));
             familyBean.setAreaId(String.valueOf(houseHoldLineListMobileDto.getLocationId()));
@@ -44,8 +44,10 @@ public class HouseHoldLineListMobileMapper {
         familyBean.setSeparateLivestockShelter(houseHoldLineListMobileDto.getLivestockShelterFound() != null ? houseHoldLineListMobileDto.getLivestockShelterFound() : familyBean.getSeparateLivestockShelter());
         familyBean.setLatitude(houseHoldLineListMobileDto.getCurrentLatitude() != null ? houseHoldLineListMobileDto.getCurrentLatitude() : familyBean.getLatitude());
         familyBean.setLongitude(houseHoldLineListMobileDto.getCurrentLongitude() != null ? houseHoldLineListMobileDto.getCurrentLongitude() : familyBean.getLongitude());
-        familyBean.setUuid(houseHoldLineListMobileDto.getUuid() != null ? houseHoldLineListMobileDto.getUuid() : familyBean.getUuid());
-        familyBean.setFamilyId("TMP" + new Date().getTime() / 1000);
+        if (!isFamilyUpdate) {
+            familyBean.setUuid(houseHoldLineListMobileDto.getUuid() != null ? houseHoldLineListMobileDto.getUuid() : familyBean.getUuid());
+            familyBean.setFamilyId("TMP" + new Date().getTime() / 1000);
+        }
         familyBean.setState(FhsConstants.CFHC_FAMILY_STATE_NEW);
     }
 
