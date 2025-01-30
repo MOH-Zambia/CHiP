@@ -1297,14 +1297,14 @@ public class SewaServiceImpl implements SewaService {
     }
 
     @Override
-    public void createFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, MemberBean memberBean) {
+    public void createFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, MemberBean memberBean, boolean isFamilyUpdate) {
         FamilyBean familyBean = new FamilyBean();
         Map<Integer, MemberBean> memberLoopIdMap = new HashMap<>();
         MemberBean femaleHofMember = null;
         MemberBean maleHofMember = null;
         MemberBean hofHusbandOrWifeMember = null;
 
-        HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyBean(houseHoldLineListMobileDto, familyBean);
+        HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyBean(houseHoldLineListMobileDto, familyBean, isFamilyUpdate);
         try {
             familyBeanDao.create(familyBean);
         } catch (SQLException e) {
@@ -1432,9 +1432,9 @@ public class SewaServiceImpl implements SewaService {
     }
 
     @Override
-    public void updateFamilyByUUID(HouseHoldLineListMobileDto familyDetails, FamilyBean familyBean) {
+    public void updateFamilyByUUID(HouseHoldLineListMobileDto familyDetails, FamilyBean familyBean, boolean isFamilyUpdate) {
         try {
-            HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyBean(familyDetails, familyBean);
+            HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyBean(familyDetails, familyBean, isFamilyUpdate);
             familyBeanDao.update(familyBean);
         } catch (SQLException e) {
             Log.e(getClass().getSimpleName(), null, e);

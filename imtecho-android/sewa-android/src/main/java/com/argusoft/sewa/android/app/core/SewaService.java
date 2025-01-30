@@ -103,12 +103,12 @@ public interface SewaService {
 
     void createUploadFileDataBean(QueFormBean queFormBean, String formType, String memberId, String checkSum, String memberUuid);
 
-    void createFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, MemberBean memberBean);
+    void createFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, MemberBean memberBean, boolean isFamilyUpdate);
 
     void createMemberBean(HouseHoldLineListMobileDto.MemberDetails memberDetails, MemberBean memberBean, FamilyBean familyBean);
 
     void updateMemberByUniqueHealthId(HouseHoldLineListMobileDto.MemberDetails memberDetails, MemberBean memberBean, FamilyBean familyBean);
-    void updateFamilyByUUID(HouseHoldLineListMobileDto familyDetails, FamilyBean familyBean);
+    void updateFamilyByUUID(HouseHoldLineListMobileDto familyDetails, FamilyBean familyBean, boolean isFamilyUpdate);
 
     void updateStockInventoryByMedicineId(Integer id, int amount);
 }

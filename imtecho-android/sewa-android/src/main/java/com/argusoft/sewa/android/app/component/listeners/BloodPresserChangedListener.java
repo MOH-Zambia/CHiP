@@ -23,9 +23,9 @@ import com.argusoft.sewa.android.app.util.SewaUtil;
 public class BloodPresserChangedListener implements View.OnFocusChangeListener, CompoundButton.OnCheckedChangeListener {
 
     private static final int SYS_MIN = 60;
-    private static final int SYS_MAX = BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD) ? 250 : 260;
+    private static final int SYS_MAX =  260;
     private static final int DIA_MIN = 40;
-    private static final int DIA_MAX = BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD) ? 200 : 160;
+    private static final int DIA_MAX = 160;
 
     private static final String VALID_MSG_SYS = "Systolic BP should be between " + SYS_MIN + " and " + SYS_MAX;
     private static final String VALID_MSG_DIA = "Diastolic BP should be between " + DIA_MIN + " and " + DIA_MAX;

@@ -68,11 +68,7 @@ public class WorkLogActivity extends MenuActivity {
             startActivity(myIntent);
             finish();
         }
-        if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_UTTARAKHAND)){
-            setTitle(UtilBean.getTitleText(LabelConstants.SYNC_STATUS_TITLE));
-        } else {
-            setTitle(UtilBean.getTitleText(LabelConstants.WORK_LOG_TITLE));
-        }
+        setTitle(UtilBean.getTitleText(LabelConstants.WORK_LOG_TITLE));
         retrieveWorkLog();
     }
 

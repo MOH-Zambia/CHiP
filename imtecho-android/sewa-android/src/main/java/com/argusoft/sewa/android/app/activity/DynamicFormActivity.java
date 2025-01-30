@@ -183,17 +183,6 @@ public class DynamicFormActivity extends MenuActivity implements View.OnClickLis
             return;
         }
 
-        if (!BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-            if (SewaTransformer.loginBean.getUserRole().equals(GlobalTypes.USER_ROLE_ASHA)) {
-                return;
-            }
-            if (formType != null && (FormConstants.NCD_SHEETS.contains(formType)
-                    || FormConstants.IDSP_MEMBER.equals(formType)
-                    || FormConstants.IDSP_MEMBER_2.equals(formType))) {
-                return;
-            }
-        }
-
         String memberId = SharedStructureData.relatedPropertyHashTable.get("memberId");
         if (memberId != null) {
             boolean aBoolean = techoService.checkIfOfflineAnyFormFilledForMember(Long.valueOf(memberId));
