@@ -126,9 +126,9 @@ public class FormMetaDataUtil {
         }
         FamilyDataBean familyDataBean;
         if (familyId != null) {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyId);
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyId, memberBean.getFamilyUuid());
         } else {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberBean.getFamilyId());
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberBean.getFamilyId(), memberBean.getFamilyUuid());
         }
         SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_ID, memberBean.getFamilyId());
 
@@ -1502,7 +1502,7 @@ public class FormMetaDataUtil {
         editor.commit();
     }
 
-    public void setMetaDataActiveMalariaFromNearbyHousehold(String memberActualId, String familyId, SharedPreferences sharedPref, boolean isFromNearbyHousehold) {
+    public void setMetaDataActiveMalariaFromNearbyHousehold(String memberActualId, String familyId, SharedPreferences sharedPref, boolean isFromNearbyHousehold, String memberUuid) {
 
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear().apply();
@@ -1513,12 +1513,17 @@ public class FormMetaDataUtil {
         SharedStructureData.selectedHealthInfra = null;
         SharedStructureData.highRiskConditions.clear();
 
-        MemberBean memberBean = fhsService.retrieveMemberBeanByActualId(Long.valueOf(memberActualId));
+        MemberBean memberBean;
+        if (memberActualId != null) {
+            memberBean = fhsService.retrieveMemberBeanByActualId(Long.valueOf(memberActualId));
+        } else {
+            memberBean = fhsService.retrieveMemberBeanByUUID(memberUuid);
+        }
         FamilyDataBean familyDataBean;
         if (familyId != null) {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyId);
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyId, memberBean.getFamilyUuid());
         } else {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberBean.getFamilyId());
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberBean.getFamilyId(), memberBean.getFamilyUuid());
         }
 
         if (familyDataBean.getAreaId() != null) {
@@ -1877,7 +1882,17 @@ public class FormMetaDataUtil {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MIDDLE_NAME, memberDataBean.getMiddleName());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LAST_NAME, memberDataBean.getLastName());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MOBILE_NUMBER, memberDataBean.getMobileNumber());
-            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PHONE_NUMBER, memberDataBean.getMobileNumber());
+            if (memberDataBean.getMobileNumber() != null && !memberDataBean.getMobileNumber().isEmpty()) {
+                String mob = memberDataBean.getMobileNumber();
+                if (memberDataBean.getMobileNumber().contains("F/")) {
+                    mob = memberDataBean.getMobileNumber().replace("F/", "");
+                }
+                if (memberDataBean.getMobileNumber().contains("T")) {
+                    mob = memberDataBean.getMobileNumber().replace("T", "");
+                }
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PHONE_NUMBER, mob);
+            }
+            //SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PHONE_NUMBER, memberDataBean.getMobileNumber());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IFSC, memberDataBean.getIfsc());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID, memberDataBean.getUniqueHealthId());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEFAULT_MARITAL_STATUS, memberDataBean.getMaritalStatus());

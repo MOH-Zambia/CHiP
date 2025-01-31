@@ -197,7 +197,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                 if (selectedFamilyIndex != -1) {
                     bodyLayoutContainer.removeAllViews();
                     FamilyDataBean familyDataBean = familyDataBeans.get(selectedFamilyIndex);
-                    selectedFamily = fhsService.retrieveFamilyDataBeanByFamilyId(familyDataBean.getFamilyId());
+                    selectedFamily = fhsService.retrieveFamilyDataBeanByFamilyId(familyDataBean.getFamilyId(), familyDataBean.getUuid());
                     selectedFamily.setHeadMemberName(familyDataBean.getHeadMemberName());
                     SharedStructureData.currentFamilyDataBean = selectedFamily;
                     addSelectedFamilyDetails(selectedFamily);
@@ -503,7 +503,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                 String familyIdToExpand = data.getStringExtra("familyToExpand");
                 String familyIdToMerge = data.getStringExtra("familyToMerge");
 
-                FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyIdToExpand);
+                FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyIdToExpand, selectedFamily.getUuid());
                 List<String> states = new ArrayList<>();
                 states.addAll(FhsConstants.FHS_VERIFIED_CRITERIA_FAMILY_STATES);
                 states.addAll(FhsConstants.FHS_NEW_CRITERIA_FAMILY_STATES);
@@ -1305,7 +1305,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
         showProcessDialog();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         if (memberDataBean != null) {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId());
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId(), memberDataBean.getFamilyUuid());
         }
         myIntent = new Intent(this, DynamicFormActivity_.class);
         if (isForFamilyUpdate) {
