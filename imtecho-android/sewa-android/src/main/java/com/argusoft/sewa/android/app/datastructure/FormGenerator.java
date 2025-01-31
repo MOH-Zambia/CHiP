@@ -529,13 +529,7 @@ public class FormGenerator {
                 if (defaultValue == null || defaultValue.trim().isEmpty() || defaultValue.trim().equalsIgnoreCase("null")) {
                     defaultValue = GlobalTypes.NOT_AVAILABLE;
                 } else {
-                    if (defaultValue.contains("F") && !defaultValue.contains("FM")) {
-                        defaultValue = defaultValue.split("/")[1];
-                    } else if (defaultValue.equals("T")) {
-                        defaultValue="Not Available";
-                    } else {
-                        queFormBean.setAnswer(defaultValue);
-                    }
+                    queFormBean.setAnswer(defaultValue);
                 }
             }
             MaterialTextView labelFormula;

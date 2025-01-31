@@ -81,7 +81,7 @@ public class FhwMemberMigrationConfirmationActivity extends MenuActivity impleme
         String notification = getIntent().getStringExtra(GlobalTypes.NOTIFICATION);
         selectedNotification = new Gson().fromJson(notification, NotificationMobDataBean.class);
         selectedMember = fhsService.retrieveMemberBeanByActualId(selectedNotification.getMemberId());
-        selectedFamily = fhsService.retrieveFamilyDataBeanByFamilyId(selectedMember.getFamilyId());
+        selectedFamily = fhsService.retrieveFamilyDataBeanByFamilyId(selectedMember.getFamilyId(), null);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         initView();
     }

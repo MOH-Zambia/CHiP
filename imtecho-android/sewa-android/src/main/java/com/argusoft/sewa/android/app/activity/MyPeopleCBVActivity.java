@@ -967,7 +967,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
         searchString = s;
         offset = 0;
         if (memberSelected != null) {
-            familySelected = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId());
+            familySelected = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId(), memberSelected.getFamilyUuid());
         }
         selectedPeopleIndex = -1;
         villageIds = new LinkedList<>();
@@ -1949,7 +1949,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
     }
 
     private void setMemberDetailsForEligibleCouplesRchRegister() {
-        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId());
+        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId(), memberSelected.getFamilyUuid());
 
         bodyLayoutContainer.addView(MyStaticComponents.generateTitleView(this, UtilBean.getMyLabel(LabelConstants.GENERAL_INFORMATION)));
 
@@ -2132,7 +2132,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
     }
 
     private void setMemberDetailsForChildRchRegister() {
-        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId());
+        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId(), memberSelected.getFamilyUuid());
 
         bodyLayoutContainer.addView(MyStaticComponents.generateTitleView(this, UtilBean.getMyLabel(LabelConstants.GENERAL_INFORMATION)));
 
@@ -2412,7 +2412,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
             }
         } else {
             if (memberDataBean != null) {
-                familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId());
+                familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId(), memberSelected.getFamilyUuid());
             }
             formMetaDataUtil.setMetaDataForMemberUpdateForm(memberDataBean, familyDataBean, sharedPref);
         }

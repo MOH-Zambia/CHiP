@@ -876,9 +876,12 @@ public class SewaFhsServiceImpl implements SewaFhsService {
     }
 
     @Override
-    public FamilyDataBean retrieveFamilyDataBeanByFamilyId(String familyId) {
+    public FamilyDataBean retrieveFamilyDataBeanByFamilyId(String familyId, String familyUUID) {
         try {
             FamilyBean familyBean = familyBeanDao.queryBuilder().where().eq(FieldNameConstants.FAMILY_ID, familyId).queryForFirst();
+            if (familyBean == null) {
+                familyBean = familyBeanDao.queryBuilder().where().eq(FieldNameConstants.UUID, familyUUID).queryForFirst();
+            }
             ArrayList<MemberDataBean> memberDataBeans = new ArrayList<>();
             return new FamilyDataBean(familyBean, memberDataBeans);
         } catch (SQLException e) {
@@ -888,7 +891,7 @@ public class SewaFhsServiceImpl implements SewaFhsService {
     }
 
     @Override
-    public FamilyDataBean retrieveFamilyDataBeanByFamilyId(Long actualId) {
+    public FamilyDataBean retrieveFamilyDataBeanByFamilyActualId(Long actualId) {
         try {
             FamilyBean familyBean = familyBeanDao.queryBuilder().where().eq(FieldNameConstants.ACTUAL_I_D, actualId).queryForFirst();
             ArrayList<MemberDataBean> memberDataBeans = new ArrayList<>();

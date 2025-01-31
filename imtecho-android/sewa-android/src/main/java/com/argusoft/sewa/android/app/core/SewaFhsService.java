@@ -55,9 +55,9 @@ public interface SewaFhsService {
 
     Map<String, MemberDataBean> retrieveHeadMemberDataBeansByFamilyId(List<String> familyIds);
 
-    FamilyDataBean retrieveFamilyDataBeanByFamilyId(String familyId);
+    FamilyDataBean retrieveFamilyDataBeanByFamilyId(String familyId, String familyUUID);
 
-    FamilyDataBean retrieveFamilyDataBeanByFamilyId(Long actualId);
+    FamilyDataBean retrieveFamilyDataBeanByFamilyActualId(Long actualId);
 
     void markFamilyAsVerified(String familyId);
 
