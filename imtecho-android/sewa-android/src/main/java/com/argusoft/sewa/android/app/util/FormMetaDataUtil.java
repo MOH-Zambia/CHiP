@@ -1823,7 +1823,16 @@ public class FormMetaDataUtil {
             if (headMember != null && headMember.getDob() != null) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HOF_NAME, UtilBean.getMemberFullName(headMember));
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HOF_ID, headMember.getUniqueHealthId());
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER, headMember.getMobileNumber());
+                if (headMember.getMobileNumber() != null && !headMember.getMobileNumber().isEmpty()) {
+                    String mob = headMember.getMobileNumber();
+                    if (headMember.getMobileNumber().contains("F/")) {
+                        mob = headMember.getMobileNumber().replace("F/", "");
+                    }
+                    if (headMember.getMobileNumber().contains("T")) {
+                        mob = headMember.getMobileNumber().replace("T", "");
+                    }
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER, mob);
+                }
                 SharedStructureData.relatedPropertyHashTable.put("hofDob", headMember.getDob().toString());
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_HOF_AVAILABLE, "1");
                 if (headMember.getGender() != null && headMember.getGender().equals(GlobalTypes.FEMALE)) {

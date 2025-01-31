@@ -3164,6 +3164,7 @@ public class HiddenQuestionFormulaUtil {
             if (!hofMobileNumber.trim().equalsIgnoreCase("null")
                     && !hofMobileNumber.trim().equalsIgnoreCase("")) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MINOR_MOBILE_NUMBER, mob);
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER, mob);
             }
         }
     }
