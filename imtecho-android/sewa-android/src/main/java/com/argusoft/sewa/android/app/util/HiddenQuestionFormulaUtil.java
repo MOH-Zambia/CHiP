@@ -3154,7 +3154,7 @@ public class HiddenQuestionFormulaUtil {
             hofMobileNumber = headMember.getMobileNumber();
         }
         if (hofMobileNumber != null) {
-            String mob = null;
+            String mob = hofMobileNumber;
             if (hofMobileNumber.contains("F/")) {
                 mob = hofMobileNumber.replace("F/", "");
             }
@@ -3164,7 +3164,7 @@ public class HiddenQuestionFormulaUtil {
             if (!hofMobileNumber.trim().equalsIgnoreCase("null")
                     && !hofMobileNumber.trim().equalsIgnoreCase("")) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MINOR_MOBILE_NUMBER, mob);
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER, mob);
+                SharedStructureData.relatedPropertyHashTable.put(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER, queFormBean.getLoopCounter()), mob);
             }
         }
     }
