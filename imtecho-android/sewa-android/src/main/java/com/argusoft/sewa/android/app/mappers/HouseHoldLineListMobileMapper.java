@@ -81,15 +81,13 @@ public class HouseHoldLineListMobileMapper {
         if ((member.getGender() != null && "F".equalsIgnoreCase(checkGenderFromNumber(member.getGender()))) ||
                 memberBean.getGender() != null && "F".equalsIgnoreCase(checkGenderFromNumber(memberBean.getGender()))) {
             memberBean.setLmpDate(member.getLmpDate() != null ? new Date(member.getLmpDate()) : memberBean.getLmpDate());
-            if (member.getLmpDate() != null) {
+            if (member.getLmpDate() != null && Boolean.TRUE.equals(member.getWomanPregnant())) {
                 Calendar calendar = Calendar.getInstance();
                 Date lastLmpDate = new Date(member.getLmpDate());
                 calendar.setTime(lastLmpDate);
                 calendar.add(Calendar.DAY_OF_YEAR, 281);
                 Date edd = calendar.getTime();
-                if (memberBean.getEdd() == null) {
-                    memberBean.setEdd(edd);
-                }
+                memberBean.setEdd(edd);
             }
         } else {
             memberBean.setLmpDate(null);

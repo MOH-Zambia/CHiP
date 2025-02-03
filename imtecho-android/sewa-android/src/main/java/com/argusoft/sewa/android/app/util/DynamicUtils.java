@@ -1681,11 +1681,13 @@ public class DynamicUtils {
             String state = null;
             if (memberStatus.equalsIgnoreCase("DEATH")) {
                 state = FhsConstants.CFHC_MEMBER_STATE_DEAD;
+                memberBean.setState(state);
+                SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
             } else if (memberStatus.equalsIgnoreCase("MIGRATED")) {
                 state = FhsConstants.FHS_MEMBER_STATE_MIGRATED;
+                memberBean.setState(state);
+                SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
             }
-            memberBean.setState(state);
-            SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
         }
 
         if (FormConstants.LMP_FOLLOW_UP.equalsIgnoreCase(entity) ||
