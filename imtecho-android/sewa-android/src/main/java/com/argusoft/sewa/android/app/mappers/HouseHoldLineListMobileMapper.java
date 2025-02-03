@@ -59,7 +59,7 @@ public class HouseHoldLineListMobileMapper {
         if (member == null) {
             member = new HouseHoldLineListMobileDto.MemberDetails();
         }
-        if(member.getMemberStatus() != null && member.getMemberStatus().equalsIgnoreCase("ARCHIVE")) {
+        if (member.getMemberStatus() != null && member.getMemberStatus().equalsIgnoreCase("ARCHIVE")) {
             memberBean.setState(FhsConstants.FHS_MEMBER_STATE_ARCHIVED);
         }
         memberBean.setFamilyHeadFlag(member.getHof() != null ? member.getHof() : memberBean.getFamilyHeadFlag());
