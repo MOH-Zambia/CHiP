@@ -637,14 +637,14 @@ public class FormMetaDataUtil {
                                 String.valueOf(memberBeanDao.queryBuilder().where()
                                         .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
                                         .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
+                                        .and().ne(FieldNameConstants.MEMBER_UUID, memberBean.getActualId())
                                         .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
 
                         MemberBean latestChild = memberBeanDao.queryBuilder()
                                 .orderBy(FieldNameConstants.DOB, false)
                                 .where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
                                 .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
+                                .and().ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid())
                                 .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
 
                         if (latestChild != null) {
@@ -727,13 +727,9 @@ public class FormMetaDataUtil {
                             if (i == 0) {
                                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID_CHILD, child.getUniqueHealthId());
                                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_NAME, child.getFirstName());
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_UUID, child.getMemberUuid());
                                 Set<String> dueImmunisations;
-                                if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                                    dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                } else {
-                                    dueImmunisations = immunisationService.getDueImmunisationsForChild(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                }
-
+                                dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
                                 if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
                                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.REMAINING_VACCINES,
                                             dueImmunisations.toString().replace("[", "").replace("]", ""));
@@ -741,6 +737,7 @@ public class FormMetaDataUtil {
                             } else {
                                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID_CHILD + i, child.getUniqueHealthId());
                                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_NAME + i, child.getFirstName());
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_UUID + i, child.getMemberUuid());
                                 Set<String> dueImmunisations;
                                 dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
                                 if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
@@ -1415,8 +1412,6 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CURRENT_PARA, ("1"));
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEFAULT_PARA, ("1"));
                 }
-
-
                 break;
 
             case FormConstants.TECHO_WPD_DISCHARGE:

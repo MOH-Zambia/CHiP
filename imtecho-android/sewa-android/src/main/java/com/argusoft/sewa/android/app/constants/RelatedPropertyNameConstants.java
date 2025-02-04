@@ -23,6 +23,7 @@ public class RelatedPropertyNameConstants {
     public static final String MEMBER_UUID = "memberUuid";
     public static final String IS_IT_INDEX_CASE = "isItIndexCase";
     public static final String MEMBER_UUID_WPD = "memberUuidForWpd";
+    public static final String CHILD_UUID = "childUuid";
     public static final String MEMBERS_FAMILY_UUID = "familyUuid";
     public static final String ABHA_CONSENT_CHECKBOX_MODEL = "abhaConsentCheckboxModel";
     public static final String AADHAAR_MATCH_WITH_BENEFICIARY_CONSENT = "aadhaarMatchWithBeneficiaryConsent";

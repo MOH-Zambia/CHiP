@@ -280,9 +280,6 @@ public class WpdMotherMaster extends VisitCommonFields implements Serializable {
     }
 
     public void setDateOfDelivery(Date dateOfDelivery) {
-        if (dateOfDelivery != null && dateOfDelivery.after(new Date())) {
-            throw new ImtechoMobileException("Delivery date cannot be future", 100);
-        }
         this.dateOfDelivery = dateOfDelivery;
     }
 
