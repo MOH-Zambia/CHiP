@@ -29,6 +29,7 @@ public class HouseHoldLineListMobileDto {
     private String uuid;
     private String motherRelation;
     private String husbandRelation;
+    private Boolean toiletMeetingStandards;
 
 
     public String getCurrentLatitude() {
@@ -237,6 +238,14 @@ public class HouseHoldLineListMobileDto {
 
     public void setHusbandRelation(String husbandRelation) {
         this.husbandRelation = husbandRelation;
+    }
+
+    public Boolean getToiletMeetingStandards() {
+        return toiletMeetingStandards;
+    }
+
+    public void setToiletMeetingStandards(Boolean toiletMeetingStandards) {
+        this.toiletMeetingStandards = toiletMeetingStandards;
     }
 
     public static class MemberDetails {

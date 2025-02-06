@@ -22,14 +22,14 @@ public class HouseHoldLineListMobileMapper {
         familyEntity.setAddress1(houseHoldLineListMobileDto.getHouseAddress() != null ? houseHoldLineListMobileDto.getHouseAddress() : familyEntity.getAddress1());
         familyEntity.setOutdoorCookingPractices(houseHoldLineListMobileDto.getCookingPractices() != null ? houseHoldLineListMobileDto.getCookingPractices() : familyEntity.getOutdoorCookingPractices());
         familyEntity.setTypeOfToilet(houseHoldLineListMobileDto.getToiletType() != null ? houseHoldLineListMobileDto.getToiletType() : familyEntity.getTypeOfToilet());
-        familyEntity.setHandwashAvailable(houseHoldLineListMobileDto.getHandWashAvailable() != null ? houseHoldLineListMobileDto.getHandWashAvailable() : familyEntity.getHandwashAvailable());
+        familyEntity.setHandwashAvailable(houseHoldLineListMobileDto.getHandwashAvailable() != null ? houseHoldLineListMobileDto.getHandwashAvailable() : familyEntity.getHandwashAvailable());
         familyEntity.setWasteDisposalAvailable(houseHoldLineListMobileDto.getIsWasteDisposalAvailable() != null ? houseHoldLineListMobileDto.getIsWasteDisposalAvailable() : familyEntity.getWasteDisposalAvailable());
         familyEntity.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? convertSetToCommaSeparatedString(houseHoldLineListMobileDto.getWasteDisposalType()) : familyEntity.getWasteDisposalMethod());
         familyEntity.setOtherWasteDisposal(houseHoldLineListMobileDto.getOtherWasteDisposalType() != null ? houseHoldLineListMobileDto.getOtherWasteDisposalType() : familyEntity.getOtherWasteDisposal());
         familyEntity.setWaterSafetyMeetsStandard(houseHoldLineListMobileDto.getIsWaterSafe() != null ? houseHoldLineListMobileDto.getIsWaterSafe() : familyEntity.getWaterSafetyMeetsStandard());
         familyEntity.setDrinkingWaterSource(houseHoldLineListMobileDto.getWaterSource() != null ? houseHoldLineListMobileDto.getWaterSource() : familyEntity.getDrinkingWaterSource());
         familyEntity.setStorageMeetsStandard(houseHoldLineListMobileDto.getStorageStandards() != null ? houseHoldLineListMobileDto.getStorageStandards() : familyEntity.getStorageMeetsStandard());
-        familyEntity.setDishrackAvailable(houseHoldLineListMobileDto.getDishRackAvailable() != null ? houseHoldLineListMobileDto.getDishRackAvailable() : familyEntity.getDishrackAvailable());
+        familyEntity.setDishrackAvailable(houseHoldLineListMobileDto.getDishrackAvailable() != null ? houseHoldLineListMobileDto.getDishrackAvailable() : familyEntity.getDishrackAvailable());
         familyEntity.setComplaintOfInsects(houseHoldLineListMobileDto.getInsectsFound() != null ? houseHoldLineListMobileDto.getInsectsFound() : familyEntity.getComplaintOfInsects());
         familyEntity.setComplaintOfRodents(houseHoldLineListMobileDto.getRodentsFound() != null ? houseHoldLineListMobileDto.getRodentsFound() : familyEntity.getComplaintOfRodents());
         familyEntity.setSeparateLivestockShelter(houseHoldLineListMobileDto.getLivestockShelterFound() != null ? houseHoldLineListMobileDto.getLivestockShelterFound() : familyEntity.getSeparateLivestockShelter());
@@ -38,6 +38,7 @@ public class HouseHoldLineListMobileMapper {
         familyEntity.setLatitude(houseHoldLineListMobileDto.getCurrentLatitude() != null ? houseHoldLineListMobileDto.getCurrentLatitude() : familyEntity.getLatitude());
         familyEntity.setLongitude(houseHoldLineListMobileDto.getCurrentLongitude() != null ? houseHoldLineListMobileDto.getCurrentLongitude() : familyEntity.getLongitude());
         familyEntity.setFamilyUuid(houseHoldLineListMobileDto.getUuid() != null ? houseHoldLineListMobileDto.getUuid() : familyEntity.getFamilyUuid());
+        familyEntity.setToiletMeetingStandards(houseHoldLineListMobileDto.getToiletMeetingStandards() != null ? houseHoldLineListMobileDto.getToiletMeetingStandards() : familyEntity.getToiletMeetingStandards());
         //familyEntity.setVipType(houseHoldLineListMobileDto.getVipType() != null ? houseHoldLineListMobileDto.getVipType() : familyEntity.getVipType());
     }
 

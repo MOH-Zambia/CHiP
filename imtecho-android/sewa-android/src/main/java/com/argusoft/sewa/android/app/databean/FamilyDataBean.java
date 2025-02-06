@@ -50,6 +50,12 @@ public class FamilyDataBean {
 
     private Boolean dishrackAvailable;
 
+    private Boolean handwashAvailable;
+
+    private Boolean toiletMeetingStandards;
+
+    private Boolean storageMeetsStandard;
+
     private Boolean complaintOfInsects;
 
     private Boolean complaintOfRodents;
@@ -224,6 +230,9 @@ public class FamilyDataBean {
         this.complaintOfInsects = familyBean.getComplaintOfInsects();
         this.complaintOfRodents = familyBean.getComplaintOfRodents();
         this.separateLivestockShelter = familyBean.getSeparateLivestockShelter();
+        this.handwashAvailable = familyBean.getHandwashAvailable();
+        this.storageMeetsStandard = familyBean.getStorageMeetsStandard();
+        this.toiletMeetingStandards = familyBean.getToiletMeetingStandards();
 
     }
 
@@ -776,6 +785,30 @@ public class FamilyDataBean {
         this.separateLivestockShelter = separateLivestockShelter;
     }
 
+    public Boolean getStorageMeetsStandard() {
+        return storageMeetsStandard;
+    }
+
+    public void setStorageMeetsStandard(Boolean storageMeetsStandard) {
+        this.storageMeetsStandard = storageMeetsStandard;
+    }
+
+    public Boolean getHandwashAvailable() {
+        return handwashAvailable;
+    }
+
+    public void setHandwashAvailable(Boolean handwashAvailable) {
+        this.handwashAvailable = handwashAvailable;
+    }
+
+    public Boolean getToiletMeetingStandards() {
+        return toiletMeetingStandards;
+    }
+
+    public void setToiletMeetingStandards(Boolean toiletMeetingStandards) {
+        this.toiletMeetingStandards = toiletMeetingStandards;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -824,6 +857,9 @@ public class FamilyDataBean {
                 ", complaintOfInsects=" + complaintOfInsects +
                 ", complaintOfRodents=" + complaintOfRodents +
                 ", separateLivestockShelter=" + separateLivestockShelter +
+                ", handwashAvailable=" + handwashAvailable +
+                ", storageMeetsStandard=" + storageMeetsStandard +
+                ", toiletMeetingStandards=" + toiletMeetingStandards +
                 '}';
     }
 }

@@ -46,6 +46,9 @@ public class RelatedPropertyNameConstants {
     public static final String INSECTS_FOUND = "complaintOfInsects";
     public static final String RODENTS_FOUND = "complaintOfRodents";
     public static final String SEPARATE_LIVESTOCK_SHELTER = "separateLivestockShelter";
+    public static final String HANDWASH_AVAILABLE_FLAG = "handwashAvailableFlag";
+    public static final String STORAGE_MEETS_STANDARD = "storageMeetsStandard";
+    public static final String TOILET_MEETS_STANDARD = "toiletMeetsStandard";
     public static final String VULNERABLE_FLAG = "vulnerableFlag";
     public static final String SEASONAL_MIGRANT_FAMILY = "seasonalMigrantFlag";
     public static final String IS_PROVIDING_CONSENT = "isProvidingConsent";

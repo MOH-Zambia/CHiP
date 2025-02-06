@@ -42,6 +42,9 @@ public class HouseHoldLineListMobileMapper {
         familyBean.setComplaintOfInsects(houseHoldLineListMobileDto.getInsectsFound() != null ? houseHoldLineListMobileDto.getInsectsFound() : familyBean.getComplaintOfInsects());
         familyBean.setComplaintOfRodents(houseHoldLineListMobileDto.getRodentsFound() != null ? houseHoldLineListMobileDto.getRodentsFound() : familyBean.getComplaintOfRodents());
         familyBean.setSeparateLivestockShelter(houseHoldLineListMobileDto.getLivestockShelterFound() != null ? houseHoldLineListMobileDto.getLivestockShelterFound() : familyBean.getSeparateLivestockShelter());
+        familyBean.setHandwashAvailable(houseHoldLineListMobileDto.getHandwashAvailable() != null ? houseHoldLineListMobileDto.getHandwashAvailable() : familyBean.getHandwashAvailable());
+        familyBean.setStorageMeetsStandard(houseHoldLineListMobileDto.getStorageStandards() != null ? houseHoldLineListMobileDto.getStorageStandards() : familyBean.getStorageMeetsStandard());
+        familyBean.setToiletMeetingStandards(houseHoldLineListMobileDto.getToiletMeetingStandards() != null ? houseHoldLineListMobileDto.getToiletMeetingStandards() : familyBean.getToiletMeetingStandards());
         familyBean.setLatitude(houseHoldLineListMobileDto.getCurrentLatitude() != null ? houseHoldLineListMobileDto.getCurrentLatitude() : familyBean.getLatitude());
         familyBean.setLongitude(houseHoldLineListMobileDto.getCurrentLongitude() != null ? houseHoldLineListMobileDto.getCurrentLongitude() : familyBean.getLongitude());
         if (!isFamilyUpdate) {
