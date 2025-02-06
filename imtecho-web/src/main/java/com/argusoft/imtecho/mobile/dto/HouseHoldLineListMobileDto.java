@@ -18,14 +18,14 @@ public class HouseHoldLineListMobileDto {
     private String houseAddress;
     private String toiletType;
     private Boolean cookingPractices;
-    private Boolean handWashAvailable;
+    private Boolean handwashAvailable;
     private Boolean isWasteDisposalAvailable;
     private String[] wasteDisposalType;
     private String otherWasteDisposalType;
     private Boolean isWaterSafe;
     private String waterSource;
     private Boolean storageStandards;
-    private Boolean dishRackAvailable;
+    private Boolean dishrackAvailable;
     private Boolean insectsFound;
     private Boolean rodentsFound;
     private Boolean livestockShelterFound;
@@ -36,6 +36,7 @@ public class HouseHoldLineListMobileDto {
     private String husbandRelation;
     private String uuid;
     private String vipType;
+    private Boolean toiletMeetingStandards;
 
     @Setter
     @Getter

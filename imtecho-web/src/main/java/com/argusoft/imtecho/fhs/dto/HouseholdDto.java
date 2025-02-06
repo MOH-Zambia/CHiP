@@ -36,6 +36,8 @@ public class HouseholdDto {
 
     private Boolean waterSafetyMeetsStandard;
 
+    private Boolean toiletMeetingStandards;
+
     private Boolean dishrackAvailable;
 
     private Boolean complaintOfInsects;

@@ -2347,6 +2347,21 @@ public class FormMetaDataUtil {
             } else {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.SEPARATE_LIVESTOCK_SHELTER, "2");
             }
+            if (Boolean.TRUE.equals(familyDataBean.getHandwashAvailable())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HANDWASH_AVAILABLE_FLAG, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HANDWASH_AVAILABLE_FLAG, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getStorageMeetsStandard())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.STORAGE_MEETS_STANDARD, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.STORAGE_MEETS_STANDARD, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getToiletMeetingStandards())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOILET_MEETS_STANDARD, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOILET_MEETS_STANDARD, "2");
+            }
         }
         editor.apply();
     }

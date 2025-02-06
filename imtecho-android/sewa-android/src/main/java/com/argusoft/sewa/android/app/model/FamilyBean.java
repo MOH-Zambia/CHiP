@@ -162,6 +162,9 @@ public class FamilyBean extends BaseEntity implements Serializable {
     private Boolean dishrackAvailable;
 
     @DatabaseField
+    private Boolean toiletMeetingStandards;
+
+    @DatabaseField
     private Boolean complaintOfInsects;
 
     @DatabaseField
@@ -169,6 +172,12 @@ public class FamilyBean extends BaseEntity implements Serializable {
 
     @DatabaseField
     private Boolean separateLivestockShelter;
+
+    @DatabaseField
+    private Boolean handwashAvailable;
+
+    @DatabaseField
+    private Boolean storageMeetsStandard;
 
     @DatabaseField
     private String fuelForCooking;
@@ -289,6 +298,9 @@ public class FamilyBean extends BaseEntity implements Serializable {
         this.eligibleWomenCount = familyDataBean.getEligibleWomenCount();
         this.eligibleChildrenCount = familyDataBean.getEligibleChildrenCount();
         this.isHoldIdPoor = familyDataBean.getIsHoldIdPoor();
+        this.handwashAvailable = familyDataBean.getHandwashAvailable();
+        this.storageMeetsStandard = familyDataBean.getStorageMeetsStandard();
+        this.toiletMeetingStandards = familyDataBean.getToiletMeetingStandards();
     }
 
     public Integer getId() {
@@ -828,6 +840,30 @@ public class FamilyBean extends BaseEntity implements Serializable {
         this.separateLivestockShelter = separateLivestockShelter;
     }
 
+    public Boolean getHandwashAvailable() {
+        return handwashAvailable;
+    }
+
+    public void setHandwashAvailable(Boolean handwashAvailable) {
+        this.handwashAvailable = handwashAvailable;
+    }
+
+    public Boolean getStorageMeetsStandard() {
+        return storageMeetsStandard;
+    }
+
+    public void setStorageMeetsStandard(Boolean storageMeetsStandard) {
+        this.storageMeetsStandard = storageMeetsStandard;
+    }
+
+    public Boolean getToiletMeetingStandards() {
+        return toiletMeetingStandards;
+    }
+
+    public void setToiletMeetingStandards(Boolean toiletMeetingStandards) {
+        this.toiletMeetingStandards = toiletMeetingStandards;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -898,6 +934,9 @@ public class FamilyBean extends BaseEntity implements Serializable {
                 ", eligibleWomenCount=" + eligibleWomenCount +
                 ", eligibleChildrenCount=" + eligibleChildrenCount +
                 ", isHoldIdPoor=" + isHoldIdPoor +
+                ", handwashAvailable=" + handwashAvailable +
+                ", storageMeetsStandard=" + storageMeetsStandard +
+                ", toiletMeetingStandards=" + toiletMeetingStandards +
                 '}';
     }
 

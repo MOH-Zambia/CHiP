@@ -219,6 +219,9 @@ public class FamilyEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "is_iec_given")
     private Boolean isIecGiven;
 
+    @Column(name = "is_toilet_meeting_standards")
+    private Boolean toiletMeetingStandards;
+
 //    @Column(name = "vip_type")
 //    private String vipType;
 
@@ -349,6 +352,7 @@ public class FamilyEntity extends EntityAuditInfo implements Serializable {
                 ", wasteDisposalMethod='" + wasteDisposalMethod + '\'' +
                 ", wasteDisposalDetails=" + wasteDisposalDetails +
                 ", isIecGiven=" + isIecGiven +
+                ", ToiletMeetingStandards=" + toiletMeetingStandards +
                 '}';
     }
 }

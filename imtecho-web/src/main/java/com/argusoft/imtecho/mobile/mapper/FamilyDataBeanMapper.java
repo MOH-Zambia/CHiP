@@ -77,6 +77,9 @@ public class FamilyDataBeanMapper {
         familyDataBean.setComplaintOfInsects(family.getComplaintOfInsects());
         familyDataBean.setSeparateLivestockShelter(family.getSeparateLivestockShelter());
         familyDataBean.setDishrackAvailable(family.getDishrackAvailable());
+        familyDataBean.setHandwashAvailable(family.getHandwashAvailable());
+        familyDataBean.setStorageMeetsStandard(family.getStorageMeetsStandard());
+        familyDataBean.setToiletMeetingStandards(family.getToiletMeetingStandards());
 
         Gson gson = new Gson();
         FamilyAdditionalInfo additionalInfo;
