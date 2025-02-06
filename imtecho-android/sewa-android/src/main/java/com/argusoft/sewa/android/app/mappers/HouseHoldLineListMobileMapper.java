@@ -36,7 +36,7 @@ public class HouseHoldLineListMobileMapper {
         familyBean.setDrinkingWaterSource(houseHoldLineListMobileDto.getWaterSource() != null ? houseHoldLineListMobileDto.getWaterSource() : familyBean.getDrinkingWaterSource());
         familyBean.setOutdoorCookingPractices(houseHoldLineListMobileDto.getCookingPractices() != null ? houseHoldLineListMobileDto.getCookingPractices() : familyBean.getOutdoorCookingPractices());
         familyBean.setWasteDisposalAvailable(houseHoldLineListMobileDto.getWasteDisposalAvailable() != null ? houseHoldLineListMobileDto.getWasteDisposalAvailable() : familyBean.getWasteDisposalAvailable());
-        familyBean.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? Arrays.toString(houseHoldLineListMobileDto.getWasteDisposalType()) : familyBean.getWasteDisposalMethod());
+        familyBean.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? convertSetToCommaSeparatedString(houseHoldLineListMobileDto.getWasteDisposalType(), ",") : familyBean.getWasteDisposalMethod());
         familyBean.setWaterSafetyMeetsStandard(houseHoldLineListMobileDto.getWaterSafe() != null ? houseHoldLineListMobileDto.getWaterSafe() : familyBean.getWaterSafetyMeetsStandard());
         familyBean.setDishrackAvailable(houseHoldLineListMobileDto.getDishrackAvailable() != null ? houseHoldLineListMobileDto.getDishrackAvailable() : familyBean.getDishrackAvailable());
         familyBean.setComplaintOfInsects(houseHoldLineListMobileDto.getInsectsFound() != null ? houseHoldLineListMobileDto.getInsectsFound() : familyBean.getComplaintOfInsects());
