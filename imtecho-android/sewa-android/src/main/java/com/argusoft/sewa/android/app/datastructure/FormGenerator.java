@@ -517,10 +517,9 @@ public class FormGenerator {
         } else if (queType.equalsIgnoreCase(GlobalTypes.LABEL_FORMULA)) {
             String relatedPropertyName = null;
             String defaultValue = GlobalTypes.NOT_AVAILABLE;
-            if (queFormBean.getRelatedpropertyname() != null && queFormBean.getRelatedpropertyname().trim().length() > 0) {
+            if (queFormBean.getRelatedpropertyname() != null && !queFormBean.getRelatedpropertyname().trim().isEmpty()) {
                 relatedPropertyName = queFormBean.getRelatedpropertyname().trim();
-                if (!relatedPropertyName.equalsIgnoreCase(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER)
-                && !relatedPropertyName.equalsIgnoreCase(RelatedPropertyNameConstants.USER_ASSIGNED_HEALTH_INFRA_NAME)) {
+                if (!relatedPropertyName.equalsIgnoreCase(RelatedPropertyNameConstants.USER_ASSIGNED_HEALTH_INFRA_NAME)) {
                     if (queFormBean.getLoopCounter() > 0 && !queFormBean.isIgnoreLoop()) {
                         relatedPropertyName += queFormBean.getLoopCounter();
                     }

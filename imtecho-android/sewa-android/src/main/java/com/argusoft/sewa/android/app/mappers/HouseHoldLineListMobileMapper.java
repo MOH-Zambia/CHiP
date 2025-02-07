@@ -36,12 +36,15 @@ public class HouseHoldLineListMobileMapper {
         familyBean.setDrinkingWaterSource(houseHoldLineListMobileDto.getWaterSource() != null ? houseHoldLineListMobileDto.getWaterSource() : familyBean.getDrinkingWaterSource());
         familyBean.setOutdoorCookingPractices(houseHoldLineListMobileDto.getCookingPractices() != null ? houseHoldLineListMobileDto.getCookingPractices() : familyBean.getOutdoorCookingPractices());
         familyBean.setWasteDisposalAvailable(houseHoldLineListMobileDto.getWasteDisposalAvailable() != null ? houseHoldLineListMobileDto.getWasteDisposalAvailable() : familyBean.getWasteDisposalAvailable());
-        familyBean.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? Arrays.toString(houseHoldLineListMobileDto.getWasteDisposalType()) : familyBean.getWasteDisposalMethod());
+        familyBean.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? convertSetToCommaSeparatedString(houseHoldLineListMobileDto.getWasteDisposalType(), ",") : familyBean.getWasteDisposalMethod());
         familyBean.setWaterSafetyMeetsStandard(houseHoldLineListMobileDto.getWaterSafe() != null ? houseHoldLineListMobileDto.getWaterSafe() : familyBean.getWaterSafetyMeetsStandard());
         familyBean.setDishrackAvailable(houseHoldLineListMobileDto.getDishrackAvailable() != null ? houseHoldLineListMobileDto.getDishrackAvailable() : familyBean.getDishrackAvailable());
         familyBean.setComplaintOfInsects(houseHoldLineListMobileDto.getInsectsFound() != null ? houseHoldLineListMobileDto.getInsectsFound() : familyBean.getComplaintOfInsects());
         familyBean.setComplaintOfRodents(houseHoldLineListMobileDto.getRodentsFound() != null ? houseHoldLineListMobileDto.getRodentsFound() : familyBean.getComplaintOfRodents());
         familyBean.setSeparateLivestockShelter(houseHoldLineListMobileDto.getLivestockShelterFound() != null ? houseHoldLineListMobileDto.getLivestockShelterFound() : familyBean.getSeparateLivestockShelter());
+        familyBean.setHandwashAvailable(houseHoldLineListMobileDto.getHandwashAvailable() != null ? houseHoldLineListMobileDto.getHandwashAvailable() : familyBean.getHandwashAvailable());
+        familyBean.setStorageMeetsStandard(houseHoldLineListMobileDto.getStorageStandards() != null ? houseHoldLineListMobileDto.getStorageStandards() : familyBean.getStorageMeetsStandard());
+        familyBean.setToiletMeetingStandards(houseHoldLineListMobileDto.getToiletMeetingStandards() != null ? houseHoldLineListMobileDto.getToiletMeetingStandards() : familyBean.getToiletMeetingStandards());
         familyBean.setLatitude(houseHoldLineListMobileDto.getCurrentLatitude() != null ? houseHoldLineListMobileDto.getCurrentLatitude() : familyBean.getLatitude());
         familyBean.setLongitude(houseHoldLineListMobileDto.getCurrentLongitude() != null ? houseHoldLineListMobileDto.getCurrentLongitude() : familyBean.getLongitude());
         if (!isFamilyUpdate) {
@@ -59,7 +62,7 @@ public class HouseHoldLineListMobileMapper {
         if (member == null) {
             member = new HouseHoldLineListMobileDto.MemberDetails();
         }
-        if(member.getMemberStatus() != null && member.getMemberStatus().equalsIgnoreCase("ARCHIVE")) {
+        if (member.getMemberStatus() != null && member.getMemberStatus().equalsIgnoreCase("ARCHIVE")) {
             memberBean.setState(FhsConstants.FHS_MEMBER_STATE_ARCHIVED);
         }
         memberBean.setFamilyHeadFlag(member.getHof() != null ? member.getHof() : memberBean.getFamilyHeadFlag());
@@ -81,15 +84,13 @@ public class HouseHoldLineListMobileMapper {
         if ((member.getGender() != null && "F".equalsIgnoreCase(checkGenderFromNumber(member.getGender()))) ||
                 memberBean.getGender() != null && "F".equalsIgnoreCase(checkGenderFromNumber(memberBean.getGender()))) {
             memberBean.setLmpDate(member.getLmpDate() != null ? new Date(member.getLmpDate()) : memberBean.getLmpDate());
-            if (member.getLmpDate() != null) {
+            if (member.getLmpDate() != null && Boolean.TRUE.equals(member.getWomanPregnant())) {
                 Calendar calendar = Calendar.getInstance();
                 Date lastLmpDate = new Date(member.getLmpDate());
                 calendar.setTime(lastLmpDate);
                 calendar.add(Calendar.DAY_OF_YEAR, 281);
                 Date edd = calendar.getTime();
-                if (memberBean.getEdd() == null) {
-                    memberBean.setEdd(edd);
-                }
+                memberBean.setEdd(edd);
             }
         } else {
             memberBean.setLmpDate(null);

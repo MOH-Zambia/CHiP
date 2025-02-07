@@ -392,13 +392,11 @@ public class ImmunisationServiceImpl implements ImmunisationService {
         }
         if (ageInMonths >= 9) {
             vaccinationSet.add(RchConstants.Z_MEASLES_RUBELLA_1);
+            vaccinationSet.add(RchConstants.Z_MEASLES_RUBELLA_2);
             if (!immunisationDateMap.isEmpty()
                     && (!immunisationDateMap.containsKey(RchConstants.Z_OPV_0))) {
                 vaccinationSet.add(RchConstants.Z_OPV_4);
             }
-        }
-        if (ageInMonths >= 18) {
-            vaccinationSet.add(RchConstants.Z_MEASLES_RUBELLA_2);
         }
 
         //Removing already given vaccines
@@ -1050,13 +1048,13 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_ROTA_VACCINE_1:
             case RchConstants.Z_PCV_1:
             case RchConstants.Z_DPT_HEB_HIB_1:
-                dob.add(Calendar.DATE, 42);
+                dob.add(Calendar.DATE, 35);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
 
             case RchConstants.Z_OPV_2:
-                dob.add(Calendar.DATE, 70);
+                dob.add(Calendar.DATE, 63);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_1);
                 if (tmpDate != null) {
@@ -1070,7 +1068,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_OPV_3:
-                dob.add(Calendar.DATE, 98);
+                dob.add(Calendar.DATE, 91);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.OPV_1);
                 if (tmpDate != null) {
@@ -1092,7 +1090,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_ROTA_VACCINE_2:
-                dob.add(Calendar.DATE, 70);
+                dob.add(Calendar.DATE, 63);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_ROTA_VACCINE_1);
                 if (tmpDate != null) {
@@ -1106,7 +1104,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_PCV_2:
-                dob.add(Calendar.DATE, 70);
+                dob.add(Calendar.DATE, 63);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
                 if (tmpDate != null) {
@@ -1120,7 +1118,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_PCV_3:
-                dob.add(Calendar.DATE, 98);
+                dob.add(Calendar.DATE, 91);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
                 if (tmpDate != null) {
@@ -1142,7 +1140,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_DPT_HEB_HIB_2:
-                dob.add(Calendar.DATE, 70);
+                dob.add(Calendar.DATE, 63);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
                 if (tmpDate != null) {
@@ -1156,7 +1154,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_DPT_HEB_HIB_3:
-                dob.add(Calendar.DATE, 98);
+                dob.add(Calendar.DATE, 91);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
                 if (tmpDate != null) {
@@ -1199,16 +1197,6 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
             default:
         }
-
-        // Adjusting dates for avoiding overly strict date validation
-        Calendar adjustment = Calendar.getInstance();
-
-        adjustment.setTime(lbw);
-        adjustment.add(Calendar.DATE, -7);
-        lbw = adjustment.getTime();
-        adjustment.setTime(ubw);
-        adjustment.add(Calendar.DATE, 7);
-        ubw = adjustment.getTime();
 
         if (!isForNextDueDate) {
             isMissed = !UtilBean.clearTimeFromDate(lbw).equals(currentDate) && !UtilBean.clearTimeFromDate(lbw).before(currentDate);
@@ -1381,11 +1369,11 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 if (tmpDate == null) {
                     return UtilBean.getMyLabel(LabelConstants.VACCINATION_IS_NOT_VALID);
                 }
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 55) {
-                    return "Please enter date after 8 weeks from PCV 1 given date";
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 25) {
+                    return "Please enter date after 4 weeks from PCV 1 given date";
                 }
                 from.setTime(tmpDate);
-                from.add(Calendar.DATE, 56);
+                from.add(Calendar.DATE, 70);
                 to.add(Calendar.MONTH, 24);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
@@ -1779,10 +1767,10 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_OPV_1:
-                from.add(Calendar.DATE, 42);
+                from.add(Calendar.DATE, 35);
                 to.add(Calendar.MONTH, 58);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "OPV 1 vaccine should be given after 6 weeks from date of birth";
+                    return "OPV 1 vaccine should be given after 5 weeks from date of birth";
                 }
                 break;
 
@@ -1800,7 +1788,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "OPV 2 vaccine should be given 28 days after OPV 1 vaccine";
                 }
 
-                from.add(Calendar.DATE, 70);
+                from.add(Calendar.DATE, 63);
                 to.add(Calendar.MONTH, 59);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
@@ -1821,7 +1809,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "OPV 3 vaccine should be given 28 days after OPV 2 vaccine";
                 }
 
-                from.add(Calendar.DATE, 98);
+                from.add(Calendar.DATE, 91);
                 to.add(Calendar.MONTH, 60);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
@@ -1845,10 +1833,10 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_ROTA_VACCINE_1:
             case RchConstants.Z_PCV_1:
             case RchConstants.Z_DPT_HEB_HIB_1:
-                from.add(Calendar.DATE, 42);
+                from.add(Calendar.DATE, 35);
                 to.add(Calendar.MONTH, 12);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return FullFormConstants.getFullFormOfVaccines(currentVaccine) + " should be given 6 weeks after date of birth";
+                    return FullFormConstants.getFullFormOfVaccines(currentVaccine) + " should be given 5 weeks after date of birth";
                 }
                 break;
 
@@ -1866,7 +1854,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "ROTA vaccine 2 should be given 28 days after ROTA vaccine 1";
                 }
 
-                from.add(Calendar.DATE, 70);
+                from.add(Calendar.DATE, 63);
                 to.add(Calendar.MONTH, 23);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
@@ -1887,7 +1875,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "PCV 2 vaccine should be given 28 days after PCV 1";
                 }
 
-                from.add(Calendar.DATE, 98);
+                from.add(Calendar.DATE, 63);
                 to.add(Calendar.MONTH, 12);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
@@ -1908,7 +1896,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "DPT-HepB-Hib 2 vaccine should be given 28 days after DPT-HepB-Hib 1";
                 }
 
-                from.add(Calendar.DATE, 98);
+                from.add(Calendar.DATE, 63);
                 to.add(Calendar.MONTH, 12);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
@@ -1929,7 +1917,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "PCV 3 vaccine should be given 28 days after PCV 2";
                 }
 
-                from.add(Calendar.DATE, 98);
+                from.add(Calendar.DATE, 91);
                 to.add(Calendar.MONTH, 12);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
@@ -1950,7 +1938,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "DPT-HepB-Hib 3 vaccine should be given 28 days after DPT-HepB-Hib 2";
                 }
 
-                from.add(Calendar.DATE, 98);
+                from.add(Calendar.DATE, 91);
                 to.add(Calendar.MONTH, 12);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;

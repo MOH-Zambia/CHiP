@@ -109,6 +109,5 @@ public interface SewaService {
 
     void updateMemberByUniqueHealthId(HouseHoldLineListMobileDto.MemberDetails memberDetails, MemberBean memberBean, FamilyBean familyBean);
     void updateFamilyByUUID(HouseHoldLineListMobileDto familyDetails, FamilyBean familyBean, boolean isFamilyUpdate);
-
     void updateStockInventoryByMedicineId(Integer id, int amount);
 }

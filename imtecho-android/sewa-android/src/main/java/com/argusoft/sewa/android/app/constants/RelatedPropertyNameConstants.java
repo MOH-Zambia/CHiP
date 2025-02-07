@@ -23,6 +23,7 @@ public class RelatedPropertyNameConstants {
     public static final String MEMBER_UUID = "memberUuid";
     public static final String IS_IT_INDEX_CASE = "isItIndexCase";
     public static final String MEMBER_UUID_WPD = "memberUuidForWpd";
+    public static final String CHILD_UUID = "childUuid";
     public static final String MEMBERS_FAMILY_UUID = "familyUuid";
     public static final String ABHA_CONSENT_CHECKBOX_MODEL = "abhaConsentCheckboxModel";
     public static final String AADHAAR_MATCH_WITH_BENEFICIARY_CONSENT = "aadhaarMatchWithBeneficiaryConsent";
@@ -45,6 +46,9 @@ public class RelatedPropertyNameConstants {
     public static final String INSECTS_FOUND = "complaintOfInsects";
     public static final String RODENTS_FOUND = "complaintOfRodents";
     public static final String SEPARATE_LIVESTOCK_SHELTER = "separateLivestockShelter";
+    public static final String HANDWASH_AVAILABLE_FLAG = "handwashAvailableFlag";
+    public static final String STORAGE_MEETS_STANDARD = "storageMeetsStandard";
+    public static final String TOILET_MEETS_STANDARD = "toiletMeetsStandard";
     public static final String VULNERABLE_FLAG = "vulnerableFlag";
     public static final String SEASONAL_MIGRANT_FAMILY = "seasonalMigrantFlag";
     public static final String IS_PROVIDING_CONSENT = "isProvidingConsent";

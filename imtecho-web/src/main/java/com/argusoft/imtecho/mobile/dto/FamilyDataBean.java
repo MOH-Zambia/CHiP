@@ -132,11 +132,17 @@ public class FamilyDataBean {
 
     private Boolean dishrackAvailable;
 
+    private Boolean handwashAvailable;
+
+    private Boolean storageMeetsStandard;
+
     private Boolean complaintOfInsects;
 
     private Boolean complaintOfRodents;
 
     private Boolean separateLivestockShelter;
+
+    private Boolean toiletMeetingStandards;
 
 
     public Integer getId() {
@@ -649,5 +655,29 @@ public class FamilyDataBean {
 
     public void setSeparateLivestockShelter(Boolean separateLivestockShelter) {
         this.separateLivestockShelter = separateLivestockShelter;
+    }
+
+    public Boolean getHandwashAvailable() {
+        return handwashAvailable;
+    }
+
+    public void setHandwashAvailable(Boolean handwashAvailable) {
+        this.handwashAvailable = handwashAvailable;
+    }
+
+    public Boolean getStorageMeetsStandard() {
+        return storageMeetsStandard;
+    }
+
+    public void setStorageMeetsStandard(Boolean storageMeetsStandard) {
+        this.storageMeetsStandard = storageMeetsStandard;
+    }
+
+    public Boolean getToiletMeetingStandards() {
+        return toiletMeetingStandards;
+    }
+
+    public void setToiletMeetingStandards(Boolean toiletMeetingStandards) {
+        this.toiletMeetingStandards = toiletMeetingStandards;
     }
 }

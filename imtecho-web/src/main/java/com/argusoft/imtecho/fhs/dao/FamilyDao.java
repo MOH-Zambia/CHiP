@@ -227,5 +227,5 @@ public interface FamilyDao extends GenericDao<FamilyEntity, Integer> {
 
     LocationMasterDto getLgdCodeByFamilyIdAndParentType(String familyId,String parentLocationType);
 
-
+    List<FamilyEntity> getFamilyHavingWrongToiletTypes(int limit);
 }
