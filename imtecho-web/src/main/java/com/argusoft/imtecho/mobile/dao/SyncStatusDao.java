@@ -24,4 +24,6 @@ public interface SyncStatusDao extends GenericDao<SyncStatus, String> {
     List<SyncStatus> retrieveSyncStatusForUpdatingBreastFeedingForWPD();
     
     void updateSyncedWpdMotherMaster(String syncStatusId);
+
+    String getTypeOfToiletFromSyncRecord(Integer relativeId, Integer userId, String formName);
 }
