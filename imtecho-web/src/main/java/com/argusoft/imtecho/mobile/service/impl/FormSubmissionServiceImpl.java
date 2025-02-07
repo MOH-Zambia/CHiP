@@ -169,7 +169,7 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
         }
 
         if (user != null) {
-            System.out.println("-----------------" + Arrays.toString(records));
+            //System.out.println("-----------------" + Arrays.toString(records));
             return this.saveRecordEntryFromMobileToDB(records, user);
         }
         return new RecordStatusBean[0];
