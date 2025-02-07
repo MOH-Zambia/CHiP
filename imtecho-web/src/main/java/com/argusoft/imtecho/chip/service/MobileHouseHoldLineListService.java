@@ -12,5 +12,6 @@ public interface MobileHouseHoldLineListService {
     Map<String, String> storeFamilyUpdateFormZambia(ParsedRecordBean parsedRecordBean, UserMaster user);
     MemberEntity retrieveMemberByUuid(String uuid);
     void updateMember(MemberEntity member, String fromState, String toState);
+    public void patchFixForReplacingToiletType();
 }
 

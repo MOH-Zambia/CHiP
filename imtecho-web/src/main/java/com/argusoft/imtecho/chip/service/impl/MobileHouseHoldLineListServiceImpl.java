@@ -12,6 +12,7 @@ import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
 import com.argusoft.imtecho.fhs.service.FamilyHealthSurveyService;
+import com.argusoft.imtecho.mobile.dao.SyncStatusDao;
 import com.argusoft.imtecho.mobile.dto.HouseHoldLineListMobileDto;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.mobile.mapper.HouseHoldLineListMobileMapper;
@@ -31,6 +32,8 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
     private FamilyDao familyDao;
     @Autowired
     private MemberDao memberDao;
+    @Autowired
+    private SyncStatusDao syncStatusDao;
     @Autowired
     private EventHandler eventHandler;
     @Autowired
@@ -544,6 +547,21 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         if (!sb.isEmpty()) {
             returnMap.put("message", sb.toString());
         }
+    }
+
+    public void patchFixForReplacingToiletType() {
+        long startTime = System.nanoTime(); // Start time
+        int limit = 1000;
+        List<FamilyEntity> familyEntities = familyDao.getFamilyHavingWrongToiletTypes(limit);
+        List<String> updatedRecord = new ArrayList<>();
+        for (FamilyEntity familyEntity: familyEntities) {
+            String toiletType = syncStatusDao.getTypeOfToiletFromSyncRecord(familyEntity.getId(), familyEntity.getCreatedBy(), "HOUSE_HOLD_LINE_LIST_NEW");
+            familyEntity.setTypeOfToilet(toiletType);
+            familyDao.update(familyEntity);
+            updatedRecord.add("");
+        }
+        long durationInMs = (System.nanoTime() - startTime) / 1_000_000; // Convert to milliseconds
+        System.out.println("Updated " + updatedRecord.size() + " records in " + durationInMs + " ms at " + new Date());
     }
 }
 
