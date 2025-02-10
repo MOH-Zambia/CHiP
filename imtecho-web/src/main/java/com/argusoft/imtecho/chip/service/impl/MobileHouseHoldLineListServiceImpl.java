@@ -263,8 +263,6 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 }
             }
 
-            returnMap.put("createdInstanceId", memberEntity.getId().toString());
-
             if (memberDetails.getUniqueHealthId() == null) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(memberEntity.getUniqueHealthId());
