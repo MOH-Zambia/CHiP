@@ -833,12 +833,10 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
             loggerBean.setNoOfAttempt(0);
             sewaService.createLoggerBean(loggerBean);
         } catch (NumberFormatException e) {
-            SewaUtil.generateToast(context, e.getMessage());
+            SewaUtil.generateToast(context, "Text was not extracted properly. Please try again");
             Log.e(Activity.class.getName(), e.getMessage());
             setBodyDetail(1);
         }
-
-
     }
 
     private JsonObject saveDataForFields() {

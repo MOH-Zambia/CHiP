@@ -457,7 +457,11 @@ public class HivPositiveServiceImpl implements HivPositiveService {
                 memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
             }
         }
-
+        if (keyAndAnswerMap.containsKey("8672")) {
+            if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
+                hivKnownPositive.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+            }
+        }
         hivKnownDao.create(hivKnownPositive);
         memberDao.update(memberEntity);
 
@@ -584,6 +588,13 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         } else {
             memberAdditionalInfo = new MemberAdditionalInfo();
         }
+
+        if (keyAndAnswerMap.containsKey("8672")) {
+            if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
+                emtctEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+            }
+        }
+
         if (keyAndAnswerMap.containsKey("7513")) {
             if (keyAndAnswerMap.get("7513") != null
                     && !keyAndAnswerMap.get("7513").equalsIgnoreCase("null")
@@ -670,6 +681,36 @@ public class HivPositiveServiceImpl implements HivPositiveService {
                     break;
                 case "7514":
                     emtctEntity.setMemberStatus(answer);
+                    break;
+                case "11":
+                    emtctEntity.setReferralPlace(Integer.valueOf(answer));
+                    break;
+                case "21":
+                    switch (answer) {
+                        case "1":
+                            emtctEntity.setReferralDone(RchConstants.REFFERAL_DONE_YES);
+                            break;
+                        case "2":
+                            emtctEntity.setReferralDone(RchConstants.REFFERAL_DONE_NO);
+                            break;
+                        case "3":
+                            emtctEntity.setReferralDone(RchConstants.REFFERAL_DONE_NOT_REQUIRED);
+                            break;
+                        default:
+                    }
+                    break;
+                case "26":
+                    if (!answer.trim().isEmpty()) {
+                        emtctEntity.setReferralReason(answer);
+                    }
+                    break;
+                case "3333":
+                    if (!answer.trim().isEmpty()) {
+                        emtctEntity.setReferralFor(answer);
+                    }
+                    break;
+                case "8989":
+                    emtctEntity.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                     break;
                 default:
             }
@@ -821,6 +862,36 @@ public class HivPositiveServiceImpl implements HivPositiveService {
                 break;
             case "7514":
                 hivKnownPositive.setMemberStatus(answer);
+                break;
+            case "1111":
+                hivKnownPositive.setReferralPlace(Integer.valueOf(answer));
+                break;
+            case "21":
+                switch (answer) {
+                    case "1":
+                        hivKnownPositive.setReferralDone(RchConstants.REFFERAL_DONE_YES);
+                        break;
+                    case "2":
+                        hivKnownPositive.setReferralDone(RchConstants.REFFERAL_DONE_NO);
+                        break;
+                    case "3":
+                        hivKnownPositive.setReferralDone(RchConstants.REFFERAL_DONE_NOT_REQUIRED);
+                        break;
+                    default:
+                }
+                break;
+            case "26":
+                if (!answer.trim().isEmpty()) {
+                    hivKnownPositive.setReferralReason(answer);
+                }
+                break;
+            case "3333":
+                if (!answer.trim().isEmpty()) {
+                    hivKnownPositive.setReferralFor(answer);
+                }
+                break;
+            case "8989":
+                hivKnownPositive.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             default:
         }

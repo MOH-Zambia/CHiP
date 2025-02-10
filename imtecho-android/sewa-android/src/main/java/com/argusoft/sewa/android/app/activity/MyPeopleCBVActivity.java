@@ -464,7 +464,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                                     setNearByMembersSelectionScreen(memberSelected);
                                 } else {
                                     showAlertAndNavigate(FormConstants.MALARIA_NON_INDEX);
-//                                    startDynamicFormActivity(FormConstants.MALARIA_NON_INDEX, memberSelected, null);
                                 }
                                 break;
                             case SERVICE_NEARBY_MEMBER_SCREENING:
@@ -491,7 +490,12 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 case MALARIA_INDEX_SCREEN:
                     if (selectedPeopleIndex != -1) {
                         memberSelected = memberList.get(selectedPeopleIndex);
-                        showAlertAndNavigate(FormConstants.MALARIA_INDEX);
+                        if (memberSelected.getIndexCase() != null && memberSelected.getIndexCase()) {
+                            showAlertAndNavigate(FormConstants.MALARIA_INDEX);
+                        } else {
+                            showAlertAndNavigate(FormConstants.MALARIA_NON_INDEX);
+                        }
+
 //                        startDynamicFormActivity(FormConstants.MALARIA_INDEX, memberSelected, null);
                     } else {
                         SewaUtil.generateToast(this, UtilBean.getMyLabel(LabelConstants.PLEASE_SELECT_A_MEMBER));

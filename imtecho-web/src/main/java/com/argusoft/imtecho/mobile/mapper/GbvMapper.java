@@ -18,20 +18,23 @@ public class GbvMapper {
         gbvVisit.setLongitude(gbvdto.getCurrentLongitude());
         gbvVisit.setCaseDate(new Date(gbvdto.getCaseDate()));
         gbvVisit.setMemberStatus(gbvdto.getMemberStatus());
-        gbvVisit.setSevereCase(gbvdto.getSevereCase());
-        gbvVisit.setClientResponse(gbvdto.getSevereCase());
-        gbvVisit.setThreatenedWithViolencePast12Months(gbvdto.getThreatenedWithViolencePast12Months());
-        gbvVisit.setPhysicallyHurtPast12Months(gbvdto.getPhysicallyHurtPast12Months());
-        gbvVisit.setForcedSexPast12Months(gbvdto.getForcedSexPast12Months());
-        gbvVisit.setForcedSexForEssentialsPast12Months(gbvdto.getForcedSexForEssentialsPast12Months());
-        gbvVisit.setPhysicallyForcedPregnancyPast12Months(gbvdto.getPhysicallyForcedPregnancyPast12Months());
-        gbvVisit.setPregnantDueToForce(gbvdto.getPregnantDueToForce());
-        gbvVisit.setForcedPregnancyLossPast12Months(gbvdto.getForcedPregnancyLossPast12Months());
-        gbvVisit.setCoercedOrForcedMarriagePast12Months(gbvdto.getCoercedOrForcedMarriagePast12Months());
+        gbvVisit.setSevereCase(gbvdto.isSevereCase());
+        gbvVisit.setClientResponse(gbvdto.isClientResponse());
+        gbvVisit.setThreatenedWithViolencePast12Months(gbvdto.isThreatenedWithViolencePast12Months());
+        gbvVisit.setPhysicallyHurtPast12Months(gbvdto.isPhysicallyHurtPast12Months());
+        gbvVisit.setForcedSexPast12Months(gbvdto.isForcedSexPast12Months());
+        gbvVisit.setForcedSexForEssentialsPast12Months(gbvdto.isForcedSexForEssentialsPast12Months());
+        gbvVisit.setPhysicallyForcedPregnancyPast12Months(gbvdto.isPhysicallyForcedPregnancyPast12Months());
+        gbvVisit.setPregnantDueToForce(gbvdto.isPregnantDueToForce());
+        gbvVisit.setForcedPregnancyLossPast12Months(gbvdto.isForcedPregnancyLossPast12Months());
+        gbvVisit.setCoercedOrForcedMarriagePast12Months(gbvdto.isCoercedOrForcedMarriagePast12Months());
         gbvVisit.setPhotoUniqueId(gbvdto.getPhotoUniqueId());
         gbvVisit.setGbvType(gbvdto.getTypeOfGbv());
         gbvVisit.setDifficultyType(gbvdto.getTypeOfDifficulty());
-
-
+        gbvVisit.setReferralDone(gbvdto.getReferralRequired());
+        gbvVisit.setReferralReason(gbvdto.getOtherReferralReason());
+        gbvVisit.setReferralFor(gbvdto.getReferralReason());
+        gbvVisit.setIsIecGiven(gbvdto.isIecGiven());
+        gbvVisit.setReferralPlace(gbvdto.getReferralPlace());
     }
 }
