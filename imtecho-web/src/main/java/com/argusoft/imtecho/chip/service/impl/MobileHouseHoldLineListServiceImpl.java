@@ -209,8 +209,16 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 memberEntity.setUniqueHealthId(familyHealthSurveyService.generateMemberUniqueHealthId());
                 memberEntity.setState(FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_NEW);
             }
-            if (memberEntity.getMotherId() != null && memberDetails.getMotherId() != null && !memberDetails.getMotherId().equalsIgnoreCase("NOT_AVAILABLE")) {
+            if (memberEntity.getMotherId() != null && memberDetails.getMotherId() != null
+                    && !memberDetails.getMotherId().equalsIgnoreCase("NOT_AVAILABLE")
+                    && !memberDetails.getMotherId().equalsIgnoreCase("null")) {
                 memberEntity.setMotherId(Integer.valueOf(memberDetails.getMotherId()));
+            }
+            if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("ARCHIVE"))) {
+                memberEntity.setModifiedBy(user.getId());
+                memberEntity.setModifiedOn(new Date());
+                memberEntity.setFamilyHeadFlag(Boolean.FALSE);
+                this.updateMember(memberEntity, memberEntity.getState(), FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_ARCHIVED);
             }
             if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("DEATH"))) {
                 if (memberDetails.getNewHofId() != null) {
@@ -320,7 +328,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 sb2.append("\n");
                 returnMap.put("message", sb2.toString());
             }
-
+            returnMap.put("createdInstanceId", memberEntity.getId().toString());
             memberDao.flush();
             if (Boolean.TRUE.equals(memberEntity.isMarkedPregnant())) {
                 eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.PREGNANCY_MARK, memberEntity.getId()));
