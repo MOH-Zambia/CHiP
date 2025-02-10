@@ -1,9 +1,7 @@
 <div class="container-fluid">
   <div class="row">
-      <!-- Add this block at the top -->
- 
-          
-      <div class="row mb-3" style="margin-left:auto ;">
+
+    <div class="row mb-3" style="margin-left:auto ;">
         <div class="col-12">
           
             <div class="form-group d-flex align-items-center">
@@ -15,18 +13,18 @@
                     datepicker
                     style="width: auto;"
                     ng-model="ctrl.month"
-                    date-options="{minMode: 'month'}"
+                    date-options="{minMode: 'month', maxDate: ctrl.maxMonth}"
                     datepicker-mode="'month'"
                     date-month-format="true"
                     ng-required="true"
                     ng-change="ctrl.onMonthChange(ctrl.month)"
                 />
                 <button type="button" class="btn btn-primary" ng-click="ctrl.syncAll()">Sync All</button>
+                <button type="button" class="btn btn-primary" ng-click="ctrl.syncMultiple()">Sync</button>
             </div>
         </div>
     </div>
     
-      <!-- End of added block -->
 
       <div class="col-12">
           <div class="no-data-placeholder" ng-if="!ctrl.facilities || ctrl.facilities.length == 0">
@@ -45,10 +43,10 @@
                           <th id="Actions" style="width: 7.5%;">Action</th>
                           <th style="width: 2%;">
                             <label style="display: flex; align-items: center; justify-content: center;">
-                                <input type="checkbox" 
+                                <!-- <input type="checkbox" 
                                        style="width: 16px; height: 16px; cursor: pointer; border: 1px solid #6c6a6a;"
                                        icheck ng-model="ctrl.selectAll" 
-                                       ng-change="ctrl.toggleAll()">
+                                       ng-change="ctrl.toggleAll()"> -->
                             </label>
                         </th>
                       </tr>

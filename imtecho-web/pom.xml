@@ -521,11 +521,10 @@
                 <server.implementation.type>chip</server.implementation.type>
 
                 <jdbc.url>localhost</jdbc.url>
-                <jdbc.database>chip_prod_backup_test</jdbc.database>
+                <jdbc.database>chip_local</jdbc.database>
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>argusadmin</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>50</jdbc.maxActiveConnection>
                 <jdbc.maxPoolSize>100</jdbc.maxPoolSize>
 
                 <hibernate.showsql>true</hibernate.showsql>
@@ -574,7 +573,6 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>300</jdbc.maxActiveConnection>
                 <jdbc.maxPoolSize>3000</jdbc.maxPoolSize>
 
                 <repository.path>/home/argus/Repository/</repository.path>
@@ -624,7 +622,6 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>30</jdbc.maxActiveConnection>
                 <jdbc.maxPoolSize>200</jdbc.maxPoolSize>
 
                 <repository.path>/home/pathserver3/Repository/</repository.path>
@@ -674,7 +671,6 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>30</jdbc.maxActiveConnection>
                 <jdbc.maxPoolSize>200</jdbc.maxPoolSize>
 
                 <repository.path>/home/pathserver1/Repository/</repository.path>
@@ -714,7 +710,7 @@
             <properties>
                 <server.port>443</server.port>
                 <server.redirect.port>80</server.redirect.port>
-                <server.is.secure>true</server.is.secure>
+                <server.is.secure>false</server.is.secure>
                 <server.droptype>P</server.droptype>
                 <server.type>LIVE</server.type>
                 <server.implementation.type>chip</server.implementation.type>
@@ -724,7 +720,6 @@
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxActiveConnection>30</jdbc.maxActiveConnection>
                 <jdbc.maxPoolSize>200</jdbc.maxPoolSize>
 
                 <repository.path>/home/pathserver2/Repository/</repository.path>
