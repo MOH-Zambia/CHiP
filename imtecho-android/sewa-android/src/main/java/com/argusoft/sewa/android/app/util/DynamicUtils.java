@@ -2156,5 +2156,9 @@ public class DynamicUtils {
         if (formType.equalsIgnoreCase(FormConstants.FHS_MEMBER_UPDATE_NEW) || formType.equalsIgnoreCase(FormConstants.FAMILY_UPDATE)) {
             answerObject.put("uuid", SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.UUID));
         }
+
+        if (formType.equalsIgnoreCase(FormConstants.CHIP_GBV_SCREENING)) {
+            answerObject.put("referralPlace", SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.USER_ASSIGNED_HEALTH_INFRA_ID));
+        }
     }
 }

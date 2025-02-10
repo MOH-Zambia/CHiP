@@ -435,6 +435,12 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
             }
         }
 
+        if (keyAndAnswerMap.containsKey("8672")) {
+            if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
+                malariaIndexCaseEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+            }
+        }
+
         chipMalariaIndexDao.create(malariaIndexCaseEntity);
         memberDao.update(memberEntity);
 
@@ -589,6 +595,12 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                     && !keyAndAnswerMap.get("7513").isEmpty()) {
                 memberAdditionalInfo.setLastServiceLongDate(new Date(Long.parseLong(keyAndAnswerMap.get("7513"))).getTime());
                 memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
+            }
+        }
+
+        if (keyAndAnswerMap.containsKey("8672")) {
+            if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
+                malariaNonIndexEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
             }
         }
 
@@ -799,6 +811,36 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                     malariaIndexCaseEntity.setLongitude(answer);
                 }
                 break;
+            case "8669":
+                malariaIndexCaseEntity.setReferralPlace(Integer.valueOf(answer));
+                break;
+            case "8667":
+                switch (answer) {
+                    case "1":
+                        malariaIndexCaseEntity.setReferralDone(RchConstants.REFFERAL_DONE_YES);
+                        break;
+                    case "2":
+                        malariaIndexCaseEntity.setReferralDone(RchConstants.REFFERAL_DONE_NO);
+                        break;
+                    case "3":
+                        malariaIndexCaseEntity.setReferralDone(RchConstants.REFFERAL_DONE_NOT_REQUIRED);
+                        break;
+                    default:
+                }
+                break;
+            case "8668":
+                if (!answer.trim().isEmpty()) {
+                    malariaIndexCaseEntity.setReferralReason(answer);
+                }
+                break;
+            case "3333":
+                if (!answer.trim().isEmpty()) {
+                    malariaIndexCaseEntity.setReferralFor(answer);
+                }
+                break;
+            case "8989":
+                malariaIndexCaseEntity.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                break;
             default:
         }
     }
@@ -899,8 +941,6 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
             case "7513":
                 malariaNonIndexEntity.setServiceDate(new Date(Long.parseLong(answer)));
                 break;
-            case "6":
-
             case "8":
                 malariaNonIndexEntity.setReasonForNoConsent(answer);
                 break;
@@ -963,6 +1003,36 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 if (answer != null && !answer.isEmpty()) {
                     malariaNonIndexEntity.setLongitude(answer);
                 }
+                break;
+            case "8669":
+                malariaNonIndexEntity.setReferralPlace(Integer.valueOf(answer));
+                break;
+            case "8667":
+                switch (answer) {
+                    case "1":
+                        malariaNonIndexEntity.setReferralDone(RchConstants.REFFERAL_DONE_YES);
+                        break;
+                    case "2":
+                        malariaNonIndexEntity.setReferralDone(RchConstants.REFFERAL_DONE_NO);
+                        break;
+                    case "3":
+                        malariaNonIndexEntity.setReferralDone(RchConstants.REFFERAL_DONE_NOT_REQUIRED);
+                        break;
+                    default:
+                }
+                break;
+            case "8668":
+                if (!answer.trim().isEmpty()) {
+                    malariaNonIndexEntity.setReferralReason(answer);
+                }
+                break;
+            case "3333":
+                if (!answer.trim().isEmpty()) {
+                    malariaNonIndexEntity.setReferralFor(answer);
+                }
+                break;
+            case "8989":
+                malariaNonIndexEntity.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             default:
         }
