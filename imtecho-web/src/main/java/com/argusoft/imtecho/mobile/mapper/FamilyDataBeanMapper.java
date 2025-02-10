@@ -69,6 +69,18 @@ public class FamilyDataBeanMapper {
         familyDataBean.setEligibleWomenCount(family.getEligibleWomenCount());
         familyDataBean.setIsHoldIdPoor(family.getIsHoldIdPoor());
 
+        familyDataBean.setOutdoorCookingPractices(family.getOutdoorCookingPractices());
+        familyDataBean.setWasteDisposalAvailable(family.getWasteDisposalAvailable());
+        familyDataBean.setWasteDisposalMethod(family.getWasteDisposalMethod());
+        familyDataBean.setWaterSafetyMeetsStandard(family.getWaterSafetyMeetsStandard());
+        familyDataBean.setComplaintOfRodents(family.getComplaintOfRodents());
+        familyDataBean.setComplaintOfInsects(family.getComplaintOfInsects());
+        familyDataBean.setSeparateLivestockShelter(family.getSeparateLivestockShelter());
+        familyDataBean.setDishrackAvailable(family.getDishrackAvailable());
+        familyDataBean.setHandwashAvailable(family.getHandwashAvailable());
+        familyDataBean.setStorageMeetsStandard(family.getStorageMeetsStandard());
+        familyDataBean.setToiletMeetingStandards(family.getToiletMeetingStandards());
+
         Gson gson = new Gson();
         FamilyAdditionalInfo additionalInfo;
         if (family.getAdditionalInfo() != null) {

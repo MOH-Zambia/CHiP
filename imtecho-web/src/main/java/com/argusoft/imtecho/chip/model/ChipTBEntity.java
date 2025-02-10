@@ -87,4 +87,9 @@ public class ChipTBEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "reason_for_not_testing")
     private String reasonForNotTesting;
 
+    @Column(name = "index_case")
+    private Boolean indexCase;
+
+    @Column(name = "contacts_collected")
+    private Integer contactsCollected;
 }

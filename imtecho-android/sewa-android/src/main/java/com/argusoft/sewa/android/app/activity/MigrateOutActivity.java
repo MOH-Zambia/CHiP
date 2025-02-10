@@ -517,8 +517,13 @@ public class MigrateOutActivity extends MenuActivity implements View.OnClickList
             }
         }
 
-        if (childrenUnder5Years == null) {
-            childrenUnder5Years = migrationService.retrieveChildrenUnder5YearsByMotherId(Long.valueOf(memberDataBean.getId()));
+        if (childrenUnder5Years == null && (memberDataBean.getId() != null || memberDataBean.getMemberUuid() != null)) {
+            if (memberDataBean.getId() != null){
+                childrenUnder5Years = migrationService.retrieveChildrenUnder5YearsByMotherId(Long.valueOf(memberDataBean.getId()));
+            }
+            if (childrenUnder5Years == null) {
+                childrenUnder5Years = migrationService.retrieveChildrenUnder5YearsByMotherUUID(memberDataBean.getMemberUuid());
+            }
         }
 
         if (!childrenUnder5Years.isEmpty()) {

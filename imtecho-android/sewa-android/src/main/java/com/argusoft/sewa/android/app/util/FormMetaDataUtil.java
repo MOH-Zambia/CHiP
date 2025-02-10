@@ -126,9 +126,9 @@ public class FormMetaDataUtil {
         }
         FamilyDataBean familyDataBean;
         if (familyId != null) {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyId);
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyId, memberBean.getFamilyUuid());
         } else {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberBean.getFamilyId());
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberBean.getFamilyId(), memberBean.getFamilyUuid());
         }
         SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_ID, memberBean.getFamilyId());
 
@@ -476,7 +476,7 @@ public class FormMetaDataUtil {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_BPL, LabelConstants.NO);
         }
 
-        if (memberBean.getMobileNumber() != null && !memberBean.getMobileNumber().equals("T")) {
+        if (memberBean.getMobileNumber() != null && !memberBean.getMobileNumber().isEmpty() && !memberBean.getMobileNumber().equals("T")) {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_PHONE_NUMBER, memberBean.getMobileNumber());
         } else if (familyDataBean.getContactPersonId() != null) {
             try {
@@ -613,7 +613,7 @@ public class FormMetaDataUtil {
                 List<MemberBean> allChildrenOfMother = null;
                 MemberBean wifeOf;
                 if (memberBean.getActualId() != null) {
-                    if (memberBean.getGender().equals(GlobalTypes.MALE)) {
+                    if (GlobalTypes.MALE.equalsIgnoreCase(memberBean.getGender())) {
                         wifeOf = memberBeanDao.queryBuilder().where()
                                 .eq(FieldNameConstants.HUSBAND_ID, memberBean.getActualId())
                                 .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
@@ -637,14 +637,14 @@ public class FormMetaDataUtil {
                                 String.valueOf(memberBeanDao.queryBuilder().where()
                                         .eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
                                         .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                        .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
+                                        .and().ne(FieldNameConstants.MEMBER_UUID, memberBean.getActualId())
                                         .and().notIn(FieldNameConstants.STATE, invalidStates).countOf()));
 
                         MemberBean latestChild = memberBeanDao.queryBuilder()
                                 .orderBy(FieldNameConstants.DOB, false)
                                 .where().eq(FieldNameConstants.MOTHER_ID, memberBean.getActualId())
                                 .and().eq(FieldNameConstants.FAMILY_ID, memberBean.getFamilyId())
-                                .and().ne(FieldNameConstants.ACTUAL_ID, memberBean.getActualId())
+                                .and().ne(FieldNameConstants.MEMBER_UUID, memberBean.getMemberUuid())
                                 .and().notIn(FieldNameConstants.STATE, invalidStates).queryForFirst();
 
                         if (latestChild != null) {
@@ -727,13 +727,9 @@ public class FormMetaDataUtil {
                             if (i == 0) {
                                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID_CHILD, child.getUniqueHealthId());
                                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_NAME, child.getFirstName());
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_UUID, child.getMemberUuid());
                                 Set<String> dueImmunisations;
-                                if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                                    dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                } else {
-                                    dueImmunisations = immunisationService.getDueImmunisationsForChild(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                }
-
+                                dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
                                 if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
                                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.REMAINING_VACCINES,
                                             dueImmunisations.toString().replace("[", "").replace("]", ""));
@@ -741,12 +737,9 @@ public class FormMetaDataUtil {
                             } else {
                                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID_CHILD + i, child.getUniqueHealthId());
                                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_NAME + i, child.getFirstName());
+                                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHILD_UUID + i, child.getMemberUuid());
                                 Set<String> dueImmunisations;
-                                if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                                    dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                } else {
-                                    dueImmunisations = immunisationService.getDueImmunisationsForChild(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
-                                }
+                                dueImmunisations = immunisationService.getDueImmunisationsForChildZambia(child.getDob(), child.getImmunisationGiven(), new Date(), null, false);
                                 if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
                                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.REMAINING_VACCINES + i,
                                             dueImmunisations.toString().replace("[", "").replace("]", ""));
@@ -1419,8 +1412,6 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CURRENT_PARA, ("1"));
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEFAULT_PARA, ("1"));
                 }
-
-
                 break;
 
             case FormConstants.TECHO_WPD_DISCHARGE:
@@ -1506,7 +1497,7 @@ public class FormMetaDataUtil {
         editor.commit();
     }
 
-    public void setMetaDataActiveMalariaFromNearbyHousehold(String memberActualId, String familyId, SharedPreferences sharedPref, boolean isFromNearbyHousehold) {
+    public void setMetaDataActiveMalariaFromNearbyHousehold(String memberActualId, String familyId, SharedPreferences sharedPref, boolean isFromNearbyHousehold, String memberUuid) {
 
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear().apply();
@@ -1517,12 +1508,17 @@ public class FormMetaDataUtil {
         SharedStructureData.selectedHealthInfra = null;
         SharedStructureData.highRiskConditions.clear();
 
-        MemberBean memberBean = fhsService.retrieveMemberBeanByActualId(Long.valueOf(memberActualId));
+        MemberBean memberBean;
+        if (memberActualId != null) {
+            memberBean = fhsService.retrieveMemberBeanByActualId(Long.valueOf(memberActualId));
+        } else {
+            memberBean = fhsService.retrieveMemberBeanByUUID(memberUuid);
+        }
         FamilyDataBean familyDataBean;
         if (familyId != null) {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyId);
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyId, memberBean.getFamilyUuid());
         } else {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberBean.getFamilyId());
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberBean.getFamilyId(), memberBean.getFamilyUuid());
         }
 
         if (familyDataBean.getAreaId() != null) {
@@ -1822,7 +1818,16 @@ public class FormMetaDataUtil {
             if (headMember != null && headMember.getDob() != null) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HOF_NAME, UtilBean.getMemberFullName(headMember));
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HOF_ID, headMember.getUniqueHealthId());
-                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER, headMember.getMobileNumber());
+                if (headMember.getMobileNumber() != null && !headMember.getMobileNumber().isEmpty()) {
+                    String mob = headMember.getMobileNumber();
+                    if (headMember.getMobileNumber().contains("F/")) {
+                        mob = headMember.getMobileNumber().replace("F/", "");
+                    }
+                    if (headMember.getMobileNumber().contains("T")) {
+                        mob = headMember.getMobileNumber().replace("T", "");
+                    }
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY_NUMBER, mob);
+                }
                 SharedStructureData.relatedPropertyHashTable.put("hofDob", headMember.getDob().toString());
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_HOF_AVAILABLE, "1");
                 if (headMember.getGender() != null && headMember.getGender().equals(GlobalTypes.FEMALE)) {
@@ -1881,7 +1886,17 @@ public class FormMetaDataUtil {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MIDDLE_NAME, memberDataBean.getMiddleName());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.LAST_NAME, memberDataBean.getLastName());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MOBILE_NUMBER, memberDataBean.getMobileNumber());
-            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PHONE_NUMBER, memberDataBean.getMobileNumber());
+            if (memberDataBean.getMobileNumber() != null && !memberDataBean.getMobileNumber().isEmpty()) {
+                String mob = memberDataBean.getMobileNumber();
+                if (memberDataBean.getMobileNumber().contains("F/")) {
+                    mob = memberDataBean.getMobileNumber().replace("F/", "");
+                }
+                if (memberDataBean.getMobileNumber().contains("T")) {
+                    mob = memberDataBean.getMobileNumber().replace("T", "");
+                }
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PHONE_NUMBER, mob);
+            }
+            //SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.PHONE_NUMBER, memberDataBean.getMobileNumber());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IFSC, memberDataBean.getIfsc());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID, memberDataBean.getUniqueHealthId());
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEFAULT_MARITAL_STATUS, memberDataBean.getMaritalStatus());
@@ -2043,7 +2058,7 @@ public class FormMetaDataUtil {
             if (memberDataBean.getBirthCertNumber() != null) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.BIRTH_CERTIFICATE_NUMBER, memberDataBean.getBirthCertNumber());
             }
-            if (memberDataBean.getMobileNumber() != null && !memberDataBean.getMobileNumber().equals("T")) {
+            if (memberDataBean.getMobileNumber() != null && !memberDataBean.getMobileNumber().isEmpty() && !memberDataBean.getMobileNumber().equals("T")) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_PHONE_NUMBER, memberDataBean.getMobileNumber());
             } else if (familyDataBean.getContactPersonId() != null) {
                 try {
@@ -2231,7 +2246,7 @@ public class FormMetaDataUtil {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MOTHER_ID, String.valueOf(memberDataBean.getMotherId()));
             }
 
-            if (memberDataBean.getGender() != null && memberDataBean.getGender().equals("F")
+            if (memberDataBean.getGender() != null && "F".equals(memberDataBean.getGender())
                     && memberDataBean.getMaritalStatus() != null && memberDataBean.getMaritalStatus().equals("629")) {
                 SharedStructureData.membersUnderTwenty = getMembersLessThan20(memberDataBean.getFamilyId(), memberDataBean);
                 if (!SharedStructureData.membersUnderTwenty.isEmpty()) {
@@ -2270,4 +2285,85 @@ public class FormMetaDataUtil {
         SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_QR_ENABLED, "1");
         editor.apply();
     }
+
+    public void setMetaDataForFamilyUpdateForm(FamilyDataBean familyDataBean, SharedPreferences sharedPreferences) {
+        sharedPreferences.edit().clear().apply();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (familyDataBean != null) {
+            editor.putString(RelatedPropertyNameConstants.FAMILY_ID, familyDataBean.getId());
+            if (familyDataBean.getAreaId() != null) {
+                editor.putString(RelatedPropertyNameConstants.LOCATION_ID, familyDataBean.getAreaId());
+            } else {
+                editor.putString(RelatedPropertyNameConstants.LOCATION_ID, familyDataBean.getLocationId());
+            }
+        }
+
+        SharedStructureData.relatedPropertyHashTable.clear();
+        SharedStructureData.currentFamilyDataBean = familyDataBean;
+
+        if (familyDataBean != null && familyDataBean.getFamilyId() != null) {
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ADDRESS, UtilBean.getFamilyFullAddress(familyDataBean));
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.UUID, familyDataBean.getUuid());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.FAMILY_ID, familyDataBean.getFamilyId());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HEAD_OF_FAMILY, familyDataBean.getHeadMemberName());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HOUSE_NUMBER, familyDataBean.getHouseNumber());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.ADDRESS_1, familyDataBean.getAddress1());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOILET_AVAILABLE_FLAG, familyDataBean.getTypeOfToilet());
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DRINKING_WATER_SOURCE, familyDataBean.getDrinkingWaterSource());
+            if (Boolean.TRUE.equals(familyDataBean.getOutdoorCookingPractices())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.OUTDOOR_COOKING_PRACTICES, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.OUTDOOR_COOKING_PRACTICES, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getWasteDisposalAvailable())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.WASTE_DISPOSAL_AVAILABLE_FLAG, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.WASTE_DISPOSAL_AVAILABLE_FLAG, "2");
+            }
+            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.WASTE_DISPOSAL_METHOD, familyDataBean.getWasteDisposalMethod());
+            if (Boolean.TRUE.equals(familyDataBean.getWaterSafetyMeetsStandard())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_WATER_SAFE, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.IS_WATER_SAFE, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getDishrackAvailable())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DISHRACK_AVAILABLE_FLAG, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DISHRACK_AVAILABLE_FLAG, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getComplaintOfInsects())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.INSECTS_FOUND, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.INSECTS_FOUND, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getComplaintOfRodents())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.RODENTS_FOUND, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.RODENTS_FOUND, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getSeparateLivestockShelter())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.SEPARATE_LIVESTOCK_SHELTER, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.SEPARATE_LIVESTOCK_SHELTER, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getHandwashAvailable())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HANDWASH_AVAILABLE_FLAG, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HANDWASH_AVAILABLE_FLAG, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getStorageMeetsStandard())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.STORAGE_MEETS_STANDARD, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.STORAGE_MEETS_STANDARD, "2");
+            }
+            if (Boolean.TRUE.equals(familyDataBean.getToiletMeetingStandards())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOILET_MEETS_STANDARD, "1");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TOILET_MEETS_STANDARD, "2");
+            }
+        }
+        editor.apply();
+    }
+
 }

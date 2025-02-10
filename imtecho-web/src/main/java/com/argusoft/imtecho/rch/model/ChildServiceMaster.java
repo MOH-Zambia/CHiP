@@ -183,6 +183,8 @@ public class ChildServiceMaster extends VisitCommonFields implements Serializabl
     @Column(name = "other_symptoms")
     private String otherSymptoms;
 
+    @Column(name = "isDeWormingGiven")
+    private Boolean isDeWormingGiven;
 
     public Integer getId() {
         return id;
@@ -550,6 +552,14 @@ public class ChildServiceMaster extends VisitCommonFields implements Serializabl
 
     public void setOtherSymptoms(String otherSymptoms) {
         this.otherSymptoms = otherSymptoms;
+    }
+
+    public Boolean getDeWormingGiven() {
+        return isDeWormingGiven;
+    }
+
+    public void setDeWormingGiven(Boolean deWormingGiven) {
+        isDeWormingGiven = deWormingGiven;
     }
 
     /**

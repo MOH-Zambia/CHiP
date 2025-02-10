@@ -244,7 +244,7 @@ public class NotificationCBVActivity extends MenuActivity implements View.OnClic
                         MemberDataBean memberDataBean = nearbyMembersOverAll.get(selectedIndexForNearbyHouseHold);
                         if (memberDataBean != null) {
                             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-                            formMetaDataUtil.setMetaDataActiveMalariaFromNearbyHousehold(memberDataBean.getId(), memberDataBean.getFamilyId(), sharedPref, true);
+                            formMetaDataUtil.setMetaDataActiveMalariaFromNearbyHousehold(memberDataBean.getId(), memberDataBean.getFamilyId(), sharedPref, true, memberDataBean.getFamilyUuid());
                             Intent intentMalaria = new Intent(NotificationCBVActivity.this, DynamicFormActivity_.class);
                             intentMalaria.putExtra(SewaConstants.ENTITY, FormConstants.CHIP_ACTIVE_MALARIA);
                             startActivityForResult(intentMalaria, REQUEST_CODE_FOR_NOTIFICATION_ACTIVITY);
@@ -586,13 +586,13 @@ public class NotificationCBVActivity extends MenuActivity implements View.OnClic
         for (NotificationMobDataBean notificationMobDataBean : notificationBeanList) {
             MemberBean memberBean = fhsService.retrieveMemberBeanByActualId(notificationMobDataBean.getMemberId());
             if (Boolean.TRUE.equals(memberBean.getIndexCase())) {
-                FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(notificationMobDataBean.getFamilyId());
+                FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyActualId(notificationMobDataBean.getFamilyId());
                 if (!familyIds.contains(familyDataBean.getId())) {
                     familyIds.add(familyDataBean.getId());
                     List<MemberDataBean> nearbyMembers = new ArrayList<>(fhsService.retrieveMembersWithin150mOfActiveMalariaCases(
                             locationIdForAllFam,
                             familyDataBean.getLatitude(),
-                            familyDataBean.getLongitude()));
+                            familyDataBean.getLongitude(), null));
                     membersOfNearbyHouseHold.addAll(nearbyMembers);
                 }
             }

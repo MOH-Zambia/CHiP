@@ -382,6 +382,9 @@ public class HouseHoldLineListServiceImpl implements HouseHoldLineListService {
                     familyEntity.setReligion(answer.trim());
                 }
                 break;
+            case "31":
+                familyEntity.setToiletMeetingStandards(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                break;
             case "32":
                 familyEntity.setTypeOfToilet(answer);
                 break;

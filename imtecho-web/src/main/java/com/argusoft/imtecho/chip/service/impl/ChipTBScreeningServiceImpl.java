@@ -311,7 +311,7 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
             case "7513":
                 chipTBEntity.setServiceDate(new Date(Long.parseLong(answer)));
                 break;
-            case "6":
+            case "60":
                 chipTBEntity.setOtherTbSymptoms(answer);
                 break;
             case "7":
@@ -386,6 +386,12 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
                 break;
             case "7514":
                 chipTBEntity.setMemberStatus(answer);
+                break;
+            case "1601":
+                chipTBEntity.setIndexCase(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                break;
+            case "1602":
+                chipTBEntity.setContactsCollected(Integer.parseInt(answer));
                 break;
             default:
         }

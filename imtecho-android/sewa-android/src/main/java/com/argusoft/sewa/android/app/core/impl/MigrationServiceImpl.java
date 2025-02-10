@@ -143,6 +143,29 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     @Override
+    public List<MemberBean> retrieveChildrenUnder5YearsByMotherUUID(String motherUUID) {
+        List<MemberBean> childrenUnder5Years = new ArrayList<>();
+        try {
+            List<MemberBean> allChildrenOfMother = memberBeanDao.queryBuilder()
+                    .where().eq(FieldNameConstants.MOTHER_UUID, motherUUID)
+                    .and().notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES).query();
+
+            if (allChildrenOfMother != null && !allChildrenOfMother.isEmpty()) {
+                for (MemberBean child : allChildrenOfMother) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.YEAR, -5);
+                    if (child.getDob().after(cal.getTime())) {
+                        childrenUnder5Years.add(child);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            Log.e(getClass().getSimpleName(), null, e);
+        }
+        return childrenUnder5Years;
+    }
+
+    @Override
     public List<FamilyDataBean> retrieveFamilyListBySearchForMigration(String search) {
         List<FamilyDataBean> familyDataBeans = new ArrayList<>();
         try {

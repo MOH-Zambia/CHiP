@@ -66,7 +66,6 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         } else {
             family = familyDao.retrieveFamilyByFamilyId(houseHoldLineListMobileDto.getFamilyNumber());
             HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyEntity(houseHoldLineListMobileDto, family);
-            family.setState(getFamilyStateAccordingToPreviousState(family.getState()));
         }
 
         List<MemberEntity> membersEntitiesInFamily = new LinkedList<>();
@@ -332,6 +331,37 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
     }
 
     @Override
+    public Map<String, String> storeFamilyUpdateFormZambia(ParsedRecordBean parsedRecordBean, UserMaster user) {
+        Map<String, String> returnMap = new LinkedHashMap<>();
+        StringBuilder returnMessage = new StringBuilder();
+        HouseHoldLineListMobileDto houseHoldLineListMobileDto = gson.fromJson(parsedRecordBean.getAnswerRecord(), HouseHoldLineListMobileDto.class);
+
+        //Updating Family Details
+        FamilyEntity family = new FamilyEntity();
+        if (houseHoldLineListMobileDto.getUuid() != null && !houseHoldLineListMobileDto.getUuid().isEmpty()) {
+            family = familyDao.retrieveFamilyByUuid(houseHoldLineListMobileDto.getUuid());
+            HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyEntity(houseHoldLineListMobileDto, family);
+        }
+
+        familyDao.update(family);
+        familyDao.flush();
+
+        returnMessage.append("Family ID : ");
+        returnMessage.append(family.getFamilyId());
+        returnMap.put("message", returnMessage.toString());
+        returnMap.put("createdInstanceId", family.getId().toString());
+        return returnMap;
+    }
+
+    @Override
+    public void updateMember(MemberEntity memberEntity, String fromState, String toState) {
+        if (toState != null && !memberEntity.getState().equals(toState)) {
+            memberEntity.setState(toState);
+        }
+        memberDao.update(memberEntity);
+    }
+
+    @Override
     public MemberEntity retrieveMemberByUuid(String uuid) {
         return memberDao.retrieveMemberByUuid(uuid);
     }
@@ -534,3 +564,4 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         System.out.println("Updated " + updatedRecord.size() + " records in " + durationInMs + " ms at " + new Date());
     }
 }
+

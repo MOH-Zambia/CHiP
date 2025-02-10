@@ -239,7 +239,7 @@ public class MyAlertDialog extends AlertDialog {
         LinearLayout.LayoutParams crossParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         crossParams.gravity = Gravity.END | Gravity.TOP;
-        crossParams.setMargins(0, 30, 30, 0);
+        crossParams.setMargins(0, 30, 30, 10);
         crossButton.setLayoutParams(crossParams);
         crossButton.setOnClickListener(v -> dismiss());
         parentLayout.addView(crossButton);

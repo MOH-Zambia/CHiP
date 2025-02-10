@@ -973,16 +973,12 @@ public class MyStaticComponents {
         myLayout.addView(imageCalendar);
 
 
-        if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_UTTARAKHAND)) {
-            myLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.chardham_edit_text_background));
-            myLayout.setPadding(12, 12, 12, 12);
+        if (SewaUtil.CURRENT_THEME == R.style.techo_training_app) {
+            myLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.training_custom_datepicker));
         } else {
-            if (SewaUtil.CURRENT_THEME == R.style.techo_training_app) {
-                myLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.training_custom_datepicker));
-            } else {
-                myLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_datepicker));
-            }
+            myLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_datepicker));
         }
+
         myLayout.setOnClickListener(listener);
         //for bottom margin
         myLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));

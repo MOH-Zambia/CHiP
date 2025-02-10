@@ -9,8 +9,9 @@ import java.util.Map;
 public interface MobileHouseHoldLineListService {
     Map<String, String> storeHouseHoldLineListForm(ParsedRecordBean parsedRecordBean, UserMaster user);
     Map<String, String> storeMemberUpdateFormZambia(ParsedRecordBean parsedRecordBean, UserMaster user);
+    Map<String, String> storeFamilyUpdateFormZambia(ParsedRecordBean parsedRecordBean, UserMaster user);
     MemberEntity retrieveMemberByUuid(String uuid);
-    //void updateMember(MemberEntity member, String fromState, String toState);
+    void updateMember(MemberEntity member, String fromState, String toState);
     public void patchFixForReplacingToiletType();
 }
 

@@ -40,6 +40,28 @@ public class FamilyDataBean {
 
     private Boolean toiletAvailableFlag;
 
+    private Boolean outdoorCookingPractices;
+
+    private Boolean wasteDisposalAvailable;
+
+    private String wasteDisposalMethod;
+
+    private Boolean waterSafetyMeetsStandard;
+
+    private Boolean dishrackAvailable;
+
+    private Boolean handwashAvailable;
+
+    private Boolean toiletMeetingStandards;
+
+    private Boolean storageMeetsStandard;
+
+    private Boolean complaintOfInsects;
+
+    private Boolean complaintOfRodents;
+
+    private Boolean separateLivestockShelter;
+
     private Boolean isVerifiedFlag;
 
     private List<MemberDataBean> members = new ArrayList<>();
@@ -200,6 +222,18 @@ public class FamilyDataBean {
         this.eligibleWomenCount = familyBean.getEligibleWomenCount();
         this.eligibleChildrenCount = familyBean.getEligibleChildrenCount();
         this.isHoldIdPoor = familyBean.getIsHoldIdPoor();
+        this.outdoorCookingPractices = familyBean.getOutdoorCookingPractices();
+        this.wasteDisposalAvailable = familyBean.getWasteDisposalAvailable();
+        this.wasteDisposalMethod = familyBean.getWasteDisposalMethod();
+        this.waterSafetyMeetsStandard = familyBean.getWaterSafetyMeetsStandard();
+        this.dishrackAvailable = familyBean.getDishrackAvailable();
+        this.complaintOfInsects = familyBean.getComplaintOfInsects();
+        this.complaintOfRodents = familyBean.getComplaintOfRodents();
+        this.separateLivestockShelter = familyBean.getSeparateLivestockShelter();
+        this.handwashAvailable = familyBean.getHandwashAvailable();
+        this.storageMeetsStandard = familyBean.getStorageMeetsStandard();
+        this.toiletMeetingStandards = familyBean.getToiletMeetingStandards();
+
     }
 
     public String getId() {
@@ -687,6 +721,94 @@ public class FamilyDataBean {
         isHoldIdPoor = holdIdPoor;
     }
 
+    public Boolean getOutdoorCookingPractices() {
+        return outdoorCookingPractices;
+    }
+
+    public void setOutdoorCookingPractices(Boolean outdoorCookingPractices) {
+        this.outdoorCookingPractices = outdoorCookingPractices;
+    }
+
+    public Boolean getWasteDisposalAvailable() {
+        return wasteDisposalAvailable;
+    }
+
+    public void setWasteDisposalAvailable(Boolean wasteDisposalAvailable) {
+        this.wasteDisposalAvailable = wasteDisposalAvailable;
+    }
+
+    public String getWasteDisposalMethod() {
+        return wasteDisposalMethod;
+    }
+
+    public void setWasteDisposalMethod(String wasteDisposalMethod) {
+        this.wasteDisposalMethod = wasteDisposalMethod;
+    }
+
+    public Boolean getWaterSafetyMeetsStandard() {
+        return waterSafetyMeetsStandard;
+    }
+
+    public void setWaterSafetyMeetsStandard(Boolean waterSafetyMeetsStandard) {
+        this.waterSafetyMeetsStandard = waterSafetyMeetsStandard;
+    }
+
+    public Boolean getDishrackAvailable() {
+        return dishrackAvailable;
+    }
+
+    public void setDishrackAvailable(Boolean dishrackAvailable) {
+        this.dishrackAvailable = dishrackAvailable;
+    }
+
+    public Boolean getComplaintOfInsects() {
+        return complaintOfInsects;
+    }
+
+    public void setComplaintOfInsects(Boolean complaintOfInsects) {
+        this.complaintOfInsects = complaintOfInsects;
+    }
+
+    public Boolean getComplaintOfRodents() {
+        return complaintOfRodents;
+    }
+
+    public void setComplaintOfRodents(Boolean complaintOfRodents) {
+        this.complaintOfRodents = complaintOfRodents;
+    }
+
+    public Boolean getSeparateLivestockShelter() {
+        return separateLivestockShelter;
+    }
+
+    public void setSeparateLivestockShelter(Boolean separateLivestockShelter) {
+        this.separateLivestockShelter = separateLivestockShelter;
+    }
+
+    public Boolean getStorageMeetsStandard() {
+        return storageMeetsStandard;
+    }
+
+    public void setStorageMeetsStandard(Boolean storageMeetsStandard) {
+        this.storageMeetsStandard = storageMeetsStandard;
+    }
+
+    public Boolean getHandwashAvailable() {
+        return handwashAvailable;
+    }
+
+    public void setHandwashAvailable(Boolean handwashAvailable) {
+        this.handwashAvailable = handwashAvailable;
+    }
+
+    public Boolean getToiletMeetingStandards() {
+        return toiletMeetingStandards;
+    }
+
+    public void setToiletMeetingStandards(Boolean toiletMeetingStandards) {
+        this.toiletMeetingStandards = toiletMeetingStandards;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -727,7 +849,17 @@ public class FamilyDataBean {
                 ", rationCardNumber='" + rationCardNumber + '\'' +
                 ", bplCardNumber='" + bplCardNumber + '\'' +
                 ", lastIdspScreeningDate=" + lastIdspScreeningDate +
-                ", lastIdsp2ScreeningDate=" + lastIdsp2ScreeningDate +
+                ", outdoorCookingPractices=" + outdoorCookingPractices +
+                ", wasteDisposalAvailable=" + wasteDisposalAvailable +
+                ", wasteDisposalMethod=" + wasteDisposalMethod +
+                ", waterSafetyMeetsStandard=" + waterSafetyMeetsStandard +
+                ", dishrackAvailable=" + dishrackAvailable +
+                ", complaintOfInsects=" + complaintOfInsects +
+                ", complaintOfRodents=" + complaintOfRodents +
+                ", separateLivestockShelter=" + separateLivestockShelter +
+                ", handwashAvailable=" + handwashAvailable +
+                ", storageMeetsStandard=" + storageMeetsStandard +
+                ", toiletMeetingStandards=" + toiletMeetingStandards +
                 '}';
     }
 }

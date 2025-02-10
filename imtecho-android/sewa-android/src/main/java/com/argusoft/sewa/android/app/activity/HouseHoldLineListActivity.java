@@ -197,7 +197,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                 if (selectedFamilyIndex != -1) {
                     bodyLayoutContainer.removeAllViews();
                     FamilyDataBean familyDataBean = familyDataBeans.get(selectedFamilyIndex);
-                    selectedFamily = fhsService.retrieveFamilyDataBeanByFamilyId(familyDataBean.getFamilyId());
+                    selectedFamily = fhsService.retrieveFamilyDataBeanByFamilyId(familyDataBean.getFamilyId(), familyDataBean.getUuid());
                     selectedFamily.setHeadMemberName(familyDataBean.getHeadMemberName());
                     SharedStructureData.currentFamilyDataBean = selectedFamily;
                     addSelectedFamilyDetails(selectedFamily);
@@ -503,7 +503,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                 String familyIdToExpand = data.getStringExtra("familyToExpand");
                 String familyIdToMerge = data.getStringExtra("familyToMerge");
 
-                FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyIdToExpand);
+                FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyIdToExpand, selectedFamily.getUuid());
                 List<String> states = new ArrayList<>();
                 states.addAll(FhsConstants.FHS_VERIFIED_CRITERIA_FAMILY_STATES);
                 states.addAll(FhsConstants.FHS_NEW_CRITERIA_FAMILY_STATES);
@@ -1217,6 +1217,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
         options.add(UtilBean.getMyLabel(LabelConstants.VIEW_QR_CODE));
         options.add(UtilBean.getMyLabel(LabelConstants.ADD_NEW_MEMBER));
         options.add(UtilBean.getMyLabel(LabelConstants.SERVICE_UPDATE_MEMBER));
+        options.add(UtilBean.getMyLabel(LabelConstants.SERVICE_UPDATE_FAMILY));
 
         AdapterView.OnItemClickListener onItemClickListener = (parent, view, position, id) -> {
             switch (position) {
@@ -1253,6 +1254,10 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
 
                 case 2:
                     addMembersSelectionScreenForFamily(selectedFamily);
+                    break;
+
+                case 3:
+                    startDynamicFormActivity(null, selectedFamily, true);
                     break;
 
                 default:
@@ -1296,15 +1301,20 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
         return list;
     }
 
-    private void startDynamicFormActivity(MemberDataBean memberDataBean, FamilyDataBean familyDataBean) {
+    private void startDynamicFormActivity(MemberDataBean memberDataBean, FamilyDataBean familyDataBean, boolean isForFamilyUpdate) {
         showProcessDialog();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         if (memberDataBean != null) {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId());
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId(), memberDataBean.getFamilyUuid());
         }
-        formMetaDataUtil.setMetaDataForMemberUpdateForm(memberDataBean, familyDataBean, sharedPref);
         myIntent = new Intent(this, DynamicFormActivity_.class);
-        myIntent.putExtra(SewaConstants.ENTITY, FormConstants.FHS_MEMBER_UPDATE_NEW);
+        if (isForFamilyUpdate) {
+            formMetaDataUtil.setMetaDataForFamilyUpdateForm(familyDataBean, sharedPref);
+            myIntent.putExtra(SewaConstants.ENTITY, FormConstants.FAMILY_UPDATE);
+        } else {
+            formMetaDataUtil.setMetaDataForMemberUpdateForm(memberDataBean, familyDataBean, sharedPref);
+            myIntent.putExtra(SewaConstants.ENTITY, FormConstants.FHS_MEMBER_UPDATE_NEW);
+        }
         startActivityForResult(myIntent, ActivityConstants.HH_REQUEST_CODE_FOR_EXISTING_FAMILY);
         hideProcessDialog();
     }
@@ -1417,9 +1427,9 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                         }
                     }
                     if (selectedMemberToUpdateIndex == -1) {
-                        startDynamicFormActivity(null, selectedFamily);
+                        startDynamicFormActivity(null, selectedFamily, false);
                     } else if (!familyMembers.isEmpty() && familyMembers.get(selectedMemberToUpdateIndex) != null) {
-                        startDynamicFormActivity(familyMembers.get(selectedMemberToUpdateIndex), selectedFamily);
+                        startDynamicFormActivity(familyMembers.get(selectedMemberToUpdateIndex), selectedFamily, false);
                     }
                 }
 

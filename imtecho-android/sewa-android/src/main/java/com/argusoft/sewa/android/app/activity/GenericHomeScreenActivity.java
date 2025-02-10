@@ -152,9 +152,12 @@ public class GenericHomeScreenActivity extends HomeScreenMenuActivity implements
     @Override
     public void onBackPressed() {
         View.OnClickListener onClickListener = this::logoutAlertDialogClick;
-        alertDialog = new MyAlertDialog(this,
+        alertDialog = /*new MyAlertDialog(this,
                 UtilBean.getMyLabel(GlobalTypes.MSG_CANCEL_APPLICATION),
-                onClickListener, DynamicUtils.BUTTON_HIDE_LOGOUT);
+                onClickListener, DynamicUtils.BUTTON_HIDE_LOGOUT);*/
+        new MyAlertDialog(this,
+                UtilBean.getMyLabel(GlobalTypes.MSG_CANCEL_APPLICATION),
+                onClickListener, DynamicUtils.BUTTON_YES_NO, "Logout", "Hide", null);
         alertDialog.show();
     }
 

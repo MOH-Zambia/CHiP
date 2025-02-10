@@ -689,6 +689,11 @@ public class ChildServiceImpl implements ChildService {
                     childServiceMaster.setDelayInDevelopmental(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 }
                 break;
+            case "801":
+                if (keyAndAnswersMap.get("12").equals(RchConstants.MEMBER_STATUS_AVAILABLE)) {
+                    childServiceMaster.setDeWormingGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                }
+                break;
             default:
         }
     }

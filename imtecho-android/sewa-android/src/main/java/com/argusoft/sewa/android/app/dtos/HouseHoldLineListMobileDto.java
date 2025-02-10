@@ -6,7 +6,7 @@ public class HouseHoldLineListMobileDto {
     private String currentLatitude;
     private String currentLongitude;
     private Integer locationId;
-    private Integer familyNumber;
+    private String familyNumber;
     private String familyHead;
     private String familyAvailable;
     private String houseNumber;
@@ -29,6 +29,7 @@ public class HouseHoldLineListMobileDto {
     private String uuid;
     private String motherRelation;
     private String husbandRelation;
+    private Boolean toiletMeetingStandards;
 
 
     public String getCurrentLatitude() {
@@ -55,11 +56,11 @@ public class HouseHoldLineListMobileDto {
         this.locationId = locationId;
     }
 
-    public Integer getFamilyNumber() {
+    public String getFamilyNumber() {
         return familyNumber;
     }
 
-    public void setFamilyNumber(Integer familyNumber) {
+    public void setFamilyNumber(String familyNumber) {
         this.familyNumber = familyNumber;
     }
 
@@ -237,6 +238,14 @@ public class HouseHoldLineListMobileDto {
 
     public void setHusbandRelation(String husbandRelation) {
         this.husbandRelation = husbandRelation;
+    }
+
+    public Boolean getToiletMeetingStandards() {
+        return toiletMeetingStandards;
+    }
+
+    public void setToiletMeetingStandards(Boolean toiletMeetingStandards) {
+        this.toiletMeetingStandards = toiletMeetingStandards;
     }
 
     public static class MemberDetails {

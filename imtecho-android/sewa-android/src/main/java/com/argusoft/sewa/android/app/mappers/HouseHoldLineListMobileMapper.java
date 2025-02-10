@@ -12,6 +12,7 @@ import com.argusoft.sewa.android.app.model.MemberBean;
 import com.argusoft.sewa.android.app.util.UtilBean;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -22,7 +23,7 @@ public class HouseHoldLineListMobileMapper {
         throw new IllegalStateException("Utility Class");
     }
 
-    public static void convertHouseHoldLineListDtoToFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, FamilyBean familyBean) {
+    public static void convertHouseHoldLineListDtoToFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, FamilyBean familyBean, boolean isFamilyUpdate) {
         if (houseHoldLineListMobileDto.getLocationId() != null) {
             familyBean.setLocationId(String.valueOf(houseHoldLineListMobileDto.getLocationId()));
             familyBean.setAreaId(String.valueOf(houseHoldLineListMobileDto.getLocationId()));
@@ -30,12 +31,26 @@ public class HouseHoldLineListMobileMapper {
 
         familyBean.setHouseNumber(houseHoldLineListMobileDto.getHouseNumber() != null ? houseHoldLineListMobileDto.getHouseNumber() : familyBean.getHouseNumber());
         familyBean.setAddress1(houseHoldLineListMobileDto.getHouseAddress() != null ? houseHoldLineListMobileDto.getHouseAddress() : familyBean.getAddress1());
-        familyBean.setTypeOfToilet(houseHoldLineListMobileDto.getHouseNumber() != null ? houseHoldLineListMobileDto.getHouseNumber() : familyBean.getHouseNumber());
+        familyBean.setTypeOfToilet(houseHoldLineListMobileDto.getToiletType() != null ? houseHoldLineListMobileDto.getToiletType() : familyBean.getTypeOfToilet());
         familyBean.setDrinkingWaterSource(houseHoldLineListMobileDto.getWaterSource() != null ? houseHoldLineListMobileDto.getWaterSource() : familyBean.getDrinkingWaterSource());
+        familyBean.setDrinkingWaterSource(houseHoldLineListMobileDto.getWaterSource() != null ? houseHoldLineListMobileDto.getWaterSource() : familyBean.getDrinkingWaterSource());
+        familyBean.setOutdoorCookingPractices(houseHoldLineListMobileDto.getCookingPractices() != null ? houseHoldLineListMobileDto.getCookingPractices() : familyBean.getOutdoorCookingPractices());
+        familyBean.setWasteDisposalAvailable(houseHoldLineListMobileDto.getWasteDisposalAvailable() != null ? houseHoldLineListMobileDto.getWasteDisposalAvailable() : familyBean.getWasteDisposalAvailable());
+        familyBean.setWasteDisposalMethod(houseHoldLineListMobileDto.getWasteDisposalType() != null ? convertSetToCommaSeparatedString(houseHoldLineListMobileDto.getWasteDisposalType(), ",") : familyBean.getWasteDisposalMethod());
+        familyBean.setWaterSafetyMeetsStandard(houseHoldLineListMobileDto.getWaterSafe() != null ? houseHoldLineListMobileDto.getWaterSafe() : familyBean.getWaterSafetyMeetsStandard());
+        familyBean.setDishrackAvailable(houseHoldLineListMobileDto.getDishrackAvailable() != null ? houseHoldLineListMobileDto.getDishrackAvailable() : familyBean.getDishrackAvailable());
+        familyBean.setComplaintOfInsects(houseHoldLineListMobileDto.getInsectsFound() != null ? houseHoldLineListMobileDto.getInsectsFound() : familyBean.getComplaintOfInsects());
+        familyBean.setComplaintOfRodents(houseHoldLineListMobileDto.getRodentsFound() != null ? houseHoldLineListMobileDto.getRodentsFound() : familyBean.getComplaintOfRodents());
+        familyBean.setSeparateLivestockShelter(houseHoldLineListMobileDto.getLivestockShelterFound() != null ? houseHoldLineListMobileDto.getLivestockShelterFound() : familyBean.getSeparateLivestockShelter());
+        familyBean.setHandwashAvailable(houseHoldLineListMobileDto.getHandwashAvailable() != null ? houseHoldLineListMobileDto.getHandwashAvailable() : familyBean.getHandwashAvailable());
+        familyBean.setStorageMeetsStandard(houseHoldLineListMobileDto.getStorageStandards() != null ? houseHoldLineListMobileDto.getStorageStandards() : familyBean.getStorageMeetsStandard());
+        familyBean.setToiletMeetingStandards(houseHoldLineListMobileDto.getToiletMeetingStandards() != null ? houseHoldLineListMobileDto.getToiletMeetingStandards() : familyBean.getToiletMeetingStandards());
         familyBean.setLatitude(houseHoldLineListMobileDto.getCurrentLatitude() != null ? houseHoldLineListMobileDto.getCurrentLatitude() : familyBean.getLatitude());
         familyBean.setLongitude(houseHoldLineListMobileDto.getCurrentLongitude() != null ? houseHoldLineListMobileDto.getCurrentLongitude() : familyBean.getLongitude());
-        familyBean.setUuid(houseHoldLineListMobileDto.getUuid() != null ? houseHoldLineListMobileDto.getUuid() : familyBean.getUuid());
-        familyBean.setFamilyId("TMP" + new Date().getTime() / 1000);
+        if (!isFamilyUpdate) {
+            familyBean.setUuid(houseHoldLineListMobileDto.getUuid() != null ? houseHoldLineListMobileDto.getUuid() : familyBean.getUuid());
+            familyBean.setFamilyId("TMP" + new Date().getTime() / 1000);
+        }
         familyBean.setState(FhsConstants.CFHC_FAMILY_STATE_NEW);
     }
 
@@ -46,6 +61,9 @@ public class HouseHoldLineListMobileMapper {
         }
         if (member == null) {
             member = new HouseHoldLineListMobileDto.MemberDetails();
+        }
+        if (member.getMemberStatus() != null && member.getMemberStatus().equalsIgnoreCase("ARCHIVE")) {
+            memberBean.setState(FhsConstants.FHS_MEMBER_STATE_ARCHIVED);
         }
         memberBean.setFamilyHeadFlag(member.getHof() != null ? member.getHof() : memberBean.getFamilyHeadFlag());
         memberBean.setFirstName(member.getFirstName() != null ? member.getFirstName() : memberBean.getFirstName());
@@ -66,15 +84,13 @@ public class HouseHoldLineListMobileMapper {
         if ((member.getGender() != null && "F".equalsIgnoreCase(checkGenderFromNumber(member.getGender()))) ||
                 memberBean.getGender() != null && "F".equalsIgnoreCase(checkGenderFromNumber(memberBean.getGender()))) {
             memberBean.setLmpDate(member.getLmpDate() != null ? new Date(member.getLmpDate()) : memberBean.getLmpDate());
-            if (member.getLmpDate() != null) {
+            if (member.getLmpDate() != null && Boolean.TRUE.equals(member.getWomanPregnant())) {
                 Calendar calendar = Calendar.getInstance();
                 Date lastLmpDate = new Date(member.getLmpDate());
                 calendar.setTime(lastLmpDate);
                 calendar.add(Calendar.DAY_OF_YEAR, 281);
                 Date edd = calendar.getTime();
-                if (memberBean.getEdd() == null) {
-                    memberBean.setEdd(edd);
-                }
+                memberBean.setEdd(edd);
             }
         } else {
             memberBean.setLmpDate(null);

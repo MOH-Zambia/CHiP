@@ -171,12 +171,10 @@ public class ReportedEventConfirmationNotificationActivity extends MenuActivity 
         bodyLayoutContainer.removeAllViews();
 
         List<ListItemDataBean> confirmationlist = new ArrayList<>();
-        if (!BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-            confirmationlist.add(new ListItemDataBean(-1, UtilBean.getFullFormOfEntity().get(NotificationConstants.NOTIFICATION_FHW_PREGNANCY_CONF),
-                    setNotificationCountFromMap(notificationCountMap.get(NotificationConstants.NOTIFICATION_FHW_PREGNANCY_CONF))));
-            confirmationlist.add(new ListItemDataBean(-1, UtilBean.getFullFormOfEntity().get(NotificationConstants.NOTIFICATION_FHW_DELIVERY_CONF),
-                    setNotificationCountFromMap(notificationCountMap.get(NotificationConstants.NOTIFICATION_FHW_DELIVERY_CONF))));
-        }
+        confirmationlist.add(new ListItemDataBean(-1, UtilBean.getFullFormOfEntity().get(NotificationConstants.NOTIFICATION_FHW_PREGNANCY_CONF),
+                setNotificationCountFromMap(notificationCountMap.get(NotificationConstants.NOTIFICATION_FHW_PREGNANCY_CONF))));
+        confirmationlist.add(new ListItemDataBean(-1, UtilBean.getFullFormOfEntity().get(NotificationConstants.NOTIFICATION_FHW_DELIVERY_CONF),
+                setNotificationCountFromMap(notificationCountMap.get(NotificationConstants.NOTIFICATION_FHW_DELIVERY_CONF))));
         confirmationlist.add(new ListItemDataBean(-1, UtilBean.getFullFormOfEntity().get(NotificationConstants.NOTIFICATION_FHW_DEATH_CONF),
                 setNotificationCountFromMap(notificationCountMap.get(NotificationConstants.NOTIFICATION_FHW_DEATH_CONF))));
         confirmationlist.add(new ListItemDataBean(-1, UtilBean.getFullFormOfEntity().get(NotificationConstants.NOTIFICATION_FHW_MEMBER_MIGRATION),
