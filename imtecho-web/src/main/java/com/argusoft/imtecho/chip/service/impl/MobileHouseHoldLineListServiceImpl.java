@@ -217,7 +217,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("ARCHIVE"))) {
                 memberEntity.setModifiedBy(user.getId());
                 memberEntity.setModifiedOn(new Date());
-                memberEntity.setFamilyHeadFlag(Boolean.FALSE);
+                //memberEntity.setFamilyHeadFlag(Boolean.FALSE);
                 this.updateMember(memberEntity, memberEntity.getState(), FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_ARCHIVED);
             }
             if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("DEATH"))) {
