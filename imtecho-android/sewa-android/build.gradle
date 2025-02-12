@@ -70,7 +70,7 @@ android {
             targetSdkVersion 32
             versionCode 132
             versionName "1.0.32"
-            buildConfigField 'String', 'RELEASE_DATE', "\"11th Feb 2025\""
+            buildConfigField 'String', 'RELEASE_DATE', "\"12th Feb 2025\""
             buildConfigField 'String', 'DB_NAME', "\"chip_final.db\""
             buildConfigField 'String', 'APK_NAME', "\"chip_app\""
             buildConfigField 'int', 'DATABASE_VERSION', "21"
