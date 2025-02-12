@@ -491,7 +491,7 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
             handleNextButtonVisibility(currentPageIndex);
             bodyLayoutContainer.addView(displayLayout);
         } catch (Exception e) {
-            //SewaUtil.generateToast(context, e.getMessage());
+            SewaUtil.generateToast(context, e.getMessage());
             Log.e(Activity.class.getName(), e.getMessage());
             setBodyDetail(1);
         }
