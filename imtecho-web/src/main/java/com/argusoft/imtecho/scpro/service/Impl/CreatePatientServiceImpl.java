@@ -1,10 +1,13 @@
 package com.argusoft.imtecho.scpro.service.Impl;
 
 import com.argusoft.imtecho.scpro.dao.PatientDao;
+import com.argusoft.imtecho.scpro.dao.ReferralDao;
 import com.argusoft.imtecho.scpro.dto.MemberDetailsDTO;
 import com.argusoft.imtecho.scpro.dto.ReferralDTO;
 import com.argusoft.imtecho.scpro.dto.ReferralNrcDTO;
+import com.argusoft.imtecho.scpro.dto.ReferralNupnDTO;
 import com.argusoft.imtecho.scpro.model.PatientData;
+import com.argusoft.imtecho.scpro.model.ReferralData;
 import com.argusoft.imtecho.scpro.service.CreatePatientService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +34,8 @@ public class CreatePatientServiceImpl implements CreatePatientService {
 
     @Autowired
     PatientDao patientDao;
+    @Autowired
+    ReferralDao referralDao;
     public CreatePatientServiceImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -41,7 +46,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String apiUrl = "http://102.23.120.12:8080/api/v1/patient";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzMyNTk4MzczLCJleHAiOjE3MzI2MjcxNzN9.nc0Y1QO5HCkQkZUmOUWEqFSHqtnWA6ZIdjYZNG6xfFdKgX6joUdf-cvIwYFHmy6OupEgycsgVhE9Im-xv2g1yg";
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzM3MDkwNDU4LCJleHAiOjE3MzUzODc0OTF9.mUnRRKVFI3viUa3RH-caw_NLheQoDl-ASslOsk4Hq5NnPvsmO4WciMKKK-CUhOjNoxSGrvK_DVePT6tQRbprsA";
 
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -81,7 +86,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
 
 
 
-                log.info("Referral saved successfully.");
+                log.info("Patient saved successfully.");
             } else {
                 System.out.println("No 'data' field found in the response.");
             }
@@ -109,7 +114,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String apiUrl = "http://102.23.120.12:8080/api/v1/patient/status/{statusId}";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzMyNTk4MzczLCJleHAiOjE3MzI2MjcxNzN9.nc0Y1QO5HCkQkZUmOUWEqFSHqtnWA6ZIdjYZNG6xfFdKgX6joUdf-cvIwYFHmy6OupEgycsgVhE9Im-xv2g1yg"; // Replace with the actual token
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzM3MDkwNDU4LCJleHAiOjE3MzUzODc0OTF9.mUnRRKVFI3viUa3RH-caw_NLheQoDl-ASslOsk4Hq5NnPvsmO4WciMKKK-CUhOjNoxSGrvK_DVePT6tQRbprsA"; // Replace with the actual token
 
         try {
             // Set up headers
@@ -120,47 +125,46 @@ public class CreatePatientServiceImpl implements CreatePatientService {
 
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-            // Call the API with the provided statusId
-            for(int i=0;i<requestIdList.size();i++)
-            {
-                String requestId = requestIdList.get(i).getReferralId();
+            for (ReferralNrcDTO request : requestIdList) {
+                String requestId = request.getReferralId();
 
-                ResponseEntity<String> response = restTemplate.exchange(
-                        apiUrl,
-                        HttpMethod.GET,
-                        requestEntity,
-                        String.class,
-                        requestId // Pass the statusId as a path variable
-                );
+                try {
+                    ResponseEntity<String> response = restTemplate.exchange(
+                            apiUrl,
+                            HttpMethod.GET,
+                            requestEntity,
+                            String.class,
+                            requestId
+                    );
 
-                // Return the response body
-                String responseBody = response.getBody();
-//                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode rootNode = objectMapper.readTree(responseBody);
+                    // Proceed only if the response is valid
+                    if (response != null && response.getBody() != null) {
+                        String responseBody = response.getBody();
 
-                JsonNode dataNode = rootNode.path("data");
+                        JsonNode rootNode = objectMapper.readTree(responseBody);
+                        JsonNode dataNode = rootNode.path("data");
 
-                String retreivedRequestId = dataNode.path("requestId").asText();
-                patientDao.updateSyncDate(retreivedRequestId);
+                        if (dataNode != null && dataNode.has("requestId")) {
+                            String retrievedRequestId = dataNode.path("requestId").asText();
 
-                log.info(requestId);
-//               JsonNode rootNode = objectMapper.readTree(responseBody);
-
-//                if (rootNode.has("data")) {
-//                    JsonNode dataNode = rootNode.get("data");
-//                    patientDao.setNUPN("1234567",requestIdList.get(i).getNrc());
-//                    if(String.valueOf(dataNode.get("data"))==null)
-//                    {
-//                        //patientDao.setNUPN("1234567",requestIdList.get(i).getNrc());
-//                    }
-////                    log.info();
-//                }
-
+                            // Update the sync date for the retrieved ID
+                            patientDao.updateSyncDate(retrievedRequestId);
+                            log.info("Processed Request ID: {}", requestId);
+                        } else {
+                            log.warn("Missing 'requestId' in response data for request: {}", requestId);
+                        }
+                    } else {
+                        log.warn("Empty or null response for request: {}", requestId);
+                    }
+                } catch (Exception e) {
+                    log.error("Error processing request ID: {}", requestId, e);
+                }
             }
 
 
+
         } catch (Exception e) {
-            // Handle errors gracefully
+
             e.printStackTrace();
 
         }
@@ -170,7 +174,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     public  void createReferral(ReferralDTO referralDTO){
         ObjectMapper objectMapper = new ObjectMapper();
         String apiUrl = "http://102.23.120.12:8080/api/v1/referral";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzMyMTgzNDc2LCJleHAiOjE3MzIyMTIyNzZ9.u8-Wi4BmRAix0CxUw_iKupkINSvTKXvpqUtgDdHLso8nBM6RgzLZWAo0_RzwVJkZ47H9NyNY-ls6F5iNHe6wqA";
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzM3MDkwNDU4LCJleHAiOjE3MzUzODc0OTF9.mUnRRKVFI3viUa3RH-caw_NLheQoDl-ASslOsk4Hq5NnPvsmO4WciMKKK-CUhOjNoxSGrvK_DVePT6tQRbprsA";
 
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -186,47 +190,74 @@ public class CreatePatientServiceImpl implements CreatePatientService {
                     String.class
             );
             String responseBody = response.getBody();
+            log.info(responseBody);
             JsonNode rootNode = objectMapper.readTree(responseBody);
 
             if (rootNode.has("data")) {
                 JsonNode dataNode = rootNode.get("data");
+                ReferralData rd = new ReferralData();
+                rd.setReferralId("123456789");
+                rd.setClientNUPN(referralDTO.getClientNupn());
+                referralDao.create(rd);
+                log.info("Referral saved successfully.");
                 System.out.println("Data: " + dataNode.toString());
             } else {
                 System.out.println("No 'data' field found in the response.");
             }
 
-//            System.out.println("API Response: " + response.getBody());
         } catch (Exception ex) {
-            // Handle errors gracefully
-            System.err.println("Error while calling API: " + ex.getMessage());
+            log.warn("Error while calling API: " + ex.getMessage());
         }
     }
     @Override
-    public void getReferralStatus( String requestId){
+    public void getReferralStatus(){
         String apiUrl = "http://102.23.120.12:8080/api/v1/referral/status/{statusId}";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzMyMjU1NTg0LCJleHAiOjE3MzIyODQzODR9.q6Z57O6ZmOQ7GmoXrf8eTgFHTHj8BH4Unsg44nxBBy_d-9j8TeI4yg3hP6cIWfT9_ST1jS_bnTu3TiQfbShc6g"; // Replace with the actual token
-
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzM3MDkwNDU4LCJleHAiOjE3MzUzODc0OTF9.mUnRRKVFI3viUa3RH-caw_NLheQoDl-ASslOsk4Hq5NnPvsmO4WciMKKK-CUhOjNoxSGrvK_DVePT6tQRbprsA"; // Replace with the actual token
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            // Set up headers
+            List<ReferralNupnDTO>requestIdList = referralDao.getReferredIds();
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(accessToken);
 
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+            for (ReferralNupnDTO request : requestIdList) {
+                String requestId = request.getReferralId();
 
-            // Call the API with the provided statusId
-            ResponseEntity<String> response = restTemplate.exchange(
-                    apiUrl,
-                    HttpMethod.GET,
-                    requestEntity,
-                    String.class,
-                    requestId // Pass the statusId as a path variable
-            );
+                try {
+                    ResponseEntity<String> response = restTemplate.exchange(
+                            apiUrl,
+                            HttpMethod.GET,
+                            requestEntity,
+                            String.class,
+                            requestId
+                    );
 
-            // Return the response body
-            System.out.println(response.getBody());
+                    if (response != null && response.getBody() != null) {
+                        String responseBody = response.getBody();
+
+                        // Parse the response JSON
+                        JsonNode rootNode = objectMapper.readTree(responseBody);
+                        JsonNode dataNode = rootNode.path("data");
+
+                        if (dataNode != null && dataNode.has("requestId")) {
+                            String retrievedRequestId = dataNode.path("requestId").asText();
+
+                            referralDao.updateSyncDate(retrievedRequestId);
+
+                            System.out.println(responseBody);
+                        } else {
+                            System.err.println("Missing 'requestId' in response data for request: " + requestId);
+                        }
+                    } else {
+                        System.err.println("Received empty or null response for request: " + requestId);
+                    }
+                } catch (Exception e) {
+//                    System.err.println("Error processing request ID: " + requestId);
+                    e.printStackTrace();
+                }
+            }
 
         } catch (Exception e) {
-            // Handle errors gracefully
             e.printStackTrace();
 
         }
