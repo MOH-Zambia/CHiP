@@ -3,6 +3,7 @@ package com.argusoft.imtecho.scpro.dao.Impl;
 import com.argusoft.imtecho.database.common.impl.GenericDaoImpl;
 import com.argusoft.imtecho.scpro.dao.PatientDao;
 import com.argusoft.imtecho.scpro.dto.MemberDetailsDTO;
+import com.argusoft.imtecho.scpro.dto.ReferralDTO;
 import com.argusoft.imtecho.scpro.dto.ReferralNrcDTO;
 import com.argusoft.imtecho.scpro.model.PatientData;
 import org.hibernate.Session;
@@ -30,6 +31,7 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
                         "WHERE \n" +
                         "    last_sync_date <> CURRENT_DATE \n" +
                         "    OR last_sync_date IS NULL \n" +
+                        "    AND status=false OR status IS NULL \n" +
                         "LIMIT 10;"
         );
 
@@ -46,7 +48,8 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
         // Construct the native SQL query for insertion
         NativeQuery<?> query = currentSession.createNativeQuery(
                 "UPDATE imt_member\n" +
-                        "SET nupn = :nupn\n" +
+                        "SET nupn = :nupn, " +
+                        "    status = true " +
                         "WHERE nrc_number = :nrc"
         );
 
@@ -89,15 +92,51 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
 // Construct the native SQL query for updating
         NativeQuery<?> query = currentSession.createNativeQuery(
                 "UPDATE patient_data " +
-                        "SET last_sync_date = CURRENT_DATE  " +
+                        "SET last_sync_date = CURRENT_DATE,  " +
+                        "status = false  " +
                         "WHERE referral_id = :requestId "
         );
 
-// Set parameters for the query
-
         query.setParameter("requestId", requestId);
-
-// Execute the query
         query.executeUpdate();
+    }
+
+    public List<ReferralDTO> getPatientsToBeReffered(){
+        Session currentSession = getCurrentSession();
+        NativeQuery<ReferralDTO> query = currentSession.createNativeQuery(
+                "select\n" +
+                        "    referral_id as referralId,\n" +
+                        "    referred_from as referredFrom,\n" +
+                        "    referred_to as referredTo,\n" +
+                        "    referred_on as referredOn,\n" +
+                        "    referred_by as referredBy,\n" +
+                        "    reasons as reasons,\n" +
+                        "    type_of_referral as typeOfReferral,\n" +
+                        "    service_area as serviceArea,\n" +
+                        "    notes as notes,\n" +
+                        "    nupn as nupn\n" +
+                        "from\n" +
+                        "    store_referral_details\n" +
+                        "WHERE\n" +
+                        "    \\ n last_sync_date <> CURRENT_DATE\n" +
+                        "    OR last_sync_date IS NULL \\ n\n" +
+                        "LIMIT\n" +
+                        "    10;"
+        );
+
+        return query.addScalar("referralId",StandardBasicTypes.STRING)
+                .addScalar("referredFrom", StandardBasicTypes.STRING)
+                .addScalar("referredTo",StandardBasicTypes.STRING)
+                .addScalar("referredOn", StandardBasicTypes.STRING)
+                .addScalar("referredBy", StandardBasicTypes.STRING)
+                .addScalar("reasons", StandardBasicTypes.STRING)
+                .addScalar("typeOfReferral", StandardBasicTypes.STRING)
+                .addScalar("serviceArea", StandardBasicTypes.STRING)
+                .addScalar("notes", StandardBasicTypes.STRING)
+                .addScalar("nupn", StandardBasicTypes.STRING)
+
+
+
+                .setResultTransformer(Transformers.aliasToBean(ReferralDTO.class)).list();
     }
 }

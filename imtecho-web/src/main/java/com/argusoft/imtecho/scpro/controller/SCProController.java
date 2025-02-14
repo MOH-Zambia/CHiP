@@ -37,8 +37,8 @@ public class SCProController {
     }
 
     @GetMapping(value = "/getReferralStatus")
-    public void getReferralStatus(@PathVariable String requestId){
-        createPatientService.getReferralStatus(requestId);
+    public void getReferralStatus(){
+        createPatientService.getReferralStatus();
     }
 
 }

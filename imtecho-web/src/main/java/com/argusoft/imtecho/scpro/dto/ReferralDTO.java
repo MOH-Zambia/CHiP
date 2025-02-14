@@ -2,6 +2,7 @@ package com.argusoft.imtecho.scpro.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ReferralDTO {
@@ -10,9 +11,9 @@ public class ReferralDTO {
     private String referredTo;
     private Date referredOn;
     private String referredBy;
-    private String reasons;
+    private List<String> reasons;
     private String typeOfReferral;
     private String serviceArea;
     private String notes;
-    private String clientNUPN;
+    private String clientNupn;
 }
