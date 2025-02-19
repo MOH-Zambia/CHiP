@@ -301,7 +301,8 @@ public class AncServiceImpl implements AncService {
 
         StringBuilder immunisationGiven = new StringBuilder();
 
-        if (keyAndAnswerMap.containsKey("2207") && keyAndAnswerMap.get("2207").equals("1")) {
+        if (keyAndAnswerMap.containsKey("2207") && keyAndAnswerMap.get("2207").equals("1")
+                && keyAndAnswerMap.containsKey("2208") && keyAndAnswerMap.get("2207") != null) {
             Date givenDate = new Date(Long.parseLong(keyAndAnswerMap.get("2208")));
             if (ConstantUtil.IMPLEMENTATION_TYPE.equalsIgnoreCase("chip")) {
                 int ttVaccineId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.TT_VACCINE);
