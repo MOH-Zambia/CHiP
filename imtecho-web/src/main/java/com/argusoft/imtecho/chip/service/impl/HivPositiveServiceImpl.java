@@ -803,7 +803,7 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             case "7513":
                 hivKnownPositive.setServiceDate(new Date(Long.parseLong(answer)));
                 break;
-            case "6":
+            case "600":
                 hivKnownPositive.setDuration((new Date(Long.parseLong(answer))));
                 break;
             case "7", "13":
