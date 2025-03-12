@@ -191,7 +191,7 @@
             fetch-according-to-user-aoi="config.fetchAccordingToUserAoi" required-upto-level="config.requiredUptoLevel"
             fetch-upto-level="config.fetchUptoLevel" no-reset="true" preset="config.preset" on-change="locationChange()"
             demographic-filter-required="config.demographicFilterRequired" all-district-req="true" all-block-req="true"
-            selected-demographic="data['demographic_'+config.fieldName]"></location-directive>
+            selected-demographic="data['demographic_'+config.fieldName]" reload-function="reloadInner()"></location-directive>
     </span>
     <span ng-switch-when="selectizeForCombo">
         <validate for="{{config.fieldName}}" required-msg='Select The {{config.displayName}}'>

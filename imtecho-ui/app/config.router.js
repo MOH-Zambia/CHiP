@@ -856,7 +856,8 @@
                         'reportfieldutil.service',
                         'alasql',
                         'selectize.generator',
-                        'user.service'
+                        'user.service',
+                        'query-management.service'
                     ])
                 })
                 .state('techo.report.all', {

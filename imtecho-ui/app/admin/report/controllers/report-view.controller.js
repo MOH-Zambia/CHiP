@@ -1,6 +1,6 @@
 (function () {
     function ReportViewController($state, Mask, GeneralUtil, ReportDAO, ReportFieldUtil, $rootScope, APP_CONFIG, toaster,
-        AuthenticateService, $timeout, $q, $filter, $uibModal, $http, $sessionStorage,ENV) {
+        AuthenticateService, $timeout, $q, $filter, $uibModal, $http, $sessionStorage,ENV, QueryManagementDao) {
         var rv = this;
         rv.appName = GeneralUtil.getAppName();
         rv.reportObj = {
@@ -25,8 +25,8 @@
         {
             label:"GPT-4",
             value:"gpt-4-0125-preview"
-        }
-    ]
+        }];
+        rv.reloadQueries = [];
         var fieldConfigObjMap = {};
         var fieldChangeCallback = function (fieldName, value) {
             _.each(rv.reportObj.configJson.containers, function (container, key) {
@@ -70,6 +70,7 @@
                 rv.reportObj.configJson.containers.limit = 100;
                 rv.reportObj.configJson.containers.offSet = 0;
             }
+            rv.reloadFilters(fieldName);
         };
 
         rv.searchFilter = function (reset, isSearch, isDownloadOffline) {
@@ -365,6 +366,8 @@
                             if (queryParams.includes(field.fieldName)) {
                                 availableImplicitParameters.push(field.fieldName);
                             }
+                            if(queryParams.includes('loggedInUserId') && !availableImplicitParameters.includes('loggedInUserId'))
+                            availableImplicitParameters.push('loggedInUserId')
                         });
                     }
                 });
@@ -919,6 +922,16 @@
                                 }
                             }
                         }
+                        for(let container of resForData.configJson.containers.fieldsContainer)
+                            {   
+                                if(container.allowReload)
+                                    rv.reloadQueries.push({
+                                    field : container.fieldName,
+                                    query : container.query,
+                                    displayName : container.displayName,
+                                    parameters : container.availableImplicitParameters
+                                })  
+                            }
                         if (isQueryParams) {
                             retrieveTableDataByQueryId();
                         }
@@ -942,6 +955,16 @@
                         extractQueriesFromFields();
                     }
                     rv.pagingService.allRetrieved = true;
+                    for(let container of resForData.configJson.containers.fieldsContainer)
+                        {   
+                            if(container.allowReload)
+                                rv.reloadQueries.push({
+                                field : container.fieldName,
+                                query : container.query,
+                                displayName : container.displayName,
+                                parameters : container.availableImplicitParameters
+                            })  
+                        }
                     if (isQueryParams) {
                         retrieveTableDataByQueryId();
                     }
@@ -951,6 +974,91 @@
                 });
             }
         };
+        rv.reloadFilters = function(fieldName){
+            Mask.show();
+            let continueReload = true;
+            let implicitParams = null;
+            let queries = rv.reloadQueries;
+            queries = queries.filter(element => element.parameters.includes(fieldName));
+            if(fieldName != 'location_id' && queries.length > 0) 
+            {
+                implicitParams = rv.reloadQueries.find((q) => q.field === fieldName);
+                if(implicitParams!=null){
+                    implicitParams=implicitParams.parameters;
+                }
+            }
+            if (rv.reportObj ) {
+                for (let i = 0; i < queries.length; i++) {
+                    let obj = queries[i];
+                    if((queries[i].field != fieldName) || !fieldName && !implicitParams.includes(queries[i].field)) {
+                        let query = obj.query;
+                        if(implicitParams && implicitParams.includes(queries[i].field)){
+                            continueReload = false;
+                        }
+                        for(let param of obj.parameters)
+                        {
+                            if(param){
+                                const regex = new RegExp(`#${param}#`,'g');
+                                rv.reportObj.configJson.containers['fieldsContainer'].forEach( function (containerFields){
+                                    if (containerFields.fieldName === param && containerFields.fieldName != obj.field ) {
+                                        if(param == 'location_id')
+                                        {
+                                            let locationId = null;
+                                            let locationContainer = rv.reportObj.configJson.containers.fieldsContainer.filter((el )=> (el.fieldName == 'location_id' ))[0];
+                                            if (locationContainer != null && locationContainer.selectedLocation != null && locationContainer.selectedLocation.finalSelected != null && locationContainer.selectedLocation.finalSelected.optionSelected != null) {
+                                                locationId = locationContainer.selectedLocation.finalSelected.optionSelected.id;
+                                            }
+                                            if(locationId)
+                                            query = query.replace(regex, locationId);
+                                            else
+                                            query = query.replace(regex, 'Ø');
+                                        }
+                                        else {
+                                            if(containerFields?.value)
+                                                query = query.replace(regex, containerFields?.value);
+                                            else 
+                                                query = query.replace(regex, 'Ø');
+                                        }
+                                    }
+                                    else if (param == 'loggedInUserId')
+                                    {   
+                                        if(rv.user.id)query = query.replace(regex, rv.user.id);
+                                        else query = query.replace(regex, 'Ø');
+                                    }
+                                })
+                            }
+                        }
+                        if(!query.includes('Ø') && !query.includes('undefined') && continueReload){
+                            QueryManagementDao.retrieveQuery(query).then(function (response) {
+                                if (response !== null && response.length > 0) {
+                                    rv.reportObj.configJson.containers['fieldsContainer'].forEach( function (containerFields) {
+                                        if (containerFields.fieldName === obj.field) {
+                                            containerFields.optionsByQuery =  rv.changeObjectType(response, obj.field)
+                                        }
+                                    });
+                                } else {
+                                    toaster.pop('info', "No data found for ",obj.displayName);
+                                    rv.reportObj.configJson.containers['fieldsContainer'].forEach( function (containerFields) {
+                                        if (containerFields.fieldName === obj.field) {
+                                            containerFields.optionsByQuery = []
+                                        }
+                                    });
+                                }
+                                Mask.hide();
+                            }, function (error) {
+                                toaster.pop('error', error.data.message);
+                                Mask.hide();
+                        })}
+                        }
+                }
+            }
+            Mask.hide();
+        }
+
+        rv.changeObjectType = function(arr, fieldName){
+            return arr.map(obj => {
+                return { key: obj[fieldName], value: obj[fieldName] }});
+        }
 
         var setOffsetLimit = function () {
             rv.pagingService.limit = 100;

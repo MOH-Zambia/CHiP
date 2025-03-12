@@ -85,6 +85,11 @@
                             ng-disabled="(rl.featureJson.basic && !rl.featureJson.advanced)">
                         <div class="control_indicator"></div>
                     </label>
+                    <label control-label class="control control-checkbox" ng-if="rl.newField.fieldType === 'comboForReport'">Allow Reload ?
+                        <input checked="checked" type="checkbox" ng-model="rl.newField.allowReload" 
+                            ng-disabled="(rl.featureJson.basic && !rl.featureJson.advanced)">
+                        <div class="control_indicator"></div>
+                    </label>
                     <label control-label class="control control-checkbox"
                         ng-if="rl.newField.fieldType === 'dateRangePicker'">Show Custom Range Label
                         <input checked="checked" type="checkbox" ng-model="rl.newField.showCustomRangeLabel"
