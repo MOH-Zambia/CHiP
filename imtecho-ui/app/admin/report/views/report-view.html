@@ -50,7 +50,7 @@
             <div id="printableReport">
                 <ng-form name="rv.reportForm">
                     <dynamicview config="rv.reportObj.configJson" paging-service="rv.pagingService" data="rv.data" showembeddedtable = "rv.reportObj.configJson.isTableEmbedded" navigationstate="rv.reportObj.menuConfig.navigationState"
-                        filter-search="rv.searchFilter(reset,isSearch)" get-group-total-count="rv.getGroupTotalCount(items,fieldName)" customscrollbar=false></dynamicview>
+                        filter-search="rv.searchFilter(reset,isSearch)" get-group-total-count="rv.getGroupTotalCount(items,fieldName)" customscrollbar=false reload-function="rv.reloadFilters('location_id')"></dynamicview>
                 </ng-form>
                 <ng-include ng-if="rv.isdnhdd && rv.reportObj.configJson.summaryRequest && rv.shouldShowSummaryPrompt && rv.userRoleCode == 'argusadmin'" src="'app/admin/report/views/report-summary.html'"></ng-include>
 <!--                <p ng-if="!rv.reportObj.configJson.summaryRequest && rv.userRoleCode == 'argusadmin'">Summary Generation Is Not Enabled For this report.</p>-->

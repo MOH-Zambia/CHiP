@@ -13,7 +13,8 @@
                 filterSearch: '&',
                 searchConfig: '=',
                 pagingService: '=?',
-                navigationstate: '='
+                navigationstate: '=',
+                reloadFunction : '&'
             },
             link: function ($scope, element, attrs) {
                 $scope.customSort = function (index , fieldName, isPagination) {
@@ -71,6 +72,9 @@
                         $scope.getRights();
                     }
                 });
+                $scope.reloadDynamic = function(){
+                    $scope.reloadFunction()
+                }
                 $scope.getRights = function () {
                     Mask.show();
                     AuthenticateService.getAssignedFeature($scope.navigationstate).then(function (res) {
@@ -319,11 +323,15 @@
             template: $templateCache.get('app/common/directives/dynamicview/inputcomponent.html'),
             scope: {
                 data: "=",
-                config: '='
+                config: '=',
+                reloader : '&'
             },
             link: function ($scope, element, attrs) {
                 $scope.locationChange = function () {
                     $scope.$emit('locationChange', $scope.config.selectedLocation)
+                }
+                $scope.reloadInner = function (){
+                    $scope.reloader();
                 }
                 $scope.labelClass = attrs.labelClass;
                 $scope.inputClass = attrs.inputClass;
