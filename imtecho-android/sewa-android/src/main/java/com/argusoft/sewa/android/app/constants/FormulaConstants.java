@@ -110,7 +110,7 @@ public class FormulaConstants {
     public static final String FORMULA_CHECK_IF_LMP_AVAILABLE = "checkiflmpisavailable"; // checkIfLmpIsAvailable
     public static final String FORMULA_PUT_REMAINING_VACCINES = "putremainingvaccines"; // putRemainingVaccines
     public static final String FORMULA_CHECK_IF_THIRD_TRIMESTER = "checkifthirdtrimester"; // checkIfThirdTrimester
-    public static final String FORMULA_CHECK_IF_SECOND_TRIMESTER_STARTED = "checkifsecondtrimesterstarted"; // checkIfThirdTrimester
+    public static final String FORMULA_CHECK_IF_SECOND_TRIMESTER_STARTED = "checkifsecondtrimesterstarted"; // checkIfSecondTrimesterStarted
     public static final String FORMULA_SET_PROPERTY_ADD_ALL_OPTION_IN_SUBCENTRE_LIST = "addalloptioninsubcentrelist"; // addAllOptionInSubcentreList
     public static final String FORMULA_CHECK_AGE_IF_WRONGLY_REGISTERED_AS_PREGNANT = "checkageifwronglyregistered"; // checkAgeIfWronglyRegistered
     public static final String FORMULA_CHECK_AGE_LESS_THAN_20 = "checkagelessthan20"; // checkAgeLessThan20
