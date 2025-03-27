@@ -10,7 +10,7 @@ import com.argusoft.imtecho.mobile.constants.MessagesConstant;
 import com.argusoft.imtecho.mobile.dto.MobileRequestParamDto;
 import com.argusoft.imtecho.mobile.service.MobileFhsService;
 import java.util.Date;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

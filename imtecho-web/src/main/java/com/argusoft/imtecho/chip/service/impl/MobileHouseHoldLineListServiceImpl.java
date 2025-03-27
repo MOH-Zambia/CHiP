@@ -139,7 +139,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             }
 
             checkIfDuplicateIdProofExists(memberDetails, member);
-            updateAdditionalInfoForMember(member);
+            updateAdditionalInfoForMember(member, memberDetails);
 
             member.setIsPregnantFlag(memberDetails.getIsWomanPregnant());
             member.setMarkedPregnant(Boolean.TRUE.equals(member.getIsPregnantFlag()));
@@ -254,7 +254,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
 
                 HouseHoldLineListMobileMapper.convertMemberDetailsToMemberEntity(memberDetails, memberEntity, memberEntity.getId() != null);
                 checkIfDuplicateIdProofExists(memberDetails, memberEntity);
-                updateAdditionalInfoForMember(memberEntity);
+                updateAdditionalInfoForMember(memberEntity, memberDetails);
 
                 if (memberEntity.getId() != null) {
                     memberDao.update(memberEntity);
@@ -482,7 +482,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         };
     }
 
-    private void updateAdditionalInfoForMember(MemberEntity member) {
+    private void updateAdditionalInfoForMember(MemberEntity member, HouseHoldLineListMobileDto.MemberDetails memberDetails) {
         MemberAdditionalInfo additionalInfo = new MemberAdditionalInfo();
         if (member.getAdditionalInfo() != null) {
             additionalInfo = gson.fromJson(member.getAdditionalInfo(), MemberAdditionalInfo.class);
@@ -496,6 +496,10 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         if (member.getChronicDisease() != null && member.getChronicDisease().contains("2679")) {
             additionalInfo.setTbCured(false);
             additionalInfo.setTbSuspected(true);
+            member.setAdditionalInfo(gson.toJson(additionalInfo));
+        }
+        if (memberDetails != null && Boolean.TRUE.equals(memberDetails.getHpvGiven())) {
+            additionalInfo.setHpvGiven(memberDetails.getHpvGiven());
             member.setAdditionalInfo(gson.toJson(additionalInfo));
         }
     }
