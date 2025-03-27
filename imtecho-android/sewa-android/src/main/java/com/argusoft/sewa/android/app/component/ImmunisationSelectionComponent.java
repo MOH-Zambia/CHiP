@@ -152,12 +152,6 @@ public class ImmunisationSelectionComponent extends LinearLayout {
         }
         dueImmunisations = new ArrayList<>(SharedStructureData.immunisationService.getDueImmunisationsForChildZambia(dob, givenImmunisations, currentDate, SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true));
 
-//        if (EXCLUDE_VITAMIN_A_IMMUNISATION.equalsIgnoreCase(type)) {
-//            dueImmunisations.removeAll(vitaminAVaccines());
-//        } else if (ONLY_VITAMIN_A_IMMUNISATION.equalsIgnoreCase(type)) {
-//            noVaccinesLabel = "No Vitamin A doses due";
-//            dueImmunisations.retainAll(vitaminAVaccines());
-//        }
 
         if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
             mainLayout.addView(getHeaderLayout());
@@ -228,12 +222,7 @@ public class ImmunisationSelectionComponent extends LinearLayout {
         Date date1 = new Date();
         Date today = new Date();
 
-
-        if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-            immunisationMissedMap = SharedStructureData.immunisationService.isImmunisationMissedOrNotValidZambia(dob, vaccine, new Date(), SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true);
-        } else {
-            immunisationMissedMap = SharedStructureData.immunisationService.isImmunisationMissedOrNotValid(dob, vaccine, new Date(), SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true);
-        }
+        immunisationMissedMap = SharedStructureData.immunisationService.isImmunisationMissedOrNotValidZambia(dob, vaccine, new Date(), SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true);
 
         for (Map.Entry<Boolean, String> entry : immunisationMissedMap.entrySet()) {
             Boolean isMissed = entry.getKey();

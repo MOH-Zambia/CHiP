@@ -928,303 +928,6 @@ public class ImmunisationServiceImpl implements ImmunisationService {
         return vaccineMissedMap;
     }
 
-    @Override
-    public Map<Boolean, String> isImmunisationMissedOrNotValidZambia(Date dateOfBirth, String immunisation,
-                                                                     Date currentDate, Map<String, Date> vaccineGivenDateMap, boolean isForNextDueDate) {
-        Map<Boolean, String> vaccineMissedMap = new HashMap<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        boolean isMissed;
-        String dateRange;
-        Calendar dob = Calendar.getInstance();
-        Calendar temp = Calendar.getInstance();
-        dateOfBirth = UtilBean.clearTimeFromDate(dateOfBirth);
-        currentDate = UtilBean.clearTimeFromDate(currentDate);
-        dob.setTime(dateOfBirth);
-        temp.setTime(dateOfBirth);
-        Date lbw = UtilBean.clearTimeFromDate(new Date());
-        Date ubw = UtilBean.clearTimeFromDate(new Date());
-        Date tmpDate;
-
-        if (vaccineGivenDateMap == null) {
-            vaccineGivenDateMap = new HashMap<>();
-        }
-
-        switch (immunisation) {
-            case RchConstants.Z_BCG:
-                lbw = dob.getTime();
-                dob.add(Calendar.YEAR, 1);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_OPV_0:
-                lbw = dob.getTime();
-                dob.add(Calendar.DATE, 13);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-            case RchConstants.Z_VITTAMIN_A_50000:
-                lbw = dob.getTime();
-                dob.add(Calendar.MONTH, 5);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_VITTAMIN_A_100000:
-                dob.add(Calendar.MONTH, 6);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 11);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_VITTAMIN_A_200000_1:
-                dob.add(Calendar.MONTH, 12);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 18);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-            case RchConstants.Z_VITTAMIN_A_200000_2:
-                dob.add(Calendar.MONTH, 18);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 24);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-            case RchConstants.Z_VITTAMIN_A_200000_3:
-                dob.add(Calendar.MONTH, 24);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 30);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-            case RchConstants.Z_VITTAMIN_A_200000_4:
-                dob.add(Calendar.MONTH, 30);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 36);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-            case RchConstants.Z_VITTAMIN_A_200000_5:
-                dob.add(Calendar.MONTH, 36);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 42);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-            case RchConstants.Z_VITTAMIN_A_200000_6:
-                dob.add(Calendar.MONTH, 42);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 48);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-            case RchConstants.Z_VITTAMIN_A_200000_7:
-                dob.add(Calendar.MONTH, 48);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 54);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-            case RchConstants.Z_VITTAMIN_A_200000_8:
-                dob.add(Calendar.MONTH, 54);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 59);
-                ubw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_OPV_1:
-            case RchConstants.Z_ROTA_VACCINE_1:
-            case RchConstants.Z_PCV_1:
-            case RchConstants.Z_DPT_HEB_HIB_1:
-                dob.add(Calendar.DATE, 35);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_OPV_2:
-                dob.add(Calendar.DATE, 63);
-                lbw = dob.getTime();
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_1);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 28);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_OPV_3:
-                dob.add(Calendar.DATE, 91);
-                lbw = dob.getTime();
-                tmpDate = vaccineGivenDateMap.get(RchConstants.OPV_1);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 56);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_2);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 28);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_ROTA_VACCINE_2:
-                dob.add(Calendar.DATE, 63);
-                lbw = dob.getTime();
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_ROTA_VACCINE_1);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 28);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_PCV_2:
-                dob.add(Calendar.DATE, 63);
-                lbw = dob.getTime();
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 28);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_PCV_3:
-                dob.add(Calendar.DATE, 91);
-                lbw = dob.getTime();
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 56);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_2);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 28);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_DPT_HEB_HIB_2:
-                dob.add(Calendar.DATE, 63);
-                lbw = dob.getTime();
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 28);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_DPT_HEB_HIB_3:
-                dob.add(Calendar.DATE, 91);
-                lbw = dob.getTime();
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 56);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_2);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 28);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                dob.setTime(dateOfBirth);
-                break;
-
-            case RchConstants.Z_MEASLES_RUBELLA_1:
-                dob.add(Calendar.MONTH, 9);
-                lbw = dob.getTime();
-                dob.setTime(dateOfBirth);
-                break;
-
-
-            case RchConstants.Z_MEASLES_RUBELLA_2:
-                dob.add(Calendar.MONTH, 18);
-                lbw = dob.getTime();
-                tmpDate = vaccineGivenDateMap.get(RchConstants.MEASLES_RUBELLA_1);
-                if (tmpDate != null) {
-                    temp.setTime(tmpDate);
-                    temp.add(Calendar.DATE, 28);
-                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
-                        lbw = temp.getTime();
-                    }
-                }
-                dob.setTime(dateOfBirth);
-                break;
-            default:
-        }
-
-        if (!isForNextDueDate) {
-            isMissed = !UtilBean.clearTimeFromDate(lbw).equals(currentDate) && !UtilBean.clearTimeFromDate(lbw).before(currentDate);
-        } else {
-            isMissed = !UtilBean.clearTimeFromDate(ubw).equals(currentDate) &&
-                    (UtilBean.clearTimeFromDate(lbw).equals(currentDate) ?
-                            !UtilBean.clearTimeFromDate(ubw).after(currentDate) :
-                            (!UtilBean.clearTimeFromDate(lbw).before(currentDate) || !UtilBean.clearTimeFromDate(ubw).after(currentDate)));
-        }
-        if (immunisation.equalsIgnoreCase(RchConstants.Z_BCG) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_50000) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_100000) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_1) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_2) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_3) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_4) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_5) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_6) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_7) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_8) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_OPV_0)) {
-            dateRange = sdf.format(lbw) + " - " + sdf.format(ubw);
-        } else {
-            dateRange = "After " + sdf.format(lbw);
-        }
-        vaccineMissedMap.put(isMissed, dateRange);
-        return vaccineMissedMap;
-    }
 
     @Override
     public String vaccinationValidationForChild(Date dob, Date givenDate, String currentVaccine, Map<String, Date> vaccineGivenDateMap) {
@@ -1631,7 +1334,6 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 }
                 break;
             case RchConstants.MEASLES_RUBELLA_1:
-
                 from.add(Calendar.MONTH, 9);
                 to.add(Calendar.MONTH, 59);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
@@ -1663,6 +1365,159 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             default:
         }
         return null;
+    }
+
+
+
+    @Override
+    public boolean isImmunisationMissed(Date dateOfBirth, String immunisation) {
+        Calendar instance = Calendar.getInstance();
+        Date currentDate = instance.getTime();
+        instance.setTime(dateOfBirth);
+        Date lbw = new Date();
+        Date ubw = new Date();
+
+        switch (immunisation) {
+            case RchConstants.HEPATITIS_B_0:
+            case RchConstants.VITAMIN_K:
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, 1);
+                ubw = instance.getTime();
+                break;
+
+
+            case RchConstants.BCG:
+                lbw = instance.getTime();
+                instance.add(Calendar.YEAR, 1);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.OPV_0:
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, 15);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.OPV_1:
+                instance.add(Calendar.DAY_OF_WEEK, 42);
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, -42);
+                instance.add(Calendar.MONTH, 58);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.OPV_2:
+            case RchConstants.PENTA_2:
+                instance.add(Calendar.DAY_OF_WEEK, 70);
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, -70);
+                instance.add(Calendar.MONTH, 59);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.OPV_3:
+            case RchConstants.PENTA_3:
+                instance.add(Calendar.DAY_OF_WEEK, 98);
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, -98);
+                instance.add(Calendar.MONTH, 60);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.ROTA_VIRUS_1:
+            case RchConstants.PENTA_1:
+            case RchConstants.F_IPV_1_01:
+                instance.add(Calendar.DAY_OF_WEEK, 42);
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, -42);
+                instance.add(Calendar.MONTH, 12);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.ROTA_VIRUS_2:
+                instance.add(Calendar.DAY_OF_WEEK, 70);
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, -70);
+                instance.add(Calendar.MONTH, 23);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.ROTA_VIRUS_3:
+                instance.add(Calendar.DAY_OF_WEEK, 98);
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, -98);
+                instance.add(Calendar.MONTH, 24);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.DPT_1:
+                instance.add(Calendar.MONTH, 12);
+                lbw = instance.getTime();
+                instance.add(Calendar.MONTH, -12);
+                instance.add(Calendar.MONTH, 82);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.DPT_2:
+                instance.add(Calendar.MONTH, 13);
+                lbw = instance.getTime();
+                instance.add(Calendar.MONTH, -13);
+                instance.add(Calendar.MONTH, 83);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.DPT_3:
+                instance.add(Calendar.MONTH, 14);
+                lbw = instance.getTime();
+                instance.add(Calendar.MONTH, -14);
+                instance.add(Calendar.MONTH, 84);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.F_IPV_2_01:
+            case RchConstants.F_IPV_2_05:
+                instance.add(Calendar.DAY_OF_WEEK, 98);
+                lbw = instance.getTime();
+                instance.add(Calendar.DAY_OF_WEEK, -98);
+                instance.add(Calendar.MONTH, 12);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.VITAMIN_A:
+                instance.add(Calendar.MONTH, 8);
+                lbw = instance.getTime();
+                instance.add(Calendar.MONTH, -8);
+                instance.add(Calendar.MONTH, 60);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.OPV_BOOSTER:
+            case RchConstants.DPT_BOOSTER:
+                instance.add(Calendar.MONTH, 16);
+                lbw = instance.getTime();
+                instance.add(Calendar.MONTH, -16);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.MEASLES_RUBELLA_1:
+                instance.add(Calendar.MONTH, 9);
+                lbw = instance.getTime();
+                instance.add(Calendar.MONTH, -9);
+                instance.add(Calendar.MONTH, 59);
+                ubw = instance.getTime();
+                break;
+
+            case RchConstants.MEASLES_RUBELLA_2:
+                instance.add(Calendar.MONTH, 16);
+                lbw = instance.getTime();
+                instance.add(Calendar.MONTH, -16);
+                instance.add(Calendar.MONTH, 60);
+                ubw = instance.getTime();
+                break;
+            default:
+        }
+
+        return !lbw.before(currentDate) || !ubw.after(currentDate);
     }
 
 
@@ -1945,17 +1800,17 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_MEASLES_RUBELLA_1:
-                from.add(Calendar.MONTH, 9);
+                from.add(Calendar.MONTH, 8);
                 to.add(Calendar.MONTH, 59);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Measles Rubella 1 should be given after 9 months from date of birth";
+                    return "Measles Rubella 1 should be given after 8 months from date of birth";
                 }
                 break;
             case RchConstants.Z_MEASLES_RUBELLA_2:
-                from.add(Calendar.MONTH, 18);
+                from.add(Calendar.MONTH, 16);
                 to.add(Calendar.MONTH, 60);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Measles Rubella 2 should be given after 18 months from date of birth";
+                    return "Measles Rubella 2 should be given after 16 months from date of birth";
                 }
                 break;
             default:
@@ -1964,154 +1819,302 @@ public class ImmunisationServiceImpl implements ImmunisationService {
     }
 
 
+
     @Override
-    public boolean isImmunisationMissed(Date dateOfBirth, String immunisation) {
-        Calendar instance = Calendar.getInstance();
-        Date currentDate = instance.getTime();
-        instance.setTime(dateOfBirth);
-        Date lbw = new Date();
-        Date ubw = new Date();
+    public Map<Boolean, String> isImmunisationMissedOrNotValidZambia(Date dateOfBirth, String immunisation,
+                                                                     Date currentDate, Map<String, Date> vaccineGivenDateMap, boolean isForNextDueDate) {
+        Map<Boolean, String> vaccineMissedMap = new HashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        boolean isMissed;
+        String dateRange;
+        Calendar dob = Calendar.getInstance();
+        Calendar temp = Calendar.getInstance();
+        dateOfBirth = UtilBean.clearTimeFromDate(dateOfBirth);
+        currentDate = UtilBean.clearTimeFromDate(currentDate);
+        dob.setTime(dateOfBirth);
+        temp.setTime(dateOfBirth);
+        Date lbw = UtilBean.clearTimeFromDate(new Date());
+        Date ubw = UtilBean.clearTimeFromDate(new Date());
+        Date tmpDate;
+
+        if (vaccineGivenDateMap == null) {
+            vaccineGivenDateMap = new HashMap<>();
+        }
 
         switch (immunisation) {
-            case RchConstants.HEPATITIS_B_0:
-            case RchConstants.VITAMIN_K:
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, 1);
-                ubw = instance.getTime();
+            case RchConstants.Z_BCG:
+                lbw = dob.getTime();
+                dob.add(Calendar.YEAR, 1);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_OPV_0:
+                lbw = dob.getTime();
+                dob.add(Calendar.DATE, 13);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_VITTAMIN_A_50000:
+                lbw = dob.getTime();
+                dob.add(Calendar.MONTH, 5);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_VITTAMIN_A_100000:
+                dob.add(Calendar.MONTH, 6);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 11);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_VITTAMIN_A_200000_1:
+                dob.add(Calendar.MONTH, 12);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 18);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_VITTAMIN_A_200000_2:
+                dob.add(Calendar.MONTH, 18);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 24);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_VITTAMIN_A_200000_3:
+                dob.add(Calendar.MONTH, 24);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 30);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_VITTAMIN_A_200000_4:
+                dob.add(Calendar.MONTH, 30);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 36);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_VITTAMIN_A_200000_5:
+                dob.add(Calendar.MONTH, 36);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 42);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_VITTAMIN_A_200000_6:
+                dob.add(Calendar.MONTH, 42);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 48);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_VITTAMIN_A_200000_7:
+                dob.add(Calendar.MONTH, 48);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 54);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_VITTAMIN_A_200000_8:
+                dob.add(Calendar.MONTH, 54);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 59);
+                ubw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_OPV_1:
+            case RchConstants.Z_ROTA_VACCINE_1:
+            case RchConstants.Z_PCV_1:
+            case RchConstants.Z_DPT_HEB_HIB_1:
+                dob.add(Calendar.DATE, 35);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_OPV_2:
+                dob.add(Calendar.DATE, 63);
+                lbw = dob.getTime();
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_1);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 14);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_OPV_3:
+                dob.add(Calendar.DATE, 91);
+                lbw = dob.getTime();
+                tmpDate = vaccineGivenDateMap.get(RchConstants.OPV_1);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 56);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_2);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 14);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_ROTA_VACCINE_2:
+                dob.add(Calendar.DATE, 63);
+                lbw = dob.getTime();
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_ROTA_VACCINE_1);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 14);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_PCV_2:
+                dob.add(Calendar.DATE, 63);
+                lbw = dob.getTime();
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 14);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_PCV_3:
+                dob.add(Calendar.DATE, 91);
+                lbw = dob.getTime();
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 56);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_2);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 14);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_DPT_HEB_HIB_2:
+                dob.add(Calendar.DATE, 63);
+                lbw = dob.getTime();
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 14);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_DPT_HEB_HIB_3:
+                dob.add(Calendar.DATE, 91);
+                lbw = dob.getTime();
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 56);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_2);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 14);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                dob.setTime(dateOfBirth);
+                break;
+
+            case RchConstants.Z_MEASLES_RUBELLA_1:
+                dob.add(Calendar.MONTH, 8);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
                 break;
 
 
-            case RchConstants.BCG:
-                lbw = instance.getTime();
-                instance.add(Calendar.YEAR, 1);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.OPV_0:
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, 15);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.OPV_1:
-                instance.add(Calendar.DAY_OF_WEEK, 42);
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, -42);
-                instance.add(Calendar.MONTH, 58);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.OPV_2:
-            case RchConstants.PENTA_2:
-                instance.add(Calendar.DAY_OF_WEEK, 70);
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, -70);
-                instance.add(Calendar.MONTH, 59);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.OPV_3:
-            case RchConstants.PENTA_3:
-                instance.add(Calendar.DAY_OF_WEEK, 98);
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, -98);
-                instance.add(Calendar.MONTH, 60);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.ROTA_VIRUS_1:
-            case RchConstants.PENTA_1:
-            case RchConstants.F_IPV_1_01:
-                instance.add(Calendar.DAY_OF_WEEK, 42);
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, -42);
-                instance.add(Calendar.MONTH, 12);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.ROTA_VIRUS_2:
-                instance.add(Calendar.DAY_OF_WEEK, 70);
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, -70);
-                instance.add(Calendar.MONTH, 23);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.ROTA_VIRUS_3:
-                instance.add(Calendar.DAY_OF_WEEK, 98);
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, -98);
-                instance.add(Calendar.MONTH, 24);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.DPT_1:
-                instance.add(Calendar.MONTH, 12);
-                lbw = instance.getTime();
-                instance.add(Calendar.MONTH, -12);
-                instance.add(Calendar.MONTH, 82);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.DPT_2:
-                instance.add(Calendar.MONTH, 13);
-                lbw = instance.getTime();
-                instance.add(Calendar.MONTH, -13);
-                instance.add(Calendar.MONTH, 83);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.DPT_3:
-                instance.add(Calendar.MONTH, 14);
-                lbw = instance.getTime();
-                instance.add(Calendar.MONTH, -14);
-                instance.add(Calendar.MONTH, 84);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.F_IPV_2_01:
-            case RchConstants.F_IPV_2_05:
-                instance.add(Calendar.DAY_OF_WEEK, 98);
-                lbw = instance.getTime();
-                instance.add(Calendar.DAY_OF_WEEK, -98);
-                instance.add(Calendar.MONTH, 12);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.VITAMIN_A:
-                instance.add(Calendar.MONTH, 8);
-                lbw = instance.getTime();
-                instance.add(Calendar.MONTH, -8);
-                instance.add(Calendar.MONTH, 60);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.OPV_BOOSTER:
-            case RchConstants.DPT_BOOSTER:
-                instance.add(Calendar.MONTH, 16);
-                lbw = instance.getTime();
-                instance.add(Calendar.MONTH, -16);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.MEASLES_RUBELLA_1:
-                instance.add(Calendar.MONTH, 9);
-                lbw = instance.getTime();
-                instance.add(Calendar.MONTH, -9);
-                instance.add(Calendar.MONTH, 59);
-                ubw = instance.getTime();
-                break;
-
-            case RchConstants.MEASLES_RUBELLA_2:
-                instance.add(Calendar.MONTH, 16);
-                lbw = instance.getTime();
-                instance.add(Calendar.MONTH, -16);
-                instance.add(Calendar.MONTH, 60);
-                ubw = instance.getTime();
+            case RchConstants.Z_MEASLES_RUBELLA_2:
+                dob.add(Calendar.MONTH, 16);
+                lbw = dob.getTime();
+                tmpDate = vaccineGivenDateMap.get(RchConstants.MEASLES_RUBELLA_1);
+                if (tmpDate != null) {
+                    temp.setTime(tmpDate);
+                    temp.add(Calendar.DATE, 14);
+                    if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
+                        lbw = temp.getTime();
+                    }
+                }
+                dob.setTime(dateOfBirth);
                 break;
             default:
         }
 
-        return !lbw.before(currentDate) || !ubw.after(currentDate);
+        if (!isForNextDueDate) {
+            isMissed = !UtilBean.clearTimeFromDate(lbw).equals(currentDate) && !UtilBean.clearTimeFromDate(lbw).before(currentDate);
+        } else {
+            isMissed = !UtilBean.clearTimeFromDate(ubw).equals(currentDate) &&
+                    (UtilBean.clearTimeFromDate(lbw).equals(currentDate) ?
+                            !UtilBean.clearTimeFromDate(ubw).after(currentDate) :
+                            (!UtilBean.clearTimeFromDate(lbw).before(currentDate) || !UtilBean.clearTimeFromDate(ubw).after(currentDate)));
+        }
+        if (immunisation.equalsIgnoreCase(RchConstants.Z_BCG) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_50000) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_100000) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_1) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_2) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_3) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_4) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_5) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_6) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_7) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_8) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_OPV_0)) {
+            dateRange = sdf.format(lbw) + " - " + sdf.format(ubw);
+        } else {
+            dateRange = "After " + sdf.format(lbw);
+        }
+        vaccineMissedMap.put(isMissed, dateRange);
+        return vaccineMissedMap;
     }
 }

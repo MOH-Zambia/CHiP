@@ -56,6 +56,7 @@ public class HouseHoldLineListMobileMapper {
 
 
     public static void convertMemberDetailsToMemberBean(HouseHoldLineListMobileDto.MemberDetails member, MemberBean memberBean, FamilyBean familyBean, boolean isFromUpdate) {
+        Gson gson = new Gson();
         if (memberBean == null) {
             memberBean = new MemberBean();
         }
@@ -65,6 +66,14 @@ public class HouseHoldLineListMobileMapper {
         if (member.getMemberStatus() != null && member.getMemberStatus().equalsIgnoreCase("ARCHIVE")) {
             memberBean.setState(FhsConstants.FHS_MEMBER_STATE_ARCHIVED);
         }
+
+        MemberAdditionalInfoDataBean memberAdditionalInfo;
+        if (memberBean.getAdditionalInfo() != null && !memberBean.getAdditionalInfo().isEmpty()) {
+            memberAdditionalInfo = gson.fromJson(memberBean.getAdditionalInfo(), MemberAdditionalInfoDataBean.class);
+        } else {
+            memberAdditionalInfo = new MemberAdditionalInfoDataBean();
+        }
+
         memberBean.setFamilyHeadFlag(member.getHof() != null ? member.getHof() : memberBean.getFamilyHeadFlag());
         memberBean.setFirstName(member.getFirstName() != null ? member.getFirstName() : memberBean.getFirstName());
         memberBean.setMiddleName(member.getMiddleName() != null ? member.getMiddleName() : memberBean.getMiddleName());
@@ -151,13 +160,6 @@ public class HouseHoldLineListMobileMapper {
         }
         if (member.getChronicDisease() != null) {
             for (String id : convertSetToCommaSeparatedString(member.getChronicDisease(), ",").split(",")) {
-                MemberAdditionalInfoDataBean memberAdditionalInfo;
-                Gson gson = new Gson();
-                if (memberBean.getAdditionalInfo() != null && !memberBean.getAdditionalInfo().isEmpty()) {
-                    memberAdditionalInfo = gson.fromJson(memberBean.getAdditionalInfo(), MemberAdditionalInfoDataBean.class);
-                } else {
-                    memberAdditionalInfo = new MemberAdditionalInfoDataBean();
-                }
                 switch (id) {
                     case "2678":
                         memberAdditionalInfo.setHivTest("POSITIVE");
@@ -188,6 +190,9 @@ public class HouseHoldLineListMobileMapper {
                 memberBean.setTbSuspected(Boolean.TRUE);
             }
         }
+
+        memberAdditionalInfo.setHpvGiven(member.getHpvGiven() != null ? member.getHpvGiven() : memberAdditionalInfo.getHpvGiven());
+        memberBean.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
 
         //only update following info if member is getting registered for the first time
         if (!isFromUpdate) {

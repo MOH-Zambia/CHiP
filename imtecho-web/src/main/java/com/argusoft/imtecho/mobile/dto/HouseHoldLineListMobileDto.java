@@ -93,6 +93,6 @@ public class HouseHoldLineListMobileDto {
         private String newHofId;
         private String motherId;
         private Boolean nhimaCard;
-
+        private Boolean hpvGiven;
     }
 }
