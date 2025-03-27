@@ -393,10 +393,10 @@ public class ImmunisationServiceImpl implements ImmunisationService {
         if (ageInMonths >= 9) {
             vaccinationSet.add(RchConstants.Z_MEASLES_RUBELLA_1);
             vaccinationSet.add(RchConstants.Z_MEASLES_RUBELLA_2);
-            if (!immunisationDateMap.isEmpty()
-                    && (!immunisationDateMap.containsKey(RchConstants.Z_OPV_0))) {
+            //if (!immunisationDateMap.isEmpty()
+            //        && (!immunisationDateMap.containsKey(RchConstants.Z_OPV_0))) {
                 vaccinationSet.add(RchConstants.Z_OPV_4);
-            }
+            //}
         }
 
         //Removing already given vaccines
@@ -1784,8 +1784,8 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "OPV 2 vaccine date cannot be before OPV 1 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 28) {
-                    return "OPV 2 vaccine should be given 28 days after OPV 1 vaccine";
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
+                    return "OPV 2 vaccine should be given 14 days after OPV 1 vaccine";
                 }
 
                 from.add(Calendar.DATE, 63);
@@ -1805,8 +1805,8 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "OPV 3 vaccine date cannot be before OPV 2 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 28) {
-                    return "OPV 3 vaccine should be given 28 days after OPV 2 vaccine";
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
+                    return "OPV 3 vaccine should be given 14 days after OPV 2 vaccine";
                 }
 
                 from.add(Calendar.DATE, 91);
@@ -1822,12 +1822,11 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     from.add(Calendar.MONTH, 9);
                     to.add(Calendar.MONTH, 59);
                     if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                        return "OPV 4 should be given after 9 months after date of birth";
+                        return "OPV 4 should be given 9 months after date of birth";
                     }
                 } else {
                     return "OPV 0 is already given";
                 }
-
                 break;
 
             case RchConstants.Z_ROTA_VACCINE_1:
@@ -1850,8 +1849,8 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "ROTA vaccine 2 date cannot be before ROTA vaccine 1 date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 28) {
-                    return "ROTA vaccine 2 should be given 28 days after ROTA vaccine 1";
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
+                    return "ROTA vaccine 2 should be given 14 days after ROTA vaccine 1";
                 }
 
                 from.add(Calendar.DATE, 63);
@@ -1871,8 +1870,8 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "PCV 2 vaccine date cannot be before PCV 1 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 28) {
-                    return "PCV 2 vaccine should be given 28 days after PCV 1";
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
+                    return "PCV 2 vaccine should be given 14 days after PCV 1";
                 }
 
                 from.add(Calendar.DATE, 63);
@@ -1892,8 +1891,8 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "DPT-HepB-Hib 2 vaccine date cannot be before DPT-HepB-Hib 1 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 28) {
-                    return "DPT-HepB-Hib 2 vaccine should be given 28 days after DPT-HepB-Hib 1";
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
+                    return "DPT-HepB-Hib 2 vaccine should be given 14 days after DPT-HepB-Hib 1";
                 }
 
                 from.add(Calendar.DATE, 63);
@@ -1913,8 +1912,8 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "PCV 3 vaccine date cannot be before PCV 2 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 28) {
-                    return "PCV 3 vaccine should be given 28 days after PCV 2";
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
+                    return "PCV 3 vaccine should be given 14 days after PCV 2";
                 }
 
                 from.add(Calendar.DATE, 91);
@@ -1934,8 +1933,8 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "DPT-HepB-Hib 3 vaccine date cannot be before DPT-HepB-Hib 2 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 28) {
-                    return "DPT-HepB-Hib 3 vaccine should be given 28 days after DPT-HepB-Hib 2";
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
+                    return "DPT-HepB-Hib 3 vaccine should be given 14 days after DPT-HepB-Hib 2";
                 }
 
                 from.add(Calendar.DATE, 91);
@@ -1962,32 +1961,6 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             default:
         }
         return null;
-
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-//        Map<Boolean, String> immunisationMissedMap;
-//        if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-//            immunisationMissedMap  = SharedStructureData.immunisationService.isImmunisationMissedOrNotValidZambia(dob, currentVaccine, new Date(), SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true);
-//        } else {
-//            immunisationMissedMap = SharedStructureData.immunisationService.isImmunisationMissedOrNotValid(dob, currentVaccine, new Date(), SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true);
-//        }
-//        for (Map.Entry<Boolean, String> entry : immunisationMissedMap.entrySet()) {
-//            String dateRange = entry.getValue();
-//            try {
-//                if (dateRange != null) {
-//                    String[] date = dateRange.split("-");
-//                    if (!Objects.requireNonNull(sdf.parse(date[0])).before(givenDate)) {
-//                        return "Please select date within the range for " + currentVaccine.replace("_", " ");
-//                    }
-//                    if (!Objects.requireNonNull(sdf.parse(date[1])).after(givenDate)) {
-//                        return "Please select date within the range for " + currentVaccine.replace("_", " ");
-//                    }
-//                }
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return null;
     }
 
 
