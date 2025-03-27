@@ -574,6 +574,9 @@ public class DynamicUtils {
                         case FormulaConstants.FORMULA_CHECK_IF_THIRD_TRIMESTER:
                             HiddenQuestionFormulaUtil.checkIfThirdTrimester(queFormBean);
                             break;
+                        case FormulaConstants.FORMULA_CHECK_IF_SECOND_TRIMESTER_STARTED:
+                            HiddenQuestionFormulaUtil.checkIfSecondTrimesterStarted(queFormBean);
+                            break;
                         case FormulaConstants.FORMULA_CHECK_AGE_IF_WRONGLY_REGISTERED_AS_PREGNANT:
                             HiddenQuestionFormulaUtil.checkAgeIfWronglyRegistered(queFormBean);
                             break;
