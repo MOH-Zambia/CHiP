@@ -738,6 +738,11 @@ public class AncServiceImpl implements AncService {
                     ancVisit.setUrineSugar(answer);
                 }
                 break;
+            case "2012":
+                if (keyAndAnswersMap.get("30").equalsIgnoreCase(RchConstants.MEMBER_STATUS_AVAILABLE)) {
+                    ancVisit.setIptpGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                }
+                break;
             case "202":
                 //RPR Syphilis test result are stored in this for CHiP implementation
                 if (keyAndAnswersMap.get("30").equalsIgnoreCase(RchConstants.MEMBER_STATUS_AVAILABLE)) {
