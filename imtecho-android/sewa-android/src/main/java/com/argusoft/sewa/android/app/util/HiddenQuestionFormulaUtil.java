@@ -3797,4 +3797,24 @@ public class HiddenQuestionFormulaUtil {
         }
     }
 
+    public static void checkIfSecondTrimesterStarted(QueFormBean queFormBean) {
+        String lmpDateString = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.LMP_DATE);
+        if (lmpDateString != null && !lmpDateString.equals("null")) {
+            Date lmpDate = new Date(Long.parseLong(lmpDateString));
+            Calendar before10Months = Calendar.getInstance();
+            before10Months.add(Calendar.MONTH, -10);
+            Calendar before4Months = Calendar.getInstance();
+            before4Months.add(Calendar.MONTH, -4);
+            if (before10Months.getTime().before(lmpDate) && before4Months.getTime().after(lmpDate)) {
+                queFormBean.setAnswer(queFormBean.getOptions().get(0).getKey());
+                queFormBean.setNext(queFormBean.getOptions().get(0).getNext());
+            } else {
+                queFormBean.setAnswer(queFormBean.getOptions().get(1).getKey());
+                queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
+            }
+        } else {
+            queFormBean.setAnswer(queFormBean.getOptions().get(1).getKey());
+            queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
+        }
+    }
 }
