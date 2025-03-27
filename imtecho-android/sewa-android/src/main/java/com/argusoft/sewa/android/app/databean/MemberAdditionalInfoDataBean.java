@@ -148,6 +148,7 @@ public class MemberAdditionalInfoDataBean {
     private String hepatitisCTest;
     private Boolean albendanzoleGiven;
     private String rchId;
+    private Boolean hpvGiven;
 
     public Integer getHeight() {
         return height;
@@ -789,5 +790,13 @@ public class MemberAdditionalInfoDataBean {
 
     public void setRchId(String rchId) {
         this.rchId = rchId;
+    }
+
+    public Boolean getHpvGiven() {
+        return hpvGiven;
+    }
+
+    public void setHpvGiven(Boolean hpvGiven) {
+        this.hpvGiven = hpvGiven;
     }
 }

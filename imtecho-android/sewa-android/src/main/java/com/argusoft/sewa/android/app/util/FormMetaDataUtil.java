@@ -2271,6 +2271,11 @@ public class FormMetaDataUtil {
                 } else {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DEVELOPMENTAL_DELAYS, "No");
                 }
+                if (memberAdditionalInfo.getHpvGiven() != null && memberAdditionalInfo.getHpvGiven()) {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HPV_GIVEN, "Yes");
+                } else {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HPV_GIVEN, "No");
+                }
             }
             if (Boolean.TRUE.equals(memberDataBean.getHaveNssf())) {
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.HAVE_NSSF, "1");

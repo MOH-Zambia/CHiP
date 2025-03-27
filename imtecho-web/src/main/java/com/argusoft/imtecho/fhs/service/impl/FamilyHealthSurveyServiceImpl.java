@@ -1264,6 +1264,9 @@ public class FamilyHealthSurveyServiceImpl implements FamilyHealthSurveyService 
                     memberEntity.setMobileNumber(answer.replace("F/", ""));
                 }
                 break;
+            case "4499":
+                memberAdditionalInfo.setHpvGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                break;
             case "4501":
                 memberEntity.setStartedMenstruating(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;

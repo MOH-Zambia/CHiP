@@ -290,6 +290,7 @@ public class HouseHoldLineListMobileDto {
         private String memberUuid;
         private String familyUuid;
         private Boolean memberDead;
+        private Boolean hpvGiven;
 
         public Integer getMemberId() {
             return memberId;
@@ -613,6 +614,14 @@ public class HouseHoldLineListMobileDto {
 
         public void setMemberDead(Boolean memberDead) {
             this.memberDead = memberDead;
+        }
+
+        public Boolean getHpvGiven() {
+            return hpvGiven;
+        }
+
+        public void setHpvGiven(Boolean hpvGiven) {
+            this.hpvGiven = hpvGiven;
         }
     }
 }

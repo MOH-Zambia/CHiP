@@ -298,6 +298,7 @@ public class MemberAdditionalInfo {
     private Date mebendazole2Date;
     private Boolean havingIrregularPeriods;
     private Boolean nhimaCard;
+    private Boolean hpvGiven;
 
     public Date getPnctetanus1() {
         return pnctetanus1;
@@ -1513,5 +1514,13 @@ public class MemberAdditionalInfo {
 
     public void setNhimaCard(Boolean nhimaCard) {
         this.nhimaCard = nhimaCard;
+    }
+
+    public Boolean getHpvGiven() {
+        return hpvGiven;
+    }
+
+    public void setHpvGiven(Boolean hpvGiven) {
+        this.hpvGiven = hpvGiven;
     }
 }
