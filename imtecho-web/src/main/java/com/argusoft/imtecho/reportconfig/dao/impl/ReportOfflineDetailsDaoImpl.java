@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.*;
-import javax.transaction.Transactional;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -95,7 +97,7 @@ public class ReportOfflineDetailsDaoImpl extends GenericDaoImpl<ReportOfflineDet
      * {@inheritDoc}
      */
     @Override
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void markAsError(Integer id, String error) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();

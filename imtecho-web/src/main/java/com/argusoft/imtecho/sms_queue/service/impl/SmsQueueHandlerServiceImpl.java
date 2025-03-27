@@ -4,7 +4,7 @@ import com.argusoft.imtecho.common.service.SmsService;
 import com.argusoft.imtecho.sms_queue.service.SmsQueueHandlerService;
 import com.argusoft.imtecho.sms_queue.dto.SmsQueueDto;
 import com.argusoft.imtecho.sms_queue.dao.SmsQueueDao;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

@@ -55,7 +55,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -1263,6 +1263,9 @@ public class FamilyHealthSurveyServiceImpl implements FamilyHealthSurveyService 
                 if (!answer.equals("T")) {
                     memberEntity.setMobileNumber(answer.replace("F/", ""));
                 }
+                break;
+            case "4499":
+                memberAdditionalInfo.setHpvGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "4501":
                 memberEntity.setStartedMenstruating(ImtechoUtil.returnTrueFalseFromInitials(answer));
