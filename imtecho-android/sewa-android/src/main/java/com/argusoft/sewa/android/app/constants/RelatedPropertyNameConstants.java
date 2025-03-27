@@ -275,6 +275,7 @@ public class RelatedPropertyNameConstants {
     public static final String EARLY_REGISTRATION = "earlyRegistration";
     public static final String HIGH_RISK_CONDITIONS = "highRiskConditions";
     public static final String IMMUNISATION_GIVEN = "immunisationGiven";
+    public static final String HPV_GIVEN = "hpvGiven";
     public static final String PREVIOUS_PREGNANCY_COMPLICATION = "previousPregnancyComplication";
     public static final String HBSAG_TEST = "hbsagTest";
     public static final String HIV_TEST = "hivTest";

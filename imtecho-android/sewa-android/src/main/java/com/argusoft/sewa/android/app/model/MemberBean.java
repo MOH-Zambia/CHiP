@@ -409,6 +409,8 @@ public class MemberBean extends BaseEntity implements Serializable {
     @DatabaseField
     private String nssfCardNumber;
 
+    @DatabaseField
+    private Boolean hpvGiven;
 
     public MemberBean() {
     }
@@ -530,7 +532,7 @@ public class MemberBean extends BaseEntity implements Serializable {
             this.rdtStatus = additionalInfo.getRdtStatus();
             this.bcgEligible = additionalInfo.getBcgEligible();
             this.bcgEligibleFilled = additionalInfo.getBcgEligibleFilled();
-
+            this.hpvGiven = additionalInfo.getHpvGiven();
         }
 
         if (memberDataBean.getDateOfWedding() != null) {
@@ -1388,6 +1390,14 @@ public class MemberBean extends BaseEntity implements Serializable {
         this.currentStudyingStandard = currentStudyingStandard;
     }
 
+    public Boolean getHpvGiven() {
+        return hpvGiven;
+    }
+
+    public void setHpvGiven(Boolean hpvGiven) {
+        this.hpvGiven = hpvGiven;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -1521,6 +1531,7 @@ public class MemberBean extends BaseEntity implements Serializable {
                 ", motherUUID='" + motherUUID + '\'' +
                 ", haveNssf=" + haveNssf +
                 ", nssfCardNumber='" + nssfCardNumber + '\'' +
+                ", hpvGiven='" + hpvGiven + '\'' +
                 '}';
     }
 
