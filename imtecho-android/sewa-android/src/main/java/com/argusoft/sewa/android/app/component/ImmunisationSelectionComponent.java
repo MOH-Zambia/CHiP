@@ -150,20 +150,14 @@ public class ImmunisationSelectionComponent extends LinearLayout {
             addView(mainLayout);
             return;
         }
-        if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-            dueImmunisations = new ArrayList<>(SharedStructureData.immunisationService.getDueImmunisationsForChildZambia(dob, givenImmunisations, currentDate, SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true));
-        } else if (GlobalTypes.FLAVOUR_DNHDD.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-            dueImmunisations = new ArrayList<>(SharedStructureData.immunisationService.getDueImmunisationsForChildDnhdd(dob, givenImmunisations, currentDate, SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true));
-        } else {
-            dueImmunisations = new ArrayList<>(SharedStructureData.immunisationService.getDueImmunisationsForChild(dob, givenImmunisations, currentDate, SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true));
-        }
+        dueImmunisations = new ArrayList<>(SharedStructureData.immunisationService.getDueImmunisationsForChildZambia(dob, givenImmunisations, currentDate, SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true));
 
-        if (EXCLUDE_VITAMIN_A_IMMUNISATION.equalsIgnoreCase(type)) {
-            dueImmunisations.removeAll(vitaminAVaccines());
-        } else if (ONLY_VITAMIN_A_IMMUNISATION.equalsIgnoreCase(type)) {
-            noVaccinesLabel = "No Vitamin A doses due";
-            dueImmunisations.retainAll(vitaminAVaccines());
-        }
+//        if (EXCLUDE_VITAMIN_A_IMMUNISATION.equalsIgnoreCase(type)) {
+//            dueImmunisations.removeAll(vitaminAVaccines());
+//        } else if (ONLY_VITAMIN_A_IMMUNISATION.equalsIgnoreCase(type)) {
+//            noVaccinesLabel = "No Vitamin A doses due";
+//            dueImmunisations.retainAll(vitaminAVaccines());
+//        }
 
         if (dueImmunisations != null && !dueImmunisations.isEmpty()) {
             mainLayout.addView(getHeaderLayout());
