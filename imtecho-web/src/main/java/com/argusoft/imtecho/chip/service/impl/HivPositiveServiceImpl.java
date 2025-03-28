@@ -192,6 +192,9 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             memberAdditionalInfo.setLastServiceLongDate(serviceDate);
             memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
         }
+        if (jsonObject.get("formFilledVia") != null) {
+            hivPositiveEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
 
         hivPositiveEntity.setMemberStatus("AVAILABLE");
 
@@ -319,6 +322,10 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             long serviceDate = jsonObject.get("serviceDate").getAsLong();
             memberAdditionalInfo.setLastServiceLongDate(serviceDate);
             memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
+        }
+
+        if (jsonObject.get("formFilledVia") != null) {
+            hivScreeningEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
         }
 
         hivScreeningEntity.setMemberStatus("AVAILABLE");
@@ -522,6 +529,10 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
         }
 
+        if (jsonObject.get("formFilledVia") != null) {
+            hivKnownPositive.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
+
         if (memberEntity.getGender().equalsIgnoreCase("M")) {
             hivKnownPositive.setLmpDate(null);
         }
@@ -653,6 +664,10 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             long serviceDate = jsonObject.get("serviceDate").getAsLong();
             memberAdditionalInfo.setLastServiceLongDate(serviceDate);
             memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
+        }
+
+        if (jsonObject.get("formFilledVia") != null) {
+            emtctEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
         }
 
         emtctEntity.setMemberStatus("AVAILABLE");

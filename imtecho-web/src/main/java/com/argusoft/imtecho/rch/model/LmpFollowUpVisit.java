@@ -138,6 +138,9 @@ public class LmpFollowUpVisit extends VisitCommonFields implements Serializable 
     @Column(name = "prev_anc_state")
     private String prevAncState;
 
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
+
     public Integer getId() {
         return id;
     }
@@ -425,6 +428,14 @@ public class LmpFollowUpVisit extends VisitCommonFields implements Serializable 
 
     public void setIrregularPeriods(Boolean irregularPeriods) {
         this.irregularPeriods = irregularPeriods;
+    }
+
+    public String getFormFilledVia() {
+        return formFilledVia;
+    }
+
+    public void setFormFilledVia(String formFilledVia) {
+        this.formFilledVia = formFilledVia;
     }
 
     @Override

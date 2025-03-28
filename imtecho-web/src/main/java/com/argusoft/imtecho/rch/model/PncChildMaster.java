@@ -98,6 +98,9 @@ public class PncChildMaster extends EntityAuditInfo implements Serializable {
     @Column(name = "other_death_place")
     private String otherDeathPlace;
 
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
+
     public Integer getId() {
         return id;
     }
@@ -276,6 +279,14 @@ public class PncChildMaster extends EntityAuditInfo implements Serializable {
 
     public void setOtherDeathPlace(String otherDeathPlace) {
         this.otherDeathPlace = otherDeathPlace;
+    }
+
+    public String getFormFilledVia() {
+        return formFilledVia;
+    }
+
+    public void setFormFilledVia(String formFilledVia) {
+        this.formFilledVia = formFilledVia;
     }
 
     /**

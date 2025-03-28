@@ -417,6 +417,9 @@ public class ChildServiceImpl implements ChildService {
         childServiceMaster.setExclusivelyBreastfeded(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("exclusivelyBreastfed").getAsString()));
         childServiceMaster.setIfaSyrupGiven(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("ifaSyrup").getAsString()));
         childServiceMaster.setWeight(Float.valueOf(jsonObject.get("weight").getAsString()));
+        if (jsonObject.get("formFilledVia") != null) {
+            childServiceMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
         childServiceMaster.setFamilyId(familyEntity.getId());
         childServiceMaster.setLatitude(familyEntity.getLatitude());
         childServiceMaster.setLongitude(familyEntity.getLongitude());

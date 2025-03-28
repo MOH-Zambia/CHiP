@@ -154,6 +154,9 @@ public class WpdChildMaster extends VisitCommonFields implements Serializable {
     @Column(name = "skin_to_skin_care")
     private Boolean skinToSkin;
 
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
+
     public Integer getId() {
         return id;
     }
@@ -446,6 +449,14 @@ public class WpdChildMaster extends VisitCommonFields implements Serializable {
 
     public void setBirthLength(Integer birthLength) {
         this.birthLength = birthLength;
+    }
+
+    public String getFormFilledVia() {
+        return formFilledVia;
+    }
+
+    public void setFormFilledVia(String formFilledVia) {
+        this.formFilledVia = formFilledVia;
     }
 
     /**

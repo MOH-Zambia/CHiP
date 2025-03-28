@@ -193,6 +193,10 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
             chipMalariaEntity.setReferralPlace(jsonObject.get("referralPlace").getAsInt());
         }
 
+        if (jsonObject.get("formFilledVia") != null) {
+            chipMalariaEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
+
         if (memberEntity.getGender().equalsIgnoreCase("M")) {
             chipMalariaEntity.setLmpDate(null);
         }
@@ -271,6 +275,10 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
 
         if ("YES".equalsIgnoreCase(chipMalariaEntity.getReferralDone()) && jsonObject.get("referralPlace") != null) {
             chipMalariaEntity.setReferralPlace(jsonObject.get("referralPlace").getAsInt());
+        }
+
+        if (jsonObject.get("formFilledVia") != null) {
+            chipMalariaEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
         }
 
         if (memberEntity.getGender().equalsIgnoreCase("M")) {
@@ -461,6 +469,9 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
         if (jsonObject.has("treatmentDay")) {
             malariaIndexCaseEntity.setDayOfTreatment(jsonObject.get("treatmentDay").getAsString());
         }
+        if (jsonObject.get("formFilledVia") != null) {
+            malariaIndexCaseEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
         malariaIndexCaseEntity.setPatientShowingSigns(jsonObject.get("signShown").getAsString());
         malariaIndexCaseEntity.setWasDbsCollected(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("dbsCollected").getAsString()));
         if (jsonObject.has("dbsResultAvailable")) {
@@ -626,6 +637,9 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
         malariaNonIndexEntity.setPeopleRcdPositive(Integer.valueOf(jsonObject.get("numberOfPeopleTestedPositive").getAsString()));
         malariaNonIndexEntity.setPeopleTestedInHousehold(Integer.valueOf(jsonObject.get("numberOfPeopleTested").getAsString()));
         malariaNonIndexEntity.setNumberOfLlinsHanging(Integer.valueOf(jsonObject.get("numberOfLlinInHouse").getAsString()));
+        if (jsonObject.get("formFilledVia") != null) {
+            malariaNonIndexEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
         malariaNonIndexEntity.setTookMedForMalariaPrevention(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("medicineToPreventMalaria").getAsString()));
         malariaNonIndexEntity.setReceivedAnyOtherPrevention(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("preventiveMeasureTaken").getAsString()));
         return chipMalariaNonIndexDao.create(malariaNonIndexEntity);

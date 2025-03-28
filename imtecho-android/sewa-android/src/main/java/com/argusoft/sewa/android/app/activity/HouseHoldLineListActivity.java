@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -63,6 +64,7 @@ import com.argusoft.sewa.android.app.util.GlobalTypes;
 import com.argusoft.sewa.android.app.util.SewaConstants;
 import com.argusoft.sewa.android.app.util.SewaUtil;
 import com.argusoft.sewa.android.app.util.UtilBean;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -231,19 +233,13 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
     public void addSearchTextBox() {
         selectedFamilyIndex = -1;
         bodyLayoutContainer.addView(lastUpdateLabelView(sewaService, bodyLayoutContainer));
-        List<String> options = new ArrayList<>();
         if (!isReverification) {
-            options.add(UtilBean.getMyLabel(LabelConstants.ADD_NEW_FAMILY));
+            LinearLayout button = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.button_listview_row, null);
+            MaterialTextView buttonText = button.findViewById(R.id.lists_button);
+            buttonText.setText(UtilBean.getMyLabel(LabelConstants.ADD_NEW_FAMILY));
+            button.setOnClickListener(v -> showAlertAndNavigate(FormConstants.HOUSE_HOLD_LINE_LIST_NEW));
+            bodyLayoutContainer.addView(button);
 
-            AdapterView.OnItemClickListener onItemClickListener = (parent, view, position, id) -> {
-                if (position == 0) {
-                    showAlertAndNavigate(FormConstants.HOUSE_HOLD_LINE_LIST_NEW);
-                }
-            };
-
-            ListView buttonList = MyStaticComponents.getButtonList(context, options, onItemClickListener);
-            buttonList.setPadding(0, 0, 0, 30);
-            bodyLayoutContainer.addView(buttonList);
 
             LinearLayout orLayout = getLinearLayout(context, -1, HORIZONTAL, new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             orLayout.setPadding(0, 5, 0, 5);
