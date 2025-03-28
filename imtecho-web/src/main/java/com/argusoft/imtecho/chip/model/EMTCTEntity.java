@@ -42,4 +42,6 @@ public class EMTCTEntity extends EntityAuditInfo implements Serializable {
     private String referralFor;
     @Column(name = "is_iec_given")
     private Boolean isIecGiven;
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
 }

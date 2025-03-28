@@ -92,4 +92,7 @@ public class ChipTBEntity extends EntityAuditInfo implements Serializable {
 
     @Column(name = "contacts_collected")
     private Integer contactsCollected;
+
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
 }

@@ -99,4 +99,7 @@ public class HivScreeningEntity extends EntityAuditInfo implements Serializable 
 
     @Column(name = "member_status")
     private String memberStatus;
+
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
 }

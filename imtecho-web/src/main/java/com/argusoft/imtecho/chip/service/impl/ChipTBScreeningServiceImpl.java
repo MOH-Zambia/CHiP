@@ -195,6 +195,10 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
             memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
         }
 
+        if (jsonObject.get("formFilledVia") != null) {
+            chipTBEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
+
         chipTBEntity.setFormType("TB_SCREENING");
         chipTBEntity.setMemberStatus("AVAILABLE");
 

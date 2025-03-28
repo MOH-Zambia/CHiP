@@ -256,6 +256,10 @@ public class LmpFollowUpServiceImpl implements LmpFollowUpService {
             lmpFollowUpVisit.setLongitude(jsonObject.get("longitude").getAsString());
         }
 
+        if (jsonObject.get("formFilledVia") != null) {
+            lmpFollowUpVisit.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
+
         if (jsonObject.get("serviceDate") != null) {
             long serviceDate = jsonObject.get("serviceDate").getAsLong();
             memberAdditionalInfo.setLastServiceLongDate(serviceDate);

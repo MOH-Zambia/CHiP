@@ -202,6 +202,9 @@ public class PncMotherMaster extends EntityAuditInfo implements Serializable {
     @Column(name = "remarks")
     private String remarks;
 
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
+
     public Integer getId() {
         return id;
     }
@@ -519,7 +522,13 @@ public class PncMotherMaster extends EntityAuditInfo implements Serializable {
         this.receivedMebendazole = receivedMebendazole;
     }
 
+    public String getFormFilledVia() {
+        return formFilledVia;
+    }
 
+    public void setFormFilledVia(String formFilledVia) {
+        this.formFilledVia = formFilledVia;
+    }
 
     /**
      * Define fields name for rch_pnc_mother_master entity.

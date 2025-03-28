@@ -659,6 +659,10 @@ public class WpdServiceImpl implements WpdService {
         } else {
             wpdChildMaster.setReferralDone(RchConstants.REFFERAL_DONE_NO);
         }
+        if (jsonObject.get("formFilledVia") != null) {
+            wpdMotherMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+            wpdChildMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
 
         wpdChildMaster.setWpdMotherId(motherEntity.getId());
         wpdChildMaster.setDateOfDelivery(new Date(Long.parseLong(jsonObject.get("deliveryDate").getAsString())));
