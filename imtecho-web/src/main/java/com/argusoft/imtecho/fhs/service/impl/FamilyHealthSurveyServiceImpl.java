@@ -2244,7 +2244,7 @@ public class FamilyHealthSurveyServiceImpl implements FamilyHealthSurveyService 
             memberEntity.setMobileNumber(member.get("mobileNumber").getAsString());
             memberEntity.setState(FamilyHealthSurveyServiceConstants.CFHC_MEMBER_STATE_NEW);
             if (memberEntity.getGender().equalsIgnoreCase("F")) {
-                memberEntity.setIsPregnantFlag(member.get("isPregnant").getAsBoolean());
+                memberEntity.setIsPregnantFlag(member.get("isPregnant") != null && member.get("isPregnant").getAsBoolean());
             }
             String maritalStatus = member.has("maritalStatus") ? member.get("maritalStatus").getAsString() : null;
             if (maritalStatus != null) {
