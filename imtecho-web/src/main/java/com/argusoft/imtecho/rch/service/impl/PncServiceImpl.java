@@ -423,7 +423,9 @@ public class PncServiceImpl implements PncService {
         pncMotherMaster.setCalciumTabletsGiven(jsonObject.get("calciumTabletsGiven").getAsInt());
         pncMotherMaster.setIfaTabletsGiven(jsonObject.get("ifaTabletsGiven").getAsInt());
         pncMotherMaster.setIecGiven(jsonObject.get("isIecGiven").getAsBoolean());
-
+        if (jsonObject.get("formFilledVia") != null) {
+            pncMotherMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
         pncMotherMasterDao.create(pncMotherMaster);
         pncChildMaster.setChildWeight(jsonObject.get("childWeight").getAsFloat());
         if (ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("childReferalRequired").getAsString())) {
@@ -431,6 +433,9 @@ public class PncServiceImpl implements PncService {
             pncChildMaster.setReferralReason(jsonObject.get("childReferralReason").getAsString());
         } else {
             pncChildMaster.setChildReferralDone(RchConstants.REFFERAL_DONE_NO);
+        }
+        if (jsonObject.get("formFilledVia") != null) {
+            pncChildMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
         }
         pncChildMaster.setPncMasterId(pncMaster.getId());
         pncChildMaster.setEidStarted(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("eidStarted").getAsString()));

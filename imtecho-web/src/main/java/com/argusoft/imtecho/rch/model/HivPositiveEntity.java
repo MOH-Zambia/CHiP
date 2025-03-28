@@ -46,5 +46,6 @@ public class HivPositiveEntity extends EntityAuditInfo implements Serializable {
     private String referralFor;
     @Column(name = "member_status")
     private String memberStatus;
-
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
 }

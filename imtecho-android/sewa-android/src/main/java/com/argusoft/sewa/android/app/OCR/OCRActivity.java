@@ -94,7 +94,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -492,8 +491,10 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
             handleNextButtonVisibility(currentPageIndex);
             bodyLayoutContainer.addView(displayLayout);
         } catch (Exception e) {
-            populateFormData(null);
-            hideProcessDialog();
+            SewaUtil.generateToast(context, "Unable to scan form, Please try filling data manually");
+            //populateFormData(null);
+            // hideProcessDialog();
+            finish();
             Log.e(Activity.class.getName(), e.getMessage());
         }
         if (ocrFormName.equalsIgnoreCase(FormConstants.OCR_HOUSEHOLD_LINE_LIST)) {
@@ -1051,7 +1052,9 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
         for (Map.Entry<Integer, JsonObject> entry : mapOfPageNumberAndJsonObject.entrySet()) {
             JsonObject jsonObject = entry.getValue();
             for (String key : jsonObject.keySet()) {
-                mergedJson.add(key, jsonObject.get(key));
+                if (!jsonObject.has("relationWithHof")) {
+                    mergedJson.add(key, jsonObject.get(key));
+                }
             }
         }
 

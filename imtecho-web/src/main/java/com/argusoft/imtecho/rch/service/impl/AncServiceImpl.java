@@ -487,6 +487,10 @@ public class AncServiceImpl implements AncService {
             ancVisit.setReferralPlace(jsonObject.get("referralPlace").getAsInt());
         }
 
+        if (jsonObject.get("formFilledVia") != null) {
+            ancVisit.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
+
         if (jsonObject.get("serviceDate") != null) {
             long serviceDate = jsonObject.get("serviceDate").getAsLong();
             memberAdditionalInfo.setLastServiceLongDate(serviceDate);

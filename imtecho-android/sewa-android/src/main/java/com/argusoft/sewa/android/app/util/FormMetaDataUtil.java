@@ -1606,7 +1606,7 @@ public class FormMetaDataUtil {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.SELECTED_CHILDREN, selectedChildren.toString());
                 }
             }
-            if (memberDataBean != null && memberDataBean.getMemberUuid() != null) {
+            if (memberDataBean != null && memberDataBean.getMemberUuid() != null && memberDataBean.getFamilyUuid() != null) {
                 List<MemberBean> children = memberBeanDao.queryBuilder().where()
                         .eq(FieldNameConstants.MOTHER_UUID, memberDataBean.getMemberUuid())
                         .and().eq(FieldNameConstants.MEMBERS_FAMILY_UUID, memberDataBean.getFamilyUuid())

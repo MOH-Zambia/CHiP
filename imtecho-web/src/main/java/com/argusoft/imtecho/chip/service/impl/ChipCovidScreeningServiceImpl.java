@@ -164,6 +164,10 @@ public class ChipCovidScreeningServiceImpl implements ChipCovidScreeningService 
             memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
         }
 
+        if (jsonObject.get("formFilledVia") != null) {
+            covidScreeningEntity.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
+
         covidScreeningEntity.setMemberStatus("AVAILABLE");
 
         chipCovidDao.create(covidScreeningEntity);
