@@ -492,9 +492,9 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
             bodyLayoutContainer.addView(displayLayout);
         } catch (Exception e) {
             SewaUtil.generateToast(context, "Unable to scan form, Please try filling data manually");
-            //populateFormData(null);
-            // hideProcessDialog();
-            finish();
+            populateFormData(null);
+             hideProcessDialog();
+            //finish();
             Log.e(Activity.class.getName(), e.getMessage());
         }
         if (ocrFormName.equalsIgnoreCase(FormConstants.OCR_HOUSEHOLD_LINE_LIST)) {
@@ -929,7 +929,7 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
         jsonObject.add("familyUuid", new JsonPrimitive(familyBean.getUuid()));
         jsonObject.add("locationId", new JsonPrimitive(familyBean.getAreaId()));
         try {
-            familyBeanDao.create(familyBean);
+            //familyBeanDao.create(familyBean);
             List<MemberDataBean> arrays = new ArrayList<>();
             for (Map.Entry<Integer, JsonObject> entry : mapOfPageNumberAndJsonObject.entrySet()) {
                 if (entry.getKey() == 0) {
@@ -984,7 +984,7 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
                 memberBean.setUniqueHealthId(generateTempUniqueHealthId(memberBean.getMemberUuid()));
                 arrays.add(new MemberDataBean(memberBean));
                 memberBean.setFamilyId(familyBean.getFamilyId());
-                sewaService.createMemberBean(null, memberBean, familyBean);
+                //sewaService.createMemberBean(null, memberBean, familyBean);
             }
 
 
