@@ -172,8 +172,9 @@ public class UserController {
             @RequestParam(name = "searchString", required = false) String searchString,
             @RequestParam(name = "roleId", required = false) Integer roleId,
             @RequestParam(name = "limit", required = false) Integer limit,
-            @RequestParam(name = "offSet", required = false) Integer offSet) {
-        return userService.retrieveUsers(byUsername, byContactNumber, byName, byLocation, locationId, searchString, roleId, limit, offSet);
+            @RequestParam(name = "offSet", required = false) Integer offSet,
+            @RequestParam(name = "healthInfraId", required = false) Integer healthInfraId) {
+        return userService.retrieveUsers(byUsername, byContactNumber, byName, byLocation, locationId, searchString, roleId, limit, offSet, healthInfraId);
     }
 
     /**
