@@ -332,5 +332,5 @@ public interface UserService {
 
     void updateUserDetailsFromMobile(String token, MobUserInfoDataBean userDetails);
 
-    List<UserMasterDto> retrieveUsers(Boolean byUsername, Boolean byContactNumber, Boolean byName, Boolean byLocation, Integer locationId, String searchString, Integer roleId, Integer limit, Integer offSet);
+    List<UserMasterDto> retrieveUsers(Boolean byUsername, Boolean byContactNumber, Boolean byName, Boolean byLocation, Integer locationId, String searchString, Integer roleId, Integer limit, Integer offSet, Integer healthInfraId);
 }

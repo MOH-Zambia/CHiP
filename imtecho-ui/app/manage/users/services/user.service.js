@@ -193,7 +193,9 @@
                     searchString:params.searchString,
                     roleId: 245,
                     limit:params.limit,
-                    offSet:params.offSet}).$promise;
+                    offSet:params.offSet,
+                    healthInfraId: params.healthInfraId
+                }).$promise;
             }
         };
     }
