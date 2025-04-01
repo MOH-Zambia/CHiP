@@ -413,13 +413,13 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
                         validationsForDob.add(new ValidationTagBean(FormulaConstants.VALIDATION_IS_FUTURE_DATE,
                                 "Date cannot be in future"));
                         DateChangeListenerStatic dateSelectorListener = new DateChangeListenerStatic(context, validationsForDob);
+                        fieldNameAndInputType.put(fieldName, dateSelectorListener);
                         LinearLayout datePicker = new LinearLayout(context);
                         datePicker = MyStaticComponents.getCustomDatePickerForStatic(this, dateSelectorListener, 0);
                         Date selectedDate = null;
                         try {
                             if (mainAnswer != null) {
                                 selectedDate = OCRUtils.convertStringToDate(mainAnswer);
-                                fieldNameAndInputType.put(fieldName, dateSelectorListener);
                                 if (selectedDate != null) {
                                     MaterialTextView txtDate = datePicker.findViewById(IdConstants.DATE_PICKER_TEXT_DATE_ID);
                                     txtDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(selectedDate));
@@ -493,7 +493,7 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
         } catch (Exception e) {
             SewaUtil.generateToast(context, "Unable to scan form, Please try filling data manually");
             //populateFormData(null);
-            // hideProcessDialog();
+            //hideProcessDialog();
             finish();
             Log.e(Activity.class.getName(), e.getMessage());
         }
@@ -835,7 +835,7 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
             loggerBean.setNoOfAttempt(0);
             sewaService.createLoggerBean(loggerBean);
         } catch (NumberFormatException e) {
-            //SewaUtil.generateToast(context, "Text was not extracted properly. Please try again");
+            SewaUtil.generateToast(context, "Text was not extracted properly. Please try again");
             Log.e(Activity.class.getName(), e.getMessage());
             setBodyDetail(1);
         }

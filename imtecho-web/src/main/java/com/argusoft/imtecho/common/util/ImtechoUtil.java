@@ -496,6 +496,30 @@ public class ImtechoUtil {
         return bool;
     }
 
+    public static Boolean returnTrueFalseFromInitialsForOCR(String trueOrFalse) {
+        Boolean bool = null;
+        switch (trueOrFalse) {
+            case "T":
+            case "true":
+            case "1":
+            case "Positive":
+            case "FHW_ANC": //for navigation from LMPFU to ANC
+            case "ELIGIBLE":
+                bool = true;
+                break;
+            case "F":
+            case "2":
+            case "false":
+            case "3":
+            case "Negative":
+            case "INELIGIBLE":
+                bool = false;
+                break;
+            default:
+        }
+        return false;
+    }
+
     public static String returnYESorNOFromInitials(String trueOrFalse) {
         String ans = null;
         switch (trueOrFalse) {
