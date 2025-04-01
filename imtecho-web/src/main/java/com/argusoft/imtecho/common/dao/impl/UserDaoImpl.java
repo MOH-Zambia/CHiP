@@ -550,7 +550,7 @@ public class UserDaoImpl extends GenericDaoImpl<UserMaster, Integer> implements 
     }
 
     @Override
-    public List<UserMasterDto> retrieveUsers(Boolean byUsername, Boolean byContactNumber, Boolean byName, Boolean byLocation, Integer locationId, String searchString, Integer roleId, Integer limit, Integer offSet) {
+    public List<UserMasterDto> retrieveUsers(Boolean byUsername, Boolean byContactNumber, Boolean byName, Boolean byLocation, Integer locationId, String searchString, Integer roleId, Integer limit, Integer offSet, Integer healthInfraId) {
         if (searchString != null) {
             searchString = searchString.replaceAll("'", "''");
         }
@@ -565,7 +565,14 @@ public class UserDaoImpl extends GenericDaoImpl<UserMaster, Integer> implements 
                 inner join um_user_location uul on uu.id = uul.user_id and uu.state = 'ACTIVE' and uul.state = 'ACTIVE'""";
 
         if(roleId != null){
-            query = query + " and uu.role_id = " + roleId;
+            query = query + " and uu.role_id = " + roleId + " \n";
+        }
+
+        if(healthInfraId != null){
+            query = query + """
+                        INNER JOIN user_health_infrastructure uhi ON uhi.user_id = uu.id\s
+                        INNER JOIN health_infrastructure_details hid ON hid.id = uhi.health_infrastrucutre_id\s
+                        AND hid.id = """ + healthInfraId + " ";
         }
 
         String endConditions = " group by 1,2,3,4\n"

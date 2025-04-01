@@ -50,6 +50,16 @@
   <div class="filter-div-body">
     <search terms="ctrl.terms" search-fn="ctrl.retrieveFilteredUsers(reset)" search="ctrl.search"
       search-form="ctrl.searchForm" selected-location="ctrl.selectedLocation"
-      selected-location-id="ctrl.selectedLocationId" close-fn="ctrl.toggleFilter()"></search>
+      selected-location-id="ctrl.selectedLocationId" close-fn="ctrl.toggleFilter()">
+    </search>
+    <div mt-5 ng-if="ctrl.selectedLocation && ctrl.selectedLocation.finalSelected && ((ctrl.selectedLocation.finalSelected.level === 5
+      && ctrl.selectedLocation.finalSelected.optionSelected != null) || ctrl.selectedLocation.finalSelected.level > 5)" form-control>
+      <p>Search by Health Facility</p>
+      <select chosen-directive="ctrl.healthFacilities" 
+          ng-options="healthFacility.healthInfraId as healthFacility.healthfacility for healthFacility in ctrl.healthFacilities"              
+          ng-change="ctrl.healthFacilityChanged()" ng-model="ctrl.selectedHealthInfraId" name="healthFacility" id="healthFacility" required>
+          <option value="">Please Select...</option>
+      </select> 
+    </div>               
   </div>
 </div>
