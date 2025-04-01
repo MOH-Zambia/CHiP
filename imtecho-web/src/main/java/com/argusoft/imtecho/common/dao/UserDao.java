@@ -191,5 +191,5 @@ public interface UserDao extends GenericDao<UserMaster, Integer> {
      */
     void updatePreferredLanguageForInactiveLanguage(String inactiveLanguage, String preferredLanguage);
 
-    List<UserMasterDto> retrieveUsers(Boolean byUsername, Boolean byContactNumber, Boolean byName, Boolean byLocation, Integer locationId, String searchString, Integer roleId, Integer limit, Integer offSet);
+    List<UserMasterDto> retrieveUsers(Boolean byUsername, Boolean byContactNumber, Boolean byName, Boolean byLocation, Integer locationId, String searchString, Integer roleId, Integer limit, Integer offSet, Integer healthInfraId);
 }
