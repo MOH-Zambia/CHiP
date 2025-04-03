@@ -1308,7 +1308,7 @@ public class HiddenQuestionFormulaUtil {
                 queFormBean.setAnswer(queFormBean.getOptions().get(0).getKey());
             } else {
                 baseDateLong = Long.parseLong(baseDateString);
-                if (comparisonDateString != null) {
+                if (comparisonDateString != null && !comparisonDateString.contains("F") && !comparisonDateString.contains("T")) {
                     comparisonDateLong = Long.parseLong(comparisonDateString);
                 } else {
                     comparisonDateLong = new Date().getTime();
