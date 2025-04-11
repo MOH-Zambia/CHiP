@@ -177,8 +177,8 @@
 
         // Remove this function after all remanining datapoints are made available
         ctrl.markNA = function () {
-            ctrl.formObj.totalCHA = 'N/A';
-            ctrl.formObj.totalCHV = 'N/A';
+            // ctrl.formObj.totalCHA = 'N/A';
+            // ctrl.formObj.totalCHV = 'N/A';
             ctrl.formObj.reportedCHA = 'N/A';
             ctrl.formObj.reportedCHV = 'N/A';
             ctrl.formObj.timelyCHA = 'N/A';
@@ -186,26 +186,26 @@
 
             ctrl.formObj.chw1_02 = 'N/A';
 
-            ctrl.formObj.chw2_07 = 'N/A';
-            ctrl.formObj.chw2_08 = 'N/A';
-            ctrl.formObj.chw2_09 = 'N/A';
-            ctrl.formObj.chw2_12 = 'N/A';
+            // ctrl.formObj.chw2_07 = 'N/A';
+            // ctrl.formObj.chw2_08 = 'N/A';
+            // ctrl.formObj.chw2_09 = 'N/A';
+            // ctrl.formObj.chw2_12 = 'N/A';
 
-            ctrl.formObj.chw3_01 = 'N/A';
-            ctrl.formObj.chw3_09 = 'N/A';
-            ctrl.formObj.chw3_11 = 'N/A';
-            ctrl.formObj.chw3_12 = 'N/A';
-            ctrl.formObj.chw3_13 = 'N/A';
+            // ctrl.formObj.chw3_01 = 'N/A';
+            // ctrl.formObj.chw3_09 = 'N/A';
+            // ctrl.formObj.chw3_11 = 'N/A';
+            // ctrl.formObj.chw3_12 = 'N/A';
+            // ctrl.formObj.chw3_13 = 'N/A';
 
-            ctrl.formObj.chw4_04 = 'N/A';
+            // ctrl.formObj.chw4_04 = 'N/A';
 
             ctrl.formObj.chw5_07 = 'N/A';
 
             ctrl.formObj.chw7_01 = 'N/A';
             ctrl.formObj.chw7_02 = 'N/A';
-            ctrl.formObj.chw7_03 = 'N/A';
-            ctrl.formObj.chw7_04 = 'N/A';
-            ctrl.formObj.chw7_05 = 'N/A';
+            // ctrl.formObj.chw7_03 = 'N/A';
+            // ctrl.formObj.chw7_04 = 'N/A';
+            // ctrl.formObj.chw7_05 = 'N/A';
 
             ctrl.formObj.nhcName = 'N/A';
             ctrl.formObj.nhcDesignation = 'N/A';
