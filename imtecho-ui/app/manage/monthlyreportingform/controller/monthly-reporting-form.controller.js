@@ -19,6 +19,12 @@
                 ctrl.formObj.chw = res.result[0].chw;
                 ctrl.formObj.zone = res.result[0].zone;
                 ctrl.formObj.zonewiseHHCount = res.result[0].zonewiseHHCount;
+                ctrl.formObj.totalCHA = res.result[0].totalCHA;
+                ctrl.formObj.totalCHV = res.result[0].totalCHV;
+                ctrl.formObj.reportedCHV = res.result[0].reportedCHV || 'N/A';
+                ctrl.formObj.reportedCHA = res.result[0].reportedCHA || 'N/A';
+                ctrl.formObj.timelyCHA = res.result[0].timelyCHA || 'N/A';
+                ctrl.formObj.timelyCHV = res.result[0].timelyCHV || 'N/A';
             }, GeneralUtil.showMessageOnApiCallFailure).finally(function () {
                 Mask.hide();
             });
@@ -105,6 +111,22 @@
                         month: ctrl.month
                     },
                     sequence: 9
+                },
+                {
+                    code: 'retrieve_mrf_immunisation_details',
+                    parameters: {
+                        userId: $state.params.id,
+                        month: ctrl.month
+                    },
+                    sequence: 10
+                },
+                {
+                    code: 'retrieve_mrf_referral_details',
+                    parameters: {
+                        userId: $state.params.id,
+                        month: ctrl.month
+                    },
+                    sequence: 11
                 }
             ];
             Mask.show();
