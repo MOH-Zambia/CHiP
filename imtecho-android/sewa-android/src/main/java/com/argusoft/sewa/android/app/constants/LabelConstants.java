@@ -1097,6 +1097,7 @@ public class LabelConstants {
     public static final String SERVICE_HIV_SCREENING = "HIV Screening";
     public static final String SERVICE_HIV_POSITIVE_MEMBERS = "HIV Positive Members";
     public static final String GBV = "Gender Based Violence";
+    public static final String EVENT_BASED_CARE_MODULE = "Event Based Care Module";
     public static final String HIV = "HIV (Human Immunodeficiency Viruses)";
     public static final String MALARIA_ACTIVE_SCREENING = "Active Malaria Surveillance";
 
@@ -1169,6 +1170,7 @@ public class LabelConstants {
     public static final String DOWNLOAD = "Download";
     public static final String MEMBERS_FOR_NEARBY_SCREENING = "Members for nearby household screening";
     public static final String MEMBERS_FOR_GBV_SCREENING = "Member for GBV screening";
+    public static final String MEMBERS_FOR_EVENT_BASED_CARE_MODULE = "Member for Event Based Care Module screening";
 
     public static final String MEDICINE_NAME = "Medicine Name";
     public static final String DELIVERED_QUANTITY = "Qty.";

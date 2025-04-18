@@ -46,6 +46,7 @@ import com.argusoft.sewa.android.app.databean.OptionTagBean;
 import com.argusoft.sewa.android.app.datastructure.PageFormBean;
 import com.argusoft.sewa.android.app.datastructure.QueFormBean;
 import com.argusoft.sewa.android.app.datastructure.SharedStructureData;
+import com.argusoft.sewa.android.app.model.ListValueBean;
 import com.argusoft.sewa.android.app.model.LocationBean;
 import com.argusoft.sewa.android.app.model.MemberBean;
 import com.argusoft.sewa.android.app.model.NotificationBean;
@@ -3817,4 +3818,33 @@ public class HiddenQuestionFormulaUtil {
             queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
         }
     }
+
+    public static void checkIfListValueSelected(String[] split, QueFormBean queFormBean) {
+        queFormBean.setAnswer(queFormBean.getOptions().get(1).getKey());
+        queFormBean.setNext(queFormBean.getOptions().get(1).getNext());
+
+        if (split.length > 2) {
+            String selectedValues = SharedStructureData.relatedPropertyHashTable.get(split[1]);
+            //Values to compare
+            Set<String> compareCodes = new HashSet<>();
+            for (int i = 2; i < split.length; i++) {
+                compareCodes.add(split[i].trim());
+            }
+            if (selectedValues != null && !selectedValues.trim().isEmpty()) {
+                String[] selectedIds = selectedValues.split(",");
+                for (String id : selectedIds) {
+                    id = id.trim();
+                    if (!id.isEmpty()) {
+                        String valueConstant = sewaFhsService.getConstOfListValueById(id);
+                        if (valueConstant != null && compareCodes.contains(valueConstant)) {
+                            queFormBean.setAnswer(queFormBean.getOptions().get(0).getKey());
+                            queFormBean.setNext(queFormBean.getOptions().get(0).getNext());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -174,8 +174,8 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
     private static final String SERVICE_MIGRATED_OUT_FAMILY = "migratedOutFamily";
     private static final String SERVICE_MIGRATED_IN_FAMILY = "migratedInFamily";
     private static final String SERVICE_MANAGE_FAMILY_MIGRATIONS = "manageFamilyMigrations";
-
     private static final String SERVICE_NEWLY_WED = "newlyWed";
+    private static final String EVENT_BASED_CARE_MODULE = "eventBasedCareModule";
 
     private List<MigratedMembersBean> migratedMembersBeans;
     private List<MigratedFamilyBean> migratedFamilyBeans;
@@ -376,6 +376,8 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                             case 12:
                                 selectedService = GBV;
                                 break;
+                            case 13:
+                                selectedService = EVENT_BASED_CARE_MODULE;
                             default:
                         }
                         if (!SERVICE_MANAGE_FAMILY_MIGRATIONS.equals(selectedService)) {
@@ -392,7 +394,8 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                                 || selectedService.equals(SERVICE_COVID_19)
                                 || selectedService.equals(SERVICE_CHILDREN)
                                 || selectedService.equals(SERVICE_MALARIA_ACTIVE_SCREENING)
-                                || selectedService.equals(GBV)) {
+                                || selectedService.equals(GBV)
+                                || selectedService.equals(EVENT_BASED_CARE_MODULE)) {
                             screen = PEOPLE_SELECTION_SCREEN;
                             showProcessDialog();
                             bodyLayoutContainer.removeAllViews();
@@ -478,6 +481,9 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                                 memberSelected = memberList.get(selectedPeopleIndex);
                                 showAlertAndNavigate(FormConstants.CHIP_GBV_SCREENING);
 //                                startDynamicFormActivity(FormConstants.CHIP_GBV_SCREENING, memberSelected, null);
+                                break;
+                            case EVENT_BASED_CARE_MODULE:
+                                startDynamicFormActivity(FormConstants.EVENT_BASED_CARE_MODULE, memberSelected, null);
                                 break;
                             default:
                                 setVisits();
@@ -881,6 +887,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
         items.add(new ListItemDataBean(UtilBean.getMyLabel(LabelConstants.HIV)));
         items.add(new ListItemDataBean(UtilBean.getMyLabel(LabelConstants.MALARIA_ACTIVE_SCREENING)));
         items.add(new ListItemDataBean(UtilBean.getMyLabel(LabelConstants.GBV)));
+        items.add(new ListItemDataBean(UtilBean.getMyLabel(LabelConstants.EVENT_BASED_CARE_MODULE)));
 
 
         AdapterView.OnItemClickListener onItemClickListener = (parent, view, position, id) -> {
@@ -1002,6 +1009,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 memberList = fhsService.retrieveMembersForMalariaScreening(selectedAshaAreas, selectedVillage, s, limit, offset, qrScanFilter);
                 break;
             case SERVICE_COVID_19:
+            case EVENT_BASED_CARE_MODULE:
                 memberList = fhsService.retrieveMembersForChipScreening(selectedAshaAreas, selectedVillage, s, limit, offset, qrScanFilter);
                 break;
             case SERVICE_HIV_SCREENING:
@@ -1055,6 +1063,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
             case SERVICE_HIV_SCREENING:
             case SERVICE_NEARBY_MEMBER_SCREENING:
             case GBV:
+            case EVENT_BASED_CARE_MODULE:
                 addMembersToScreenList();
                 break;
             default:
@@ -1140,6 +1149,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
             case SERVICE_HIV_POSITIVE:
             case SERVICE_NEARBY_MEMBER_SCREENING:
             case GBV:
+            case EVENT_BASED_CARE_MODULE:
                 for (MemberDataBean memberDataBean : memberDataBeanList) {
                     String age = "N/A";
                     int week;
@@ -1520,6 +1530,8 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MEMBERS_FOR_NEARBY_SCREENING);
             } else if (selectedService.equalsIgnoreCase(GBV)) {
                 pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MEMBERS_FOR_GBV_SCREENING);
+            } else if (selectedService.equalsIgnoreCase(EVENT_BASED_CARE_MODULE)) {
+                pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MEMBERS_FOR_EVENT_BASED_CARE_MODULE);
             }
 
             bodyLayoutContainer.addView(pagingHeaderView);
