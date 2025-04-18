@@ -6,8 +6,6 @@ values('EVENT_BASED_CARE_MODULE', 'EVENT_BASED_CARE_MODULE', now(), -1, now(), -
 insert into mobile_form_feature_rel (form_id, mobile_constant)
 select id, 'CBV_MY_PEOPLE' from mobile_form_details where form_name = 'EVENT_BASED_CARE_MODULE';
 
-drop table event_based_care_module;
-
 CREATE TABLE if not exists event_based_care_module (
     id SERIAL PRIMARY KEY,
     member_status TEXT,
