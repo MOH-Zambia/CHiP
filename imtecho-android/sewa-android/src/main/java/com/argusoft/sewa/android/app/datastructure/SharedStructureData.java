@@ -371,6 +371,7 @@ public class SharedStructureData {
         fhwSheets.add(FormConstants.SURVEILLANCE_ADD_MEMBER);
         fhwSheets.add(FormConstants.CHIP_GBV_SCREENING);
         fhwSheets.add(FormConstants.CHIP_INDEX_INVESTIGATION);
+        fhwSheets.add(FormConstants.EVENT_BASED_CARE_MODULE);
     }
 
     private static void groupAshaSheets() {

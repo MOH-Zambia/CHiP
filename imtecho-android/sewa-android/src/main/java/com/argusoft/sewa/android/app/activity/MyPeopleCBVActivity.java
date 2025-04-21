@@ -1009,7 +1009,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 memberList = fhsService.retrieveMembersForMalariaScreening(selectedAshaAreas, selectedVillage, s, limit, offset, qrScanFilter);
                 break;
             case SERVICE_COVID_19:
-            case EVENT_BASED_CARE_MODULE:
                 memberList = fhsService.retrieveMembersForChipScreening(selectedAshaAreas, selectedVillage, s, limit, offset, qrScanFilter);
                 break;
             case SERVICE_HIV_SCREENING:
@@ -1024,6 +1023,9 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 break;
             case GBV:
                 memberList = fhsService.retrieveMembersForGbvZambia(selectedAshaAreas, selectedVillage, s, limit, offset);
+                break;
+            case EVENT_BASED_CARE_MODULE:
+                memberList = fhsService.retrieveMembersByAshaArea(selectedAshaAreas, selectedVillage, s, limit, offset, qrScanFilter);
                 break;
             default:
                 break;
