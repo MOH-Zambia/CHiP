@@ -903,4 +903,23 @@ public class FamilyDaoImpl extends GenericDaoImpl<FamilyEntity, Integer> impleme
         return q.setResultTransformer(Transformers.aliasToBean(LocationMasterDto.class)).uniqueResult();
     }
 
+
+    @Override
+    public List<FamilyEntity> getFamilyHavingWrongToiletTypes(int limit) {
+        String query = "select * from imt_family if2 where type_of_toilet not in ('FLUSH_WITH_WATER',\n" +
+                "'FLUSH_WITHOUT_WATER',\n" +
+                "'PIT_WITH_WATER',\n" +
+                "'PIT_WITHOUT_WATER',\n" +
+                "'VIP_WITH_WATER',\n" +
+                "'VIP_WITHOUT_WATER',\n" +
+                "'COMMON',\n" +
+                "'OTHER',\n" +
+                "'NONE'\n" +
+                ") limit :limit ;";
+        Session session = sessionFactory.getCurrentSession();
+        NativeQuery<FamilyEntity> q = session.createNativeQuery(query);
+        q.setParameter("limit", limit);
+        q.addEntity(FamilyEntity.class);
+        return q.getResultList();
+    }
 }

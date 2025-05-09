@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *

@@ -80,10 +80,8 @@ public class NotificationConstants {
 
     private static List<String> getAshaReportedEventNotifications() {
         List<String> stringList = new ArrayList<>();
-        if (!BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_DNHDD)) {
-            stringList.add(NOTIFICATION_FHW_PREGNANCY_CONF);
-            stringList.add(NOTIFICATION_FHW_DELIVERY_CONF);
-        }
+        stringList.add(NOTIFICATION_FHW_PREGNANCY_CONF);
+        stringList.add(NOTIFICATION_FHW_DELIVERY_CONF);
         stringList.add(NOTIFICATION_FHW_DEATH_CONF);
         stringList.add(NOTIFICATION_FHW_MEMBER_MIGRATION);
         stringList.add(NOTIFICATION_FHW_FAMILY_MIGRATION);

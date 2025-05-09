@@ -273,8 +273,17 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
 
     @UiThread
     public void setNearByMembersSelectionScreen(MemberDataBean memberSelected) {
-        bodyLayoutContainer.removeAllViews();
         selectedService = SERVICE_NEARBY_MEMBER_SCREENING;
+        bodyLayoutContainer.removeAllViews();
+        List<String> options = new ArrayList<>();
+        options.add(UtilBean.getMyLabel(LabelConstants.ENTOMOLOGICAL_INVESTIGATION));
+        AdapterView.OnItemClickListener onButtonClickListener = (parent, view, position, id) -> {
+            startDynamicFormActivity(FormConstants.CHIP_INDEX_INVESTIGATION, memberSelected, null);
+        };
+        ListView buttonList = MyStaticComponents.getButtonList(context, options, onButtonClickListener);
+        bodyLayoutContainer.addView(buttonList);
+        bodyLayoutContainer.addView(MyStaticComponents.getOrTextView(context));
+        addSearchTextBox();
         screen = MALARIA_INDEX_SCREEN;
         retrieveMemberListByServiceType(selectedService, null, false);
 
@@ -455,7 +464,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                                     setNearByMembersSelectionScreen(memberSelected);
                                 } else {
                                     showAlertAndNavigate(FormConstants.MALARIA_NON_INDEX);
-//                                    startDynamicFormActivity(FormConstants.MALARIA_NON_INDEX, memberSelected, null);
                                 }
                                 break;
                             case SERVICE_NEARBY_MEMBER_SCREENING:
@@ -482,7 +490,12 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 case MALARIA_INDEX_SCREEN:
                     if (selectedPeopleIndex != -1) {
                         memberSelected = memberList.get(selectedPeopleIndex);
-                        showAlertAndNavigate(FormConstants.MALARIA_INDEX);
+                        if (memberSelected.getIndexCase() != null && memberSelected.getIndexCase()) {
+                            showAlertAndNavigate(FormConstants.MALARIA_INDEX);
+                        } else {
+                            showAlertAndNavigate(FormConstants.MALARIA_NON_INDEX);
+                        }
+
 //                        startDynamicFormActivity(FormConstants.MALARIA_INDEX, memberSelected, null);
                     } else {
                         SewaUtil.generateToast(this, UtilBean.getMyLabel(LabelConstants.PLEASE_SELECT_A_MEMBER));
@@ -958,7 +971,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
         searchString = s;
         offset = 0;
         if (memberSelected != null) {
-            familySelected = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId());
+            familySelected = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId(), memberSelected.getFamilyUuid());
         }
         selectedPeopleIndex = -1;
         villageIds = new LinkedList<>();
@@ -998,7 +1011,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 memberList = fhsService.retrievePositiveMembersForMalaria(selectedAshaAreas, selectedVillage, s, limit, offset, qrScanFilter);
                 break;
             case SERVICE_NEARBY_MEMBER_SCREENING:
-                memberList = fhsService.retrieveMembersWithin150mOfActiveMalariaCases(familySelected.getLocationId(), familySelected.getLatitude(), familySelected.getLongitude());
+                memberList = fhsService.retrieveMembersWithin150mOfActiveMalariaCases(familySelected.getLocationId(), familySelected.getLatitude(), familySelected.getLongitude(), s);
                 //memberList.addAll(fhsService.retrieveMemberDataBeansByFamily(memberSelected.getFamilyId()));
                 break;
             case GBV:
@@ -1504,13 +1517,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
             } else if (selectedService.equalsIgnoreCase(SERVICE_MALARIA_ACTIVE_SCREENING)) {
                 pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MALARIA_POSITIVE_SCREENING);
             } else if (selectedService.equalsIgnoreCase(SERVICE_NEARBY_MEMBER_SCREENING)) {
-                List<String> options = new ArrayList<>();
-                options.add(UtilBean.getMyLabel(LabelConstants.ENTOMOLOGICAL_INVESTIGATION));
-                AdapterView.OnItemClickListener onButtonClickListener = (parent, view, position, id) -> {
-                    startDynamicFormActivity(FormConstants.CHIP_INDEX_INVESTIGATION, memberSelected, null);
-                };
-                ListView buttonList = MyStaticComponents.getButtonList(context, options, onButtonClickListener);
-                bodyLayoutContainer.addView(buttonList);
                 pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MEMBERS_FOR_NEARBY_SCREENING);
             } else if (selectedService.equalsIgnoreCase(GBV)) {
                 pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT + " " + LabelConstants.MEMBERS_FOR_GBV_SCREENING);
@@ -1947,7 +1953,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
     }
 
     private void setMemberDetailsForEligibleCouplesRchRegister() {
-        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId());
+        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId(), memberSelected.getFamilyUuid());
 
         bodyLayoutContainer.addView(MyStaticComponents.generateTitleView(this, UtilBean.getMyLabel(LabelConstants.GENERAL_INFORMATION)));
 
@@ -2130,7 +2136,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
     }
 
     private void setMemberDetailsForChildRchRegister() {
-        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId());
+        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId(), memberSelected.getFamilyUuid());
 
         bodyLayoutContainer.addView(MyStaticComponents.generateTitleView(this, UtilBean.getMyLabel(LabelConstants.GENERAL_INFORMATION)));
 
@@ -2410,7 +2416,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
             }
         } else {
             if (memberDataBean != null) {
-                familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId());
+                familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId(), memberSelected.getFamilyUuid());
             }
             formMetaDataUtil.setMetaDataForMemberUpdateForm(memberDataBean, familyDataBean, sharedPref);
         }
@@ -2558,7 +2564,6 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                     setSubTitle(UtilBean.getMemberFullName(memberSelected));
                     addSearchTextBox();
                     retrieveMemberListByServiceType(selectedService, null, false);
-                    setMemberSelectionScreen(selectedService, false);
                     break;
 
                 case MANAGE_FAMILY_MIGRATIONS_SCREEN:
@@ -2583,6 +2588,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
                 case MEMBER_SELECTION_SCREEN:
                 case MIGRATED_MEMBERS_SCREEN:
                 case RCH_REGISTER_MEMBER_SCREEN:
+                case SERVICE_NEARBY_MEMBER_SCREENING:
                     selectedServiceIndex = -1;
                     showProcessDialog();
                     bodyLayoutContainer.removeAllViews();
@@ -2651,17 +2657,15 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
 
     @Override
     public void onClearClick() {
-        runOnUiThread(() -> {
-            showProcessDialog();
-            if (selectedService.equals(SERVICE_ADD_NEW_MEMBER)
-                    || selectedService.equals(SERVICE_UPDATE_MEMBER)) {
-                retrieveMemberListForUpdateBySearch(null);
-            } else if (selectedService.equals(SERVICE_RCH_REGISTER)) {
-                retrieveMemberListForRchRegister(null);
-            } else {
-                retrieveMemberListByServiceType(selectedService, null, false);
-            }
-        });
+        showProcessDialog();
+        if (selectedService.equals(SERVICE_ADD_NEW_MEMBER)
+                || selectedService.equals(SERVICE_UPDATE_MEMBER)) {
+            retrieveMemberListForUpdateBySearch(null);
+        } else if (selectedService.equals(SERVICE_RCH_REGISTER)) {
+            retrieveMemberListForRchRegister(null);
+        } else {
+            retrieveMemberListByServiceType(selectedService, null, false);
+        }
         hideKeyboard();
     }
 

@@ -1376,7 +1376,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserMasterDto> retrieveUsers(Boolean byUsername, Boolean byContactNumber, Boolean byName, Boolean byLocation, Integer locationId, String searchString, Integer roleId, Integer limit, Integer offSet) {
-        return userDao.retrieveUsers(byUsername, byContactNumber, byName, byLocation, locationId, searchString, roleId, limit, offSet);
+    public List<UserMasterDto> retrieveUsers(Boolean byUsername, Boolean byContactNumber, Boolean byName, Boolean byLocation, Integer locationId, String searchString, Integer roleId, Integer limit, Integer offSet, Integer healthInfraId) {
+        return userDao.retrieveUsers(byUsername, byContactNumber, byName, byLocation, locationId, searchString, roleId, limit, offSet, healthInfraId);
     }
 }

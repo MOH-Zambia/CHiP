@@ -23,6 +23,7 @@ public class RelatedPropertyNameConstants {
     public static final String MEMBER_UUID = "memberUuid";
     public static final String IS_IT_INDEX_CASE = "isItIndexCase";
     public static final String MEMBER_UUID_WPD = "memberUuidForWpd";
+    public static final String CHILD_UUID = "childUuid";
     public static final String MEMBERS_FAMILY_UUID = "familyUuid";
     public static final String ABHA_CONSENT_CHECKBOX_MODEL = "abhaConsentCheckboxModel";
     public static final String AADHAAR_MATCH_WITH_BENEFICIARY_CONSENT = "aadhaarMatchWithBeneficiaryConsent";
@@ -37,6 +38,17 @@ public class RelatedPropertyNameConstants {
     public static final String BPL_CARD_NUMBER = "bplCardNumber";
     public static final String BPL_FLAG = "bplFlag";
     public static final String TOILET_AVAILABLE_FLAG = "toiletAvailableFlag";
+    public static final String OUTDOOR_COOKING_PRACTICES = "outdoorCookingPractices";
+    public static final String WASTE_DISPOSAL_AVAILABLE_FLAG = "wasteDisposalAvailableFlag";
+    public static final String WASTE_DISPOSAL_METHOD = "wasteDisposalMethod";
+    public static final String IS_WATER_SAFE = "isWaterSafe";
+    public static final String DISHRACK_AVAILABLE_FLAG = "dishrackAvailableFlag";
+    public static final String INSECTS_FOUND = "complaintOfInsects";
+    public static final String RODENTS_FOUND = "complaintOfRodents";
+    public static final String SEPARATE_LIVESTOCK_SHELTER = "separateLivestockShelter";
+    public static final String HANDWASH_AVAILABLE_FLAG = "handwashAvailableFlag";
+    public static final String STORAGE_MEETS_STANDARD = "storageMeetsStandard";
+    public static final String TOILET_MEETS_STANDARD = "toiletMeetsStandard";
     public static final String VULNERABLE_FLAG = "vulnerableFlag";
     public static final String SEASONAL_MIGRANT_FAMILY = "seasonalMigrantFlag";
     public static final String IS_PROVIDING_CONSENT = "isProvidingConsent";
@@ -263,6 +275,7 @@ public class RelatedPropertyNameConstants {
     public static final String EARLY_REGISTRATION = "earlyRegistration";
     public static final String HIGH_RISK_CONDITIONS = "highRiskConditions";
     public static final String IMMUNISATION_GIVEN = "immunisationGiven";
+    public static final String HPV_GIVEN = "hpvGiven";
     public static final String PREVIOUS_PREGNANCY_COMPLICATION = "previousPregnancyComplication";
     public static final String HBSAG_TEST = "hbsagTest";
     public static final String HIV_TEST = "hivTest";

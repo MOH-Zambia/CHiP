@@ -318,26 +318,6 @@ public class PncServiceImpl implements PncService {
         for (Map.Entry<String, PncChildMaster> entrySet : mapOfChildWithLoopIdAsKey.entrySet()) {
             String loopId = entrySet.getKey();
             PncChildMaster pncChildMaster = entrySet.getValue();
-            if (pncChildMaster.getChildId() == null) {
-                List<MemberEntity> childsBelow100Days = new ArrayList<>();
-                List<MemberEntity> childs = memberDao.getChildMembersByMotherId(memberId, Boolean.TRUE);
-                Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.DATE, -100);
-                if (childs != null) {
-                    for (MemberEntity memberEntity : childs) {
-                        if (memberEntity.getDob().after(calendar.getTime())) {
-                            childsBelow100Days.add(memberEntity);
-                        }
-                    }
-                }
-                if (childsBelow100Days.isEmpty()) {
-                    throw new ImtechoUserException("No Children with age less than 100 days found for this member", 1);
-                } else if (childsBelow100Days.size() == 1) {
-                    pncChildMaster.setChildId(childsBelow100Days.get(0).getId());
-                } else {
-                    throw new ImtechoUserException("Record String doesn't contain Child ID and multiple childs found for this member", 1);
-                }
-            }
 
             pncChildMaster.setIsHighRiskCase(this.identifyHighRiskForChildRchPnc(pncChildMaster));
             pncChildMasterDao.create(pncChildMaster);
@@ -455,7 +435,9 @@ public class PncServiceImpl implements PncService {
         pncMotherMaster.setCalciumTabletsGiven(jsonObject.get("calciumTabletsGiven").getAsInt());
         pncMotherMaster.setIfaTabletsGiven(jsonObject.get("ifaTabletsGiven").getAsInt());
         pncMotherMaster.setIecGiven(jsonObject.get("isIecGiven").getAsBoolean());
-
+        if (jsonObject.get("formFilledVia") != null) {
+            pncMotherMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
         pncMotherMasterDao.create(pncMotherMaster);
         pncChildMaster.setChildWeight(jsonObject.get("childWeight").getAsFloat());
         if (ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("childReferalRequired").getAsString())) {
@@ -463,6 +445,9 @@ public class PncServiceImpl implements PncService {
             pncChildMaster.setReferralReason(jsonObject.get("childReferralReason").getAsString());
         } else {
             pncChildMaster.setChildReferralDone(RchConstants.REFFERAL_DONE_NO);
+        }
+        if (jsonObject.get("formFilledVia") != null) {
+            pncChildMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
         }
         pncChildMaster.setPncMasterId(pncMaster.getId());
         pncChildMaster.setEidStarted(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("eidStarted").getAsString()));
@@ -660,14 +645,33 @@ public class PncServiceImpl implements PncService {
     private void setAnswersToPncChildMaster(String key, String answer, PncChildMaster pncChildMaster, Map<String, String> keyAndAnswerMap, String childCount) {
         switch (key) {
             case "3":
-                MemberEntity childEntity = memberDao.getMemberByUniqueHealthIdAndFamilyId(answer, null);
-                if (childEntity == null) {
-                    if (keyAndAnswerMap.containsKey("-45") && keyAndAnswerMap.get("-45") != null
-                            && !keyAndAnswerMap.get("-45").equalsIgnoreCase("null")) {
-                        childEntity = memberDao.retrieveMemberByUuid(keyAndAnswerMap.get("-45"));
+                if (childCount != null) {
+                    if ((keyAndAnswerMap.get("333" + "." + childCount) != null && keyAndAnswerMap.get("333" + "." + childCount) != null
+                            && !keyAndAnswerMap.get("333" + "." + childCount).equalsIgnoreCase("null"))) {
+                        MemberEntity childEntity = memberDao.getMemberByUniqueHealthIdAndFamilyId(answer, null);
+                        if (childEntity == null) {
+                            if (keyAndAnswerMap.containsKey("333" + "." + childCount) && keyAndAnswerMap.get("333" + "." + childCount) != null
+                                    && !keyAndAnswerMap.get("333" + "." + childCount).equalsIgnoreCase("null")) {
+                                childEntity = memberDao.retrieveMemberByUuid(keyAndAnswerMap.get("333" + "." + childCount));
+                            }
+                        }
+                        if (childEntity != null) {
+                            pncChildMaster.setChildId(childEntity.getId());
+                        }
+                    }
+                } else if ((keyAndAnswerMap.get("333") != null && keyAndAnswerMap.get("333") != null
+                        && !keyAndAnswerMap.get("333").equalsIgnoreCase("null"))) {
+                    MemberEntity childEntity = memberDao.getMemberByUniqueHealthIdAndFamilyId(answer, null);
+                    if (childEntity == null) {
+                        if (keyAndAnswerMap.containsKey("333") && keyAndAnswerMap.get("333") != null
+                                && !keyAndAnswerMap.get("333").equalsIgnoreCase("null")) {
+                            childEntity = memberDao.retrieveMemberByUuid(keyAndAnswerMap.get("333"));
+                        }
+                    }
+                    if (childEntity != null) {
+                        pncChildMaster.setChildId(childEntity.getId());
                     }
                 }
-                pncChildMaster.setChildId(childEntity.getId());
                 break;
             case "16":
                 switch (answer) {

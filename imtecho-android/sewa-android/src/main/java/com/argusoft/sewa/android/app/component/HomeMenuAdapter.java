@@ -58,11 +58,6 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<HomeMenuAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        if (BuildConfig.FLAVOR.equalsIgnoreCase(GlobalTypes.FLAVOUR_UTTARAKHAND)){
-            if (names[position].equalsIgnoreCase("Work Log")){
-                names[position] = "Sync Status";
-            }
-        }
         holder.textView.setText(UtilBean.getMyLabel(names[position]));
         holder.image.setImageResource(images[position]);
         if (!isElevated) {

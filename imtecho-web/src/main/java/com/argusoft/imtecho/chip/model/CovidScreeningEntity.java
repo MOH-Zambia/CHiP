@@ -79,6 +79,6 @@ public class CovidScreeningEntity extends EntityAuditInfo implements Serializabl
     private Integer referralPlace;
     @Column(name = "vaccination_status")
     private String vaccinationStatus;
-
-
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
 }

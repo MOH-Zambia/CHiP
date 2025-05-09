@@ -87,5 +87,6 @@ public class ChipMalariaEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "treatment_given")
     private String treatmentGiven;
 
-
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
 }

@@ -15,6 +15,7 @@ import androidx.core.widget.NestedScrollView;
 import com.argusoft.sewa.android.app.R;
 import com.argusoft.sewa.android.app.component.MyStaticComponents;
 import com.argusoft.sewa.android.app.constants.FhsConstants;
+import com.argusoft.sewa.android.app.constants.FieldNameConstants;
 import com.argusoft.sewa.android.app.constants.FormConstants;
 import com.argusoft.sewa.android.app.constants.FormulaConstants;
 import com.argusoft.sewa.android.app.constants.LabelConstants;
@@ -52,6 +53,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -571,6 +573,9 @@ public class DynamicUtils {
                             break;
                         case FormulaConstants.FORMULA_CHECK_IF_THIRD_TRIMESTER:
                             HiddenQuestionFormulaUtil.checkIfThirdTrimester(queFormBean);
+                            break;
+                        case FormulaConstants.FORMULA_CHECK_IF_SECOND_TRIMESTER_STARTED:
+                            HiddenQuestionFormulaUtil.checkIfSecondTrimesterStarted(queFormBean);
                             break;
                         case FormulaConstants.FORMULA_CHECK_AGE_IF_WRONGLY_REGISTERED_AS_PREGNANT:
                             HiddenQuestionFormulaUtil.checkAgeIfWronglyRegistered(queFormBean);
@@ -1663,6 +1668,9 @@ public class DynamicUtils {
         String memberStatus = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_STATUS);
         String serviceDate = SharedStructureData.relatedPropertyHashTable.get("serviceDate");
         FamilyBean familyBean = SharedStructureData.sewaFhsService.retrieveFamilyBeanByFamilyId(familyID);
+        if (familyBean == null) {
+            familyBean = SharedStructureData.sewaFhsService.retrieveFamilyBeanByFamilyUuid(uuid);
+        }
         MemberBean memberBean = null;
         if (uniqueHealthId != null) {
             memberBean = SharedStructureData.sewaFhsService.retrieveMemberBeanByHealthId(uniqueHealthId);
@@ -1678,11 +1686,13 @@ public class DynamicUtils {
             String state = null;
             if (memberStatus.equalsIgnoreCase("DEATH")) {
                 state = FhsConstants.CFHC_MEMBER_STATE_DEAD;
+                memberBean.setState(state);
+                SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
             } else if (memberStatus.equalsIgnoreCase("MIGRATED")) {
                 state = FhsConstants.FHS_MEMBER_STATE_MIGRATED;
+                memberBean.setState(state);
+                SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
             }
-            memberBean.setState(state);
-            SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
         }
 
         if (FormConstants.LMP_FOLLOW_UP.equalsIgnoreCase(entity) ||
@@ -1722,11 +1732,13 @@ public class DynamicUtils {
         if (FormConstants.HOUSE_HOLD_LINE_LIST_NEW.equalsIgnoreCase(entity)
                 && "1".equalsIgnoreCase(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.NEW_FAMILY))) {
             HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
-            SharedStructureData.sewaService.createFamilyBean(houseHoldLineListMobileDto, memberBean);
+            SharedStructureData.sewaService.createFamilyBean(houseHoldLineListMobileDto, memberBean, false);
+        } else if (FormConstants.FAMILY_UPDATE.equals(entity)) {
+            HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
+            SharedStructureData.sewaService.updateFamilyByUUID(houseHoldLineListMobileDto, familyBean, true);
         } else if (FormConstants.FHS_MEMBER_UPDATE_NEW.equalsIgnoreCase(entity)) {
             HouseHoldLineListMobileDto houseHoldLineListMobileDto = new Gson().fromJson(answerString, HouseHoldLineListMobileDto.class);
-            if (memberBean != null
-                    && SharedStructureData.relatedPropertyHashTable.containsKey(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID)) {
+            if (SharedStructureData.relatedPropertyHashTable.containsKey(RelatedPropertyNameConstants.UNIQUE_HEALTH_ID)) {
                 //update member for MEMBER_UPDATE_NEW form
                 for (HouseHoldLineListMobileDto.MemberDetails memberDetails : houseHoldLineListMobileDto.getMemberDetails()) {
                     SharedStructureData.sewaService.updateMemberByUniqueHealthId(memberDetails, memberBean, familyBean);
@@ -1849,52 +1861,66 @@ public class DynamicUtils {
         }
 
         if (FormConstants.TECHO_FHW_WPD.equalsIgnoreCase(entity)) {
+            int loopCounter = 0;
             if (memberBean != null) {
-                String lastDateOfDelivery = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.DELIVERY_DATE);
-                String pregnancyOutCome = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.PREGNANCY_OUTCOME);
-                String hasDeliveryHappened = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.HAS_DELIVERY_HAPPENED);
-                String babyGender = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.BABIES_GENDER);
                 String motherAlive = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MOTHER_ALIVE);
-                if (lastDateOfDelivery != null && !lastDateOfDelivery.isEmpty()) {
-                    memberBean.setLastDeliveryDate(new Date(Long.parseLong(lastDateOfDelivery)));
-                    if ("1".equalsIgnoreCase(hasDeliveryHappened) && pregnancyOutCome != null) {
-                        memberBean.setIsPregnantFlag(Boolean.FALSE);
-                    }
-                    if (RelatedPropertyNameConstants.PREGNANCY_OUTCOME_LIVE_BIRTH.equalsIgnoreCase(pregnancyOutCome) || RelatedPropertyNameConstants.PREMATURE.equalsIgnoreCase(pregnancyOutCome) || RelatedPropertyNameConstants.PREGNANCY_OUTCOME_STILL_BIRTH.equalsIgnoreCase(pregnancyOutCome)) {
-                        if (memberBean.getCurrentPara() == null) {
-                            memberBean.setCurrentPara((short) 1);
-                        } else {
-                            memberBean.setCurrentPara((short) (memberBean.getCurrentPara() + 1));
+                String lastDateOfDelivery = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.DELIVERY_DATE);
+                String hasDeliveryHappened = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.HAS_DELIVERY_HAPPENED);
+
+                while (SharedStructureData.relatedPropertyHashTable
+                        .get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.PREGNANCY_OUTCOME, loopCounter)) != null
+                        && SharedStructureData.relatedPropertyHashTable
+                        .get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.BABIES_GENDER, loopCounter)) != null) {
+
+                    String pregnancyOutCome = SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.PREGNANCY_OUTCOME, loopCounter));
+                    String babyGender = SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.BABIES_GENDER, loopCounter));
+
+                    if (lastDateOfDelivery != null
+                            && !lastDateOfDelivery.isEmpty()
+                            && (RelatedPropertyNameConstants.PREGNANCY_OUTCOME_LIVE_BIRTH.equalsIgnoreCase(pregnancyOutCome)
+                            || RelatedPropertyNameConstants.PREMATURE.equalsIgnoreCase(pregnancyOutCome))) {
+                        MemberBean childMember = new MemberBean();
+                        childMember.setFamilyId(memberBean.getFamilyId());
+                        childMember.setFirstName(String.format(Locale.ENGLISH, "B/o %s %d", memberBean.getFirstName(), (loopCounter + 1)));
+                        childMember.setMiddleName(memberBean.getMiddleName());
+                        childMember.setLastName(memberBean.getLastName());
+                        childMember.setGender(babyGender);
+                        childMember.setDob(new Date(Long.parseLong(lastDateOfDelivery)));
+                        childMember.setState(FhsConstants.FHS_MEMBER_STATE_NEW);
+                        childMember.setMaritalStatus("630");
+                        if (memberBean.getActualId() != null) {
+                            childMember.setMotherId(Long.parseLong(memberBean.getActualId()));
                         }
+                        childMember.setMotherUUID(memberBean.getMemberUuid());
+                        if (SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.MEMBER_UUID_WPD, loopCounter)) != null) {
+                            childMember.setMemberUuid(SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.MEMBER_UUID_WPD, loopCounter)));
+                            System.out.println("WPD CHILD UUID WHEN MEMBER GETS SAVED == " + loopCounter + "----" + childMember.getMemberUuid());
+                        }
+                        childMember.setUniqueHealthId(HouseHoldLineListMobileMapper.generateTempUniqueHealthId(childMember.getMemberUuid()));
+                        SharedStructureData.sewaService.createMemberBean(null, childMember, familyBean);
                     }
-                    SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
-                }
 
 
-                if (lastDateOfDelivery != null
-                        && !lastDateOfDelivery.isEmpty()
-                        && (RelatedPropertyNameConstants.PREGNANCY_OUTCOME_LIVE_BIRTH.equalsIgnoreCase(pregnancyOutCome)
-                        || RelatedPropertyNameConstants.PREMATURE.equalsIgnoreCase(pregnancyOutCome))) {
-                    MemberBean childMember = new MemberBean();
-                    childMember.setFamilyId(memberBean.getFamilyId());
-                    childMember.setFirstName("B/o " + memberBean.getFirstName());
-                    childMember.setMiddleName(memberBean.getMiddleName());
-                    childMember.setLastName(memberBean.getLastName());
-                    childMember.setGender(babyGender);
-                    childMember.setDob(new Date(Long.parseLong(lastDateOfDelivery)));
-                    childMember.setState(FhsConstants.FHS_MEMBER_STATE_NEW);
-                    childMember.setMaritalStatus("630");
-                    if (memberBean.getActualId() != null) {
-                        childMember.setMotherId(Long.parseLong(memberBean.getActualId()));
+                    if (lastDateOfDelivery != null && !lastDateOfDelivery.isEmpty()) {
+                        memberBean.setLastDeliveryDate(new Date(Long.parseLong(lastDateOfDelivery)));
+                        if ("1".equalsIgnoreCase(hasDeliveryHappened) && pregnancyOutCome != null) {
+                            memberBean.setIsPregnantFlag(Boolean.FALSE);
+                        }
+                        if (RelatedPropertyNameConstants.PREGNANCY_OUTCOME_LIVE_BIRTH.equalsIgnoreCase(pregnancyOutCome)
+                                || RelatedPropertyNameConstants.PREMATURE.equalsIgnoreCase(pregnancyOutCome)
+                                || RelatedPropertyNameConstants.PREGNANCY_OUTCOME_STILL_BIRTH.equalsIgnoreCase(pregnancyOutCome)) {
+                            if (memberBean.getCurrentPara() == null) {
+                                memberBean.setCurrentPara((short) 1);
+                            } else {
+                                memberBean.setCurrentPara((short) (memberBean.getCurrentPara() + 1));
+                            }
+                        }
+                        SharedStructureData.sewaService.updateMemberByUniqueHealthId(null, memberBean, familyBean);
                     }
-                    childMember.setMotherUUID(memberBean.getMemberUuid());
-                    if (SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID_WPD) != null) {
-                        childMember.setMemberUuid(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_UUID_WPD));
-                        System.out.println("WPD CHILD UUID WHEN MEMBER GETS SAVED == " + childMember.getMemberUuid());
-                    }
-                    childMember.setUniqueHealthId(HouseHoldLineListMobileMapper.generateTempUniqueHealthId(childMember.getMemberUuid()));
-                    SharedStructureData.sewaService.createMemberBean(null, childMember, familyBean);
+
+                    loopCounter++;
                 }
+
 
                 if ("2".equalsIgnoreCase(motherAlive)) {
                     memberBean.setState(FhsConstants.CFHC_MEMBER_STATE_DEAD);
@@ -1924,6 +1950,7 @@ public class DynamicUtils {
 
             if (uniqueHealthIdChild != null && childBean != null) {
                 StringBuilder stringBuilder = new StringBuilder(answerString);
+
                 stringBuilder.append("-45").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
                         .append(childBean.getMemberUuid())
                         .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
@@ -2129,8 +2156,12 @@ public class DynamicUtils {
             answerObject.put("locationId", SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.AREA_ID));
         }
 
-        if (formType.equalsIgnoreCase(FormConstants.FHS_MEMBER_UPDATE_NEW)) {
+        if (formType.equalsIgnoreCase(FormConstants.FHS_MEMBER_UPDATE_NEW) || formType.equalsIgnoreCase(FormConstants.FAMILY_UPDATE)) {
             answerObject.put("uuid", SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.UUID));
+        }
+
+        if (formType.equalsIgnoreCase(FormConstants.CHIP_GBV_SCREENING)) {
+            answerObject.put("referralPlace", SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.USER_ASSIGNED_HEALTH_INFRA_ID));
         }
     }
 }

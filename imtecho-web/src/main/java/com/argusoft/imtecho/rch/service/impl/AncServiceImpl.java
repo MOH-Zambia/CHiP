@@ -305,7 +305,8 @@ public class AncServiceImpl implements AncService {
 
         StringBuilder immunisationGiven = new StringBuilder();
 
-        if (keyAndAnswerMap.containsKey("2207") && keyAndAnswerMap.get("2207").equals("1")) {
+        if (keyAndAnswerMap.containsKey("2207") && keyAndAnswerMap.get("2207").equals("1")
+                && keyAndAnswerMap.containsKey("2208") && keyAndAnswerMap.get("2207") != null) {
             Date givenDate = new Date(Long.parseLong(keyAndAnswerMap.get("2208")));
             if (ConstantUtil.IMPLEMENTATION_TYPE.equalsIgnoreCase("chip")) {
                 int ttVaccineId = listValueFieldValueDetailService.retrieveIdOfListValueByConstant(MobileConstantUtil.TT_VACCINE);
@@ -503,6 +504,10 @@ public class AncServiceImpl implements AncService {
 
         if ("YES".equalsIgnoreCase(ancVisit.getReferralDone()) && jsonObject.get("referralPlace") != null) {
             ancVisit.setReferralPlace(jsonObject.get("referralPlace").getAsInt());
+        }
+
+        if (jsonObject.get("formFilledVia") != null) {
+            ancVisit.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
         }
 
         if (jsonObject.get("serviceDate") != null) {
@@ -754,6 +759,11 @@ public class AncServiceImpl implements AncService {
                 if (keyAndAnswersMap.get("30").equalsIgnoreCase(RchConstants.MEMBER_STATUS_AVAILABLE) &&
                         keyAndAnswersMap.get("19").equalsIgnoreCase(RchConstants.TRUE)) {
                     ancVisit.setUrineSugar(answer);
+                }
+                break;
+            case "2012":
+                if (keyAndAnswersMap.get("30").equalsIgnoreCase(RchConstants.MEMBER_STATUS_AVAILABLE)) {
+                    ancVisit.setIptpGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 }
                 break;
             case "202":

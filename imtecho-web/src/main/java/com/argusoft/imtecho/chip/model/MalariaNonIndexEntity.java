@@ -69,4 +69,16 @@ public class MalariaNonIndexEntity extends EntityAuditInfo implements Serializab
     private String latitude;
     @Column(name = "longitude")
     private String longitude;
+    @Column(name = "referral_place")
+    private Integer referralPlace;
+    @Column(name = "is_referral_done")
+    private String referralDone;
+    @Column(name = "referral_reason")
+    private String referralReason;
+    @Column(name = "referral_for")
+    private String referralFor;
+    @Column(name = "is_iec_given")
+    private Boolean isIecGiven;
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
 }

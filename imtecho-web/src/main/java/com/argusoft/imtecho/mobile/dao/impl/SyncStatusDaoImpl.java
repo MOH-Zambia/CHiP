@@ -7,9 +7,11 @@ package com.argusoft.imtecho.mobile.dao.impl;
 import com.argusoft.imtecho.database.common.impl.GenericDaoImpl;
 import com.argusoft.imtecho.mobile.dao.SyncStatusDao;
 import com.argusoft.imtecho.mobile.model.SyncStatus;
+import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -155,4 +157,39 @@ public class SyncStatusDaoImpl extends GenericDaoImpl<SyncStatus, String> implem
         sQLQuery.setParameter("syncStatusId", syncStatusId);
         sQLQuery.executeUpdate();
     }
+
+    @Override
+    public String getTypeOfToiletFromSyncRecord(Integer relativeId, Integer userId, String formName) {
+        String query = "SELECT record_string FROM system_sync_status sss " +
+                "WHERE status = 'S' " +
+                "AND user_id = :userId " +
+                "AND relative_id = :relativeId " +
+                "AND record_string ILIKE :formName " +
+                "AND record_string ILIKE '%toiletType%'" +
+                "ORDER BY action_date DESC " +
+                "LIMIT 1;";  // Fetch only one latest record
+
+        Session session = sessionFactory.getCurrentSession();
+        NativeQuery<String> q = session.createNativeQuery(query);
+        q.setParameter("userId", userId);
+        q.setParameter("relativeId", relativeId);
+        q.setParameter("formName", "%" + formName + "%");
+        q.addScalar("record_string", StandardBasicTypes.STRING);
+
+        String recordString = q.uniqueResult();
+
+        if (recordString == null) {
+            return null; // No record found
+        }
+
+        // Extract toiletType from JSON
+        try {
+            JSONObject jsonObject = new JSONObject(recordString.substring(recordString.indexOf("{")));
+            return jsonObject.optString("toiletType", null); // Return "Unknown" if not found
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error parsing JSON"; // Handle invalid JSON
+        }
+    }
+
 }

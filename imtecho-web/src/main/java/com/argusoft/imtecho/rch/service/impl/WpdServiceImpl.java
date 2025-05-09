@@ -398,7 +398,6 @@ public class WpdServiceImpl implements WpdService {
             if (wpdChildMaster.getPregnancyOutcome() != null
                     && (wpdChildMaster.getPregnancyOutcome().equals(RchConstants.PREGNANCY_OUTCOME_LIVE_BIRTH)
                     || wpdChildMaster.getPregnancyOutcome().equalsIgnoreCase(RchConstants.PREGNANCY_OUTCOME_PREMATURE))) {
-
                 MemberEntity childEntity = new MemberEntity();
                 childEntity.setFamilyId(motherEntity.getFamilyId());
                 childEntity.setFirstName("B/o " + motherEntity.getFirstName());
@@ -413,12 +412,18 @@ public class WpdServiceImpl implements WpdService {
                 childEntity.setBirthWeight(wpdChildMaster.getBirthWeight());
                 childEntity.setIsHighRiskCase(this.identifyHighRiskForChildRchWpd(wpdChildMaster, wpdMotherMaster));
                 childEntity.setMaritalStatus(ConstantUtil.LIST_VALUE_UNMARRIED);
-                if (keyAndAnswerMap.containsKey("1005") && keyAndAnswerMap.get("1005") != null &&
-                        !keyAndAnswerMap.get("1005").equalsIgnoreCase("null")) {
-                    childEntity.setMemberUUId(keyAndAnswerMap.get("1005"));
+                if (!"0".equals(loopId)) {
+                    if (keyAndAnswerMap.containsKey("1005" + "." + loopId) && keyAndAnswerMap.get("1005" + "." + loopId) != null &&
+                            !keyAndAnswerMap.get("1005" + "." + loopId).equalsIgnoreCase("null")) {
+                        childEntity.setMemberUUId(keyAndAnswerMap.get("1005" + "." + loopId));
+                    }
+                } else {
+                    if (keyAndAnswerMap.containsKey("1005") && keyAndAnswerMap.get("1005") != null &&
+                            !keyAndAnswerMap.get("1005").equalsIgnoreCase("null")) {
+                        childEntity.setMemberUUId(keyAndAnswerMap.get("1005"));
+                    }
                 }
                 memberDao.createMember(childEntity);
-
                 wpdChildMaster.setMemberId(childEntity.getId());
                 wpdChildMaster.setIsHighRiskCase(childEntity.getIsHighRiskCase());
                 wpdChildMaster.setName(childEntity.getFirstName());
@@ -665,6 +670,10 @@ public class WpdServiceImpl implements WpdService {
             wpdChildMaster.setReferralReason(jsonObject.get("childReferralReason").getAsString());
         } else {
             wpdChildMaster.setReferralDone(RchConstants.REFFERAL_DONE_NO);
+        }
+        if (jsonObject.get("formFilledVia") != null) {
+            wpdMotherMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+            wpdChildMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
         }
 
         wpdChildMaster.setWpdMotherId(motherEntity.getId());

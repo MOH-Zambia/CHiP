@@ -251,15 +251,15 @@ public class FullFormConstants {
             vaccinesFullNameMap.put("DPT-HEPB-HIB_2", "DPT-HepB-Hib 2");
             vaccinesFullNameMap.put("DPT-HEPB-HIB_3", "DPT-HepB-Hib 3");
             vaccinesFullNameMap.put("VITAMIN_A_50000", "Vitamin A, 50,000 IU");
-            vaccinesFullNameMap.put("VITAMIN_A_100000", "Vitamin A, 1,00,000 IU");
-            vaccinesFullNameMap.put("VITAMIN_A_200000_1", "Vitamin A, 2,00,000 IU (1)");
-            vaccinesFullNameMap.put("VITAMIN_A_200000_2", "Vitamin A, 2,00,000 IU (2)");
-            vaccinesFullNameMap.put("VITAMIN_A_200000_3", "Vitamin A, 2,00,000 IU (3)");
-            vaccinesFullNameMap.put("VITAMIN_A_200000_4", "Vitamin A, 2,00,000 IU (4)");
-            vaccinesFullNameMap.put("VITAMIN_A_200000_5", "Vitamin A, 2,00,000 IU (5)");
-            vaccinesFullNameMap.put("VITAMIN_A_200000_6", "Vitamin A, 2,00,000 IU (6)");
-            vaccinesFullNameMap.put("VITAMIN_A_200000_7", "Vitamin A, 2,00,000 IU (7)");
-            vaccinesFullNameMap.put("VITAMIN_A_200000_8", "Vitamin A, 2,00,000 IU (8)");
+            vaccinesFullNameMap.put("VITAMIN_A_100000", "Vitamin A, 100,000 IU");
+            vaccinesFullNameMap.put("VITAMIN_A_200000_1", "Vitamin A, 200,000 IU (1)");
+            vaccinesFullNameMap.put("VITAMIN_A_200000_2", "Vitamin A, 200,000 IU (2)");
+            vaccinesFullNameMap.put("VITAMIN_A_200000_3", "Vitamin A, 200,000 IU (3)");
+            vaccinesFullNameMap.put("VITAMIN_A_200000_4", "Vitamin A, 200,000 IU (4)");
+            vaccinesFullNameMap.put("VITAMIN_A_200000_5", "Vitamin A, 200,000 IU (5)");
+            vaccinesFullNameMap.put("VITAMIN_A_200000_6", "Vitamin A, 200,000 IU (6)");
+            vaccinesFullNameMap.put("VITAMIN_A_200000_7", "Vitamin A, 200,000 IU (7)");
+            vaccinesFullNameMap.put("VITAMIN_A_200000_8", "Vitamin A, 200,000 IU (8)");
         }
 
         if (vaccinesFullNameMap.containsKey(constant.trim())) {

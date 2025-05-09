@@ -33,6 +33,7 @@ public class HouseholdMapper {
             householdDto.setNoOfMosquitoNetsAvailable(familyEntity.getNoOfMosquitoNetsAvailable());
             householdDto.setHandwashAvailable(familyEntity.getHandwashAvailable());
             householdDto.setOtherWasteDisposal(familyEntity.getOtherWasteDisposal());
+            householdDto.setToiletMeetingStandards(familyEntity.getToiletMeetingStandards());
             return householdDto;
     }
 }

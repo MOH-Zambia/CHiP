@@ -58,4 +58,14 @@ public class GbvVisit extends VisitCommonFields implements Serializable {
     private String gbvType;
     @Column(name = "difficulty_type")
     private String difficultyType;
+    @Column(name = "referral_place")
+    private Integer referralPlace;
+    @Column(name = "is_referral_done")
+    private String referralDone;
+    @Column(name = "referral_reason")
+    private String referralReason;
+    @Column(name = "referral_for")
+    private String referralFor;
+    @Column(name = "is_iec_given")
+    private Boolean isIecGiven;
 }

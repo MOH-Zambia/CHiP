@@ -429,6 +429,9 @@ public class ChildServiceImpl implements ChildService {
         childServiceMaster.setExclusivelyBreastfeded(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("exclusivelyBreastfed").getAsString()));
         childServiceMaster.setIfaSyrupGiven(ImtechoUtil.returnTrueFalseFromInitials(jsonObject.get("ifaSyrup").getAsString()));
         childServiceMaster.setWeight(Float.valueOf(jsonObject.get("weight").getAsString()));
+        if (jsonObject.get("formFilledVia") != null) {
+            childServiceMaster.setFormFilledVia(jsonObject.get("formFilledVia").getAsString());
+        }
         childServiceMaster.setFamilyId(familyEntity.getId());
         childServiceMaster.setLatitude(familyEntity.getLatitude());
         childServiceMaster.setLongitude(familyEntity.getLongitude());
@@ -699,6 +702,11 @@ public class ChildServiceImpl implements ChildService {
             case "2221":
                 if (keyAndAnswersMap.get("12").equals(RchConstants.MEMBER_STATUS_AVAILABLE)) {
                     childServiceMaster.setDelayInDevelopmental(ImtechoUtil.returnTrueFalseFromInitials(answer));
+                }
+                break;
+            case "801":
+                if (keyAndAnswersMap.get("12").equals(RchConstants.MEMBER_STATUS_AVAILABLE)) {
+                    childServiceMaster.setDeWormingGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 }
                 break;
             default:

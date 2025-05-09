@@ -1616,10 +1616,10 @@ public class ValidationFormulaUtil {
                         return validation.getMessage();
                     }
 
-                    if ((property != null && property.equals("1") && FhsConstants.FEMALE_RELATION.contains(answer))
-                            || (property != null && property.equals("2") && FhsConstants.MALE_RELATION.contains(answer))) {
-                        return validation.getMessage();
-                    }
+//                    if ((property != null && property.equals("1") && FhsConstants.FEMALE_RELATION.contains(answer))
+//                            || (property != null && property.equals("2") && FhsConstants.MALE_RELATION.contains(answer))) {
+//                        return validation.getMessage();
+//                    }
                     break;
                 case RelatedPropertyNameConstants.RELATION_WITH_HOF:
                     if ((answer.equals("1") && FhsConstants.FEMALE_RELATION.contains(property))

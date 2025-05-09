@@ -112,7 +112,7 @@ public class WelcomeActivity extends MenuActivity {
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.WAKE_LOCK
+                Manifest.permission.WAKE_LOCK,
         };
 
         Map<String, Integer> map = new HashMap<>();
@@ -120,7 +120,7 @@ public class WelcomeActivity extends MenuActivity {
             map.put(s, PermissionChecker.checkSelfPermission(getApplicationContext(), s));
         }
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             map.put(Manifest.permission.POST_NOTIFICATIONS,
                     PermissionChecker.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.POST_NOTIFICATIONS));
@@ -134,12 +134,12 @@ public class WelcomeActivity extends MenuActivity {
                     PermissionChecker.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.READ_MEDIA_VIDEO));
         }
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2 ) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
             map.put(Manifest.permission.READ_EXTERNAL_STORAGE,
                     PermissionChecker.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.READ_EXTERNAL_STORAGE));
         }
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.P ) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             map.put(Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     PermissionChecker.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE));

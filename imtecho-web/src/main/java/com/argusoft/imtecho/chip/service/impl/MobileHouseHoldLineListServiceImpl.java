@@ -12,6 +12,7 @@ import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
 import com.argusoft.imtecho.fhs.service.FamilyHealthSurveyService;
+import com.argusoft.imtecho.mobile.dao.SyncStatusDao;
 import com.argusoft.imtecho.mobile.dto.HouseHoldLineListMobileDto;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.mobile.mapper.HouseHoldLineListMobileMapper;
@@ -31,6 +32,8 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
     private FamilyDao familyDao;
     @Autowired
     private MemberDao memberDao;
+    @Autowired
+    private SyncStatusDao syncStatusDao;
     @Autowired
     private EventHandler eventHandler;
     @Autowired
@@ -63,7 +66,6 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         } else {
             family = familyDao.retrieveFamilyByFamilyId(houseHoldLineListMobileDto.getFamilyNumber());
             HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyEntity(houseHoldLineListMobileDto, family);
-            family.setState(getFamilyStateAccordingToPreviousState(family.getState()));
         }
 
         List<MemberEntity> membersEntitiesInFamily = new LinkedList<>();
@@ -137,7 +139,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             }
 
             checkIfDuplicateIdProofExists(memberDetails, member);
-            updateAdditionalInfoForMember(member);
+            updateAdditionalInfoForMember(member, memberDetails);
 
             member.setIsPregnantFlag(memberDetails.getIsWomanPregnant());
             member.setMarkedPregnant(Boolean.TRUE.equals(member.getIsPregnantFlag()));
@@ -207,8 +209,16 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 memberEntity.setUniqueHealthId(familyHealthSurveyService.generateMemberUniqueHealthId());
                 memberEntity.setState(FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_NEW);
             }
-            if (memberEntity.getMotherId() != null && memberDetails.getMotherId() != null && !memberDetails.getMotherId().equalsIgnoreCase("NOT_AVAILABLE")) {
+            if (memberEntity.getMotherId() != null && memberDetails.getMotherId() != null
+                    && !memberDetails.getMotherId().equalsIgnoreCase("NOT_AVAILABLE")
+                    && !memberDetails.getMotherId().equalsIgnoreCase("null")) {
                 memberEntity.setMotherId(Integer.valueOf(memberDetails.getMotherId()));
+            }
+            if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("ARCHIVE"))) {
+                memberEntity.setModifiedBy(user.getId());
+                memberEntity.setModifiedOn(new Date());
+                //memberEntity.setFamilyHeadFlag(Boolean.FALSE);
+                this.updateMember(memberEntity, memberEntity.getState(), FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_ARCHIVED);
             }
             if (memberDetails.getMemberStatus() != null && (memberDetails.getMemberStatus().equals("DEATH"))) {
                 if (memberDetails.getNewHofId() != null) {
@@ -244,7 +254,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
 
                 HouseHoldLineListMobileMapper.convertMemberDetailsToMemberEntity(memberDetails, memberEntity, memberEntity.getId() != null);
                 checkIfDuplicateIdProofExists(memberDetails, memberEntity);
-                updateAdditionalInfoForMember(memberEntity);
+                updateAdditionalInfoForMember(memberEntity, memberDetails);
 
                 if (memberEntity.getId() != null) {
                     memberDao.update(memberEntity);
@@ -252,8 +262,6 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                     memberDao.create(memberEntity);
                 }
             }
-
-            returnMap.put("createdInstanceId", memberEntity.getId().toString());
 
             if (memberDetails.getUniqueHealthId() == null) {
                 StringBuilder sb = new StringBuilder();
@@ -318,7 +326,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 sb2.append("\n");
                 returnMap.put("message", sb2.toString());
             }
-
+            returnMap.put("createdInstanceId", memberEntity.getId().toString());
             memberDao.flush();
             if (Boolean.TRUE.equals(memberEntity.isMarkedPregnant())) {
                 eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.PREGNANCY_MARK, memberEntity.getId()));
@@ -326,6 +334,37 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             return returnMap;
         }
         return null;
+    }
+
+    @Override
+    public Map<String, String> storeFamilyUpdateFormZambia(ParsedRecordBean parsedRecordBean, UserMaster user) {
+        Map<String, String> returnMap = new LinkedHashMap<>();
+        StringBuilder returnMessage = new StringBuilder();
+        HouseHoldLineListMobileDto houseHoldLineListMobileDto = gson.fromJson(parsedRecordBean.getAnswerRecord(), HouseHoldLineListMobileDto.class);
+
+        //Updating Family Details
+        FamilyEntity family = new FamilyEntity();
+        if (houseHoldLineListMobileDto.getUuid() != null && !houseHoldLineListMobileDto.getUuid().isEmpty()) {
+            family = familyDao.retrieveFamilyByUuid(houseHoldLineListMobileDto.getUuid());
+            HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyEntity(houseHoldLineListMobileDto, family);
+        }
+
+        familyDao.update(family);
+        familyDao.flush();
+
+        returnMessage.append("Family ID : ");
+        returnMessage.append(family.getFamilyId());
+        returnMap.put("message", returnMessage.toString());
+        returnMap.put("createdInstanceId", family.getId().toString());
+        return returnMap;
+    }
+
+    @Override
+    public void updateMember(MemberEntity memberEntity, String fromState, String toState) {
+        if (toState != null && !memberEntity.getState().equals(toState)) {
+            memberEntity.setState(toState);
+        }
+        memberDao.update(memberEntity);
     }
 
     @Override
@@ -443,7 +482,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         };
     }
 
-    private void updateAdditionalInfoForMember(MemberEntity member) {
+    private void updateAdditionalInfoForMember(MemberEntity member, HouseHoldLineListMobileDto.MemberDetails memberDetails) {
         MemberAdditionalInfo additionalInfo = new MemberAdditionalInfo();
         if (member.getAdditionalInfo() != null) {
             additionalInfo = gson.fromJson(member.getAdditionalInfo(), MemberAdditionalInfo.class);
@@ -457,6 +496,10 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         if (member.getChronicDisease() != null && member.getChronicDisease().contains("2679")) {
             additionalInfo.setTbCured(false);
             additionalInfo.setTbSuspected(true);
+            member.setAdditionalInfo(gson.toJson(additionalInfo));
+        }
+        if (memberDetails != null && Boolean.TRUE.equals(memberDetails.getHpvGiven())) {
+            additionalInfo.setHpvGiven(memberDetails.getHpvGiven());
             member.setAdditionalInfo(gson.toJson(additionalInfo));
         }
     }
@@ -515,4 +558,20 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             returnMap.put("message", sb.toString());
         }
     }
+
+    public void patchFixForReplacingToiletType() {
+        long startTime = System.nanoTime(); // Start time
+        int limit = 1000;
+        List<FamilyEntity> familyEntities = familyDao.getFamilyHavingWrongToiletTypes(limit);
+        List<String> updatedRecord = new ArrayList<>();
+        for (FamilyEntity familyEntity: familyEntities) {
+            String toiletType = syncStatusDao.getTypeOfToiletFromSyncRecord(familyEntity.getId(), familyEntity.getCreatedBy(), "HOUSE_HOLD_LINE_LIST_NEW");
+            familyEntity.setTypeOfToilet(toiletType);
+            familyDao.update(familyEntity);
+            updatedRecord.add("");
+        }
+        long durationInMs = (System.nanoTime() - startTime) / 1_000_000; // Convert to milliseconds
+        System.out.println("Updated " + updatedRecord.size() + " records in " + durationInMs + " ms at " + new Date());
+    }
 }
+

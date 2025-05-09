@@ -211,6 +211,7 @@ public class SystemConstantUtil {
     static {
         //fhwSheets
         FHW_SHEETS.add(MobileConstantUtil.FAMILY_FOLDER);
+        FHW_SHEETS.add(MobileConstantUtil.FAMILY_UPDATE);
         FHW_SHEETS.add(MobileConstantUtil.HOUSE_HOLD_LINE_LIST);
         FHW_SHEETS.add(MobileConstantUtil.HOUSE_HOLD_LINE_LIST_NEW);
         FHW_SHEETS.add(MobileConstantUtil.FAMILY_FOLDER_MEMBER_UPDATE);

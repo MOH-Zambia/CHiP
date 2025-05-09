@@ -381,14 +381,14 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
             String checkCorrectForm = getValidFormName();
 
             //FORM NAME[0] : [FORM_NAME][1]
-            if (!formData[0].replaceAll("\\s", "").split(":")[1].trim().contains(checkCorrectForm)) {
+            if (formData != null && !formData[0].replaceAll("\\s", "").split(":")[1].trim().contains(checkCorrectForm)) {
                 throw new IllegalStateException("You are scanning the wrong form");
             }
 
             if (FormConstants.OCR_COVID_SCREENING.equalsIgnoreCase(ocrFormName) ||
                     FormConstants.OCR_ANC.equalsIgnoreCase(ocrFormName) ||
                     FormConstants.OCR_KNOWN_POSITIVE.equalsIgnoreCase(ocrFormName)) {
-                if (!formData[0].replaceAll("\\s", "").split(":")[1].trim().contains(String.valueOf(currentPageIndex))) {
+                if (formData != null && !formData[0].replaceAll("\\s", "").split(":")[1].trim().contains(String.valueOf(currentPageIndex))) {
                     throw new IllegalStateException("You are scanning wrong page");
                 }
             }
@@ -403,7 +403,7 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
                 MaterialTextView questionKey = MyStaticComponents.generateQuestionView(null, null, context, question);
                 displayLayout.addView(questionKey);
                 String mainAnswer = null;
-                if (formData[lineNumber].replace("\\s", "").split(splitByForExtractingAnswer).length > 1) {
+                if (formData != null && formData[lineNumber].replace("\\s", "").split(splitByForExtractingAnswer).length > 1) {
                     mainAnswer = formData[lineNumber].replaceAll("\\s", "").split(splitByForExtractingAnswer)[1].trim();
                 }
 
@@ -413,13 +413,13 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
                         validationsForDob.add(new ValidationTagBean(FormulaConstants.VALIDATION_IS_FUTURE_DATE,
                                 "Date cannot be in future"));
                         DateChangeListenerStatic dateSelectorListener = new DateChangeListenerStatic(context, validationsForDob);
+                        fieldNameAndInputType.put(fieldName, dateSelectorListener);
                         LinearLayout datePicker = new LinearLayout(context);
                         datePicker = MyStaticComponents.getCustomDatePickerForStatic(this, dateSelectorListener, 0);
                         Date selectedDate = null;
                         try {
                             if (mainAnswer != null) {
                                 selectedDate = OCRUtils.convertStringToDate(mainAnswer);
-                                fieldNameAndInputType.put(fieldName, dateSelectorListener);
                                 if (selectedDate != null) {
                                     MaterialTextView txtDate = datePicker.findViewById(IdConstants.DATE_PICKER_TEXT_DATE_ID);
                                     txtDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(selectedDate));
@@ -491,9 +491,11 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
             handleNextButtonVisibility(currentPageIndex);
             bodyLayoutContainer.addView(displayLayout);
         } catch (Exception e) {
-            SewaUtil.generateToast(context, e.getMessage());
+            SewaUtil.generateToast(context, "Unable to scan form, Please try filling data manually");
+            //populateFormData(null);
+            //hideProcessDialog();
+            finish();
             Log.e(Activity.class.getName(), e.getMessage());
-            setBodyDetail(1);
         }
         if (ocrFormName.equalsIgnoreCase(FormConstants.OCR_HOUSEHOLD_LINE_LIST)) {
             nextButton.setText(UtilBean.getMyLabel(GlobalTypes.EVENT_NEXT));
@@ -833,12 +835,10 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
             loggerBean.setNoOfAttempt(0);
             sewaService.createLoggerBean(loggerBean);
         } catch (NumberFormatException e) {
-            SewaUtil.generateToast(context, e.getMessage());
+            SewaUtil.generateToast(context, "Text was not extracted properly. Please try again");
             Log.e(Activity.class.getName(), e.getMessage());
             setBodyDetail(1);
         }
-
-
     }
 
     private JsonObject saveDataForFields() {
@@ -1052,7 +1052,9 @@ public class OCRActivity extends MenuActivity implements View.OnClickListener {
         for (Map.Entry<Integer, JsonObject> entry : mapOfPageNumberAndJsonObject.entrySet()) {
             JsonObject jsonObject = entry.getValue();
             for (String key : jsonObject.keySet()) {
-                mergedJson.add(key, jsonObject.get(key));
+                if (!jsonObject.has("relationWithHof")) {
+                    mergedJson.add(key, jsonObject.get(key));
+                }
             }
         }
 

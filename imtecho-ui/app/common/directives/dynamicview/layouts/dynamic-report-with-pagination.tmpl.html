@@ -149,7 +149,7 @@
                     <div class="" ng-repeat="detail in config.containers.fieldsContainer|orderBy:'sequence'">
                         <div class="form-group">
                             <inputcomponent config='detail' data='data' label-class="" input-class=""
-                                ng-if="!detail.isHidden">
+                                ng-if="!detail.isHidden" reloader='reloadDynamic()'>
                             </inputcomponent>
                         </div>
                     </div>

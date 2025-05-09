@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/chipIntegration")
@@ -21,6 +22,18 @@ public class Dhis2DataController {
     @GetMapping("/sendData")
     public String sendDataToDhis2(@RequestParam Date monthEnd, @RequestParam Integer facilityId){
         return dataService.sendData(monthEnd, facilityId);
+
+    }
+
+    @GetMapping("/sendMultipleData")
+    public String sendMultipleDataToDhis2(@RequestParam Date monthEnd, @RequestParam List<Integer> facilityIds){
+
+        return dataService.sendMultipleData(monthEnd,facilityIds);
+    }
+
+    @GetMapping("/sendAll")
+    public String sendAllDataToDhis2(@RequestParam Date monthEnd){
+        return dataService.sendAllData(monthEnd);
 
     }
 

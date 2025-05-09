@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -63,6 +64,7 @@ import com.argusoft.sewa.android.app.util.GlobalTypes;
 import com.argusoft.sewa.android.app.util.SewaConstants;
 import com.argusoft.sewa.android.app.util.SewaUtil;
 import com.argusoft.sewa.android.app.util.UtilBean;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -197,7 +199,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                 if (selectedFamilyIndex != -1) {
                     bodyLayoutContainer.removeAllViews();
                     FamilyDataBean familyDataBean = familyDataBeans.get(selectedFamilyIndex);
-                    selectedFamily = fhsService.retrieveFamilyDataBeanByFamilyId(familyDataBean.getFamilyId());
+                    selectedFamily = fhsService.retrieveFamilyDataBeanByFamilyId(familyDataBean.getFamilyId(), familyDataBean.getUuid());
                     selectedFamily.setHeadMemberName(familyDataBean.getHeadMemberName());
                     SharedStructureData.currentFamilyDataBean = selectedFamily;
                     addSelectedFamilyDetails(selectedFamily);
@@ -231,19 +233,13 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
     public void addSearchTextBox() {
         selectedFamilyIndex = -1;
         bodyLayoutContainer.addView(lastUpdateLabelView(sewaService, bodyLayoutContainer));
-        List<String> options = new ArrayList<>();
         if (!isReverification) {
-            options.add(UtilBean.getMyLabel(LabelConstants.ADD_NEW_FAMILY));
+            LinearLayout button = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.button_listview_row, null);
+            MaterialTextView buttonText = button.findViewById(R.id.lists_button);
+            buttonText.setText(UtilBean.getMyLabel(LabelConstants.ADD_NEW_FAMILY));
+            button.setOnClickListener(v -> showAlertAndNavigate(FormConstants.HOUSE_HOLD_LINE_LIST_NEW));
+            bodyLayoutContainer.addView(button);
 
-            AdapterView.OnItemClickListener onItemClickListener = (parent, view, position, id) -> {
-                if (position == 0) {
-                    showAlertAndNavigate(FormConstants.HOUSE_HOLD_LINE_LIST_NEW);
-                }
-            };
-
-            ListView buttonList = MyStaticComponents.getButtonList(context, options, onItemClickListener);
-            buttonList.setPadding(0, 0, 0, 30);
-            bodyLayoutContainer.addView(buttonList);
 
             LinearLayout orLayout = getLinearLayout(context, -1, HORIZONTAL, new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             orLayout.setPadding(0, 5, 0, 5);
@@ -503,7 +499,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                 String familyIdToExpand = data.getStringExtra("familyToExpand");
                 String familyIdToMerge = data.getStringExtra("familyToMerge");
 
-                FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyIdToExpand);
+                FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(familyIdToExpand, selectedFamily.getUuid());
                 List<String> states = new ArrayList<>();
                 states.addAll(FhsConstants.FHS_VERIFIED_CRITERIA_FAMILY_STATES);
                 states.addAll(FhsConstants.FHS_NEW_CRITERIA_FAMILY_STATES);
@@ -1217,6 +1213,7 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
         options.add(UtilBean.getMyLabel(LabelConstants.VIEW_QR_CODE));
         options.add(UtilBean.getMyLabel(LabelConstants.ADD_NEW_MEMBER));
         options.add(UtilBean.getMyLabel(LabelConstants.SERVICE_UPDATE_MEMBER));
+        options.add(UtilBean.getMyLabel(LabelConstants.SERVICE_UPDATE_FAMILY));
 
         AdapterView.OnItemClickListener onItemClickListener = (parent, view, position, id) -> {
             switch (position) {
@@ -1253,6 +1250,10 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
 
                 case 2:
                     addMembersSelectionScreenForFamily(selectedFamily);
+                    break;
+
+                case 3:
+                    startDynamicFormActivity(null, selectedFamily, true);
                     break;
 
                 default:
@@ -1296,15 +1297,20 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
         return list;
     }
 
-    private void startDynamicFormActivity(MemberDataBean memberDataBean, FamilyDataBean familyDataBean) {
+    private void startDynamicFormActivity(MemberDataBean memberDataBean, FamilyDataBean familyDataBean, boolean isForFamilyUpdate) {
         showProcessDialog();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         if (memberDataBean != null) {
-            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId());
+            familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberDataBean.getFamilyId(), memberDataBean.getFamilyUuid());
         }
-        formMetaDataUtil.setMetaDataForMemberUpdateForm(memberDataBean, familyDataBean, sharedPref);
         myIntent = new Intent(this, DynamicFormActivity_.class);
-        myIntent.putExtra(SewaConstants.ENTITY, FormConstants.FHS_MEMBER_UPDATE_NEW);
+        if (isForFamilyUpdate) {
+            formMetaDataUtil.setMetaDataForFamilyUpdateForm(familyDataBean, sharedPref);
+            myIntent.putExtra(SewaConstants.ENTITY, FormConstants.FAMILY_UPDATE);
+        } else {
+            formMetaDataUtil.setMetaDataForMemberUpdateForm(memberDataBean, familyDataBean, sharedPref);
+            myIntent.putExtra(SewaConstants.ENTITY, FormConstants.FHS_MEMBER_UPDATE_NEW);
+        }
         startActivityForResult(myIntent, ActivityConstants.HH_REQUEST_CODE_FOR_EXISTING_FAMILY);
         hideProcessDialog();
     }
@@ -1417,9 +1423,9 @@ public class HouseHoldLineListActivity extends MenuActivity implements View.OnCl
                         }
                     }
                     if (selectedMemberToUpdateIndex == -1) {
-                        startDynamicFormActivity(null, selectedFamily);
+                        startDynamicFormActivity(null, selectedFamily, false);
                     } else if (!familyMembers.isEmpty() && familyMembers.get(selectedMemberToUpdateIndex) != null) {
-                        startDynamicFormActivity(familyMembers.get(selectedMemberToUpdateIndex), selectedFamily);
+                        startDynamicFormActivity(familyMembers.get(selectedMemberToUpdateIndex), selectedFamily, false);
                     }
                 }
 

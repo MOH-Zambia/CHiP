@@ -9,6 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 /**
@@ -41,6 +48,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private WpdChildDao wpdChildDao;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * {@inheritDoc}
@@ -151,6 +161,29 @@ public class ClientServiceImpl implements ClientService {
 
         return interactions;
 
+    }
+
+    @Override
+    public  List<ReferredPatientsDto> getReferredPatients(Integer facilityCode, Date serviceStartDate, Date serviceEndDate, String householdId, Integer zoneId, Integer cbvId) {
+       // return memberDao.getReferredPatients(facilityCode, serviceStartDate, serviceEndDate, householdId, zoneId, cbvId);
+        List<ReferredPatientsDto> referredPatients = memberDao.getReferredPatients(facilityCode, serviceStartDate, serviceEndDate, householdId, zoneId, cbvId);
+        //return referredPatients;
+        String apiUrl = "https://third-party-api.com/endpoint";
+
+        // Loop through each referred patient and send data to the third-party API
+        for (ReferredPatientsDto referralPayload : referredPatients) {
+
+            // Set headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            // Create the request entity (payload + headers)
+            HttpEntity<ReferredPatientsDto> request = new HttpEntity<>(referralPayload, headers);
+
+            // Send POST request to third-party API
+            ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, request, String.class);
+        }
+        return referredPatients;
     }
 
 }

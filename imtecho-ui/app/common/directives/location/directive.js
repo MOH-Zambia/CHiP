@@ -34,6 +34,7 @@
                 passedLocationLevel: '=?',
                 disabled: '=?',
                 allBlockReq: '=?',
+                reloadFunction : '&'
             },
             templateUrl: 'app/common/directives/location/location-template.html',
             link: function ($scope, element, attrs) {
@@ -268,6 +269,7 @@
 
                 $scope.$watch('selectedLocation', function (newValue) {
                     $scope.noLocationInHierarchyMessage = null;
+                    $scope.reloadFunction();
                     if (Object.keys(newValue).length === 0) {
                         clearLowerLevelLocation(minLevel);
                         $scope.form.locationForm.$setPristine();

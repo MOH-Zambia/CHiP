@@ -12,14 +12,11 @@ import java.util.Date;
 public class FlyWayScriptGenerator {
 
 //    public static void main(String args[]) throws IOException {
-////        PATH TO 'db/{implementation}'
-//        String path = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main"
-//                    + File.separator + "resources" + File.separator + "db" + File.separator + ConstantUtil.IMPLEMENTATION_TYPE + File.separator + "V" + new Date().getTime() + "__title.sql";
-
+//
 ////        PATH TO 'db/migration2'
 //        String path = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main"
 //                    + File.separator + "resources" + File.separator + "db" + File.separator + "migration2" + File.separator + "V" + new Date().getTime() + "__title.sql";
-
+//
 //        File file = new File(path);
 ////        TO CREATE THE IMPLEMENTATION FOLDER IF NOT EXISTS
 //        file.getParentFile().mkdirs();

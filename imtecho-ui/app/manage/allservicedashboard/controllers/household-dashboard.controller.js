@@ -1,5 +1,5 @@
 (function () {
-    function HouseholdDashboardController(QueryDAO, Mask, GeneralUtil,AuthenticateService) {
+    function HouseholdDashboardController($scope, QueryDAO, Mask, GeneralUtil,AuthenticateService) {
         let ctrl = this;
         
         ctrl.init = () => {
@@ -8,15 +8,20 @@
                 ctrl.selectedLocationId = ctrl.currentUser.minLocationId;
                 ctrl.chartCount();
                 ctrl.tableCount();
+                ctrl.getHealthInfra();
 
             });
            }
+
+           
 
         ctrl.onSearch = () =>
             {
                 ctrl.chartCount();
                 ctrl.tableCount();
                 ctrl.toggleFilter();
+
+                
             }
 
         ctrl.toggleFilter = () => {
@@ -29,13 +34,57 @@
             angular.element('.filter-div').toggleClass('active');
         };
 
+        $scope.$watch('ctrl.selectedLocationId', function(newVal, oldVal) {
+          if (newVal && oldVal) {
+            let healthInfraDto = {
+              code:'fetch_health_infra_acc_to_locations',
+              parameters: {
+                location_id: ctrl.selectedLocationId 
+                }
+            }
+            Mask.show();
+            QueryDAO.executeQuery(healthInfraDto).then(function(res){
+              ctrl.healthInfras = res.result;
+            },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+              Mask.hide();
+           })
+          }
+        });
+
+        ctrl.getHealthInfra = ()=>{
+          let healthInfraDto = {
+            code:'fetch_health_infra_acc_to_locations',
+            parameters: {
+              location_id: ctrl.selectedLocationId 
+              }
+          }
+
+          QueryDAO.executeQuery(healthInfraDto).then(function(res){
+            ctrl.healthInfras = res.result;
+          },GeneralUtil.showMessageOnApiCallFailure).finally(function () {
+            Mask.hide();
+         })
+        } 
+
+        ctrl.getLocationDetails = function () {
+          const selectedInfra = ctrl.healthInfras?.find(
+              infra => infra.id === ctrl.selectedHealthInfra
+          );
+
+          
+          return selectedInfra?.location_id ? selectedInfra.location_id : null; // Change to 'name' if you need the name
+      };
+
 
         ctrl.chartCount = () => {
+           ctrl.selectedHealthInfraLocation=ctrl.getLocationDetails();
+       
+          
             let pieQueryDto = {
                 code: 'fetch_household_pie_chart_data',
                 parameters: {
-                    location_id: ctrl.selectedLocationId 
-                }
+                  location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId
+              }
             };
             Mask.show();
             QueryDAO.executeQuery(pieQueryDto).then(function (res) {
@@ -48,8 +97,8 @@
             let barQueryDto = {
                 code: 'fetch_household_bar_chart_data',
                 parameters: {
-                    location_id: ctrl.selectedLocationId 
-                }
+                  location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId
+              }
             };
 
             QueryDAO.executeQuery(barQueryDto).then(function (res) {
@@ -59,7 +108,10 @@
             }, GeneralUtil.showMessageOnApiCallFailure).finally(function () {
                Mask.hide();
             });
+
+           
         }
+
 
         ctrl.setPieChart = (pieResult) => {
             ctrl.pieChartColors = [
@@ -152,11 +204,15 @@
         
 
         ctrl.tableCount = () => {
+            ctrl.selectedHealthInfraLocation=ctrl.getLocationDetails();
+
+           
+           
             let tableQueryDto = {
                 code: 'fetch_household_table_data',
                 parameters: {
-                    location_id: ctrl.selectedLocationId 
-                }
+                  location_id: ctrl.selectedHealthInfraLocation ? ctrl.selectedHealthInfraLocation : ctrl.selectedLocationId
+              }
             };
             Mask.show();
             QueryDAO.executeQuery(tableQueryDto).then(function (res) {

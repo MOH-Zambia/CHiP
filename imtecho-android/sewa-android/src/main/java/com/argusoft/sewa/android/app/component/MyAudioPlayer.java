@@ -75,7 +75,7 @@ public class MyAudioPlayer extends AlertDialog implements SeekBar.OnSeekBarChang
     }
 
     private void init(Context context, String msg) {
-        Builder alertDialogBuilder = new Builder(context, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog);
+        Builder alertDialogBuilder = new Builder(context, com.google.android.material.R.style.MaterialAlertDialog_Material3);
         alertDialogBuilder.setCancelable(false);
 
         if (msg != null) {

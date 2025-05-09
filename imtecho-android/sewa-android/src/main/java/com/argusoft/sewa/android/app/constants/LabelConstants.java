@@ -305,6 +305,7 @@ public class LabelConstants {
     public static final String SERVICE_CHILDREN = "Children";
     public static final String SERVICE_TEMPORARY_REGISTRATION = "Temporary Registration";
     public static final String SERVICE_UPDATE_MEMBER = "Update Member Information";
+    public static final String SERVICE_UPDATE_FAMILY = "Update Family Information";
     public static final String SERVICE_ADD_MEMBER = "Add a new member to registered household";
     public static final String SERVICE_MIGRATED_IN_MEMBERS = "Migrated In Members";
     public static final String SERVICE_MIGRATED_OUT_MEMBERS = "Migrated Out Members";

@@ -758,7 +758,7 @@ public class SewaServiceImpl implements SewaService {
         List<LoggerBean> loggerBeans = null;
         try {
             Calendar instance = Calendar.getInstance();
-            instance.add(Calendar.DATE, -3);
+            instance.add(Calendar.DATE, -35);
             instance.set(Calendar.HOUR, 0);
             instance.set(Calendar.MINUTE, 0);
             instance.set(Calendar.SECOND, 0);
@@ -1297,14 +1297,14 @@ public class SewaServiceImpl implements SewaService {
     }
 
     @Override
-    public void createFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, MemberBean memberBean) {
+    public void createFamilyBean(HouseHoldLineListMobileDto houseHoldLineListMobileDto, MemberBean memberBean, boolean isFamilyUpdate) {
         FamilyBean familyBean = new FamilyBean();
         Map<Integer, MemberBean> memberLoopIdMap = new HashMap<>();
         MemberBean femaleHofMember = null;
         MemberBean maleHofMember = null;
         MemberBean hofHusbandOrWifeMember = null;
 
-        HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyBean(houseHoldLineListMobileDto, familyBean);
+        HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyBean(houseHoldLineListMobileDto, familyBean, isFamilyUpdate);
         try {
             familyBeanDao.create(familyBean);
         } catch (SQLException e) {
@@ -1426,6 +1426,16 @@ public class SewaServiceImpl implements SewaService {
         try {
             HouseHoldLineListMobileMapper.convertMemberDetailsToMemberBean(memberDetails, memberBean, familyBean, true);
             memberBeanDao.update(memberBean);
+        } catch (SQLException e) {
+            Log.e(getClass().getSimpleName(), null, e);
+        }
+    }
+
+    @Override
+    public void updateFamilyByUUID(HouseHoldLineListMobileDto familyDetails, FamilyBean familyBean, boolean isFamilyUpdate) {
+        try {
+            HouseHoldLineListMobileMapper.convertHouseHoldLineListDtoToFamilyBean(familyDetails, familyBean, isFamilyUpdate);
+            familyBeanDao.update(familyBean);
         } catch (SQLException e) {
             Log.e(getClass().getSimpleName(), null, e);
         }

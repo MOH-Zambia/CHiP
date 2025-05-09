@@ -242,6 +242,10 @@ public class WpdMotherMaster extends VisitCommonFields implements Serializable {
     @Column(name="is_ART_given_delivery")
     private Boolean isARTGivenDelivery;
 
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
+
+
 
     public Boolean getWasARTGiven() {
         return wasARTGiven;
@@ -280,9 +284,6 @@ public class WpdMotherMaster extends VisitCommonFields implements Serializable {
     }
 
     public void setDateOfDelivery(Date dateOfDelivery) {
-        if (dateOfDelivery != null && dateOfDelivery.after(new Date())) {
-            throw new ImtechoMobileException("Delivery date cannot be future", 100);
-        }
         this.dateOfDelivery = dateOfDelivery;
     }
 
@@ -714,6 +715,14 @@ public class WpdMotherMaster extends VisitCommonFields implements Serializable {
 
     public void setOtherStateOfDelivery(String otherStateOfDelivery) {
         this.otherStateOfDelivery = otherStateOfDelivery;
+    }
+
+    public String getFormFilledVia() {
+        return formFilledVia;
+    }
+
+    public void setFormFilledVia(String formFilledVia) {
+        this.formFilledVia = formFilledVia;
     }
 
     /**

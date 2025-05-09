@@ -169,7 +169,7 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
         }
 
         if (user != null) {
-            System.out.println("-----------------" + Arrays.toString(records));
+            //System.out.println("-----------------" + Arrays.toString(records));
             return this.saveRecordEntryFromMobileToDB(records, user);
         }
         return new RecordStatusBean[0];
@@ -329,6 +329,7 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                             || parsedRecordBean.getAnswerEntity().equals(MobileConstantUtil.CFHC)
                             || parsedRecordBean.getAnswerEntity().equals(MobileConstantUtil.CAM_FHS)
                             || parsedRecordBean.getAnswerEntity().equals(MobileConstantUtil.FAMILY_FOLDER)
+                            || parsedRecordBean.getAnswerEntity().equals(MobileConstantUtil.FAMILY_UPDATE)
                             || parsedRecordBean.getAnswerEntity().equals(MobileConstantUtil.HOUSE_HOLD_LINE_LIST)
                             || parsedRecordBean.getAnswerEntity().equals(MobileConstantUtil.HOUSE_HOLD_LINE_LIST_NEW)
                             || parsedRecordBean.getAnswerEntity().equals(MobileConstantUtil.FAMILY_FOLDER_MEMBER_UPDATE)
@@ -595,8 +596,18 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
             case MobileConstantUtil.FHS_MEMBER_UPDATE_NEW:
                 returnMap = mobileHouseHoldLineListService.storeMemberUpdateFormZambia(parsedRecordBean, user);
                 createdInstanceId = Integer.valueOf(returnMap.get("createdInstanceId"));
-                if (returnMap.get("memberId") != null) {
-                    parsedRecordBean.setGeneratedId(returnMap.get("memberId"));
+                if (returnMap.get("familyId") != null) {
+                    parsedRecordBean.setGeneratedId(returnMap.get("familyId"));
+                }
+                if (returnMap.get(message) != null) {
+                    parsedRecordBean.setMessage(returnMap.get(message));
+                }
+                return createdInstanceId;
+            case MobileConstantUtil.FAMILY_UPDATE:
+                returnMap = mobileHouseHoldLineListService.storeFamilyUpdateFormZambia(parsedRecordBean, user);
+                createdInstanceId = Integer.valueOf(returnMap.get("createdInstanceId"));
+                if (returnMap.get("familyId") != null) {
+                    parsedRecordBean.setGeneratedId(returnMap.get("familyId"));
                 }
                 if (returnMap.get(message) != null) {
                     parsedRecordBean.setMessage(returnMap.get(message));

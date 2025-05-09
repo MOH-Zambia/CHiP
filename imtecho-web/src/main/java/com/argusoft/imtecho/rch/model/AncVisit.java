@@ -399,6 +399,12 @@ public class AncVisit extends VisitCommonFields implements Serializable {
     @Column(name = "remarks")
     private String remarks;
 
+    @Column(name = "iptp_given")
+    private Boolean iptpGiven;
+
+    @Column(name = "form_filled_via")
+    private String formFilledVia;
+
 
     public Boolean getMebendazole1Given() {
         return mebendazole1Given;
@@ -1499,6 +1505,22 @@ public class AncVisit extends VisitCommonFields implements Serializable {
 
     public void setPreferredPlaceInfraId(Integer preferredPlaceInfraId) {
         this.preferredPlaceInfraId = preferredPlaceInfraId;
+    }
+
+    public Boolean getIptpGiven() {
+        return iptpGiven;
+    }
+
+    public void setIptpGiven(Boolean iptpGiven) {
+        this.iptpGiven = iptpGiven;
+    }
+
+    public String getFormFilledVia() {
+        return formFilledVia;
+    }
+
+    public void setFormFilledVia(String formFilledVia) {
+        this.formFilledVia = formFilledVia;
     }
 
     /**

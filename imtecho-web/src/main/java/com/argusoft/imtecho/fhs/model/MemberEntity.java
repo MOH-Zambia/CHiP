@@ -323,6 +323,9 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "why_no_treatment")
     private String whyNoTreatment;
 
+    @Column(name = "having_nhima_card")
+    private Boolean havingNHIMACard;
+
 
     public Integer getId() {
         return id;
@@ -1438,6 +1441,14 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
         this.whyNoTreatment = whyNoTreatment;
     }
 
+    public Boolean getHavingNHIMACard() {
+        return havingNHIMACard;
+    }
+
+    public void setHavingNHIMACard(Boolean havingNHIMACard) {
+        this.havingNHIMACard = havingNHIMACard;
+    }
+
     public static class Fields {
 
         private Fields() {
@@ -1524,11 +1535,11 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
 
     public String getFullName() {
         if (Objects.nonNull(this.getMiddleName()) && Objects.nonNull(this.getLastName())) {
-            return this.getFirstName() + " " + this.getMiddleName() + " " + this.getLastName();
+            return this.getFirstName() + " " + this.getMiddleName().trim() + " " + this.getLastName().trim();
         } else if (Objects.nonNull(this.getLastName())) {
-            return this.getFirstName() + " " + this.getLastName();
+            return this.getFirstName() + " " + this.getLastName().trim();
         } else if (Objects.nonNull(this.getMiddleName())) {
-            return this.getFirstName() + " " + this.getMiddleName();
+            return this.getFirstName() + " " + this.getMiddleName().trim();
         } else {
             return this.getFirstName();
         }

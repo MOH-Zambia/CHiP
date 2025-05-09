@@ -191,9 +191,11 @@
                     location:params.byLocation,
                     locationId:params.locationId,
                     searchString:params.searchString,
-                    roleId: 247,
+                    roleId: 245,
                     limit:params.limit,
-                    offSet:params.offSet}).$promise;
+                    offSet:params.offSet,
+                    healthInfraId: params.healthInfraId
+                }).$promise;
             }
         };
     }

@@ -239,7 +239,7 @@ public class HighRiskPregnancyActivity extends MenuActivity implements View.OnCl
         String ageDisplay = UtilBean.getAgeDisplay(ageYearMonthDayArray[0], ageYearMonthDayArray[1], ageYearMonthDayArray[2]);
         String dobDisplay = formatDob(dobDate);
         String mobileNumber = memberSelected.getMobileNumber();
-        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId());
+        FamilyDataBean familyDataBean = fhsService.retrieveFamilyDataBeanByFamilyId(memberSelected.getFamilyId(), null);
 
         if (mobileNumber == null && familyDataBean.getContactPersonId() != null) {
             try {

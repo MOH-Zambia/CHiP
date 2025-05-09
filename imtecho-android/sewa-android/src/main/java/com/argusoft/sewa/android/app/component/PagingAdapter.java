@@ -83,112 +83,85 @@ public class PagingAdapter<T> extends ArrayAdapter<T> {
             linearLayout = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(listItemResourceId, null);
         }
 
-        switch (listItemResourceId) {
-            case R.layout.listview_row_type:
-                item = (ListItemDataBean) items.get(position);
-                MaterialTextView text = linearLayout.findViewById(R.id.lists_text);
-                text.setText(UtilBean.getMyLabel(item.getText()));
-                break;
+        if (listItemResourceId == R.layout.listview_row_type) {
+            item = (ListItemDataBean) items.get(position);
+            MaterialTextView text = linearLayout.findViewById(R.id.lists_text);
+            text.setText(UtilBean.getMyLabel(item.getText()));
+        } else if (listItemResourceId == R.layout.listview_row_family_list) {
+            item = (ListItemDataBean) items.get(position);
+            MaterialTextView familyId = linearLayout.findViewById(R.id.familyId);
+            familyId.setText(item.getFamilyId());
+            MaterialTextView memberName = linearLayout.findViewById(R.id.memberName);
+            memberName.setText(item.getMemberName());
+            switch (item.getColor()) {
+                case "RED":
+                    familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.pregnantWomenTextColor));
+                    memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.pregnantWomenTextColor));
+                    break;
+                case "GREEN":
+                    familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.hofTextColor));
+                    memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.hofTextColor));
+                    break;
+                case "ORANGE":
+                    familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                    memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                    break;
+                case "BLUE":
+                    familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                    memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                    break;
+                case "NORMAL":
+                    familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
+                    memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
+                    break;
+            }
+        } else if (listItemResourceId == R.layout.listview_row_with_item) {
+            item = (ListItemDataBean) items.get(position);
+            setBoldAndRegularText(R.id.list_text_bold, R.id.list_text_regular, R.id.list_text_separator);
+        } else if (listItemResourceId == R.layout.listview_row_for_tourist) {
+            item = (ListItemDataBean) items.get(position);
+            setTouristRow();
+        } else if (listItemResourceId == R.layout.listview_row_notification) {
+            item = (ListItemDataBean) items.get(position);
+            setNotificationRow();
+        } else if (listItemResourceId == R.layout.listview_row_with_date) {
+            item = (ListItemDataBean) items.get(position);
+            setBoldAndRegularText(R.id.notification_text_bold, R.id.notification_text_regular, R.id.notification_text_separator);
+            setDateAndVisit(R.id.notification_text_date, R.id.notification_text_visit);
+            setVaccines(R.id.notification_text_vaccines_title, R.id.notification_text_vaccines);
 
-            case R.layout.listview_row_family_list:
-                item = (ListItemDataBean) items.get(position);
-                MaterialTextView familyId = linearLayout.findViewById(R.id.familyId);
-                familyId.setText(item.getFamilyId());
-                MaterialTextView memberName = linearLayout.findViewById(R.id.memberName);
-                memberName.setText(item.getMemberName());
-                switch (item.getColor()) {
-                    case "RED":
-                        familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.pregnantWomenTextColor));
-                        memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.pregnantWomenTextColor));
-                        break;
-                    case "GREEN":
-                        familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.hofTextColor));
-                        memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.hofTextColor));
-                        break;
-                    case "ORANGE":
-                        familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
-                        memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
-                        break;
-                    case "BLUE":
-                        familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                        memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                        break;
-                    case "NORMAL":
-                        familyId.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
-                        memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
-                        break;
-                }
-                break;
-
-            case R.layout.listview_row_with_item:
-                item = (ListItemDataBean) items.get(position);
-                setBoldAndRegularText(R.id.list_text_bold, R.id.list_text_regular, R.id.list_text_separator);
-                break;
-
-            case R.layout.listview_row_for_tourist:
-                item = (ListItemDataBean) items.get(position);
-                setTouristRow();
-                break;
-
-            case R.layout.listview_row_notification:
-                item = (ListItemDataBean) items.get(position);
-                setNotificationRow();
-                break;
-
-            case R.layout.listview_row_with_date:
-                item = (ListItemDataBean) items.get(position);
-                setBoldAndRegularText(R.id.notification_text_bold, R.id.notification_text_regular, R.id.notification_text_separator);
-                setDateAndVisit(R.id.notification_text_date, R.id.notification_text_visit);
-                setVaccines(R.id.notification_text_vaccines_title, R.id.notification_text_vaccines);
-
-                if (item.getHighlightView() != null && item.getHighlightView()) {
-                    setTaskOverDueRow(R.drawable.listview_selector, R.color.colorAccent, R.color.listview_availability_text_color_selector);
-                } else if (item.isDisplayEarly()) {
-                    setTaskOverDueRow(R.drawable.listview_selector, R.color.colorAccent, R.color.listview_display_early_text_color_selector);
-                } else if (item.isTaskOverDue()) {
-                    setTaskOverDueRow(R.drawable.notification_due_selector, R.color.notificationBadgeBackground, R.color.notificationBadgeBackground);
-                } else {
-                    setTaskOverDueRow(R.drawable.listview_selector, R.color.colorAccent, R.color.listview_text_color_selector);
-                }
-                break;
-
-            case R.layout.listview_row_with_info:
-                item = (ListItemDataBean) items.get(position);
-                setBoldAndRegularText(R.id.list_info_text_bold, R.id.list_info_text_regular, R.id.list_info_text_separator);
-                setInfoListView();
-                break;
-
-            case R.layout.listview_row_with_two_item:
-                item = (ListItemDataBean) items.get(position);
-                setListViewRows();
-                break;
-
-            case R.layout.listview_row_with_three_item:
-            case R.layout.listview_row_with_three_item_chip:
-                item = (ListItemDataBean) items.get(position);
-                setListView3Rows();
-                break;
-
-            case R.layout.listview_stock_chip:
-                item = (ListItemDataBean) items.get(position);
-                setStockInfo();
-                break;
-
-
-            case R.layout.listview_row_abha_number:
-                item = (ListItemDataBean) items.get(position);
-                setAbhaListViewRows();
-                break;
-            case R.layout.listview_row_announcement_chardham:
-                item = (ListItemDataBean) items.get(position);
-                setAnnouncementViewRows(position);
-                break;
-
-            default:
-                String rowText = (String) items.get(position);
-                MaterialTextView textView = linearLayout.findViewById(R.id.lists_text);
-                textView.setText(UtilBean.getMyLabel(rowText));
-                break;
+            if (item.getHighlightView() != null && item.getHighlightView()) {
+                setTaskOverDueRow(R.drawable.listview_selector, R.color.colorAccent, R.color.listview_availability_text_color_selector);
+            } else if (item.isDisplayEarly()) {
+                setTaskOverDueRow(R.drawable.listview_selector, R.color.colorAccent, R.color.listview_display_early_text_color_selector);
+            } else if (item.isTaskOverDue()) {
+                setTaskOverDueRow(R.drawable.notification_due_selector, R.color.notificationBadgeBackground, R.color.notificationBadgeBackground);
+            } else {
+                setTaskOverDueRow(R.drawable.listview_selector, R.color.colorAccent, R.color.listview_text_color_selector);
+            }
+        } else if (listItemResourceId == R.layout.listview_row_with_info) {
+            item = (ListItemDataBean) items.get(position);
+            setBoldAndRegularText(R.id.list_info_text_bold, R.id.list_info_text_regular, R.id.list_info_text_separator);
+            setInfoListView();
+        } else if (listItemResourceId == R.layout.listview_row_with_two_item) {
+            item = (ListItemDataBean) items.get(position);
+            setListViewRows();
+        } else if (listItemResourceId == R.layout.listview_row_with_three_item || listItemResourceId == R.layout.listview_row_with_three_item_chip) {
+            item = (ListItemDataBean) items.get(position);
+            setListView3Rows();
+        } else if (listItemResourceId == R.layout.listview_stock_chip) {
+            item = (ListItemDataBean) items.get(position);
+            setStockInfo();
+        } else if (listItemResourceId == R.layout.listview_row_abha_number) {
+            item = (ListItemDataBean) items.get(position);
+            setAbhaListViewRows();
+        } else if (listItemResourceId == R.layout.listview_row_announcement_chardham) {
+            item = (ListItemDataBean) items.get(position);
+            setAnnouncementViewRows(position);
+        } else {
+            String rowText = (String) items.get(position);
+            MaterialTextView textView = linearLayout.findViewById(R.id.lists_text);
+            textView.setText(UtilBean.getMyLabel(rowText));
         }
 
         return linearLayout;

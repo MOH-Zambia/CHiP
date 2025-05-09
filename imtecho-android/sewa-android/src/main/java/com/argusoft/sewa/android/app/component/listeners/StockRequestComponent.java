@@ -113,7 +113,7 @@ public class StockRequestComponent extends LinearLayout {
                 textView.setLayoutParams(textViewParams);
                 nameAndQuantity.addView(textView);
 
-                TextInputLayout qtyInputText = MyStaticComponents.getChardhamEditText(context, LabelConstants.ENTER_QUANTITY, 10011, 3, InputType.TYPE_CLASS_NUMBER);
+                TextInputLayout qtyInputText = MyStaticComponents.getChardhamEditText(context, LabelConstants.ENTER_QUANTITY, 10011, 4, InputType.TYPE_CLASS_NUMBER);
                 qtyInputText.setLayoutParams(inputTextParams);
                 qtyInputText.setPadding(0, 10, 0, 10);
                 stockMap.put(option.getKey(), qtyInputText);

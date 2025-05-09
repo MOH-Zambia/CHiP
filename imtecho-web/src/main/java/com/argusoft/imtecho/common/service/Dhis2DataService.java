@@ -7,5 +7,9 @@ public interface Dhis2DataService {
 
     String sendData(Date monthEnd, Integer facilityId);
 
+    String sendMultipleData(Date monthEnd,List<Integer> facilityIds);
+
     List<Integer> getEnabledFacilities();
+
+    String sendAllData(Date monthEnd);
 }
