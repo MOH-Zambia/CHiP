@@ -3,6 +3,7 @@ package com.argusoft.imtecho.chip.service.impl;
 import com.argusoft.imtecho.chip.dao.ChipTBDao;
 import com.argusoft.imtecho.chip.model.ChipTBEntity;
 import com.argusoft.imtecho.chip.service.ChipTBScreeningService;
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
@@ -51,6 +52,8 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
     private TechoNotificationService techoNotificationService;
     @Autowired
     private NotificationTypeMasterDao notificationTypeMasterDao;
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
 
     @Override
     public Integer storeTBForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
@@ -118,7 +121,19 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
             }
         }
 
-        chipTBDao.create(chipTBEntity);
+        if (keyAndAnswerMap.get("21") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("21"))) {
+            if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
+                storeReferralDetailsService.storeDataToStoreReferralDetails(
+                        memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),chipTBEntity.getReferralReason(),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
+                );
+            }
+            else{
+                storeReferralDetailsService.storeDataToStoreReferralDetails(
+                        memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),chipTBEntity.getReferralFor(),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
+                );
+            }
+        }
+
         memberDao.update(memberEntity);
 
         chipTBDao.flush();
@@ -277,8 +292,18 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
                 chipTBEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
             }
         }
+        if( keyAndAnswerMap.get("21") !=null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("21"))){
+            if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
+                storeReferralDetailsService.storeDataToStoreReferralDetails(
+                        memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),chipTBEntity.getReferralReason(),SystemConstantUtil.CHIP_TB_FOLLOW_UP, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,
+                        chipTBDao.create(chipTBEntity));
+            }
+            else{
+                storeReferralDetailsService.storeDataToStoreReferralDetails(
+                        memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),chipTBEntity.getReferralFor(),SystemConstantUtil.CHIP_TB_FOLLOW_UP, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE
+                                , chipTBDao.create(chipTBEntity));
+            }        }
 
-        chipTBDao.create(chipTBEntity);
         memberDao.update(memberEntity);
 
         chipTBDao.flush();

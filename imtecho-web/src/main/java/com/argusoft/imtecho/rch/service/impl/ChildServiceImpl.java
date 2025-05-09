@@ -1,5 +1,6 @@
 package com.argusoft.imtecho.rch.service.impl;
 
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
@@ -95,6 +96,9 @@ public class ChildServiceImpl implements ChildService {
 
     @Autowired
     private HealthInfrastructureDetailsDao healthInfrastructureDetailsDao;
+
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
 
     Set<String> negativeQuestions = new HashSet<>();
 
@@ -391,6 +395,14 @@ public class ChildServiceImpl implements ChildService {
             }
         }
 
+        if(keyAndAnswerMap.get("9899") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("9899"))){
+            if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
+                storeReferralDetailsService.storeDataToStoreReferralDetails(childEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),childServiceMaster.getReferralReason(),MobileConstantUtil.CHILD_SERVICES_VISIT, "-1", user.getId(),"Notes",childServiceMaster.getLocationId(),childServiceMaster.getServiceDate(),Boolean.TRUE,childServiceDao.create(childServiceMaster));
+            }
+            else{
+                storeReferralDetailsService.storeDataToStoreReferralDetails(childEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),childServiceMaster.getReferralFor(),MobileConstantUtil.CHILD_SERVICES_VISIT, "-1", user.getId(),"Notes",childServiceMaster.getLocationId(),childServiceMaster.getServiceDate(),Boolean.TRUE,childServiceDao.create(childServiceMaster));
+            }
+        }
         childServiceDao.flush();
         eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.FHW_CHILD_SERVICE, childServiceMaster.getId()));
         return childServiceMaster.getId();

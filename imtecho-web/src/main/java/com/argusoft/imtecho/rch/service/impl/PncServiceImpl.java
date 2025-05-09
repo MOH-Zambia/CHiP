@@ -1,5 +1,6 @@
 package com.argusoft.imtecho.rch.service.impl;
 
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.common.util.DateDeserializer;
@@ -107,6 +108,9 @@ public class PncServiceImpl implements PncService {
 
     @Autowired
     private WpdMotherDao wpdMotherDao;
+
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
 
     /**
      * {@inheritDoc}
@@ -403,6 +407,14 @@ public class PncServiceImpl implements PncService {
                     }
                     memberDao.update(memberEntity);
                 }
+            }
+        }
+        if(keyAndAnswerMap.get("9899")!=null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("9899"))){
+            if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
+                storeReferralDetailsService.storeDataToStoreReferralDetails(pncMotherMaster.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),pncMotherMaster.getReferralReason(),MobileConstantUtil.PNC_VISIT, "-1", user.getId(),"NOTES",pncMaster.getLocationId(),pncMaster.getServiceDate(),Boolean.TRUE,pncMotherMasterDao.create(pncMotherMaster));
+            }
+            else{
+                storeReferralDetailsService.storeDataToStoreReferralDetails(pncMotherMaster.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),pncMotherMaster.getReferralFor(),MobileConstantUtil.PNC_VISIT, "-1", user.getId(),"NOTES",pncMaster.getLocationId(),pncMaster.getServiceDate(),Boolean.TRUE,pncMotherMasterDao.create(pncMotherMaster));
             }
         }
         pncChildMasterDao.flush();

@@ -5,6 +5,7 @@
  */
 package com.argusoft.imtecho.rch.service.impl;
 
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.common.util.DateDeserializer;
@@ -123,6 +124,8 @@ public class WpdServiceImpl implements WpdService {
 
     @Autowired
     private AshaReportedEventDao ashaReportedEventDao;
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
 
     /**
      * {@inheritDoc}
@@ -605,6 +608,15 @@ public class WpdServiceImpl implements WpdService {
                     && wpdChildMaster.getPregnancyOutcome().equals(RchConstants.PREGNANCY_OUTCOME_STILL_BIRTH)) {
                 wpdChildMaster.setMemberId(-1);
                 wpdChildDao.create(wpdChildMaster);
+            }
+        }
+
+        if(keyAndAnswerMap.get("12") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("12"))){
+            if(keyAndAnswerMap.get("3334") != null && keyAndAnswerMap.get("3334").equalsIgnoreCase("OTHER")) {
+                storeReferralDetailsService.storeDataToStoreReferralDetails(motherEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), wpdMotherMaster.getReferralReason(), SystemConstantUtil.FHW_WPD, "-1", (user.getId()), "Notes", wpdMotherMaster.getLocationId(),motherEntity.getModifiedOn(), Boolean.TRUE,wpdMotherDao.create(wpdMotherMaster));
+            }
+            else{
+                storeReferralDetailsService.storeDataToStoreReferralDetails(motherEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), wpdMotherMaster.getReferralFor(), SystemConstantUtil.FHW_WPD, "-1", (user.getId()), "Notes", wpdMotherMaster.getLocationId(), motherEntity.getLmpDate(), Boolean.TRUE,wpdMotherDao.create(wpdMotherMaster));
             }
         }
         wpdChildDao.flush();

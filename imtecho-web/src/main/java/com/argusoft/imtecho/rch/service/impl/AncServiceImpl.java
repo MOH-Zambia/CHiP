@@ -8,6 +8,7 @@ package com.argusoft.imtecho.rch.service.impl;
 import com.argusoft.imtecho.chip.dao.StockInventoryDao;
 import com.argusoft.imtecho.chip.model.ChipMalariaEntity;
 import com.argusoft.imtecho.chip.model.StockInventoryEntity;
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.common.util.DateDeserializer;
@@ -101,6 +102,9 @@ public class AncServiceImpl implements AncService {
 
     @Autowired
     private ListValueFieldValueDetailService listValueFieldValueDetailService;
+
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
 
     /**
      * {@inheritDoc}
@@ -391,6 +395,21 @@ public class AncServiceImpl implements AncService {
                     aadharNumber = answer.replace("F/", "");
                 }
             }
+        }
+        if (keyAndAnswerMap.get("24") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("24"))) {
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    motherEntity.getId(),
+                    Integer.parseInt(keyAndAnswerMap.get("-20")),
+                    ancVisit.getReferralReason(),
+                    SystemConstantUtil.FHW_ANC,
+                    "-1",
+                    user.getId(),
+                    "NOTES",
+                    ancVisit.getLocationId(),
+                    ancVisit.getServiceDate(),
+                    Boolean.TRUE,
+                    ancVisitDao.create(ancVisit)
+            );
         }
 
         this.updateMemberAdditionalInfoFromAnc(motherEntity, ancVisit, keyAndAnswerMap);
