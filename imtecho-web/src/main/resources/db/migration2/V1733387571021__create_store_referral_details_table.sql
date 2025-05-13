@@ -1,4 +1,4 @@
-Drop table  store_referral_details;
+Drop table if exists store_referral_details;
 
 CREATE TABLE store_referral_details (
     referral_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
