@@ -8,6 +8,7 @@ package com.argusoft.imtecho.rch.service.impl;
 import com.argusoft.imtecho.chip.dao.StockInventoryDao;
 import com.argusoft.imtecho.chip.model.ChipMalariaEntity;
 import com.argusoft.imtecho.chip.model.StockInventoryEntity;
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.common.util.DateDeserializer;
@@ -101,6 +102,9 @@ public class AncServiceImpl implements AncService {
 
     @Autowired
     private ListValueFieldValueDetailService listValueFieldValueDetailService;
+
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
 
     /**
      * {@inheritDoc}
@@ -288,6 +292,21 @@ public class AncServiceImpl implements AncService {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 ancVisit.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
                 ancVisit.setReferralInfraId(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                storeReferralDetailsService.storeDataToStoreReferralDetails(
+                        motherEntity.getId(),
+                        Integer.parseInt(keyAndAnswerMap.get("-20")),
+                        healthInfrastructureDetails.getName(),
+                        listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(ancVisit.getReferralFor())),
+                        SystemConstantUtil.FHW_ANC,
+                        "-1",
+                        user.getId(),
+                        "NOTES",
+                        ancVisit.getLocationId(),
+                        ancVisit.getServiceDate(),
+                        Boolean.TRUE,
+                        ancVisitDao.create(ancVisit)
+                );
             }
         }
 
