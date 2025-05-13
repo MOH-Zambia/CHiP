@@ -1,4 +1,4 @@
-Drop table if exists store_referral_details;
+Drop table  store_referral_details;
 
 CREATE TABLE store_referral_details (
     referral_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -16,7 +16,8 @@ CREATE TABLE store_referral_details (
     created_on TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     created_by INT NOT NULL,
     modified_on TIMESTAMP WITHOUT TIME ZONE,
-    modified_by INT
+    modified_by INT,
+    referred_place VARCHAR(100)
 );
 
 
