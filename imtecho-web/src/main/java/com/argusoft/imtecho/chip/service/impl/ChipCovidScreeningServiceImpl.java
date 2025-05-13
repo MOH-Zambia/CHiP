@@ -15,6 +15,9 @@ import com.argusoft.imtecho.fhs.dao.MemberDao;
 import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
+import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
+import com.argusoft.imtecho.location.dao.HealthInfrastructureDetailsDao;
+import com.argusoft.imtecho.location.model.HealthInfrastructureDetails;
 import com.argusoft.imtecho.mobile.constants.MobileConstantUtil;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.rch.constants.RchConstants;
@@ -43,6 +46,12 @@ public class ChipCovidScreeningServiceImpl implements ChipCovidScreeningService 
     private EventHandler eventHandler;
     @Autowired
     private StoreReferralDetailsService storeReferralDetailsService;
+
+    @Autowired
+    private ListValueFieldValueDetailService listValueFieldValueDetailService;
+
+    @Autowired
+    private HealthInfrastructureDetailsDao healthInfrastructureDetailsDao;
 
     @Override
     public Integer storeCovidForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
@@ -95,24 +104,24 @@ public class ChipCovidScreeningServiceImpl implements ChipCovidScreeningService 
                     && !keyAndAnswerMap.get("7513").isEmpty()) {
                 memberAdditionalInfo.setLastServiceLongDate(new Date(Long.parseLong(keyAndAnswerMap.get("7513"))).getTime());
                 memberEntity.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
-                covidScreeningEntity.setServiceDate(new Date((keyAndAnswerMap.get("7513"))));
+                covidScreeningEntity.setServiceDate(new Date(Long.parseLong(keyAndAnswerMap.get("7513"))));
+
             }
         }
 
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 covidScreeningEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),covidScreeningEntity.getReferralReason(), SystemConstantUtil.CHIP_COVID_SCREENING,"-1", user.getId(),"Notes",covidScreeningEntity.getLocationId(),covidScreeningEntity.getServiceDate(),Boolean.TRUE,chipCovidDao.create(covidScreeningEntity));
+                }
+                else {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(covidScreeningEntity.getReferralFor())), SystemConstantUtil.CHIP_COVID_SCREENING,"-1", user.getId(),"Notes",covidScreeningEntity.getLocationId(),covidScreeningEntity.getServiceDate(),Boolean.TRUE, chipCovidDao.create(covidScreeningEntity));
+                }
             }
         }
-        if(keyAndAnswerMap.get("21") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("21"))){
-            if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
-                storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),covidScreeningEntity.getReferralReason(), SystemConstantUtil.CHIP_COVID_SCREENING, "-1", user.getId(),"Notes",covidScreeningEntity.getLocationId(),covidScreeningEntity.getServiceDate(),Boolean.TRUE,chipCovidDao.create(covidScreeningEntity));
-            }
-            else {
-                storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),covidScreeningEntity.getReferralFor(), SystemConstantUtil.CHIP_COVID_SCREENING, "-1", user.getId(),"Notes",covidScreeningEntity.getLocationId(),covidScreeningEntity.getServiceDate(),Boolean.TRUE, chipCovidDao.create(covidScreeningEntity));
 
-            }
-        }
 
 
         memberDao.update(memberEntity);

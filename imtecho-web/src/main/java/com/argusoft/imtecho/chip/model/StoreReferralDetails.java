@@ -50,4 +50,7 @@ public class StoreReferralDetails extends EntityAuditInfo implements Serializabl
     @Column(name="visit_id")
     private Integer visitId;
 
+    @Column(name="referred_place")
+    private String referredPlace;
+
 }

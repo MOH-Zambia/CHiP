@@ -16,6 +16,8 @@ import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
 import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
+import com.argusoft.imtecho.location.dao.HealthInfrastructureDetailsDao;
+import com.argusoft.imtecho.location.model.HealthInfrastructureDetails;
 import com.argusoft.imtecho.mobile.constants.MobileConstantUtil;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.notification.dao.NotificationTypeMasterDao;
@@ -58,6 +60,9 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
     private ListValueFieldValueDetailService listValueFieldValueDetailService;
     @Autowired
     private StockInventoryDao stockInventoryDao;
+    @Autowired
+    private HealthInfrastructureDetailsDao healthInfrastructureDetailsDao;
+
 
     @Autowired
     private StoreReferralDetailsService storeReferralDetailsService;
@@ -115,6 +120,34 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 chipMalariaEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails
+                            (memberEntity.getId(),
+                                    Integer.parseInt(keyAndAnswerMap.get("-20")),
+                                    healthInfrastructureDetails.getName(),
+                                    chipMalariaEntity.getReferralReason(),
+                                    SystemConstantUtil.ACTIVE_MALARIA,
+                                    "-1", (user.getId()),
+                                    "NOTES",
+                                    chipMalariaEntity.getLocationId(),
+                                    chipMalariaEntity.getServiceDate(),
+                                    Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
+                }
+                else {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(
+                            memberEntity.getId(),
+                            Integer.parseInt(keyAndAnswerMap.get("-20")),
+                            healthInfrastructureDetails.getName(),
+                            listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipMalariaEntity.getReferralFor())),
+                            SystemConstantUtil.ACTIVE_MALARIA,
+                            "-1", (user.getId()),
+                            "NOTES",
+                            chipMalariaEntity.getLocationId(),
+                            chipMalariaEntity.getServiceDate(),
+                            Boolean.TRUE,
+                            chipMalariaDao.create(chipMalariaEntity));
+                }
             }
         }
 
@@ -127,12 +160,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
             }
         }
         if(keyAndAnswerMap.get("21") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("21"))){
-            if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
-                storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), chipMalariaEntity.getReferralReason(), SystemConstantUtil.ACTIVE_MALARIA, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
-            }
-            else {
-                storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), chipMalariaEntity.getReferralFor(), SystemConstantUtil.ACTIVE_MALARIA, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
-            }
+
         }
         memberDao.update(memberEntity);
         chipMalariaDao.flush();
@@ -361,6 +389,17 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 chipMalariaEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),
+                            (chipMalariaEntity.getReferralReason()),
+                            SystemConstantUtil.ACTIVE_MALARIA_FOLLOW_UP, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
+                }
+                else {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),
+                            listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipMalariaEntity.getReferralFor()))
+                            , SystemConstantUtil.ACTIVE_MALARIA_FOLLOW_UP, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
+                }
             }
         }
 
@@ -387,15 +426,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 techoNotificationMasterDao.update(techoNotificationMaster);
             }
         }
-        if(keyAndAnswerMap.get("21") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("21"))){
-            if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
-                storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), chipMalariaEntity.getReferralReason(), SystemConstantUtil.ACTIVE_MALARIA_FOLLOW_UP, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
-            }
-            else {
-                storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), chipMalariaEntity.getReferralFor(), SystemConstantUtil.ACTIVE_MALARIA_FOLLOW_UP, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
 
-            }
-        }
 
         eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.ACTIVE_MALARIA_FOLLOW_UP, memberEntity.getId()));
         return chipMalariaEntity.getId();
@@ -712,6 +743,15 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 chipMalariaEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName()
+                            ,(chipMalariaEntity.getReferralReason()), SystemConstantUtil.PASSIVE_MALARIA, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
+                }
+                else {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipMalariaEntity.getReferralFor())), SystemConstantUtil.PASSIVE_MALARIA, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
+
+                }
             }
         }
 
@@ -724,13 +764,7 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
             }
         }
         if(keyAndAnswerMap.get("21") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("21"))){
-            if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
-                storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), chipMalariaEntity.getReferralReason(), SystemConstantUtil.PASSIVE_MALARIA, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
-            }
-            else {
-                storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), chipMalariaEntity.getReferralFor(), SystemConstantUtil.PASSIVE_MALARIA, "-1", (user.getId()), "NOTES", chipMalariaEntity.getLocationId(), chipMalariaEntity.getServiceDate(), Boolean.TRUE,chipMalariaDao.create(chipMalariaEntity));
-
-            }        }
+               }
 
 
         memberDao.update(memberEntity);
@@ -1252,6 +1286,9 @@ public class ChipMalariaScreeningServiceImpl implements ChipMalariaScreeningServ
                 break;
             case "7514":
                 chipMalariaEntity.setMemberStatus(answer);
+                break;
+            case "7513":
+                chipMalariaEntity.setServiceDate(new Date(Long.parseLong(answer)));
                 break;
             default:
         }

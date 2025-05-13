@@ -25,6 +25,7 @@ import com.argusoft.imtecho.fhs.mapper.MemberMapper;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
 import com.argusoft.imtecho.fhs.service.FamilyHealthSurveyService;
+import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
 import com.argusoft.imtecho.location.dao.HealthInfrastructureDetailsDao;
 import com.argusoft.imtecho.location.dao.LocationLevelHierarchyDao;
 import com.argusoft.imtecho.location.model.HealthInfrastructureDetails;
@@ -126,6 +127,8 @@ public class WpdServiceImpl implements WpdService {
     private AshaReportedEventDao ashaReportedEventDao;
     @Autowired
     private StoreReferralDetailsService storeReferralDetailsService;
+    @Autowired
+    private ListValueFieldValueDetailService listValueFieldValueDetailService;
 
     /**
      * {@inheritDoc}
@@ -264,6 +267,15 @@ public class WpdServiceImpl implements WpdService {
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 wpdMotherMaster.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3334") != null && keyAndAnswerMap.get("3334").equalsIgnoreCase("OTHER")) {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(motherEntity.getId(),
+                            Integer.parseInt(keyAndAnswerMap.get("-20")),
+                            healthInfrastructureDetails.getName(),wpdMotherMaster.getReferralReason(), SystemConstantUtil.FHW_WPD, "-1", (user.getId()), "Notes", wpdMotherMaster.getLocationId(),motherEntity.getModifiedOn(), Boolean.TRUE,wpdMotherDao.create(wpdMotherMaster));
+                }
+                else{
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(motherEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(wpdMotherMaster.getReferralFor())), SystemConstantUtil.FHW_WPD, "-1", (user.getId()), "Notes", wpdMotherMaster.getLocationId(), motherEntity.getLmpDate(), Boolean.TRUE,wpdMotherDao.create(wpdMotherMaster));
+                }
             }
         }
 
@@ -616,14 +628,6 @@ public class WpdServiceImpl implements WpdService {
             }
         }
 
-        if(keyAndAnswerMap.get("12") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("12"))){
-            if(keyAndAnswerMap.get("3334") != null && keyAndAnswerMap.get("3334").equalsIgnoreCase("OTHER")) {
-                storeReferralDetailsService.storeDataToStoreReferralDetails(motherEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), wpdMotherMaster.getReferralReason(), SystemConstantUtil.FHW_WPD, "-1", (user.getId()), "Notes", wpdMotherMaster.getLocationId(),motherEntity.getModifiedOn(), Boolean.TRUE,wpdMotherDao.create(wpdMotherMaster));
-            }
-            else{
-                storeReferralDetailsService.storeDataToStoreReferralDetails(motherEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")), wpdMotherMaster.getReferralFor(), SystemConstantUtil.FHW_WPD, "-1", (user.getId()), "Notes", wpdMotherMaster.getLocationId(), motherEntity.getLmpDate(), Boolean.TRUE,wpdMotherDao.create(wpdMotherMaster));
-            }
-        }
         wpdChildDao.flush();
         eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.FHW_WPD, wpdMotherMaster.getId()));
         return wpdMotherMaster.getId();

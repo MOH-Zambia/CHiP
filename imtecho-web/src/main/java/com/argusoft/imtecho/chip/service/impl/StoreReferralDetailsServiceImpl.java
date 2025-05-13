@@ -21,6 +21,7 @@ public class StoreReferralDetailsServiceImpl implements StoreReferralDetailsServ
     public void storeDataToStoreReferralDetails(
             Integer memberId,
             Integer referredTo,
+            String referredPlace,
             String referralReason,
             String serviceArea,
             String nupnId,
@@ -34,6 +35,7 @@ public class StoreReferralDetailsServiceImpl implements StoreReferralDetailsServ
 
         StoreReferralDetails referralDetails = new StoreReferralDetails();
         referralDetails.setMemberId(memberId);
+        referralDetails.setReferredPlace(referredPlace);
         referralDetails.setReferralReason(referralReason);
         referralDetails.setServiceArea(serviceArea);
         referralDetails.setReferredBy(referredBy);

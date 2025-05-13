@@ -292,6 +292,21 @@ public class AncServiceImpl implements AncService {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 ancVisit.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
                 ancVisit.setReferralInfraId(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                storeReferralDetailsService.storeDataToStoreReferralDetails(
+                        motherEntity.getId(),
+                        Integer.parseInt(keyAndAnswerMap.get("-20")),
+                        healthInfrastructureDetails.getName(),
+                        listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(ancVisit.getReferralFor())),
+                        SystemConstantUtil.FHW_ANC,
+                        "-1",
+                        user.getId(),
+                        "NOTES",
+                        ancVisit.getLocationId(),
+                        ancVisit.getServiceDate(),
+                        Boolean.TRUE,
+                        ancVisitDao.create(ancVisit)
+                );
             }
         }
 
@@ -396,21 +411,6 @@ public class AncServiceImpl implements AncService {
                     aadharNumber = answer.replace("F/", "");
                 }
             }
-        }
-        if (keyAndAnswerMap.get("24") != null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("24"))) {
-            storeReferralDetailsService.storeDataToStoreReferralDetails(
-                    motherEntity.getId(),
-                    Integer.parseInt(keyAndAnswerMap.get("-20")),
-                    ancVisit.getReferralReason(),
-                    SystemConstantUtil.FHW_ANC,
-                    "-1",
-                    user.getId(),
-                    "NOTES",
-                    ancVisit.getLocationId(),
-                    ancVisit.getServiceDate(),
-                    Boolean.TRUE,
-                    ancVisitDao.create(ancVisit)
-            );
         }
 
         this.updateMemberAdditionalInfoFromAnc(motherEntity, ancVisit, keyAndAnswerMap);

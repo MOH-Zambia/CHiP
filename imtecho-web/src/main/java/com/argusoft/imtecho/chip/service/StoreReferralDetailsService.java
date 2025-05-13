@@ -8,6 +8,7 @@ public interface StoreReferralDetailsService {
     void storeDataToStoreReferralDetails(
             Integer memberId,
             Integer referredTo,
+            String referredPlace,
             String referralReason,
             String serviceArea,
             String nupnId,
