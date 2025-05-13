@@ -1,5 +1,6 @@
 package com.argusoft.imtecho.rch.service.impl;
 
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
@@ -14,6 +15,7 @@ import com.argusoft.imtecho.fhs.dao.MemberDao;
 import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
+import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
 import com.argusoft.imtecho.location.dao.HealthInfrastructureDetailsDao;
 import com.argusoft.imtecho.location.dao.LocationLevelHierarchyDao;
 import com.argusoft.imtecho.location.model.HealthInfrastructureDetails;
@@ -95,6 +97,12 @@ public class ChildServiceImpl implements ChildService {
 
     @Autowired
     private HealthInfrastructureDetailsDao healthInfrastructureDetailsDao;
+
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
+
+    @Autowired
+    private ListValueFieldValueDetailService listValueFieldValueDetailService;
 
     Set<String> negativeQuestions = new HashSet<>();
 
@@ -235,6 +243,13 @@ public class ChildServiceImpl implements ChildService {
         if (keyAndAnswerMap.containsKey("8672") && keyAndAnswerMap.get("12").equals(RchConstants.MEMBER_STATUS_AVAILABLE)) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 childServiceMaster.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(childEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),(childServiceMaster.getReferralReason()),MobileConstantUtil.CHILD_SERVICES_VISIT, "-1", user.getId(),"Notes",childServiceMaster.getLocationId(),childServiceMaster.getServiceDate(),Boolean.TRUE,childServiceDao.create(childServiceMaster));
+                }
+                else{
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(childEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(childServiceMaster.getReferralFor())),MobileConstantUtil.CHILD_SERVICES_VISIT, "-1", user.getId(),"Notes",childServiceMaster.getLocationId(),childServiceMaster.getServiceDate(),Boolean.TRUE,childServiceDao.create(childServiceMaster));
+                }
             }
         }
 

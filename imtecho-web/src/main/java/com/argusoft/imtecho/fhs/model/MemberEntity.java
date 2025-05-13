@@ -326,6 +326,16 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "having_nhima_card")
     private Boolean havingNHIMACard;
 
+    @Column(name = "nupn")
+    private String nupn;
+
+    public String getNupn() {
+        return nupn;
+    }
+
+    public void setNupn(String nupn) {
+        this.nupn = nupn;
+    }
 
     public Integer getId() {
         return id;
