@@ -64,7 +64,7 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
         Session currentSession = getCurrentSession();
         NativeQuery<MemberDetailsDTO> query = currentSession.createNativeQuery(
                 "select first_name as firstName,last_name as lastName,mother_name as motherName,nrc_number as nrc,im.religion as memberReligion,(select value from listvalue_field_value_detail where id=marital_status)as maritalStatus,dob as dateOfBirth,gender,house_number as houseNumberOrLocation,mobile_number as mobileNumber,address1 as landmark\n" +
-                        "from imt_member im inner join imt_family imf on im.family_id = imf.family_id where nrc_number is not null limit 100;"
+                        "from imt_member im inner join imt_family imf on im.family_id = imf.family_id where nrc_number is not null and nupn is null limit 100;"
         );
 
 
@@ -89,7 +89,6 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
     {
         Session currentSession = getCurrentSession();
 
-// Construct the native SQL query for updating
         NativeQuery<?> query = currentSession.createNativeQuery(
                 "UPDATE patient_data " +
                         "SET last_sync_date = CURRENT_DATE,  " +
@@ -138,5 +137,17 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
 
 
                 .setResultTransformer(Transformers.aliasToBean(ReferralDTO.class)).list();
+    }
+
+    public void deleteReferralId(String refId){
+        Session currentSession = getCurrentSession();
+
+        NativeQuery<?> query = currentSession.createNativeQuery(
+                "DELETE from patient_data " +
+                        "WHERE referral_id = :refId "
+        );
+
+        query.setParameter("refId", refId);
+        query.executeUpdate();
     }
 }

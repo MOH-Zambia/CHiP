@@ -46,11 +46,12 @@ public class CreatePatientServiceImpl implements CreatePatientService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String apiUrl = "http://102.23.120.12:8080/api/v1/patient";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzM3MDkwNDU4LCJleHAiOjE3MzUzODc0OTF9.mUnRRKVFI3viUa3RH-caw_NLheQoDl-ASslOsk4Hq5NnPvsmO4WciMKKK-CUhOjNoxSGrvK_DVePT6tQRbprsA";
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDYxNzcyMDEsImV4cCI6MTc0NjIwNjAwMX0.g1cciFeYpR5QAP2eaQa2kWYuOFT2QUNTk-lqqaQb-NPDXCMxUErjAYeYbSYXeTFF3fiy9PBzKxzd2ZpQXfNFtw";
 
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
+            headers.set("x-msg-format","message format");
             headers.set("Authorization", "Bearer " + accessToken);
 
             HttpEntity<MemberDetailsDTO> request = new HttpEntity<>(memberDetailsDTO, headers);
@@ -113,46 +114,67 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String apiUrl = "http://102.23.120.12:8080/api/v1/patient/status/{statusId}";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzM3MDkwNDU4LCJleHAiOjE3MzUzODc0OTF9.mUnRRKVFI3viUa3RH-caw_NLheQoDl-ASslOsk4Hq5NnPvsmO4WciMKKK-CUhOjNoxSGrvK_DVePT6tQRbprsA"; // Replace with the actual token
+        String apiUrl = "http://102.23.120.12:8080/api/v1/patient/";
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDYxNzcyMDEsImV4cCI6MTc0NjIwNjAwMX0.g1cciFeYpR5QAP2eaQa2kWYuOFT2QUNTk-lqqaQb-NPDXCMxUErjAYeYbSYXeTFF3fiy9PBzKxzd2ZpQXfNFtw"; // Replace with the actual token
 
         try {
-            // Set up headers
-           List<ReferralNrcDTO> requestIdList = patientDao.getPatientId();
+            List<ReferralNrcDTO> requestIdList = patientDao.getPatientId();
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(accessToken);
+            headers.set("Content-Type", "application/json");
+            headers.set("Authorization", "Bearer " + accessToken);
+            headers.set("x-msg-format", "json");
 
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
             for (ReferralNrcDTO request : requestIdList) {
                 String requestId = request.getReferralId();
 
+                StringBuilder urlBuilder = new StringBuilder(apiUrl);
+                urlBuilder.append(requestId);
+
+                String finalUrl = urlBuilder.toString();
+
                 try {
                     ResponseEntity<String> response = restTemplate.exchange(
-                            apiUrl,
+                            finalUrl,
                             HttpMethod.GET,
                             requestEntity,
-                            String.class,
-                            requestId
+                            String.class
                     );
 
-                    // Proceed only if the response is valid
+                    // Check response validity
                     if (response != null && response.getBody() != null) {
                         String responseBody = response.getBody();
 
                         JsonNode rootNode = objectMapper.readTree(responseBody);
                         JsonNode dataNode = rootNode.path("data");
 
-                        if (dataNode != null && dataNode.has("requestId")) {
+                        // Check if "data" exists and contains "nupn"
+                        if (dataNode != null && dataNode.has("data")) {
+                            JsonNode innerDataNode = dataNode.path("data");
                             String retrievedRequestId = dataNode.path("requestId").asText();
 
-                            // Update the sync date for the retrieved ID
-                            patientDao.updateSyncDate(retrievedRequestId);
-                            log.info("Processed Request ID: {}", requestId);
+                            if (innerDataNode != null && innerDataNode.has("nupn")) {
+
+                                String nupn = innerDataNode.path("nupn").asText();
+                                String nrc = innerDataNode.path("nrc").asText();
+                                log.info("Extracted nupn: {}", nupn);
+                                patientDao.setNUPN(nupn,nrc);
+                                patientDao.deleteReferralId(retrievedRequestId);
+
+                                // Additional processing with nupn if needed
+                            } else {
+                                log.warn("'nupn' field is missing in 'data' for request: {}", requestId);
+                                patientDao.updateSyncDate(retrievedRequestId);
+                                log.info("Processed Request ID: {}", requestId);
+                            }
                         } else {
-                            log.warn("Missing 'requestId' in response data for request: {}", requestId);
+                            log.warn("'data' node is empty or missing for request: {}", requestId);
                         }
+
+                        // Optionally, update the sync date
+
                     } else {
                         log.warn("Empty or null response for request: {}", requestId);
                     }
@@ -160,26 +182,23 @@ public class CreatePatientServiceImpl implements CreatePatientService {
                     log.error("Error processing request ID: {}", requestId, e);
                 }
             }
-
-
-
         } catch (Exception e) {
-
-            e.printStackTrace();
-
+            log.error("Error fetching patient IDs", e);
         }
+
     }
 
     @Override
     public  void createReferral(ReferralDTO referralDTO){
         ObjectMapper objectMapper = new ObjectMapper();
         String apiUrl = "http://102.23.120.12:8080/api/v1/referral";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzM3MDkwNDU4LCJleHAiOjE3MzUzODc0OTF9.mUnRRKVFI3viUa3RH-caw_NLheQoDl-ASslOsk4Hq5NnPvsmO4WciMKKK-CUhOjNoxSGrvK_DVePT6tQRbprsA";
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDY0MjEyODQsImV4cCI6MTc0NjQ1MDA4NH0.mlYBPejpYxcjtmTeqxH8K9idrYuDA3mqsjCPTnzLG-CPEkxcXYNuqD-H0p7HfmvoPMkLqKi044s2CsxraJLH4Q";
 
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
             headers.set("Authorization", "Bearer " + accessToken);
+            headers.set("x-msg-format", "json");
 
             HttpEntity<ReferralDTO> request = new HttpEntity<>(referralDTO, headers);
 
@@ -195,9 +214,10 @@ public class CreatePatientServiceImpl implements CreatePatientService {
 
             if (rootNode.has("data")) {
                 JsonNode dataNode = rootNode.get("data");
+                String referralId = dataNode.get("id").asText();
                 ReferralData rd = new ReferralData();
-                rd.setReferralId("123456789");
-                rd.setClientNUPN(referralDTO.getClientNupn());
+                rd.setReferralId(referralId);
+                rd.setClientNUPN(referralDTO.getNupn());
                 referralDao.create(rd);
                 log.info("Referral saved successfully.");
                 System.out.println("Data: " + dataNode.toString());
@@ -210,14 +230,17 @@ public class CreatePatientServiceImpl implements CreatePatientService {
         }
     }
     @Override
+    @Scheduled(fixedDelay = 1000*60)
     public void getReferralStatus(){
-        String apiUrl = "http://102.23.120.12:8080/api/v1/referral/status/{statusId}";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJQT1NUX1JFRkVSUkFMIiwiR0VUX1BBVElFTlRfU1RBVFVTIiwiVVBEQVRFX1VTRVIiLCJQT1NUX1BBVElFTlQiLCJHRVRfUkVGRVJSQUxfU1RBVFVTIiwiR0VUX1VTRVIiXSwic3ViIjoic3lzdGVtQGVtYWlsLmNvLnptIiwiaWF0IjoxNzM3MDkwNDU4LCJleHAiOjE3MzUzODc0OTF9.mUnRRKVFI3viUa3RH-caw_NLheQoDl-ASslOsk4Hq5NnPvsmO4WciMKKK-CUhOjNoxSGrvK_DVePT6tQRbprsA"; // Replace with the actual token
+        String apiUrl = "http://102.23.120.12:8080/api/v1/referral/{statusId}";
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDY0MjEyODQsImV4cCI6MTc0NjQ1MDA4NH0.mlYBPejpYxcjtmTeqxH8K9idrYuDA3mqsjCPTnzLG-CPEkxcXYNuqD-H0p7HfmvoPMkLqKi044s2CsxraJLH4Q"; // Replace with the actual token
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             List<ReferralNupnDTO>requestIdList = referralDao.getReferredIds();
             HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(accessToken);
+            headers.set("Content-Type", "application/json");
+            headers.set("Authorization", "Bearer " + accessToken);
+            headers.set("x-msg-format", "json");
 
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
             for (ReferralNupnDTO request : requestIdList) {
