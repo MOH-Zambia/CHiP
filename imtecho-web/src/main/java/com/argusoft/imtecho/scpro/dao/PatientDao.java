@@ -19,4 +19,6 @@ public interface PatientDao extends GenericDao<PatientData,Long> {
     void updateSyncDate(String requestId);
 
     List<ReferralDTO> getPatientsToBeReffered();
+
+    void deleteReferralId(String refId);
 }

@@ -6,14 +6,12 @@ import java.util.List;
 
 @Data
 public class ReferralDTO {
-    private String referralId;
-    private String referredFrom;
-    private String referredTo;
-    private Date referredOn;
-    private String referredBy;
-    private List<String> reasons;
-    private String typeOfReferral;
-    private String serviceArea;
-    private String notes;
-    private String clientNupn;
+    private String nupn;
+    private String facility;
+    private String reasonForReferral;
+    private String referralType;
+    private String province;
+    private String district;
+    private String additionalComments;
+
 }
