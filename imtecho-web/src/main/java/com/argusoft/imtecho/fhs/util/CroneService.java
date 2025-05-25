@@ -356,7 +356,7 @@ public class CroneService {
         caughtExceptionService.saveCaughtException(exception);
     }
 
-    private void syncDataForDhis2(){
+    public void syncDataForDhis2(){
         List<Integer> facilityIds = dhis2DataService.getEnabledFacilities();
         Date currentDate = new Date();
         for(Integer facilityId : facilityIds){
