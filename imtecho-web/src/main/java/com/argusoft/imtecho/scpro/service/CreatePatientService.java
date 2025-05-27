@@ -12,7 +12,9 @@ public interface CreatePatientService {
 
     void createReferral(ReferralDTO referralDTO);
 
-    void getReferralStatus(String requestId);
+    void getReferralStatus();
 
     void getPatientsFromImt();
+
+    void getStoredReferrals();
 }

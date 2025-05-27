@@ -3,6 +3,7 @@ package com.argusoft.imtecho.scpro.dao.Impl;
 import com.argusoft.imtecho.database.common.impl.GenericDaoImpl;
 import com.argusoft.imtecho.scpro.dao.PatientDao;
 import com.argusoft.imtecho.scpro.dto.MemberDetailsDTO;
+import com.argusoft.imtecho.scpro.dto.ReferralDTO;
 import com.argusoft.imtecho.scpro.dto.ReferralNrcDTO;
 import com.argusoft.imtecho.scpro.model.PatientData;
 import org.hibernate.Session;
@@ -30,6 +31,7 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
                         "WHERE \n" +
                         "    last_sync_date <> CURRENT_DATE \n" +
                         "    OR last_sync_date IS NULL \n" +
+                        "    AND status=false OR status IS NULL \n" +
                         "LIMIT 10;"
         );
 
@@ -46,7 +48,8 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
         // Construct the native SQL query for insertion
         NativeQuery<?> query = currentSession.createNativeQuery(
                 "UPDATE imt_member\n" +
-                        "SET nupn = :nupn\n" +
+                        "SET nupn = :nupn, " +
+                        "    status = true " +
                         "WHERE nrc_number = :nrc"
         );
 
@@ -60,8 +63,39 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
     public List<MemberDetailsDTO> getPatientsFromImt(){
         Session currentSession = getCurrentSession();
         NativeQuery<MemberDetailsDTO> query = currentSession.createNativeQuery(
-                "select first_name as firstName,last_name as lastName,mother_name as motherName,nrc_number as nrc,im.religion as memberReligion,(select value from listvalue_field_value_detail where id=marital_status)as maritalStatus,dob as dateOfBirth,gender,house_number as houseNumberOrLocation,mobile_number as mobileNumber,address1 as landmark\n" +
-                        "from imt_member im inner join imt_family imf on im.family_id = imf.family_id where nrc_number is not null limit 100;"
+                "select\n" +
+                        "nupn as nupn,\n" +
+                        "    im.first_name as firstName,\n" +
+                        "    im.last_name as lastName,\n" +
+                        "    mother_name as motherName,\n" +
+                        "    nrc_number as nrc,\n" +
+                        "    im.religion as memberReligion,\n" +
+                        "    (\n" +
+                        "        select\n" +
+                        "            value\n" +
+                        "        from\n" +
+                        "            listvalue_field_value_detail\n" +
+                        "        where\n" +
+                        "            id = marital_status\n" +
+                        "    ) as maritalStatus,\n" +
+                        "    dob as dateOfBirth,\n" +
+                        "    im.gender,\n" +
+                        "    house_number as houseNumberOrLocation,\n" +
+                        "    im.mobile_number as mobileNumber,\n" +
+                        "    address1 as landmark,\n" +
+                        "    split_part(get_location_hierarchy(imf.area_id), ' > ', 3) AS district,\n" +
+                        "\thid.mfl_code as mflCode\n" +
+                        "from\n" +
+                        "    imt_member im\n" +
+                        "    inner join imt_family imf on im.family_id = imf.family_id\n" +
+                        "\tinner join um_user uu on uu.id = im.created_by \n" +
+                        "\tinner join user_health_infrastructure uhi on uhi.user_id=uu.id\n" +
+                        "\tinner join health_infrastructure_details hid on uhi.health_infrastrucutre_id = hid.id\n" +
+                        "where\n" +
+                        "    nrc_number is not null\n" +
+                        "    and nupn is null\n" +
+                        "limit\n" +
+                        "    100;"
         );
 
 
@@ -86,18 +120,65 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
     {
         Session currentSession = getCurrentSession();
 
-// Construct the native SQL query for updating
         NativeQuery<?> query = currentSession.createNativeQuery(
                 "UPDATE patient_data " +
-                        "SET last_sync_date = CURRENT_DATE  " +
+                        "SET last_sync_date = CURRENT_DATE,  " +
+                        "status = false  " +
                         "WHERE referral_id = :requestId "
         );
 
-// Set parameters for the query
-
         query.setParameter("requestId", requestId);
+        query.executeUpdate();
+    }
 
-// Execute the query
+    public List<ReferralDTO> getPatientsToBeReffered(){
+        Session currentSession = getCurrentSession();
+        NativeQuery<ReferralDTO> query = currentSession.createNativeQuery(
+                "select\n" +
+                        "    referral_id as referralId,\n" +
+                        "    referred_from as referredFrom,\n" +
+                        "    referred_to as referredTo,\n" +
+                        "    referred_on as referredOn,\n" +
+                        "    referred_by as referredBy,\n" +
+                        "    reasons as reasons,\n" +
+                        "    type_of_referral as typeOfReferral,\n" +
+                        "    service_area as serviceArea,\n" +
+                        "    notes as notes,\n" +
+                        "    nupn as nupn\n" +
+                        "from\n" +
+                        "    store_referral_details\n" +
+                        "WHERE\n" +
+                        "    \\ n last_sync_date <> CURRENT_DATE\n" +
+                        "    OR last_sync_date IS NULL \\ n\n" +
+                        "LIMIT\n" +
+                        "    10;"
+        );
+
+        return query.addScalar("referralId",StandardBasicTypes.STRING)
+                .addScalar("referredFrom", StandardBasicTypes.STRING)
+                .addScalar("referredTo",StandardBasicTypes.STRING)
+                .addScalar("referredOn", StandardBasicTypes.STRING)
+                .addScalar("referredBy", StandardBasicTypes.STRING)
+                .addScalar("reasons", StandardBasicTypes.STRING)
+                .addScalar("typeOfReferral", StandardBasicTypes.STRING)
+                .addScalar("serviceArea", StandardBasicTypes.STRING)
+                .addScalar("notes", StandardBasicTypes.STRING)
+                .addScalar("nupn", StandardBasicTypes.STRING)
+
+
+
+                .setResultTransformer(Transformers.aliasToBean(ReferralDTO.class)).list();
+    }
+
+    public void deleteReferralId(String refId){
+        Session currentSession = getCurrentSession();
+
+        NativeQuery<?> query = currentSession.createNativeQuery(
+                "DELETE from patient_data " +
+                        "WHERE referral_id = :refId "
+        );
+
+        query.setParameter("refId", refId);
         query.executeUpdate();
     }
 }

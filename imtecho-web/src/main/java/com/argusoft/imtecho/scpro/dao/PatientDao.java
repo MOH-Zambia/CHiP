@@ -2,6 +2,7 @@ package com.argusoft.imtecho.scpro.dao;
 
 import com.argusoft.imtecho.database.common.GenericDao;
 import com.argusoft.imtecho.scpro.dto.MemberDetailsDTO;
+import com.argusoft.imtecho.scpro.dto.ReferralDTO;
 import com.argusoft.imtecho.scpro.dto.ReferralNrcDTO;
 import com.argusoft.imtecho.scpro.model.PatientData;
 
@@ -16,4 +17,8 @@ public interface PatientDao extends GenericDao<PatientData,Long> {
     List<MemberDetailsDTO> getPatientsFromImt();
 
     void updateSyncDate(String requestId);
+
+    List<ReferralDTO> getPatientsToBeReffered();
+
+    void deleteReferralId(String refId);
 }
