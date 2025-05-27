@@ -63,8 +63,39 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
     public List<MemberDetailsDTO> getPatientsFromImt(){
         Session currentSession = getCurrentSession();
         NativeQuery<MemberDetailsDTO> query = currentSession.createNativeQuery(
-                "select first_name as firstName,last_name as lastName,mother_name as motherName,nrc_number as nrc,im.religion as memberReligion,(select value from listvalue_field_value_detail where id=marital_status)as maritalStatus,dob as dateOfBirth,gender,house_number as houseNumberOrLocation,mobile_number as mobileNumber,address1 as landmark\n" +
-                        "from imt_member im inner join imt_family imf on im.family_id = imf.family_id where nrc_number is not null and nupn is null limit 100;"
+                "select\n" +
+                        "nupn as nupn,\n" +
+                        "    im.first_name as firstName,\n" +
+                        "    im.last_name as lastName,\n" +
+                        "    mother_name as motherName,\n" +
+                        "    nrc_number as nrc,\n" +
+                        "    im.religion as memberReligion,\n" +
+                        "    (\n" +
+                        "        select\n" +
+                        "            value\n" +
+                        "        from\n" +
+                        "            listvalue_field_value_detail\n" +
+                        "        where\n" +
+                        "            id = marital_status\n" +
+                        "    ) as maritalStatus,\n" +
+                        "    dob as dateOfBirth,\n" +
+                        "    im.gender,\n" +
+                        "    house_number as houseNumberOrLocation,\n" +
+                        "    im.mobile_number as mobileNumber,\n" +
+                        "    address1 as landmark,\n" +
+                        "    split_part(get_location_hierarchy(imf.area_id), ' > ', 3) AS district,\n" +
+                        "\thid.mfl_code as mflCode\n" +
+                        "from\n" +
+                        "    imt_member im\n" +
+                        "    inner join imt_family imf on im.family_id = imf.family_id\n" +
+                        "\tinner join um_user uu on uu.id = im.created_by \n" +
+                        "\tinner join user_health_infrastructure uhi on uhi.user_id=uu.id\n" +
+                        "\tinner join health_infrastructure_details hid on uhi.health_infrastrucutre_id = hid.id\n" +
+                        "where\n" +
+                        "    nrc_number is not null\n" +
+                        "    and nupn is null\n" +
+                        "limit\n" +
+                        "    100;"
         );
 
 
