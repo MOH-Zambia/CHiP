@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class MemberDetailsDTO  {
 
+    private String nupn;
     private String firstName;
     private String lastName;
     private String motherName;
@@ -17,6 +18,8 @@ public class MemberDetailsDTO  {
     private String mobileNumber;
     private String houseNumberOrLocation;
     private String landmark;
+    private String mflCode;
+    private String district;
 
     // Getters and Setters
     public String getFirstName() {
@@ -110,6 +113,31 @@ public class MemberDetailsDTO  {
     public void setLandmark(String landmark) {
         this.landmark = landmark;
     }
+
+    public String getMflCode() {
+        return mflCode;
+    }
+
+    public void setMflCode(String mflCode) {
+        this.mflCode = mflCode;
+    }
+
+    public String getNupn() {
+        return nupn;
+    }
+
+    public void setNupn(String nupn) {
+        this.nupn = nupn;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
 
     // toString() for easy debugging
 

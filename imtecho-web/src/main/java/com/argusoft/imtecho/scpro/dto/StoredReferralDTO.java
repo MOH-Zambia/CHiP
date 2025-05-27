@@ -1,11 +1,10 @@
 package com.argusoft.imtecho.scpro.dto;
+
 import lombok.Data;
 
-import java.util.Date;
-import java.util.List;
-
 @Data
-public class ReferralDTO {
+public class StoredReferralDTO {
+    private Integer id;
     private String nupn;
     private String facility;
     private String reasonForReferral;
@@ -13,5 +12,4 @@ public class ReferralDTO {
     private String province;
     private String district;
     private String additionalComments;
-
 }
