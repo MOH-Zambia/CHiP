@@ -355,12 +355,4 @@ public class CroneService {
         exception.setExceptionType("Cron Service");
         caughtExceptionService.saveCaughtException(exception);
     }
-
-    public void syncDataForDhis2(){
-        List<Integer> facilityIds = dhis2DataService.getEnabledFacilities();
-        Date currentDate = new Date();
-        for(Integer facilityId : facilityIds){
-            dhis2DataService.sendData(currentDate, facilityId);
-        }
-    }
 }
