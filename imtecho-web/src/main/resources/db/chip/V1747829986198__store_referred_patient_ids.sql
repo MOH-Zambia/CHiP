@@ -12,4 +12,4 @@ CREATE TABLE IF NOT EXISTS referred_patient_data
 );
 
 ALTER TABLE IF EXISTS store_referral_details 
-        ADD COLUMN IF NOT EXISTS referral_sent BOOLEAN DEFAULT false
+        ADD COLUMN IF NOT EXISTS referral_sent BOOLEAN DEFAULT false;
