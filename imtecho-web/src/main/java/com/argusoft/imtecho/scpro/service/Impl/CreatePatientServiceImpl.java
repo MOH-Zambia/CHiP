@@ -1,5 +1,7 @@
 package com.argusoft.imtecho.scpro.service.Impl;
 
+import com.argusoft.imtecho.common.dao.SystemConfigurationDao;
+import com.argusoft.imtecho.common.model.SystemConfiguration;
 import com.argusoft.imtecho.fhs.dto.ReferralDto;
 import com.argusoft.imtecho.scpro.dao.PatientDao;
 import com.argusoft.imtecho.scpro.dao.ReferralDao;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,9 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     PatientDao patientDao;
     @Autowired
     ReferralDao referralDao;
+    @Autowired
+    SystemConfigurationDao systemConfigurationDao;
+
     public CreatePatientServiceImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -116,7 +122,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
-    //@Scheduled(fixedDelay = 1000*60)
+    @Scheduled(fixedDelay = 1000*60*5)
     public void getPatientStatus()
     {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -299,7 +305,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
-   // @Scheduled(fixedDelay = 1000*60)
+    @Scheduled(fixedDelay = 1000 * 60 * 60 * 24)
     public void getPatientsFromImt(){
         try {
             List<MemberDetailsDTO> members = patientDao.getPatientsFromImt();
@@ -312,20 +318,13 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
-    @Scheduled(fixedDelay = 1000*60)
+    //@Scheduled(fixedDelay = 1000*60)
     public void getStoredReferrals()
     {
         try {
             List<StoredReferralDTO> referrals = referralDao.getStoredReferredPatinets();
             for (StoredReferralDTO referral : referrals) {
-                ReferralDTO newReferral = new ReferralDTO();
-                newReferral.setNupn(referral.getNupn());
-                newReferral.setReferralType(referral.getReferralType());
-                newReferral.setAdditionalComments(referral.getAdditionalComments());
-                newReferral.setProvince(referral.getProvince());
-                newReferral.setDistrict(referral.getDistrict());
-                newReferral.setReasonForReferral(referral.getReasonForReferral());
-                newReferral.setFacility(referral.getFacility());
+                ReferralDTO newReferral = getReferralDTO(referral);
                 createReferral(newReferral);
                 referralDao.updateStoredReferral(referral.getId());
             }
@@ -333,6 +332,19 @@ public class CreatePatientServiceImpl implements CreatePatientService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @NotNull
+    private static ReferralDTO getReferralDTO(StoredReferralDTO referral) {
+        ReferralDTO newReferral = new ReferralDTO();
+        newReferral.setNupn(referral.getNupn());
+        newReferral.setReferralType(referral.getReferralType());
+        newReferral.setAdditionalComments(referral.getAdditionalComments());
+        newReferral.setProvince(referral.getProvince());
+        newReferral.setDistrict(referral.getDistrict());
+        newReferral.setReasonForReferral(referral.getReasonForReferral());
+        newReferral.setFacility(referral.getFacility());
+        return newReferral;
     }
 
     private boolean isTokenExpired() {
@@ -372,9 +384,12 @@ public class CreatePatientServiceImpl implements CreatePatientService {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
 
+            SystemConfiguration scproUserName =  systemConfigurationDao.retrieveSystemConfigurationByKey("SCPRO_USERNAME");
+            SystemConfiguration scproPassword =  systemConfigurationDao.retrieveSystemConfigurationByKey("SCPRO_PASSWORD");
+
             Map<String, String> credentials = Map.of(
-                    "username", "system@email.co.zm",
-                    "password", "password3"
+                    "username", scproUserName.getKeyValue(),
+                    "password", scproUserName.getKeyValue()
             );
 
             HttpEntity<Map<String, String>> request = new HttpEntity<>(credentials, headers);
