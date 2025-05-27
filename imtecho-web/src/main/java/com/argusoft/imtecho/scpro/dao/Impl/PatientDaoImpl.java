@@ -63,39 +63,40 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
     public List<MemberDetailsDTO> getPatientsFromImt(){
         Session currentSession = getCurrentSession();
         NativeQuery<MemberDetailsDTO> query = currentSession.createNativeQuery(
-                "select\n" +
-                        "nupn as nupn,\n" +
-                        "    im.first_name as firstName,\n" +
-                        "    im.last_name as lastName,\n" +
-                        "    mother_name as motherName,\n" +
-                        "    nrc_number as nrc,\n" +
-                        "    im.religion as memberReligion,\n" +
+                "SELECT\n" +
+                        "    nupn AS nupn,\n" +
+                        "    im.first_name AS firstName,\n" +
+                        "    im.last_name AS lastName,\n" +
+                        "    mother_name AS motherName,\n" +
+                        "    nrc_number AS nrc,\n" +
+                        "    im.religion AS memberReligion,\n" +
                         "    (\n" +
-                        "        select\n" +
+                        "        SELECT\n" +
                         "            value\n" +
-                        "        from\n" +
+                        "        FROM\n" +
                         "            listvalue_field_value_detail\n" +
-                        "        where\n" +
+                        "        WHERE\n" +
                         "            id = marital_status\n" +
-                        "    ) as maritalStatus,\n" +
-                        "    dob as dateOfBirth,\n" +
+                        "    ) AS maritalStatus,\n" +
+                        "    dob AS dateOfBirth,\n" +
                         "    im.gender,\n" +
-                        "    house_number as houseNumberOrLocation,\n" +
-                        "    im.mobile_number as mobileNumber,\n" +
-                        "    address1 as landmark,\n" +
+                        "    house_number AS houseNumberOrLocation,\n" +
+                        "    im.mobile_number AS mobileNumber,\n" +
+                        "    address1 AS landmark,\n" +
                         "    split_part(get_location_hierarchy(imf.area_id), ' > ', 3) AS district,\n" +
-                        "\thid.mfl_code as mflCode\n" +
-                        "from\n" +
+                        "    hid.mfl_code AS mflCode\n" +
+                        "FROM\n" +
                         "    imt_member im\n" +
-                        "    inner join imt_family imf on im.family_id = imf.family_id\n" +
-                        "\tinner join um_user uu on uu.id = im.created_by \n" +
-                        "\tinner join user_health_infrastructure uhi on uhi.user_id=uu.id\n" +
-                        "\tinner join health_infrastructure_details hid on uhi.health_infrastrucutre_id = hid.id\n" +
-                        "where\n" +
-                        "    nrc_number is not null\n" +
-                        "    and nupn is null\n" +
-                        "limit\n" +
-                        "    100;"
+                        "    INNER JOIN imt_family imf ON im.family_id = imf.family_id\n" +
+                        "    INNER JOIN um_user uu ON uu.id = im.created_by\n" +
+                        "    INNER JOIN user_health_infrastructure uhi ON uhi.user_id = uu.id\n" +
+                        "    INNER JOIN health_infrastructure_details hid ON uhi.health_infrastrucutre_id = hid.id\n" +
+                        "    LEFT JOIN patient_data pd ON pd.nrc = im.nrc_number\n" +
+                        "WHERE\n" +
+                        "    nrc_number IS NOT NULL\n" +
+                        "    AND nupn IS NULL\n" +
+                        "    AND pd.nrc IS NULL\n" +
+                        "LIMIT 5"
         );
 
 
@@ -110,6 +111,8 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
                 .addScalar("mobileNumber", StandardBasicTypes.STRING)
                 .addScalar("houseNumberOrLocation", StandardBasicTypes.STRING)
                 .addScalar("landmark", StandardBasicTypes.STRING)
+                .addScalar("district",StandardBasicTypes.STRING)
+                .addScalar("mflCode",StandardBasicTypes.STRING)
 
 
 
