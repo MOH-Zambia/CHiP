@@ -15,4 +15,6 @@ public interface CreatePatientService {
     void getReferralStatus();
 
     void getPatientsFromImt();
+
+    void getStoredReferrals();
 }

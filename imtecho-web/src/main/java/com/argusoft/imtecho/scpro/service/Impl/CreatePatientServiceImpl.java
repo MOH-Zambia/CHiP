@@ -1,16 +1,16 @@
 package com.argusoft.imtecho.scpro.service.Impl;
 
+import com.argusoft.imtecho.fhs.dto.ReferralDto;
 import com.argusoft.imtecho.scpro.dao.PatientDao;
 import com.argusoft.imtecho.scpro.dao.ReferralDao;
-import com.argusoft.imtecho.scpro.dto.MemberDetailsDTO;
-import com.argusoft.imtecho.scpro.dto.ReferralDTO;
-import com.argusoft.imtecho.scpro.dto.ReferralNrcDTO;
-import com.argusoft.imtecho.scpro.dto.ReferralNupnDTO;
+import com.argusoft.imtecho.scpro.dto.*;
 import com.argusoft.imtecho.scpro.model.PatientData;
 import com.argusoft.imtecho.scpro.model.ReferralData;
 import com.argusoft.imtecho.scpro.service.CreatePatientService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,12 +23,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 @Transactional
 public class CreatePatientServiceImpl implements CreatePatientService {
+    private String accessToken = "";
 
     private final RestTemplate restTemplate;
 
@@ -46,9 +50,12 @@ public class CreatePatientServiceImpl implements CreatePatientService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String apiUrl = "http://102.23.120.12:8080/api/v1/patient";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDYxNzcyMDEsImV4cCI6MTc0NjIwNjAwMX0.g1cciFeYpR5QAP2eaQa2kWYuOFT2QUNTk-lqqaQb-NPDXCMxUErjAYeYbSYXeTFF3fiy9PBzKxzd2ZpQXfNFtw";
+        //String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDc4MTQxODMsImV4cCI6MTc0Nzg0Mjk4M30.Fds9VvnCoUavO6877zlUfnyxaECDEvNrVKwvlhSoZgKh9m6qi2VMJiXT3iJdHoR06lCp-Ji4E1YylMr2hyxdnw";
 
         try {
+            if (isTokenExpired()) {
+                fetchNewAccessToken(); // Refresh the token if expired
+            }
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
             headers.set("x-msg-format","message format");
@@ -109,15 +116,18 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
-    @Scheduled(fixedDelay = 1000*60)
+    //@Scheduled(fixedDelay = 1000*60)
     public void getPatientStatus()
     {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String apiUrl = "http://102.23.120.12:8080/api/v1/patient/";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDYxNzcyMDEsImV4cCI6MTc0NjIwNjAwMX0.g1cciFeYpR5QAP2eaQa2kWYuOFT2QUNTk-lqqaQb-NPDXCMxUErjAYeYbSYXeTFF3fiy9PBzKxzd2ZpQXfNFtw"; // Replace with the actual token
+        //String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDc4MTQxODMsImV4cCI6MTc0Nzg0Mjk4M30.Fds9VvnCoUavO6877zlUfnyxaECDEvNrVKwvlhSoZgKh9m6qi2VMJiXT3iJdHoR06lCp-Ji4E1YylMr2hyxdnw"; // Replace with the actual token
 
         try {
+            if (isTokenExpired()) {
+                fetchNewAccessToken(); // Refresh the token if expired
+            }
             List<ReferralNrcDTO> requestIdList = patientDao.getPatientId();
 
             HttpHeaders headers = new HttpHeaders();
@@ -192,9 +202,12 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     public  void createReferral(ReferralDTO referralDTO){
         ObjectMapper objectMapper = new ObjectMapper();
         String apiUrl = "http://102.23.120.12:8080/api/v1/referral";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDY0MjEyODQsImV4cCI6MTc0NjQ1MDA4NH0.mlYBPejpYxcjtmTeqxH8K9idrYuDA3mqsjCPTnzLG-CPEkxcXYNuqD-H0p7HfmvoPMkLqKi044s2CsxraJLH4Q";
+        //String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDc4MTQxODMsImV4cCI6MTc0Nzg0Mjk4M30.Fds9VvnCoUavO6877zlUfnyxaECDEvNrVKwvlhSoZgKh9m6qi2VMJiXT3iJdHoR06lCp-Ji4E1YylMr2hyxdnw";
 
         try {
+            if (isTokenExpired()) {
+                fetchNewAccessToken(); // Refresh the token if expired
+            }
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
             headers.set("Authorization", "Bearer " + accessToken);
@@ -230,12 +243,14 @@ public class CreatePatientServiceImpl implements CreatePatientService {
         }
     }
     @Override
-    @Scheduled(fixedDelay = 1000*60)
+    //@Scheduled(fixedDelay = 1000*60)
     public void getReferralStatus(){
         String apiUrl = "http://102.23.120.12:8080/api/v1/referral/{statusId}";
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDY0MjEyODQsImV4cCI6MTc0NjQ1MDA4NH0.mlYBPejpYxcjtmTeqxH8K9idrYuDA3mqsjCPTnzLG-CPEkxcXYNuqD-H0p7HfmvoPMkLqKi044s2CsxraJLH4Q"; // Replace with the actual token
         ObjectMapper objectMapper = new ObjectMapper();
         try {
+            if (isTokenExpired()) {
+                fetchNewAccessToken(); // Refresh the token if expired
+            }
             List<ReferralNupnDTO>requestIdList = referralDao.getReferredIds();
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
@@ -264,10 +279,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
 
                         if (dataNode != null && dataNode.has("requestId")) {
                             String retrievedRequestId = dataNode.path("requestId").asText();
-
                             referralDao.updateSyncDate(retrievedRequestId);
-
-                            System.out.println(responseBody);
                         } else {
                             System.err.println("Missing 'requestId' in response data for request: " + requestId);
                         }
@@ -287,16 +299,102 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
+   // @Scheduled(fixedDelay = 1000*60)
     public void getPatientsFromImt(){
         try {
-            List<MemberDetailsDTO> members= patientDao.getPatientsFromImt();
-            for(int i=0;i<members.size();i++)
-            {
-                createPatient(members.get(i));
+            List<MemberDetailsDTO> members = patientDao.getPatientsFromImt();
+            for (MemberDetailsDTO member : members) {
+                createPatient(member);
             }
-            log.info("Patiens created");
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    @Scheduled(fixedDelay = 1000*60)
+    public void getStoredReferrals()
+    {
+        try {
+            List<StoredReferralDTO> referrals = referralDao.getStoredReferredPatinets();
+            for (StoredReferralDTO referral : referrals) {
+                ReferralDTO newReferral = new ReferralDTO();
+                newReferral.setNupn(referral.getNupn());
+                newReferral.setReferralType(referral.getReferralType());
+                newReferral.setAdditionalComments(referral.getAdditionalComments());
+                newReferral.setProvince(referral.getProvince());
+                newReferral.setDistrict(referral.getDistrict());
+                newReferral.setReasonForReferral(referral.getReasonForReferral());
+                newReferral.setFacility(referral.getFacility());
+                createReferral(newReferral);
+                referralDao.updateStoredReferral(referral.getId());
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean isTokenExpired() {
+        if (accessToken.isEmpty()) {
+            return true; // If no token, assume expired
+        }
+
+        try {
+
+            String[] parts = accessToken.split("\\.");
+            if (parts.length != 3) {
+                throw new IllegalArgumentException("Invalid JWT token format.");
+            }
+
+            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode payloadJson = objectMapper.readTree(payload);
+
+            if (payloadJson.has("exp")) {
+                long exp = payloadJson.get("exp").asLong();
+                Date expiryDate = new Date(exp * 1000);
+                return expiryDate.before(new Date());
+            } else {
+                throw new IllegalArgumentException("JWT token does not contain 'exp' claim.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error parsing token: " + e.getMessage());
+            return true;
+        }
+    }
+
+    private void fetchNewAccessToken() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String authUrl = "http://102.23.120.12:8080/api/v1/auth/login";
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/json");
+
+            Map<String, String> credentials = Map.of(
+                    "username", "system@email.co.zm",
+                    "password", "password3"
+            );
+
+            HttpEntity<Map<String, String>> request = new HttpEntity<>(credentials, headers);
+            ResponseEntity<String> response = restTemplate.postForEntity(authUrl, request, String.class);
+
+            JsonNode rootNode = objectMapper.readTree(response.getBody());
+            if (rootNode.has("data")) {
+                JsonNode dataNode = rootNode.get("data");
+                if (dataNode.has("accessToken")) {
+                    accessToken = dataNode.get("accessToken").asText();
+                    System.out.println("New access token fetched successfully: " + accessToken);
+                } else {
+                    throw new RuntimeException("Failed to fetch access token: Missing accessToken field in data.");
+                }
+            } else {
+                throw new RuntimeException("Failed to fetch access token: Missing data field.");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching new access token: " + e.getMessage());
         }
     }
 }
