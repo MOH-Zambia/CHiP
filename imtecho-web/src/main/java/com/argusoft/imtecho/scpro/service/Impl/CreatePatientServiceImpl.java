@@ -389,7 +389,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
 
             Map<String, String> credentials = Map.of(
                     "username", scproUserName.getKeyValue(),
-                    "password", scproUserName.getKeyValue()
+                    "password", scproPassword.getKeyValue()
             );
 
             HttpEntity<Map<String, String>> request = new HttpEntity<>(credentials, headers);
