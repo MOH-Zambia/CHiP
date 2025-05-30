@@ -55,7 +55,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     public void createPatient(MemberDetailsDTO memberDetailsDTO){
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String apiUrl = "http://102.23.120.12:8080/api/v1/patient";
+        String apiUrl = "http://10.52.45.59:8080/api/v1/patient";
         //String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDc4MTQxODMsImV4cCI6MTc0Nzg0Mjk4M30.Fds9VvnCoUavO6877zlUfnyxaECDEvNrVKwvlhSoZgKh9m6qi2VMJiXT3iJdHoR06lCp-Ji4E1YylMr2hyxdnw";
 
         try {
@@ -127,7 +127,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String apiUrl = "http://102.23.120.12:8080/api/v1/patient/";
+        String apiUrl = "http://10.52.45.59:8080/api/v1/patient/";
         //String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDc4MTQxODMsImV4cCI6MTc0Nzg0Mjk4M30.Fds9VvnCoUavO6877zlUfnyxaECDEvNrVKwvlhSoZgKh9m6qi2VMJiXT3iJdHoR06lCp-Ji4E1YylMr2hyxdnw"; // Replace with the actual token
 
         try {
@@ -207,7 +207,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     @Override
     public  void createReferral(ReferralDTO referralDTO){
         ObjectMapper objectMapper = new ObjectMapper();
-        String apiUrl = "http://102.23.120.12:8080/api/v1/referral";
+        String apiUrl = "http://10.52.45.59:8080/api/v1/referral";
         //String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDc4MTQxODMsImV4cCI6MTc0Nzg0Mjk4M30.Fds9VvnCoUavO6877zlUfnyxaECDEvNrVKwvlhSoZgKh9m6qi2VMJiXT3iJdHoR06lCp-Ji4E1YylMr2hyxdnw";
 
         try {
@@ -251,7 +251,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     @Override
     //@Scheduled(fixedDelay = 1000*60)
     public void getReferralStatus(){
-        String apiUrl = "http://102.23.120.12:8080/api/v1/referral/{statusId}";
+        String apiUrl = "http://10.52.45.59:8080/api/v1/referral/{statusId}";
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             if (isTokenExpired()) {
