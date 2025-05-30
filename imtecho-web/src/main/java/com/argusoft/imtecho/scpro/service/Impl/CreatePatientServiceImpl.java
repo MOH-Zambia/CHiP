@@ -380,7 +380,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     private void fetchNewAccessToken() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String authUrl = "http://102.23.120.12:8080/api/v1/auth/login";
+            String authUrl = "http://10.52.45.59:8080/api/v1/auth/login";
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
 
