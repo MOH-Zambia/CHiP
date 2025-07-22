@@ -3,6 +3,7 @@ package com.argusoft.imtecho.chip.service.impl;
 import com.argusoft.imtecho.chip.dao.ChipTBDao;
 import com.argusoft.imtecho.chip.model.ChipTBEntity;
 import com.argusoft.imtecho.chip.service.ChipTBScreeningService;
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
@@ -14,6 +15,9 @@ import com.argusoft.imtecho.fhs.dao.MemberDao;
 import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
+import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
+import com.argusoft.imtecho.location.dao.HealthInfrastructureDetailsDao;
+import com.argusoft.imtecho.location.model.HealthInfrastructureDetails;
 import com.argusoft.imtecho.mobile.constants.MobileConstantUtil;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.notification.dao.NotificationTypeMasterDao;
@@ -51,6 +55,13 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
     private TechoNotificationService techoNotificationService;
     @Autowired
     private NotificationTypeMasterDao notificationTypeMasterDao;
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
+    @Autowired
+    private ListValueFieldValueDetailService listValueFieldValueDetailService;
+    @Autowired
+    private HealthInfrastructureDetailsDao healthInfrastructureDetailsDao;
+
 
     @Override
     public Integer storeTBForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
@@ -115,10 +126,22 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 chipTBEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(
+                            memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),(chipTBEntity.getReferralReason()),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
+                    );
+                }
+                else{
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(
+                            memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipTBEntity.getReferralFor())),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
+                    );
+                }
             }
         }
 
-        chipTBDao.create(chipTBEntity);
+
+
         memberDao.update(memberEntity);
 
         chipTBDao.flush();
@@ -279,10 +302,21 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 chipTBEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(
+                            memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),(chipTBEntity.getReferralReason()),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
+                    );
+                }
+                else{
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(
+                            memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipTBEntity.getReferralFor())),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
+                    );
+                }
             }
         }
 
-        chipTBDao.create(chipTBEntity);
+
         memberDao.update(memberEntity);
 
         chipTBDao.flush();

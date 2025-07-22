@@ -1,5 +1,6 @@
 package com.argusoft.imtecho.rch.service.impl;
 
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.common.util.DateDeserializer;
@@ -16,6 +17,7 @@ import com.argusoft.imtecho.fhs.dao.MemberDao;
 import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
+import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
 import com.argusoft.imtecho.location.dao.HealthInfrastructureDetailsDao;
 import com.argusoft.imtecho.location.dao.LocationLevelHierarchyDao;
 import com.argusoft.imtecho.location.model.HealthInfrastructureDetails;
@@ -107,6 +109,12 @@ public class PncServiceImpl implements PncService {
 
     @Autowired
     private WpdMotherDao wpdMotherDao;
+
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
+
+    @Autowired
+    private ListValueFieldValueDetailService listValueFieldValueDetailService;
 
     /**
      * {@inheritDoc}
@@ -263,6 +271,13 @@ public class PncServiceImpl implements PncService {
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 pncMotherMaster.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
+                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(pncMotherMaster.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),(pncMotherMaster.getReferralReason()),MobileConstantUtil.PNC_VISIT, "-1", user.getId(),"NOTES",pncMaster.getLocationId(),pncMaster.getServiceDate(),Boolean.TRUE,pncMotherMasterDao.create(pncMotherMaster));
+                }
+                else{
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(pncMotherMaster.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(pncMotherMaster.getReferralReason())),MobileConstantUtil.PNC_VISIT, "-1", user.getId(),"NOTES",pncMaster.getLocationId(),pncMaster.getServiceDate(),Boolean.TRUE,pncMotherMasterDao.create(pncMotherMaster));
+                }
             }
         }
 
@@ -384,6 +399,9 @@ public class PncServiceImpl implements PncService {
                     memberDao.update(memberEntity);
                 }
             }
+        }
+        if(keyAndAnswerMap.get("9899")!=null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("9899"))){
+
         }
         pncChildMasterDao.flush();
         eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.FHW_PNC, pncMaster.getId()));
