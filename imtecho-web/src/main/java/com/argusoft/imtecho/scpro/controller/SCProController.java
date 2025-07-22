@@ -26,10 +26,10 @@ public class SCProController {
         createPatientService.createPatient(memberDetailsDTO);
     }
 
-    @GetMapping( value = "/getCreatedPatient")
-    public void getCreatedPatient(){
-        createPatientService.getPatientStatus();
-    }
+//    @GetMapping( value = "/getCreatedPatient")
+//    public void getCreatedPatient(){
+//        createPatientService.getPatientStatus();
+//    }
 
     @PostMapping(value = "/createReferral")
             public void createReferral(@RequestBody ReferralDTO referralDTO){
@@ -37,8 +37,8 @@ public class SCProController {
     }
 
     @GetMapping(value = "/getReferralStatus")
-    public void getReferralStatus(@PathVariable String requestId){
-        createPatientService.getReferralStatus(requestId);
+    public void getReferralStatus(){
+        createPatientService.getReferralStatus();
     }
 
 }
