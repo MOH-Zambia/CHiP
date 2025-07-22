@@ -12,6 +12,7 @@ import com.argusoft.imtecho.cfhc.service.CFHCService;
 import com.argusoft.imtecho.cfhc.service.CamCFHCService;
 import com.argusoft.imtecho.cfhc.service.FamilyAvailabilityService;
 import com.argusoft.imtecho.cfhc.service.FamilyFolderService;
+import com.argusoft.imtecho.chip.model.EventBasedCareModule;
 import com.argusoft.imtecho.chip.service.*;
 import com.argusoft.imtecho.common.dao.UserDao;
 import com.argusoft.imtecho.common.dao.UserTokenDao;
@@ -148,6 +149,8 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
     private BcgVaccineService bcgVaccineService;
     @Autowired
     private GbvService gbvService;
+    @Autowired
+    private EventBasedCareService eventBasedCareService;
     @Autowired
     BcgVaccinationSurveyDao bcgVaccinationSurveyDao;
 
@@ -808,6 +811,8 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                 return chipCovidScreeningService.storeCovidFormOCR(parsedRecordBean, user, keyAndAnswerMap);
             case SystemConstantUtil.CHIP_GBV_SCREENING:
                 return gbvService.storeGbvForm(parsedRecordBean, user, keyAndAnswerMap);
+            case SystemConstantUtil.EVENT_BASED_CARE_MODULE:
+                return eventBasedCareService.storeEventBasedCareForm(parsedRecordBean,user,keyAndAnswerMap);
             default:
         }
         return createdInstanceId;
