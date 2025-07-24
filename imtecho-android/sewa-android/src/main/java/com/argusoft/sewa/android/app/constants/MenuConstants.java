@@ -25,6 +25,7 @@ public class MenuConstants {
     public static final String LIBRARY = "LIBRARY";
     public static final String WORK_LOG = "WORK_LOG";
     public static final String CBV_WORK_STATUS="CBV_WORK_STATUS";
+    public static final String HELP_DESK="HELP_DESK";
 
     private static Map<String, Integer> menuIcons;
 
@@ -43,6 +44,7 @@ public class MenuConstants {
             menuIcons.put(WORK_LOG, R.drawable.work_status);
             menuIcons.put(CBV_MY_PEOPLE, R.drawable.z_preg);
             menuIcons.put(STOCK_MANAGEMENT, R.drawable.stock_management);
+            menuIcons.put(HELP_DESK, R.drawable.call);
         }
 
         if (menuIcons.containsKey(constant.trim())) {

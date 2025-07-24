@@ -1241,6 +1241,7 @@ public class UtilBean {
             entityFullFormNames.put(FormConstants.OCR_GBV, "GBV (OCR)");
             entityFullFormNames.put(FormConstants.OCR_MALARIA_NON_INDEX, "Malaria Non Index Case (OCR)");
             entityFullFormNames.put(FormConstants.OCR_MALARIA_INDEX, "Malaria Index Case (OCR)");
+            entityFullFormNames.put(FormConstants.HELP_DESK, "Help Desk Tool");
         }
         return entityFullFormNames;
     }

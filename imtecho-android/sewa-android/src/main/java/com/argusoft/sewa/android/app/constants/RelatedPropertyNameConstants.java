@@ -545,4 +545,5 @@ public class RelatedPropertyNameConstants {
     public static final String HEAD_OF_FAMILY_NUMBER = "headMobileNumber";
     public static final String RCH_ID = "rchId";
     public static final String SINGLE_MEMBER_FAMILY = "singleMemberFamily";
+    public static final String CBV_NAME = "cbvName";
 }

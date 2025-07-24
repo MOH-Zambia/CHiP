@@ -36,8 +36,8 @@ android {
         debug {
             shrinkResources false
             minifyEnabled false
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.1.13:8181/\""
-            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.168.1.13:8181/\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.1.170.32:8181/\""
+            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.1.170.32:8181/\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 

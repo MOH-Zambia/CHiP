@@ -218,6 +218,7 @@ public class FormConstants {
     public static final String OCR_GBV ="OCR_GBV";
     public static final String OCR_MALARIA_NON_INDEX ="OCR_NON_INDEX";
     public static final String OCR_MALARIA_INDEX ="OCR_INDEX";
+    public static final String HELP_DESK ="Help Desk Tool";
 
 //    public static final String DNHDD_APPETITE = "DNHDD_APPETITE";
 

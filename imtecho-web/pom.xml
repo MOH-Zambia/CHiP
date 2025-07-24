@@ -513,7 +513,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <server.port>8080</server.port>
+                <server.port>8081</server.port>
                 <server.redirect.port>8181</server.redirect.port>
                 <server.is.secure>true</server.is.secure>
                 <server.droptype>P</server.droptype>
@@ -523,7 +523,7 @@
                 <jdbc.url>localhost</jdbc.url>
                 <jdbc.database>chip_local</jdbc.database>
                 <jdbc.username>postgres</jdbc.username>
-                <jdbc.password>argusadmin</jdbc.password>
+                <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
                 <jdbc.maxPoolSize>100</jdbc.maxPoolSize>
 
