@@ -34,4 +34,7 @@ public class HelpDeskEntity extends EntityAuditInfo implements Serializable {
 
     @Column(name = "other_description")
     private String otherDesc;
+
+    @Column(name = "status")
+    private String status;
 }

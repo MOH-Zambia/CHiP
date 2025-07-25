@@ -149,7 +149,7 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
     @Autowired
     private GbvService gbvService;
     @Autowired
-    BcgVaccinationSurveyDao bcgVaccinationSurveyDao;
+    private HelpDeskService helpDeskService;
 
     @Override
     public RecordStatusBean[] recordsEntryFromMobileToDBServer(String token, String[] records) {
@@ -806,8 +806,8 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                 return chipCovidScreeningService.storeCovidForm(parsedRecordBean, user, keyAndAnswerMap);
             case SystemConstantUtil.OCR_COVID_SCREENING:
                 return chipCovidScreeningService.storeCovidFormOCR(parsedRecordBean, user, keyAndAnswerMap);
-            case SystemConstantUtil.CHIP_GBV_SCREENING:
-                return gbvService.storeGbvForm(parsedRecordBean, user, keyAndAnswerMap);
+            case SystemConstantUtil.HELP_DESK:
+                return helpDeskService.storeHelpDeskForm(parsedRecordBean, user, keyAndAnswerMap);
             default:
         }
         return createdInstanceId;

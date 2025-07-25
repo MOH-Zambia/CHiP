@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface HelpDeskService {
     Integer storeHelpDeskForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap);
+    void updateRecord(String status, Integer recordId);
 }

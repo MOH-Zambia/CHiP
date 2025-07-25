@@ -35,3 +35,15 @@ created_on timestamp not null,
 modified_by int4 null,
 modified_on timestamp null
 );
+
+
+ALTER TABLE help_desk_details
+ADD COLUMN IF NOT EXISTS status TEXT;
+
+
+ALTER TABLE help_desk_details
+ADD CONSTRAINT help_desk_status_check
+CHECK (status IN ('PENDING', 'COMPLETED'));
+
+ALTER TABLE help_desk_details
+ALTER COLUMN status SET DEFAULT 'PENDING';

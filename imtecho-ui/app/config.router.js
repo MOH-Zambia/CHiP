@@ -2535,6 +2535,15 @@
                         'query.service',
                         'paging.service'
                     ])
+                }).state('techo.manage.helpdesktool', {
+                    url: '/helpdesktool',
+                    templateUrl: 'app/manage/help-desk/view/help-desk-dashboard.html',
+                    title: 'Help Desk',
+                    controller: 'HelpDeskController as ctrl',
+                    resolve: load([
+                        'help-desk-controller.controller', 
+                        'help-desk.service'
+                    ])   
                 })
 
             function load(srcs, callback, fetchUser, fetchConstant) {

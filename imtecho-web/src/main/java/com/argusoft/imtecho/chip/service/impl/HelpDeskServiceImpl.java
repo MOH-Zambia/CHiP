@@ -31,6 +31,13 @@ public class HelpDeskServiceImpl implements HelpDeskService {
         return helpDeskEntity.getId();
     }
 
+    @Override
+    public void updateRecord(String status, Integer recordId) {
+        HelpDeskEntity helpDeskEntity = helpDeskDao.retrieveById(recordId);
+        helpDeskEntity.setStatus(status);
+        helpDeskDao.createOrUpdate(helpDeskEntity);
+    }
+
     private void setAnswerToDB(String key, String answer, HelpDeskEntity helpDeskEntity) {
         switch (key) {
             case "2":
