@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bfeb1f5-c78f-4747-8b00-80837b25a9b3" name="Changes" comment="added primary key in mfa_feature_master" />
+    <list default="true" id="1bfeb1f5-c78f-4747-8b00-80837b25a9b3" name="Changes" comment="added primary key in mfa_feature_master">
+      <change beforePath="$PROJECT_DIR$/../imtecho-android/sewa-android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../imtecho-android/sewa-android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,18 +52,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "uxstechnologies"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;uxstechnologies&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/MOH-Zambia/CHiP.git",
-    "accountId": "39e37fa4-f082-4577-ae10-aff2325c5446"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/MOH-Zambia/CHiP.git&quot;,
+    &quot;accountId&quot;: &quot;39e37fa4-f082-4577-ae10-aff2325c5446&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$MAVEN_REPOSITORY$/com/google/firebase/firebase-admin/6.10.0/firebase-admin-6.10.0.jar!/com/google/firebase/messaging/Notification.class" root0="SKIP_INSPECTION" />
     <setting file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/9.0.29/tomcat-embed-core-9.0.29.jar!/org/apache/coyote/http11/Http11Processor.class" root0="SKIP_INSPECTION" />
@@ -81,7 +85,6 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2CT3cxSpjrtStuVJ8qWg4YEZqPX" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="false" />
@@ -98,13 +101,14 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "ToolWindowRun.ShowToolbar": "false",
-    "git-widget-placeholder": "master",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "training__helpdesk__lenny",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/utkarsh/CHIP_MOH/CHiP/imtecho-web",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "SDKs",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -146,11 +150,12 @@
   </component>
   <component name="RunManager" selected="Application.Backend">
     <configuration name="Backend" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="$USER_HOME$/Downloads/openjdk-17.0.2_linux-x64_bin/jdk-17.0.2" />
+      <option name="ALTERNATIVE_JRE_PATH" value="JDK-17" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.argusoft.imtecho.config.Application" />
       <module name="imtecho-web" />
       <option name="PROGRAM_PARAMETERS" value="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED -Dpolyglot.engine.WarnInterpreterOnly=false" />
+      <shortenClasspath name="ARGS_FILE" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -166,6 +171,12 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <shortenClasspath name="ARGS_FILE" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -230,7 +241,6 @@
     </configuration>
     <list>
       <item itemvalue="Application.Backend" />
-      <item itemvalue="Application.Run" />
       <item itemvalue="Application.FlyWayScriptGenerator" />
       <item itemvalue="Application.com.argusoft.medplat.common.util.FlyWayScriptGenerator" />
       <item itemvalue="Maven.imtecho-web [spring-boot:run]" />
