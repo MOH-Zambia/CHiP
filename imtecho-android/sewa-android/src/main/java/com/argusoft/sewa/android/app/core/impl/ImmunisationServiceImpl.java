@@ -1539,20 +1539,22 @@ public class ImmunisationServiceImpl implements ImmunisationService {
         Date tmpDate;
         switch (currentVaccine) {
             case RchConstants.Z_OPV_0:
-                to.add(Calendar.DATE, 13);
+                to.add(Calendar.DATE, 20);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "OPV 0 vaccine should be given within 13 days from date of birth";
+                    return "OPV 0 vaccine should be given within 20 days from date of birth";
                 }
                 break;
 
             case RchConstants.Z_BCG:
                 to.add(Calendar.YEAR, 1);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "BCG vaccine should be given within 1 year from date of birth";
                 }
                 break;
             case RchConstants.Z_VITTAMIN_A_50000:
                 to.add(Calendar.MONTH, 5);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 50,000 IU vaccine should be given within 5 months from date of birth";
                 }
@@ -1560,6 +1562,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_100000:
                 from.add(Calendar.MONTH, 6);
                 to.add(Calendar.MONTH, 11);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 100,000 IU vaccine should be given between 6 to 11 months from date of birth";
                 }
@@ -1567,6 +1570,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_200000_1:
                 from.add(Calendar.MONTH, 12);
                 to.add(Calendar.MONTH, 18);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 200,000 IU first dose vaccine should be given between 12 to 18 months from date of birth";
                 }
@@ -1574,6 +1578,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_200000_2:
                 from.add(Calendar.MONTH, 18);
                 to.add(Calendar.MONTH, 24);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 200,000 IU second dose vaccine should be given between 18 to 24 months from date of birth";
                 }
@@ -1581,6 +1586,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_200000_3:
                 from.add(Calendar.MONTH, 24);
                 to.add(Calendar.MONTH, 30);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 200,000 IU third dose vaccine should be given between 24 to 30 months from date of birth";
                 }
@@ -1588,6 +1594,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_200000_4:
                 from.add(Calendar.MONTH, 30);
                 to.add(Calendar.MONTH, 36);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 200,000 IU fourth dose vaccine should be given between 30 to 36 months from date of birth";
                 }
@@ -1595,6 +1602,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_200000_5:
                 from.add(Calendar.MONTH, 36);
                 to.add(Calendar.MONTH, 42);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 200,000 IU fifth dose vaccine should be given between 36 to 42 months from date of birth";
                 }
@@ -1602,6 +1610,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_200000_6:
                 from.add(Calendar.MONTH, 42);
                 to.add(Calendar.MONTH, 48);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 200,000 IU sixth dose vaccine should be given between 42 to 48 months from date of birth";
                 }
@@ -1609,6 +1618,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_200000_7:
                 from.add(Calendar.MONTH, 48);
                 to.add(Calendar.MONTH, 54);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 200,000 IU seventh dose vaccine should be given between 48 to 54 months from date of birth";
                 }
@@ -1616,14 +1626,16 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_VITTAMIN_A_200000_8:
                 from.add(Calendar.MONTH, 54);
                 to.add(Calendar.MONTH, 59);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "Vitamin A, 200,000 IU eighth dose vaccine should be given between 54 to 59 months from date of birth";
                 }
                 break;
 
             case RchConstants.Z_OPV_1:
-                from.add(Calendar.DATE, 35);
+                from.add(Calendar.DATE, 28);
                 to.add(Calendar.MONTH, 58);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "OPV 1 vaccine should be given after 5 weeks from date of birth";
                 }
@@ -1643,8 +1655,9 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "OPV 2 vaccine should be given 14 days after OPV 1 vaccine";
                 }
 
-                from.add(Calendar.DATE, 63);
+                from.add(Calendar.DATE, 56);
                 to.add(Calendar.MONTH, 59);
+                from.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
@@ -1664,7 +1677,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "OPV 3 vaccine should be given 14 days after OPV 2 vaccine";
                 }
 
-                from.add(Calendar.DATE, 91);
+                from.add(Calendar.DATE, 84);
                 to.add(Calendar.MONTH, 60);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
@@ -1687,10 +1700,11 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_ROTA_VACCINE_1:
             case RchConstants.Z_PCV_1:
             case RchConstants.Z_DPT_HEB_HIB_1:
-                from.add(Calendar.DATE, 35);
+                from.add(Calendar.DATE, 28);
                 to.add(Calendar.MONTH, 12);
+                to.add(Calendar.DATE,7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return FullFormConstants.getFullFormOfVaccines(currentVaccine) + " should be given 5 weeks after date of birth";
+                    return FullFormConstants.getFullFormOfVaccines(currentVaccine) + " should be given 4 weeks after date of birth";
                 }
                 break;
 
@@ -1708,8 +1722,9 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "ROTA vaccine 2 should be given 14 days after ROTA vaccine 1";
                 }
 
-                from.add(Calendar.DATE, 63);
+                from.add(Calendar.DATE, 56);
                 to.add(Calendar.MONTH, 23);
+                to.add(Calendar.DATE, 7);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
@@ -1845,19 +1860,21 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_BCG:
                 lbw = dob.getTime();
                 dob.add(Calendar.YEAR, 1);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
 
             case RchConstants.Z_OPV_0:
                 lbw = dob.getTime();
-                dob.add(Calendar.DATE, 13);
+                dob.add(Calendar.DATE, 20);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
             case RchConstants.Z_VITTAMIN_A_50000:
                 lbw = dob.getTime();
                 dob.add(Calendar.MONTH, 5);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1867,6 +1884,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 11);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1876,6 +1894,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 18);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1884,6 +1903,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 24);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1892,6 +1912,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 30);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1900,6 +1921,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 36);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1908,6 +1930,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 42);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1916,6 +1939,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 48);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1924,6 +1948,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 54);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1932,6 +1957,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 59);
+                dob.add(Calendar.DATE, 7);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1940,13 +1966,13 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_ROTA_VACCINE_1:
             case RchConstants.Z_PCV_1:
             case RchConstants.Z_DPT_HEB_HIB_1:
-                dob.add(Calendar.DATE, 35);
+                dob.add(Calendar.DATE, 28);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
 
             case RchConstants.Z_OPV_2:
-                dob.add(Calendar.DATE, 63);
+                dob.add(Calendar.DATE, 56);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_1);
                 if (tmpDate != null) {
@@ -1960,7 +1986,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_OPV_3:
-                dob.add(Calendar.DATE, 91);
+                dob.add(Calendar.DATE, 84);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.OPV_1);
                 if (tmpDate != null) {
@@ -1982,7 +2008,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_ROTA_VACCINE_2:
-                dob.add(Calendar.DATE, 63);
+                dob.add(Calendar.DATE, 56);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_ROTA_VACCINE_1);
                 if (tmpDate != null) {
@@ -1996,7 +2022,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_PCV_2:
-                dob.add(Calendar.DATE, 63);
+                dob.add(Calendar.DATE, 56);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
                 if (tmpDate != null) {
@@ -2010,7 +2036,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_PCV_3:
-                dob.add(Calendar.DATE, 91);
+                dob.add(Calendar.DATE, 84);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
                 if (tmpDate != null) {
@@ -2032,7 +2058,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_DPT_HEB_HIB_2:
-                dob.add(Calendar.DATE, 63);
+                dob.add(Calendar.DATE, 56);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
                 if (tmpDate != null) {
@@ -2046,7 +2072,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_DPT_HEB_HIB_3:
-                dob.add(Calendar.DATE, 91);
+                dob.add(Calendar.DATE, 84);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
                 if (tmpDate != null) {
