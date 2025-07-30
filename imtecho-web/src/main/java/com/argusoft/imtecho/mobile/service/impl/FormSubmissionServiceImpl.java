@@ -12,6 +12,7 @@ import com.argusoft.imtecho.cfhc.service.CFHCService;
 import com.argusoft.imtecho.cfhc.service.CamCFHCService;
 import com.argusoft.imtecho.cfhc.service.FamilyAvailabilityService;
 import com.argusoft.imtecho.cfhc.service.FamilyFolderService;
+import com.argusoft.imtecho.chip.model.EventBasedCareModule;
 import com.argusoft.imtecho.chip.service.*;
 import com.argusoft.imtecho.common.dao.UserDao;
 import com.argusoft.imtecho.common.dao.UserTokenDao;
@@ -149,6 +150,9 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
     @Autowired
     private GbvService gbvService;
     @Autowired
+    private EventBasedCareService eventBasedCareService;
+    @Autowired
+    BcgVaccinationSurveyDao bcgVaccinationSurveyDao;
     private HelpDeskService helpDeskService;
 
     @Override
@@ -806,6 +810,10 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                 return chipCovidScreeningService.storeCovidForm(parsedRecordBean, user, keyAndAnswerMap);
             case SystemConstantUtil.OCR_COVID_SCREENING:
                 return chipCovidScreeningService.storeCovidFormOCR(parsedRecordBean, user, keyAndAnswerMap);
+            case SystemConstantUtil.CHIP_GBV_SCREENING:
+                return gbvService.storeGbvForm(parsedRecordBean, user, keyAndAnswerMap);
+            case SystemConstantUtil.EVENT_BASED_CARE_MODULE:
+                return eventBasedCareService.storeEventBasedCareForm(parsedRecordBean,user,keyAndAnswerMap);
             case SystemConstantUtil.HELP_DESK:
                 return helpDeskService.storeHelpDeskForm(parsedRecordBean, user, keyAndAnswerMap);
             default:

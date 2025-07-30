@@ -722,6 +722,9 @@ public class DynamicUtils {
                         case FormulaConstants.FORMULA_CHECK_IF_SECOND_TRIMESTER:
                             HiddenQuestionFormulaUtil.checkIfSecondTrimester(queFormBean);
                             break;
+                        case FormulaConstants.FORMULA_CHECK_IF_LIST_VALUE_SELECTED:
+                            HiddenQuestionFormulaUtil.checkIfListValueSelected(split, queFormBean);
+                            break;
                         default:
                             Log.i(TAG, "Formula for Hidden Question Not Handled : " + formulaTag.getFormulavalue());
                             break;
@@ -1075,7 +1078,7 @@ public class DynamicUtils {
                     .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID))
                     .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);
         }
-        if ((FormConstants.CHIP_GBV_SCREENING.equals(formType))) {
+        if ((FormConstants.CHIP_GBV_SCREENING.equals(formType)) || (FormConstants.EVENT_BASED_CARE_MODULE.equals(formType))) {
             answerString.append("-4").append(GlobalTypes.ANSWER_STRING_FIRST_SEPARATOR)
                     .append(SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID))
                     .append(GlobalTypes.MULTI_VALUE_BEAN_SEPARATOR);

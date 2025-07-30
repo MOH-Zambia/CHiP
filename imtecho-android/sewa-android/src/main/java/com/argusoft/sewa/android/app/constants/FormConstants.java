@@ -55,6 +55,7 @@ public class FormConstants {
     public static final String CHIP_COVID_SCREENING = "CHIP_COVID_SCREENING";
     public static final String TECHO_FHW_RIM = "FHW_RIM";
     public static final String CHIP_GBV_SCREENING = "CHIP_GBV_SCREENING";
+    public static final String EVENT_BASED_CARE_MODULE = "EVENT_BASED_CARE_MODULE";
     public static final String CHIP_FP_FOLLOW_UP = "CHIP_FP_FOLLOW_UP";
     public static final String PREGNANCY_STATUS = "PREGNANCY_STATUS";
     public static final String IDSP_FAMILY_2 = "IDSP_FAMILY_2";
@@ -305,6 +306,7 @@ public class FormConstants {
         stringList.add(FormConstants.EMTCT);
         stringList.add(FormConstants.CHIP_INDEX_INVESTIGATION);
         stringList.add(FormConstants.CHIP_GBV_SCREENING);
+        stringList.add(FormConstants.EVENT_BASED_CARE_MODULE);
         return stringList;
     }
 

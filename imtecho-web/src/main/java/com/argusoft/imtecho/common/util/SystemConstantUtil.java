@@ -201,6 +201,7 @@ public class SystemConstantUtil {
     public static final String CHIP_GBV_SCREENING = "CHIP_GBV_SCREENING";
     public static final String PREGNANCY_MARK = "PREGNANCY_MARK";
     public static final String OCR_TB_SCREENING = "OCR_TB_SCREENING";
+    public static final String EVENT_BASED_CARE_MODULE = "EVENT_BASED_CARE_MODULE";
     public static final String HELP_DESK = "HELP_DESK";
 
     public static Map<String, List<ComponentTagDto>> xlsDataFhw;
