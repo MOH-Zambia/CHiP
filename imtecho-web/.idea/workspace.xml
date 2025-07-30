@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bfeb1f5-c78f-4747-8b00-80837b25a9b3" name="Changes" comment="added primary key in mfa_feature_master">
-      <change beforePath="$PROJECT_DIR$/../imtecho-android/sewa-android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../imtecho-android/sewa-android/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/xlsFiles/chip/127/FHW_RIM.xls" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/xlsFiles/chip/127/FHW_RIM.xls" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,6 +99,7 @@
     "Project.color": "3d5330",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "ToolWindowRun.ShowToolbar": "false",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "training__helpdesk__lenny",
@@ -108,7 +108,8 @@
     "project.structure.last.edited": "SDKs",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -607,7 +608,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687270089756</updated>
     </task>
-    <option name="localTasksCounter" value="329" />
+    <option name="localTasksCounter" value="330" />
     <servers />
   </component>
   <component name="UnknownFeatures">
