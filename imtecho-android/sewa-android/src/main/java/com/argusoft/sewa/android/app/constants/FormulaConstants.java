@@ -245,6 +245,6 @@ public class FormulaConstants {
     public static final String FORMULA_SHOW_ANEMIA_SUGGESTION = "showanemiasuggestion";
     public static final String FORMULA_CHECK_IF_SECOND_TRIMESTER = "checkifsecondtrimester"; // checkIfSecondTrimester
     public static final String FORMULA_SET_DEFAULT_NON_HOF_MEMBER_NAMES_CBDS = "setDefaultNonHofMemberNames";
-
+    public static final String FORMULA_CHECK_IF_LIST_VALUE_SELECTED = "checkiflistvalueselected";
 
 }
