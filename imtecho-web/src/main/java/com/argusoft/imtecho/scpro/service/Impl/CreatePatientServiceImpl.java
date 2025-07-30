@@ -315,7 +315,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
-    //@Scheduled(fixedDelay = 1000*60)
+    @Scheduled(fixedDelay = 1000 * 60 * 5)
     public void getStoredReferrals() {
         try {
             List<StoredReferralDTO> referrals = referralDao.getStoredReferredPatinets();
