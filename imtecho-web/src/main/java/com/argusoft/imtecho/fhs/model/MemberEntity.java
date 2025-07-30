@@ -110,6 +110,12 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
     @Column(name = "fp_stage")
     private String fpStage;
 
+    @Column(name = "fp_consent")
+    private String fpConsent;
+
+    @Column(name = "fp_consent_reason")
+    private String fpConsentReason;
+
     private transient boolean isDuplicateNrc;
     private transient boolean isDuplicatePassport;
     private transient boolean isDuplicateBirthCert;
@@ -1313,6 +1319,22 @@ public class MemberEntity extends EntityAuditInfo implements Serializable {
 
     public void setFpStage(String fpStage) {
         this.fpStage = fpStage;
+    }
+
+    public String getFpConsent() {
+        return fpConsent;
+    }
+
+    public void setFpConsent(String fpConsent) {
+        this.fpConsent = fpConsent;
+    }
+
+    public String getFpConsentReason() {
+        return fpConsentReason;
+    }
+
+    public void setFpConsentReason(String fpConsentReason) {
+        this.fpConsentReason = fpConsentReason;
     }
 
     public Boolean getStartedMenstruating() {

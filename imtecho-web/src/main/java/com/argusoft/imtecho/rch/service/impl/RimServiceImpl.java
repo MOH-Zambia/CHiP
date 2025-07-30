@@ -279,6 +279,12 @@ public class RimServiceImpl implements RimService {
             case "22":
                 memberEntity.setFpStage(answer);
                 break;
+            case "2223":
+                memberEntity.setFpConsent(answer);
+                break;
+            case "2224":
+                memberEntity.setFpConsentReason(answer);
+                break;
             case "29":
                 memberAdditionalInfo.setFpServiceDate(new Date(Long.parseLong(answer)).getTime());
                 break;
