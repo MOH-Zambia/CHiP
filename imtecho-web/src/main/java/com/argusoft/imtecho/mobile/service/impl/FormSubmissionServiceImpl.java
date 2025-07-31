@@ -154,6 +154,8 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
     @Autowired
     BcgVaccinationSurveyDao bcgVaccinationSurveyDao;
 
+    private HelpDeskService helpDeskService;
+
     @Override
     public RecordStatusBean[] recordsEntryFromMobileToDBServer(String token, String[] records) {
         if (records == null) {
@@ -813,6 +815,8 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                 return gbvService.storeGbvForm(parsedRecordBean, user, keyAndAnswerMap);
             case SystemConstantUtil.EVENT_BASED_CARE_MODULE:
                 return eventBasedCareService.storeEventBasedCareForm(parsedRecordBean,user,keyAndAnswerMap);
+            case SystemConstantUtil.HELP_DESK:
+                return helpDeskService.storeHelpDeskForm(parsedRecordBean, user, keyAndAnswerMap);
             default:
         }
         return createdInstanceId;
