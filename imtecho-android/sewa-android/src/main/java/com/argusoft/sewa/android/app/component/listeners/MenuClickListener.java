@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.argusoft.sewa.android.app.activity.AnnouncementActivity_;
+import com.argusoft.sewa.android.app.activity.DynamicFormActivity_;
 import com.argusoft.sewa.android.app.activity.HighRiskPregnancyActivity_;
 import com.argusoft.sewa.android.app.activity.HouseHoldLineListActivity_;
 import com.argusoft.sewa.android.app.activity.LmsProgressReportActivity_;
@@ -15,7 +16,11 @@ import com.argusoft.sewa.android.app.activity.WorkLogActivity_;
 import com.argusoft.sewa.android.app.activity.WorkRegisterActivity_;
 import com.argusoft.sewa.android.app.activity.WorkStatusCBVActivity_;
 import com.argusoft.sewa.android.app.constants.MenuConstants;
+import com.argusoft.sewa.android.app.datastructure.SharedStructureData;
 import com.argusoft.sewa.android.app.lms.LmsCourseListActivity_;
+import com.argusoft.sewa.android.app.transformer.SewaTransformer;
+import com.argusoft.sewa.android.app.util.SewaConstants;
+import com.argusoft.sewa.android.app.constants.RelatedPropertyNameConstants;
 
 public class MenuClickListener implements View.OnClickListener {
 
@@ -73,6 +78,13 @@ public class MenuClickListener implements View.OnClickListener {
                 break;
             case MenuConstants.STOCK_MANAGEMENT:
                 intent = new Intent(context, StockManagementActivity_.class);
+                context.startActivity(intent);
+                break;
+            case MenuConstants.HELP_DESK:
+                SharedStructureData.relatedPropertyHashTable.clear();
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CBV_NAME, SewaTransformer.loginBean.getFirstName());
+                intent = new Intent(context, DynamicFormActivity_.class);
+                intent.putExtra(SewaConstants.ENTITY, "HELP_DESK");
                 context.startActivity(intent);
                 break;
             default:

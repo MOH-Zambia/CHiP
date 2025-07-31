@@ -180,6 +180,7 @@ public class FormConstants {
     //FHW Confirmation Forms for ASHA Reported Events
     public static final String FHW_PREGNANCY_CONFIRMATION = "FHW_PREG_CONF";
     public static final String FHW_DEATH_CONFIRMATION = "FHW_DEATH_CONF";
+    public static final String HELP_DESK ="Help Desk Tool";
 
     // Form Types for Production Access
     public static final String FORM_TYPE_FHS = "FHS";
