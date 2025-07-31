@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bfeb1f5-c78f-4747-8b00-80837b25a9b3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/argusoft/imtecho/chip/dao/impl/HelpDeskDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/xlsFiles/chip/127/HELP_DESK.xls" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/component/listeners/MenuClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/component/listeners/MenuClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/constants/FormConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/constants/FormConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/constants/MenuConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/constants/MenuConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/constants/RelatedPropertyNameConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/constants/RelatedPropertyNameConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/util/UtilBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/../imtecho-android/sewa-android/src/main/java/com/argusoft/sewa/android/app/util/UtilBean.java" afterDir="false" />
+    <list default="true" id="1bfeb1f5-c78f-4747-8b00-80837b25a9b3" name="Changes" comment="helpdeks frondend">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/migration2/V1753954585937__update_rim_form.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/argusoft/imtecho/common/util/FlyWayScriptGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/argusoft/imtecho/common/util/FlyWayScriptGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -616,7 +611,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687270089756</updated>
     </task>
-    <option name="localTasksCounter" value="330" />
+    <option name="localTasksCounter" value="331" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -680,7 +675,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="OCR for ACTIVE MALARIA FORM" />
     <MESSAGE value="OCR for ACTIVE MALARIA" />
     <MESSAGE value="HIV AND FP OCR" />
     <MESSAGE value="emtct OCR" />
@@ -705,7 +699,8 @@
     <MESSAGE value="added properties" />
     <MESSAGE value="changed int to Integer for mediaId" />
     <MESSAGE value="added primary key in mfa_feature_master" />
-    <option name="LAST_COMMIT_MESSAGE" value="added primary key in mfa_feature_master" />
+    <MESSAGE value="helpdeks frondend" />
+    <option name="LAST_COMMIT_MESSAGE" value="helpdeks frondend" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
