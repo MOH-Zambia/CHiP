@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="imtecho">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Help Desk Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            /* margin: 20px; */
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+        }
+
+        thead {
+            background-color: #f1f3f6;
+        }
+
+        th {
+            font-weight: 600;
+            color: #555;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e5e5e5;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fbfc;
+        }
+
+        select.status {
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: none;
+            font-size: 13px;
+            outline: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .status.pending {
+            background-color: #ffe6e6;
+            color: #d9534f;
+        }
+
+        .status.completed {
+            background-color: #e6ffed;
+            color: #5cb85c;
+        }
+
+        button.icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #3498db;
+            margin-right: 8px;
+            transition: color 0.2s;
+        }
+
+        button.icon-btn:hover {
+            color: #2c80b4;
+        }
+
+        button.icon-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .table-class{
+            padding: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            td {
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+
+            td::before {
+                position: absolute;
+                left: 16px;
+                top: 14px;
+                white-space: nowrap;
+                font-weight: bold;
+                color: #888;
+                content: attr(data-label);
+            }
+        }
+    </style>
+</head>
+
+<body ng-controller="HelpDeskController as ctrl">
+
+    <h2>Help Desk Details</h2>
+
+    <table class="table-class">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>User Name</th>
+                <th>Issue Type</th>
+                <th>Module Type</th>
+                <th>Issue Description</th>
+                <th>Other Description</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="data in ctrl.result">
+                <td data-label="User ID">{{data.user_id}}</td>
+                <td data-label="User Name">{{data.user_name}}</td>
+                <td data-label="Issue Type">{{data.issue_type}}</td>
+                <td data-label="Module Type">{{data.module_type}}</td>
+                <td data-label="Issue Description">{{data.issue_description}}</td>
+                <td data-label="Other Description">{{data.other_description || 'N/A'}}</td>
+                <td data-label="Status">
+                    <select ng-model="data.editStatus" class="status"
+                        ng-class="{'pending': data.editStatus === 'PENDING', 'completed': data.editStatus === 'COMPLETED'}"
+                        ng-disabled="!data.editing">
+                        <option value="PENDING">PENDING</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                    </select>
+                </td>
+                <td data-label="Action">
+                    <div class="actions">
+                        <!-- Edit -->
+                        <button class="icon-btn" title="Edit"
+                            ng-click="data.editing = true; data.editStatus = data.status" ng-if="!data.editing">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+
+                        <!-- Save -->
+                        <button class="icon-btn" title="Save" ng-click="ctrl.saveStatus(data)" ng-if="data.editing">
+                            <i class="fas fa-save"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

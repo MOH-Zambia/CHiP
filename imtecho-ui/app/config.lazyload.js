@@ -460,7 +460,6 @@
             'tuberculosis-dashboard.controller': ['app/manage/allservicedashboard/controllers/tuberculosis-dashboard.controller.js'],
             'hiv-dashboard.controller': ['app/manage/allservicedashboard/controllers/hiv-dashboard.controller.js'],
             'bcg-survey.service' : ['app/manage/bcgsurveyform/service/bcg-survey.service.js'],
-            'help-desk.service' : ['app/manage/help-desk/service/help-desk.service.js'],
             'ui.ace': [
                 'bower_components/angular-ui-ace/ui-ace.js',
                 'bower_components/ace-builds/src-min-noconflict/ext-language_tools.js',
@@ -480,6 +479,6 @@
             'immunisation.directive': ['app/common/directives/immunisation/immunisation.directive.js'],
             'immunisation.service': ['app/common/services/immunisation.service.js'],
             'help-desk-controller.controller': ['app/manage/help-desk/controller/help-desk-controller.js'],
-    
+            'help-desk.service' : ['app/manage/help-desk/service/help-desk.service.js'],
         });
 }());
