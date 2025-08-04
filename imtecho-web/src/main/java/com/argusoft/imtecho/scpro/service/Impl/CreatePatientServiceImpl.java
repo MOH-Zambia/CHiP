@@ -2,6 +2,7 @@ package com.argusoft.imtecho.scpro.service.Impl;
 
 import com.argusoft.imtecho.common.dao.SystemConfigurationDao;
 import com.argusoft.imtecho.common.model.SystemConfiguration;
+import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.fhs.dto.ReferralDto;
 import com.argusoft.imtecho.scpro.dao.PatientDao;
 import com.argusoft.imtecho.scpro.dao.ReferralDao;
@@ -304,6 +305,9 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     @Override
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24)
     public void getPatientsFromImt() {
+        if (!ConstantUtil.SERVER_TYPE.equals("LIVE")) {
+            return;
+        }
         try {
             List<MemberDetailsDTO> members = patientDao.getPatientsFromImt();
             for (MemberDetailsDTO member : members) {
@@ -317,6 +321,9 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     @Override
     @Scheduled(fixedDelay = 1000 * 60 * 5)
     public void getStoredReferrals() {
+        if (!ConstantUtil.SERVER_TYPE.equals("LIVE")) {
+            return;
+        }
         try {
             List<StoredReferralDTO> referrals = referralDao.getStoredReferredPatinets();
             for (StoredReferralDTO referral : referrals) {
@@ -374,6 +381,10 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     private void fetchNewAccessToken() {
+        if (!ConstantUtil.SERVER_TYPE.equals("LIVE")) {
+            return;
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String authUrl = "http://10.52.45.59:8080/api/v1/auth/login";

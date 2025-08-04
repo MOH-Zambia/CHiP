@@ -83,12 +83,18 @@ public class MemberDetailsDTO  {
     }
 
     public void setDateOfBirth(String dateOfBirth) {
+        if (dateOfBirth == null || dateOfBirth.trim().isEmpty()) {
+            this.dateOfBirth = null;
+            return;
+        }
+
         try {
             this.dateOfBirth = new SimpleDateFormat("yyyy-MM-dd").parse(dateOfBirth);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Invalid date format for dateOfBirth. Expected format: yyyy-MM-dd");
         }
     }
+
 
     public String getMobileNumber() {
         return mobileNumber;

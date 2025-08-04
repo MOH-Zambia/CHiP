@@ -389,7 +389,7 @@ public class FormMetaDataUtil {
 
         if (memberBean.getChronicDiseaseIds() != null && !memberBean.getChronicDiseaseIds().isEmpty()) {
             StringBuilder builder = new StringBuilder();
-            if (memberBean.getChronicDiseaseIds().contains(",")) {
+            if (memberBean.getChronicDiseaseIds() != null || memberBean.getChronicDiseaseIds().contains(",")) {
                 String[] split = memberBean.getChronicDiseaseIds().split(",");
                 for (int i = 0; i < split.length; i++) {
                     builder.append(UtilBean.getNotAvailableIfNull(fhsService.getValueOfListValuesById(split[i])));
@@ -2097,7 +2097,7 @@ public class FormMetaDataUtil {
 
             if (memberDataBean.getChronicDiseaseIds() != null && !memberDataBean.getChronicDiseaseIds().isEmpty()) {
                 StringBuilder builder = new StringBuilder();
-                if (memberDataBean.getChronicDiseaseIds().contains(",")) {
+                if (memberDataBean.getChronicDiseaseIds() != null || memberDataBean.getChronicDiseaseIds().contains(",")) {
                     String[] split = memberDataBean.getChronicDiseaseIds().split(",");
                     for (int i = 0; i < split.length; i++) {
                         builder.append(UtilBean.getNotAvailableIfNull(fhsService.getValueOfListValuesById(split[i])));
