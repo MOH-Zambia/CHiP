@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bfeb1f5-c78f-4747-8b00-80837b25a9b3" name="Changes" comment="helpdeks frondend">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/migration2/V1753954585937__update_rim_form.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/argusoft/imtecho/common/util/FlyWayScriptGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/argusoft/imtecho/common/util/FlyWayScriptGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration2/V1753954585937__update_rim_form.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,29 +90,29 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Backend.executor": "Run",
-    "Application.FlyWayScriptGenerator.executor": "Run",
-    "Git.Branch.Popup.ShowAllRemotes": "true",
-    "Maven.imtecho-web [clean,install].executor": "Run",
-    "Maven.imtecho-web [clean].executor": "Run",
-    "Project.color": "3d5330",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "ToolWindowRun.ShowToolbar": "false",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "training__helpdesk__lenny",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "E:/DEV_PROJECTS/CHiP/imtecho-web/src/main/resources/xlsFiles/chip/127",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Backend.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FlyWayScriptGenerator.executor&quot;: &quot;Run&quot;,
+    &quot;Git.Branch.Popup.ShowAllRemotes&quot;: &quot;true&quot;,
+    &quot;Maven.imtecho-web [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.imtecho-web [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Project.color&quot;: &quot;3d5330&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;ToolWindowRun.ShowToolbar&quot;: &quot;false&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;training__helpdesk__lenny&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/DEV_PROJECTS/CHiP/imtecho-web/src/main/resources/xlsFiles/chip/127&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.argusoft.imtecho.chip.model" />
@@ -251,10 +250,10 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.FlyWayScriptGenerator" />
-        <item itemvalue="Application.com.argusoft.medplat.common.util.FlyWayScriptGenerator" />
         <item itemvalue="Application.com.argusoft.medplat.common.util.FlyWayScriptGenerator" />
         <item itemvalue="Application.FlyWayScriptGenerator" />
+        <item itemvalue="Application.FlyWayScriptGenerator" />
+        <item itemvalue="Application.com.argusoft.medplat.common.util.FlyWayScriptGenerator" />
         <item itemvalue="Application.com.argusoft.medplat.common.util.FlyWayScriptGenerator" />
       </list>
     </recent_temporary>
