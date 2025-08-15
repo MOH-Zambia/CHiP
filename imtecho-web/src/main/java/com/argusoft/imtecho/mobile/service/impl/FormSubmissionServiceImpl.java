@@ -286,8 +286,8 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                         techoNotificationService.update(techoNotificationService.retrieveById(Integer.valueOf(parsedRecordBean.getNotificationId())));
                     }
                     createdInstanceId = -1000;
-                    //String errorString = "ERROR STRING - " + parsedRecordBean.getChecksum() + " - " + parsedRecordBean.getAnswerRecord();
-                    //getLogger(FormSubmissionServiceImpl.class.getName()).log(Level.SEVERE, errorString, e);
+                    String errorString = "ERROR STRING - " + parsedRecordBean.getChecksum() + " - " + parsedRecordBean.getAnswerRecord();
+                    getLogger(FormSubmissionServiceImpl.class.getName()).log(Level.SEVERE, errorString, e);
 //                    emailUtil.sendExceptionEmail(e, parsedRecordBean)
                     errorMessage = e.getMessage();
                     Writer writer = new StringWriter();
@@ -296,8 +296,8 @@ public class FormSubmissionServiceImpl extends GenericSessionUtilService impleme
                     exception = writer.toString();
                     getLogger(FormSubmissionServiceImpl.class.getName()).log(Level.SEVERE, null, e);
                 } catch (Exception e) {
-                    //String errorString = "ERROR STRING - " + parsedRecordBean.getChecksum() + " - " + parsedRecordBean.getAnswerRecord();
-                    //getLogger(FormSubmissionServiceImpl.class.getName()).log(Level.SEVERE, errorString, e);
+                    String errorString = "ERROR STRING - " + parsedRecordBean.getChecksum() + " - " + parsedRecordBean.getAnswerRecord();
+                    getLogger(FormSubmissionServiceImpl.class.getName()).log(Level.SEVERE, errorString, e);
                     if (syncStatus.getMailSent() != null && !syncStatus.getMailSent()) {
                         saveException(e, parsedRecordBean, user);
                         syncStatus.setMailSent(Boolean.TRUE);
