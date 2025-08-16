@@ -243,13 +243,6 @@ public class ChildServiceImpl implements ChildService {
         if (keyAndAnswerMap.containsKey("8672") && keyAndAnswerMap.get("12").equals(RchConstants.MEMBER_STATUS_AVAILABLE)) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 childServiceMaster.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
-                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
-                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(childEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),(childServiceMaster.getReferralReason()),MobileConstantUtil.CHILD_SERVICES_VISIT, "-1", user.getId(),"Notes",childServiceMaster.getLocationId(),childServiceMaster.getServiceDate(),Boolean.TRUE,childServiceDao.create(childServiceMaster));
-                }
-                else{
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(childEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(childServiceMaster.getReferralFor())),MobileConstantUtil.CHILD_SERVICES_VISIT, "-1", user.getId(),"Notes",childServiceMaster.getLocationId(),childServiceMaster.getServiceDate(),Boolean.TRUE,childServiceDao.create(childServiceMaster));
-                }
             }
         }
 
@@ -264,7 +257,32 @@ public class ChildServiceImpl implements ChildService {
         if (Boolean.FALSE.equals(childServiceMaster.getIsAlive())) {
             mobileFhsService.checkIfMemberDeathEntryExists(memberId);
         }
+
         childServiceDao.create(childServiceMaster);
+
+        if (childServiceMaster.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(childServiceMaster.getReferralPlace());
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(childServiceMaster.getReferralFor())) {
+                refReason = childServiceMaster.getReferralReason() != null && !childServiceMaster.getReferralReason().isEmpty() ? childServiceMaster.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(childServiceMaster.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    childEntity.getId(),
+                    childServiceMaster.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "UNDER_5",
+                    childEntity.getNupn() != null ? childEntity.getNupn() : null,
+                    user.getId(),
+                    "NOTES",
+                    childServiceMaster.getLocationId(),
+                    childServiceMaster.getServiceDate(),
+                    Boolean.TRUE,
+                    childServiceMaster.getId()
+            );
+        }
 
         if (createCpEntry) {
             cerebralPalsyMaster.setChildServiceId(childServiceMaster.getId());

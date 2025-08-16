@@ -271,13 +271,6 @@ public class PncServiceImpl implements PncService {
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 pncMotherMaster.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
-                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
-                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")) {
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(pncMotherMaster.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),(pncMotherMaster.getReferralReason()),MobileConstantUtil.PNC_VISIT, "-1", user.getId(),"NOTES",pncMaster.getLocationId(),pncMaster.getServiceDate(),Boolean.TRUE,pncMotherMasterDao.create(pncMotherMaster));
-                }
-                else{
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(pncMotherMaster.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(pncMotherMaster.getReferralReason())),MobileConstantUtil.PNC_VISIT, "-1", user.getId(),"NOTES",pncMaster.getLocationId(),pncMaster.getServiceDate(),Boolean.TRUE,pncMotherMasterDao.create(pncMotherMaster));
-                }
             }
         }
 
@@ -293,7 +286,33 @@ public class PncServiceImpl implements PncService {
         if (Objects.nonNull(pncMotherMaster.getIsAlive()) && pncMotherMaster.getIsAlive().equals(Boolean.FALSE)) {
             mobileFhsService.checkIfMemberDeathEntryExists(memberId);
         }
+
         pncMotherMasterDao.create(pncMotherMaster);
+
+        if (pncMotherMaster.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(pncMotherMaster.getReferralPlace());
+            MemberEntity pncMotherMember = memberDao.retrieveMemberById(pncMotherMaster.getMotherId());
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(pncMotherMaster.getReferralFor())) {
+                refReason = pncMotherMaster.getReferralReason() != null && !pncMotherMaster.getReferralReason().isEmpty() ? pncMotherMaster.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(pncMotherMaster.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    pncMotherMember.getId(),
+                    pncMotherMaster.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "PNC_MOTHER",
+                    pncMotherMember.getNupn() != null ? pncMotherMember.getNupn() : null,
+                    user.getId(),
+                    "NOTES",
+                    pncMaster.getLocationId(),
+                    pncMaster.getServiceDate(),
+                    Boolean.TRUE,
+                    pncMotherMaster.getId()
+            );
+        }
 
         Map<String, PncChildMaster> mapOfChildWithLoopIdAsKey = new HashMap<>();
         for (Map.Entry<String, String> entrySet : childKeyAndAnswerMap.entrySet()) {
@@ -331,7 +350,33 @@ public class PncServiceImpl implements PncService {
             PncChildMaster pncChildMaster = entrySet.getValue();
 
             pncChildMaster.setIsHighRiskCase(this.identifyHighRiskForChildRchPnc(pncChildMaster));
+
             pncChildMasterDao.create(pncChildMaster);
+
+            if (pncChildMaster.getReferralPlace() != null) {
+                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(pncChildMaster.getReferralPlace());
+                MemberEntity pncChildMember = memberDao.retrieveMemberById(pncChildMaster.getChildId());
+                String refReason;
+                if ("OTHER".equalsIgnoreCase(pncChildMaster.getReferralFor())) {
+                    refReason = pncChildMaster.getReferralReason() != null && !pncChildMaster.getReferralReason().isEmpty() ? pncChildMaster.getReferralReason() : null;
+                } else {
+                    refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(pncChildMaster.getReferralFor()));
+                }
+                storeReferralDetailsService.storeDataToStoreReferralDetails(
+                        pncChildMember.getId(),
+                        pncChildMaster.getReferralPlace(),
+                        healthInfrastructureDetails.getName(),
+                        refReason,
+                        "PNC_CHILD",
+                        pncChildMember.getNupn() != null ? pncChildMember.getNupn() : null,
+                        user.getId(),
+                        "NOTES",
+                        pncMaster.getLocationId(),
+                        pncMaster.getServiceDate(),
+                        Boolean.TRUE,
+                        pncChildMaster.getId()
+                );
+            }
 
             if (loopId.equals("0")) {
                 if (keyAndAnswerMap.containsKey("85")) {
@@ -399,9 +444,6 @@ public class PncServiceImpl implements PncService {
                     memberDao.update(memberEntity);
                 }
             }
-        }
-        if(keyAndAnswerMap.get("9899")!=null && ImtechoUtil.returnTrueFalseFromInitials(keyAndAnswerMap.get("9899"))){
-
         }
         pncChildMasterDao.flush();
         eventHandler.handle(new Event(Event.EVENT_TYPE.FORM_SUBMITTED, null, SystemConstantUtil.FHW_PNC, pncMaster.getId()));

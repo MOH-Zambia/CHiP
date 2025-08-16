@@ -197,6 +197,11 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 if (memberEntity == null) {
                     memberEntity = memberDao.retrieveMemberByUuid(memberDetails.getMemberUuid() != null ? memberDetails.getMemberUuid() : "");
                 }
+                boolean alreadyPregnant = memberEntity != null && memberEntity.getIsPregnantFlag() != null && memberEntity.getIsPregnantFlag();
+                if (memberEntity != null && !alreadyPregnant) {
+                    memberEntity.setIsPregnantFlag(memberDetails.getIsWomanPregnant());
+                }
+                assert memberEntity != null;
                 family = familyDao.retrieveFamilyByFamilyId(memberEntity.getFamilyId());
             } else {
                 memberEntity = new MemberEntity();
@@ -208,6 +213,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 memberEntity.setFamilyId(family.getFamilyId());
                 memberEntity.setUniqueHealthId(familyHealthSurveyService.generateMemberUniqueHealthId());
                 memberEntity.setState(FamilyHealthSurveyServiceConstants.FHS_MEMBER_STATE_NEW);
+                memberEntity.setIsPregnantFlag(memberDetails.getIsWomanPregnant());
             }
             if (memberEntity.getMotherId() != null && memberDetails.getMotherId() != null
                     && !memberDetails.getMotherId().equalsIgnoreCase("NOT_AVAILABLE")
@@ -245,12 +251,12 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
                 returnMap.put("createdInstanceId", memberEntity.getId().toString());
                 return returnMap;
             } else {
-                boolean alreadyPregnant = memberEntity.getIsPregnantFlag() != null && memberEntity.getIsPregnantFlag();
-                memberEntity.setIsPregnantFlag(memberDetails.getIsWomanPregnant());
-                if (memberEntity.getIsPregnantFlag()) {
+                //boolean alreadyPregnant = memberEntity.getIsPregnantFlag() != null && memberEntity.getIsPregnantFlag();
+                //memberEntity.setIsPregnantFlag(alreadyPregnant);
+                if (memberEntity.getIsPregnantFlag() != null && memberEntity.getIsPregnantFlag()) {
                     memberEntity.setCurrentGravida(memberEntity.getCurrentGravida() != null ? (short) (memberEntity.getCurrentGravida() + 1) : (short) 1);
+                    memberEntity.setMarkedPregnant(memberEntity.getIsPregnantFlag());
                 }
-                memberEntity.setMarkedPregnant(!alreadyPregnant && Boolean.TRUE.equals(memberEntity.getIsPregnantFlag()));
 
                 HouseHoldLineListMobileMapper.convertMemberDetailsToMemberEntity(memberDetails, memberEntity, memberEntity.getId() != null);
                 checkIfDuplicateIdProofExists(memberDetails, memberEntity);
@@ -298,33 +304,30 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
             }
 
             if (memberEntity.isDuplicateNrc()) {
-                StringBuilder sb1 = new StringBuilder();
-                sb1.append("\n");
-                sb1.append(" ");
-                sb1.append(String.format("Entered NRC number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicateNrcNumber()));
-                sb1.append(" ");
-                sb1.append("\n");
-                returnMap.put("message", sb1.toString());
+                String sb1 = "\n" +
+                        " " +
+                        String.format("Entered NRC number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicateNrcNumber()) +
+                        " " +
+                        "\n";
+                returnMap.put("message", sb1);
             }
 
             if (memberEntity.isDuplicatePassport()) {
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append("\n");
-                sb2.append(" ");
-                sb2.append(String.format("Entered passport number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicatePassportNumber()));
-                sb2.append(" ");
-                sb2.append("\n");
-                returnMap.put("message", sb2.toString());
+                String sb2 = "\n" +
+                        " " +
+                        String.format("Entered passport number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicatePassportNumber()) +
+                        " " +
+                        "\n";
+                returnMap.put("message", sb2);
             }
 
             if (memberEntity.isDuplicateBirthCert()) {
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append("\n");
-                sb2.append(" ");
-                sb2.append(String.format("Entered birth certificate Number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicateBirthCertNumber()));
-                sb2.append(" ");
-                sb2.append("\n");
-                returnMap.put("message", sb2.toString());
+                String sb2 = "\n" +
+                        " " +
+                        String.format("Entered birth certificate Number %s already exists in the system for this member please update member from health services", memberEntity.getDuplicateBirthCertNumber()) +
+                        " " +
+                        "\n";
+                returnMap.put("message", sb2);
             }
             returnMap.put("createdInstanceId", memberEntity.getId().toString());
             memberDao.flush();
@@ -564,7 +567,7 @@ public class MobileHouseHoldLineListServiceImpl implements MobileHouseHoldLineLi
         int limit = 1000;
         List<FamilyEntity> familyEntities = familyDao.getFamilyHavingWrongToiletTypes(limit);
         List<String> updatedRecord = new ArrayList<>();
-        for (FamilyEntity familyEntity: familyEntities) {
+        for (FamilyEntity familyEntity : familyEntities) {
             String toiletType = syncStatusDao.getTypeOfToiletFromSyncRecord(familyEntity.getId(), familyEntity.getCreatedBy(), "HOUSE_HOLD_LINE_LIST_NEW");
             familyEntity.setTypeOfToilet(toiletType);
             familyDao.update(familyEntity);

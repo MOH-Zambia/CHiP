@@ -46,7 +46,7 @@ public class HouseHoldLineListMobileMapper {
         if (memberEntity == null) {
             memberEntity = new MemberEntity();
         }
-        memberEntity.setFamilyHeadFlag(member.getIsHof() != null ? member.getIsHof() : false);
+        memberEntity.setFamilyHeadFlag(member.getIsHof() != null ? member.getIsHof() : memberEntity.getFamilyHeadFlag());
         memberEntity.setFirstName(member.getFirstName() != null ? member.getFirstName() : memberEntity.getFirstName());
         memberEntity.setMiddleName(member.getMiddleName() != null ? member.getMiddleName() : memberEntity.getMiddleName());
         memberEntity.setLastName(member.getLastName() != null ? member.getLastName() : memberEntity.getLastName());

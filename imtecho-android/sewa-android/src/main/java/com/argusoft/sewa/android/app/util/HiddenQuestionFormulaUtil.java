@@ -2144,10 +2144,20 @@ public class HiddenQuestionFormulaUtil {
             if (maritalStatus != null/* && (maritalStatus.equals("629"))*/) {
                 Objects.requireNonNull(femaleMarriedMembers).add(loopCounter);
 
-                if (SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.HUSBAND_ID, queFormBean.getLoopCounter())) == null
+                String dobString = (String) SharedStructureData.relatedPropertyHashTable.get(
+                        UtilBean.getRelatedPropertyNameWithLoopCounter(
+                                RelatedPropertyNameConstants.DOB, queFormBean.getLoopCounter()
+                        )
+                );
+
+                if (SharedStructureData.relatedPropertyHashTable.get(
+                        UtilBean.getRelatedPropertyNameWithLoopCounter(
+                                RelatedPropertyNameConstants.HUSBAND_ID, queFormBean.getLoopCounter()
+                        )) == null
                         && (relationWithHof != null && !relationWithHof.equalsIgnoreCase("WIFE"))
-                        && UtilBean.calculateAge(new Date(Long.parseLong(Objects.requireNonNull(SharedStructureData.relatedPropertyHashTable.get(UtilBean.getRelatedPropertyNameWithLoopCounter(RelatedPropertyNameConstants.DOB, queFormBean.getLoopCounter())))))) > 15
-                        && maritalStatus.equals("629")) {
+                        && dobString != null
+                        && UtilBean.calculateAge(new Date(Long.parseLong(dobString))) > 15
+                        && "629".equals(maritalStatus)) {
                     Objects.requireNonNull(wifeMembers).add(loopCounter);
                 } else if (Objects.requireNonNull(wifeMembers).contains(loopCounter)) {
                     wifeMembers.remove(loopCounter);
