@@ -70,24 +70,25 @@ public class HouseHoldLineListMobileMapper {
             memberEntity.setDob(member.getDob() != null ? new Date(member.getDob()) : memberEntity.getDob());
             memberEntity.setMemberUUId(member.getMemberUuid() != null ? member.getMemberUuid() : memberEntity.getMemberUUId());
         }
-        if (member.getChronicDisease() != null) {
-            for (String id : convertSetToCommaSeparatedString(member.getChronicDisease()).split(",")) {
-                if (id.equalsIgnoreCase("OTHER") || id.equalsIgnoreCase("NONE")) {
-                    continue;
-                }
-                if (memberEntity.getChronicDisease() != null) {
-                    if (id.startsWith(" ")) {
-                        id = id.replace(" ", "");
-                    }
-                    if (!memberEntity.getChronicDisease().contains(id)) {
-                        memberEntity.setChronicDisease(memberEntity.getChronicDisease() + "," + id);
-                    }
-                } else {
-                    memberEntity.setChronicDisease(id);
-                }
-            }
-        }
+//        if (member.getChronicDisease() != null) {
+//            for (String id : convertSetToCommaSeparatedString(member.getChronicDisease()).split(",")) {
+//                if (id.equalsIgnoreCase("OTHER") || id.equalsIgnoreCase("NONE")) {
+//                    continue;
+//                }
+//                if (memberEntity.getChronicDisease() != null) {
+//                    if (id.startsWith(" ")) {
+//                        id = id.replace(" ", "");
+//                    }
+//                    if (!memberEntity.getChronicDisease().contains(id)) {
+//                        memberEntity.setChronicDisease(memberEntity.getChronicDisease() + "," + id);
+//                    }
+//                } else {
+//                    memberEntity.setChronicDisease(id);
+//                }
+//            }
+//        }
 
+        memberEntity.setChronicDisease(member.getChronicDisease() != null ? (convertSetToCommaSeparatedString(member.getChronicDisease())) : memberEntity.getChronicDisease());
         memberEntity.setPhysicalDisability(member.getDisabilityIds() != null ? (convertSetToCommaSeparatedString(member.getDisabilityIds())) : memberEntity.getPhysicalDisability());
         memberEntity.setOtherChronic(member.getOtherChronicDisease() != null ? member.getOtherChronicDisease() : memberEntity.getOtherChronic());
         memberEntity.setOtherDisability(member.getOtherDisabilities() != null ? member.getOtherDisabilities() : memberEntity.getOtherDisability());
@@ -120,16 +121,19 @@ public class HouseHoldLineListMobileMapper {
         StringBuilder result = new StringBuilder();
 
         for (String s : array) {
-            if (!"OTHER".equals(s) && !"NONE".equals(s)) {
-                if (!result.isEmpty()) {
-                    result.append(",");
+            if (s != null) {
+                s = s.trim(); // remove extra spaces
+                if (!"NONE".equalsIgnoreCase(s) && !s.isEmpty()) {
+                    if (!result.isEmpty()) {  // ✅ check length instead of isEmpty()
+                        result.append(",");
+                    }
+                    result.append(s);
                 }
-                result.append(s);
             }
         }
-
         return result.toString();
     }
+
 
 
     private static String checkGenderFromNumber(String gender) {
@@ -141,7 +145,7 @@ public class HouseHoldLineListMobileMapper {
     }
 
     private static String extractMobileNumber(String mobileNumber) {
-        String mob = null;
+        String mob = mobileNumber;
         if (mobileNumber.contains("F/")) {
             mob = mobileNumber.replace("F/", "");
         }

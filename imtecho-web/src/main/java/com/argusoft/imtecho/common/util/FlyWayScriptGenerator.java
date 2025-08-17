@@ -11,22 +11,22 @@ import java.util.Date;
  */
 public class FlyWayScriptGenerator {
 
-//    public static void main(String args[]) throws IOException {
-//
-////        PATH TO 'db/migration2'
-//        String path = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main"
-//                    + File.separator + "resources" + File.separator + "db" + File.separator + "migration2" + File.separator + "V" + new Date().getTime() + "__title.sql";
-//
-//        File file = new File(path);
-////        TO CREATE THE IMPLEMENTATION FOLDER IF NOT EXISTS
-//        file.getParentFile().mkdirs();
-//
-//        boolean fvar = file.createNewFile();
-//        if (fvar) {
-//            System.out.println("File has been created successfully");
-//        } else {
-//            System.out.println("File already present at the specified location");
-//        }
-//    }
+    public static void main(String args[]) throws IOException {
+
+//        PATH TO 'db/migration2'
+        String path = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main"
+                    + File.separator + "resources" + File.separator + "db" + File.separator + "migration2" + File.separator + "V" + new Date().getTime() + "__129.sql";
+
+        File file = new File(path);
+//        TO CREATE THE IMPLEMENTATION FOLDER IF NOT EXISTS
+        file.getParentFile().mkdirs();
+
+        boolean fvar = file.createNewFile();
+        if (fvar) {
+            System.out.println("File has been created successfully");
+        } else {
+            System.out.println("File already present at the specified location");
+        }
+    }
 
 }
