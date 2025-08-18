@@ -3,15 +3,18 @@ package com.argusoft.imtecho.chip.service.impl;
 import com.argusoft.imtecho.chip.dao.GbvDao;
 import com.argusoft.imtecho.chip.model.GbvVisit;
 import com.argusoft.imtecho.chip.service.GbvService;
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
-import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
 import com.argusoft.imtecho.document.dto.DocumentDto;
 import com.argusoft.imtecho.fhs.dao.FamilyDao;
 import com.argusoft.imtecho.fhs.dao.MemberDao;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
+import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
+import com.argusoft.imtecho.location.dao.HealthInfrastructureDetailsDao;
 import com.argusoft.imtecho.location.dao.LocationLevelHierarchyDao;
+import com.argusoft.imtecho.location.model.HealthInfrastructureDetails;
 import com.argusoft.imtecho.location.model.LocationLevelHierarchy;
 import com.argusoft.imtecho.mobile.dao.SyncStatusDao;
 import com.argusoft.imtecho.mobile.dto.GbvDto;
@@ -20,7 +23,6 @@ import com.argusoft.imtecho.mobile.dto.UploadFileDataBean;
 import com.argusoft.imtecho.mobile.mapper.GbvMapper;
 import com.argusoft.imtecho.mobile.model.SyncStatus;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +38,20 @@ public class GbvServiceImpl implements GbvService {
 
     @Autowired
     MemberDao memberDao;
-
     @Autowired
     FamilyDao familyDao;
-
     @Autowired
     GbvDao gbvDao;
-
     @Autowired
     LocationLevelHierarchyDao locationLevelHierarchyDao;
     @Autowired
     SyncStatusDao syncStatusDao;
+    @Autowired
+    private HealthInfrastructureDetailsDao healthInfrastructureDetailsDao;
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
+    @Autowired
+    private ListValueFieldValueDetailService listValueFieldValueDetailService;
 
     Gson gson = new Gson();
 
@@ -76,13 +81,38 @@ public class GbvServiceImpl implements GbvService {
         gbvVisit.setMemberId(memberEntity.getId());
         gbvVisit.setFamilyId(familyEntity.getId());
         GbvMapper.mapDtoToGbvVisit(gbvDto, gbvVisit);
-        return gbvDao.create(gbvVisit);
+        gbvDao.create(gbvVisit);
 
+        if (gbvVisit.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(gbvVisit.getReferralPlace());
+
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(gbvVisit.getReferralFor())) {
+                refReason = gbvVisit.getReferralReason() != null && !gbvVisit.getReferralReason().isEmpty() ? gbvVisit.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(gbvVisit.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    gbvVisit.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "GBV",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "Notes",
+                    gbvVisit.getLocationId(),
+                    gbvVisit.getServiceDate(),
+                    Boolean.TRUE,
+                    gbvVisit.getId()
+            );
+        }
+
+        return gbvVisit.getId();
     }
 
     @Override
     public Integer storeGbvOcrForm(ParsedRecordBean parsedRecordBean, UserMaster user, Map<String, String> keyAndAnswerMap) {
-        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
         JsonObject jsonObject = JsonParser.parseString(parsedRecordBean.getAnswerRecord()).getAsJsonObject();
         GbvVisit gbvVisit = new GbvVisit();
         MemberEntity member = null;
@@ -91,7 +121,7 @@ public class GbvServiceImpl implements GbvService {
         } else if (jsonObject.has("memberUuid")) {
             member = memberDao.retrieveMemberByUuid(jsonObject.get("memberUuid").getAsString());
         }
-        FamilyEntity family = familyDao.retrieveFamilyByFamilyId(member.getFamilyId());
+        assert member != null;
         gbvVisit.setMemberId(member.getId());
         gbvVisit.setServiceDate(new Date(Long.parseLong(jsonObject.get("serviceDate").getAsString())));
         gbvVisit.setCaseDate(new Date(Long.parseLong(jsonObject.get("caseDate").getAsString())));
@@ -108,7 +138,7 @@ public class GbvServiceImpl implements GbvService {
         }
         memberDao.update(member);
         gbvDao.create(gbvVisit);
-        return 0;
+        return gbvVisit.getId();
     }
 
     @Override

@@ -47,6 +47,7 @@ public class StoreReferralDetailsServiceImpl implements StoreReferralDetailsServ
         referralDetails.setReferredFrom(referredFrom);
         referralDetails.setVisitId(visitId);
         storeReferralDetailsDao.create(referralDetails);
+        storeReferralDetailsDao.flush();
     }
 }
 

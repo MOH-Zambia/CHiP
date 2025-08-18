@@ -2,6 +2,7 @@ package com.argusoft.imtecho.scpro.service.Impl;
 
 import com.argusoft.imtecho.common.dao.SystemConfigurationDao;
 import com.argusoft.imtecho.common.model.SystemConfiguration;
+import com.argusoft.imtecho.common.util.ConstantUtil;
 import com.argusoft.imtecho.fhs.dto.ReferralDto;
 import com.argusoft.imtecho.scpro.dao.PatientDao;
 import com.argusoft.imtecho.scpro.dao.ReferralDao;
@@ -52,7 +53,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
 
 
     @Override
-    public void createPatient(MemberDetailsDTO memberDetailsDTO){
+    public void createPatient(MemberDetailsDTO memberDetailsDTO) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String apiUrl = "http://10.52.45.59:8080/api/v1/patient";
@@ -64,7 +65,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
             }
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
-            headers.set("x-msg-format","message format");
+            headers.set("x-msg-format", "message format");
             headers.set("Authorization", "Bearer " + accessToken);
 
             HttpEntity<MemberDetailsDTO> request = new HttpEntity<>(memberDetailsDTO, headers);
@@ -98,8 +99,6 @@ public class CreatePatientServiceImpl implements CreatePatientService {
                 patientDao.create(pd);
 
 
-
-
                 log.info("Patient saved successfully.");
             } else {
                 System.out.println("No 'data' field found in the response.");
@@ -122,13 +121,11 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
-    @Scheduled(fixedDelay = 1000*60*5)
-    public void getPatientStatus()
-    {
+    @Scheduled(fixedDelay = 1000 * 60 * 5)
+    public void getPatientStatus() {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String apiUrl = "http://10.52.45.59:8080/api/v1/patient/";
-        //String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDc4MTQxODMsImV4cCI6MTc0Nzg0Mjk4M30.Fds9VvnCoUavO6877zlUfnyxaECDEvNrVKwvlhSoZgKh9m6qi2VMJiXT3iJdHoR06lCp-Ji4E1YylMr2hyxdnw"; // Replace with the actual token
 
         try {
             if (isTokenExpired()) {
@@ -160,7 +157,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
                     );
 
                     // Check response validity
-                    if (response != null && response.getBody() != null) {
+                    if (response.getBody() != null) {
                         String responseBody = response.getBody();
 
                         JsonNode rootNode = objectMapper.readTree(responseBody);
@@ -176,7 +173,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
                                 String nupn = innerDataNode.path("nupn").asText();
                                 String nrc = innerDataNode.path("nrc").asText();
                                 log.info("Extracted nupn: {}", nupn);
-                                patientDao.setNUPN(nupn,nrc);
+                                patientDao.setNUPN(nupn, nrc);
                                 patientDao.deleteReferralId(retrievedRequestId);
 
                                 // Additional processing with nupn if needed
@@ -205,7 +202,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
-    public  void createReferral(ReferralDTO referralDTO){
+    public void createReferral(ReferralDTO referralDTO) {
         ObjectMapper objectMapper = new ObjectMapper();
         String apiUrl = "http://10.52.45.59:8080/api/v1/referral";
         //String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJwZXJtaXNzaW9ucyI6WyJHRVRfUEFUSUVOVF9TVEFUVVMiLCJQT1NUX1JFRkVSUkFMIiwiUE9TVF9QQVRJRU5UIiwiR0VUX1JFRkVSUkFMX1NUQVRVUyIsIlNVQlNDUklCRSJdLCJzdWIiOiJzeXN0ZW1AZW1haWwuY28uem0iLCJpYXQiOjE3NDc4MTQxODMsImV4cCI6MTc0Nzg0Mjk4M30.Fds9VvnCoUavO6877zlUfnyxaECDEvNrVKwvlhSoZgKh9m6qi2VMJiXT3iJdHoR06lCp-Ji4E1YylMr2hyxdnw";
@@ -248,16 +245,17 @@ public class CreatePatientServiceImpl implements CreatePatientService {
             log.warn("Error while calling API: " + ex.getMessage());
         }
     }
+
     @Override
     //@Scheduled(fixedDelay = 1000*60)
-    public void getReferralStatus(){
+    public void getReferralStatus() {
         String apiUrl = "http://10.52.45.59:8080/api/v1/referral/{statusId}";
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             if (isTokenExpired()) {
                 fetchNewAccessToken(); // Refresh the token if expired
             }
-            List<ReferralNupnDTO>requestIdList = referralDao.getReferredIds();
+            List<ReferralNupnDTO> requestIdList = referralDao.getReferredIds();
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
             headers.set("Authorization", "Bearer " + accessToken);
@@ -276,7 +274,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
                             requestId
                     );
 
-                    if (response != null && response.getBody() != null) {
+                    if (response.getBody() != null) {
                         String responseBody = response.getBody();
 
                         // Parse the response JSON
@@ -306,7 +304,10 @@ public class CreatePatientServiceImpl implements CreatePatientService {
 
     @Override
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24)
-    public void getPatientsFromImt(){
+    public void getPatientsFromImt() {
+        if (!ConstantUtil.SERVER_TYPE.equals("LIVE")) {
+            return;
+        }
         try {
             List<MemberDetailsDTO> members = patientDao.getPatientsFromImt();
             for (MemberDetailsDTO member : members) {
@@ -318,9 +319,11 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     @Override
-    //@Scheduled(fixedDelay = 1000*60)
-    public void getStoredReferrals()
-    {
+    @Scheduled(fixedDelay = 1000 * 60 * 5)
+    public void getStoredReferrals() {
+        if (!ConstantUtil.SERVER_TYPE.equals("LIVE")) {
+            return;
+        }
         try {
             List<StoredReferralDTO> referrals = referralDao.getStoredReferredPatinets();
             for (StoredReferralDTO referral : referrals) {
@@ -378,14 +381,18 @@ public class CreatePatientServiceImpl implements CreatePatientService {
     }
 
     private void fetchNewAccessToken() {
+        if (!ConstantUtil.SERVER_TYPE.equals("LIVE")) {
+            return;
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String authUrl = "http://10.52.45.59:8080/api/v1/auth/login";
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
 
-            SystemConfiguration scproUserName =  systemConfigurationDao.retrieveSystemConfigurationByKey("SCPRO_USERNAME");
-            SystemConfiguration scproPassword =  systemConfigurationDao.retrieveSystemConfigurationByKey("SCPRO_PASSWORD");
+            SystemConfiguration scproUserName = systemConfigurationDao.retrieveSystemConfigurationByKey("SCPRO_USERNAME");
+            SystemConfiguration scproPassword = systemConfigurationDao.retrieveSystemConfigurationByKey("SCPRO_PASSWORD");
 
             Map<String, String> credentials = Map.of(
                     "username", scproUserName.getKeyValue(),
@@ -400,7 +407,7 @@ public class CreatePatientServiceImpl implements CreatePatientService {
                 JsonNode dataNode = rootNode.get("data");
                 if (dataNode.has("accessToken")) {
                     accessToken = dataNode.get("accessToken").asText();
-                    System.out.println("New access token fetched successfully: " + accessToken);
+                    System.out.println("New access token fetched successfully");
                 } else {
                     throw new RuntimeException("Failed to fetch access token: Missing accessToken field in data.");
                 }

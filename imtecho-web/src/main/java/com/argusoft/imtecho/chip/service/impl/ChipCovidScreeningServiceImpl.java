@@ -112,17 +112,36 @@ public class ChipCovidScreeningServiceImpl implements ChipCovidScreeningService 
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 covidScreeningEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
-                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
-                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),covidScreeningEntity.getReferralReason(), SystemConstantUtil.CHIP_COVID_SCREENING,"-1", user.getId(),"Notes",covidScreeningEntity.getLocationId(),covidScreeningEntity.getServiceDate(),Boolean.TRUE,chipCovidDao.create(covidScreeningEntity));
-                }
-                else {
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(covidScreeningEntity.getReferralFor())), SystemConstantUtil.CHIP_COVID_SCREENING,"-1", user.getId(),"Notes",covidScreeningEntity.getLocationId(),covidScreeningEntity.getServiceDate(),Boolean.TRUE, chipCovidDao.create(covidScreeningEntity));
-                }
             }
         }
 
 
+        chipCovidDao.create(covidScreeningEntity);
+
+        if (covidScreeningEntity.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(covidScreeningEntity.getReferralPlace());
+
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(covidScreeningEntity.getReferralFor())) {
+                refReason = covidScreeningEntity.getReferralReason() != null && !covidScreeningEntity.getReferralReason().isEmpty() ? covidScreeningEntity.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(covidScreeningEntity.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    covidScreeningEntity.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "COVID",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "Notes",
+                    covidScreeningEntity.getLocationId(),
+                    covidScreeningEntity.getServiceDate(),
+                    Boolean.TRUE,
+                    covidScreeningEntity.getId()
+            );
+        }
 
         memberDao.update(memberEntity);
 

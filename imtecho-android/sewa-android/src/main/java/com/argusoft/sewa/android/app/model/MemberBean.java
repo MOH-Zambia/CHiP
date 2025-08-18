@@ -412,6 +412,9 @@ public class MemberBean extends BaseEntity implements Serializable {
     @DatabaseField
     private Boolean hpvGiven;
 
+    @DatabaseField//Comma Separated IDs
+    private String disabilityIds;
+
     public MemberBean() {
     }
 
@@ -438,6 +441,7 @@ public class MemberBean extends BaseEntity implements Serializable {
         this.congenitalAnomalyIds = memberDataBean.getCongenitalAnomalyIds();
         this.eyeIssueIds = memberDataBean.getEyeIssueIds();
         this.chronicDiseaseIds = memberDataBean.getChronicDiseaseIds();
+        this.disabilityIds = memberDataBean.getDisabilityIds();
         this.currentDiseaseIds = memberDataBean.getCurrentDiseaseIds();
         this.lastMethodOfContraception = memberDataBean.getLastMethodOfContraception();
         this.yearOfWedding = memberDataBean.getYearOfWedding();
@@ -1396,6 +1400,14 @@ public class MemberBean extends BaseEntity implements Serializable {
 
     public void setHpvGiven(Boolean hpvGiven) {
         this.hpvGiven = hpvGiven;
+    }
+
+    public String getDisabilityIds() {
+        return disabilityIds;
+    }
+
+    public void setDisabilityIds(String disabilityIds) {
+        this.disabilityIds = disabilityIds;
     }
 
     @NonNull

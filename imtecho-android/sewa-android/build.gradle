@@ -70,10 +70,10 @@ android {
             targetSdkVersion 32
             versionCode 133
             versionName "1.0.33"
-            buildConfigField 'String', 'RELEASE_DATE', "\"31st March 2025\""
+            buildConfigField 'String', 'RELEASE_DATE', "\"12th Aug 2025\""
             buildConfigField 'String', 'DB_NAME', "\"chip_final.db\""
             buildConfigField 'String', 'APK_NAME', "\"chip_app\""
-            buildConfigField 'int', 'DATABASE_VERSION', "21"
+            buildConfigField 'int', 'DATABASE_VERSION', "22"
             resValue "string", "app_name", "CHiP"
             manifestPlaceholders = [
                     appIcon     : "@mipmap/chip_app_icon",
