@@ -80,6 +80,8 @@ public class MemberDataBean implements Parcelable {
     //Comma Separated IDs
     private String chronicDiseaseIds;
 
+    private String disabilityIds;
+
     //Comma Separated IDs
     private String currentDiseaseIds;
 
@@ -346,6 +348,7 @@ public class MemberDataBean implements Parcelable {
         this.congenitalAnomalyIds = memberBean.getCongenitalAnomalyIds();
         this.eyeIssueIds = memberBean.getEyeIssueIds();
         this.chronicDiseaseIds = memberBean.getChronicDiseaseIds();
+        this.disabilityIds = memberBean.getDisabilityIds();
         this.currentDiseaseIds = memberBean.getCurrentDiseaseIds();
         this.lastMethodOfContraception = memberBean.getLastMethodOfContraception();
         this.yearOfWedding = memberBean.getYearOfWedding();
@@ -2368,6 +2371,14 @@ public class MemberDataBean implements Parcelable {
 
     public void setNssfCardNumber(String nssfCardNumber) {
         this.nssfCardNumber = nssfCardNumber;
+    }
+
+    public String getDisabilityIds() {
+        return disabilityIds;
+    }
+
+    public void setDisabilityIds(String disabilityIds) {
+        this.disabilityIds = disabilityIds;
     }
 
     @Override

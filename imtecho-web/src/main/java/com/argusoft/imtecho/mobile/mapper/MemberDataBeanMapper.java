@@ -47,14 +47,10 @@ public class MemberDataBeanMapper {
         memberDataBean.setCongenitalAnomalyIds(member.getCongenitalAnomaly());
         memberDataBean.setEyeIssueIds(member.getEyeIssue());
         memberDataBean.setChronicDiseaseIds(member.getChronicDisease());
+        memberDataBean.setDisabilityIds(member.getPhysicalDisability());
         memberDataBean.setCurrentDiseaseIds(member.getCurrentDisease());
         memberDataBean.setYearOfWedding(member.getYearOfWedding());
-//        memberDataBean.setJsyPaymentGiven(member.getJsyPaymentGiven());
         memberDataBean.setIsEarlyRegistration(member.getIsEarlyRegistration());
-//        memberDataBean.setJsyBeneficiary(member.getJsyBeneficiary());
-//        memberDataBean.setIayBeneficiary(member.getIayBeneficiary());
-//        memberDataBean.setKpsyBeneficiary(member.getKpsyBeneficiary());
-//        memberDataBean.setChiranjeeviYojnaBeneficiary(member.getChiranjeeviYojnaBeneficiary());
         memberDataBean.setWeight(member.getWeight());
         memberDataBean.setHaemoglobin(member.getHaemoglobin());
         memberDataBean.setAncVisitDates(member.getAncVisitDates());
@@ -85,7 +81,6 @@ public class MemberDataBeanMapper {
         memberDataBean.setHealthId(member.getHealthId());
         memberDataBean.setHealthIdNumber(member.getHealthIdNumber());
         memberDataBean.setHealthInsurance(member.getHealthInsurance());
-//        memberDataBean.setSchemeDetail(member.getSchemeDetail());
         memberDataBean.setPersonalHistoryDone(member.getPersonalHistoryDone());
         memberDataBean.setOccupation(member.getOccupation());
         memberDataBean.setOtherChronic(member.getOtherChronic());
@@ -96,8 +91,6 @@ public class MemberDataBeanMapper {
         memberDataBean.setCataractSurgery(member.getCataractSurgery());
         memberDataBean.setIsChildGoingSchool(member.getIsChildGoingSchool());
         memberDataBean.setCurrentStudyingStandard(member.getCurrentStudyingStandard());
-//        memberDataBean.setAadharStatus(member.getAadharStatus());
-//        memberDataBean.setPensionScheme(member.getPensionScheme());
         memberDataBean.setUnderTreatmentChronic(member.getUnderTreatmentChronic());
         memberDataBean.setAlternateNumber(member.getAlternateNumber());
         memberDataBean.setOtherChronicDiseaseTreatment(member.getOtherChronicDiseaseTreatment());

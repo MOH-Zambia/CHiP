@@ -96,7 +96,7 @@ public class PatientDaoImpl extends GenericDaoImpl<PatientData,Long> implements 
                         "    nrc_number IS NOT NULL\n" +
                         "    AND nupn IS NULL\n" +
                         "    AND pd.nrc IS NULL\n" +
-                        "LIMIT 5"
+                        "LIMIT 100"
         );
 
 

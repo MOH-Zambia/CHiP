@@ -70,10 +70,6 @@ public class ReferralDaoImpl extends GenericDaoImpl<ReferralData,Long> implement
                 .addScalar("province", StandardBasicTypes.STRING)
                 .addScalar("district", StandardBasicTypes.STRING)
                 .addScalar("id",StandardBasicTypes.INTEGER)
-
-
-
-
                 .setResultTransformer(Transformers.aliasToBean(StoredReferralDTO.class)).list();
     }
 

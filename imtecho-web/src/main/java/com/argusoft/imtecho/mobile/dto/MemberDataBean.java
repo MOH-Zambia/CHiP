@@ -79,6 +79,7 @@ public class MemberDataBean {
 
     //Comma Separated IDs
     private String chronicDiseaseIds;
+    private String disabilityIds;
     private String chronicDiseaseIdsForTreatment;
     private String searchString;
 
@@ -528,6 +529,14 @@ public class MemberDataBean {
 
     public void setChronicDiseaseIds(String chronicDiseaseIds) {
         this.chronicDiseaseIds = chronicDiseaseIds;
+    }
+
+    public String getDisabilityIds() {
+        return disabilityIds;
+    }
+
+    public void setDisabilityIds(String disabilityIds) {
+        this.disabilityIds = disabilityIds;
     }
 
     public String getCurrentDiseaseIds() {

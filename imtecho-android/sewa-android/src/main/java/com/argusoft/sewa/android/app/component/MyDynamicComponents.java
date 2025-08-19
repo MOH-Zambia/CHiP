@@ -1789,7 +1789,8 @@ public class MyDynamicComponents {
 
                         String answer = (String) queFormBean.getAnswer();
                         Map<String, String> answerMap = new HashMap<>();
-                        Type type = new TypeToken<HashMap<String, String>>() {}.getType();
+                        Type type = new TypeToken<HashMap<String, String>>() {
+                        }.getType();
                         Gson gson = new Gson();
 
                         if (!selectedOptionKey.equals("-2")) {
@@ -2200,101 +2201,134 @@ public class MyDynamicComponents {
                         String[] split = date.split("#");
                         immunisationsAndDateMap.put(split[0], split[1]);
 
+                        // Define buffer days (2 weeks)
+                        final int BUFFER_DAYS = 14;
+
                         switch (split[0]) {
-                            case RchConstants.HEPATITIS_B_0:
-                            case RchConstants.VITAMIN_K:
-                                lbw = dob.getTime();
-                                dob.add(Calendar.DATE, 1);
-                                ubw = dob.getTime();
-                                dob.setTime(dateOfBirth);
-                                break;
                             case RchConstants.Z_BCG:
+                                // BCG: 1 year ±2 weeks
                                 lbw = dob.getTime();
                                 dob.add(Calendar.YEAR, 1);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             case RchConstants.Z_VITTAMIN_A_50000:
+                                // Vitamin A 50,000: 5 months ±2 weeks
                                 lbw = dob.getTime();
-                                dob.add(Calendar.MONTH, 5);
-                                ubw = dob.getTime();
-                                dob.setTime(dateOfBirth);
-                                break;
-                            case RchConstants.Z_VITTAMIN_A_100000:
                                 dob.add(Calendar.MONTH, 6);
-                                lbw = dob.getTime();
-                                dob.setTime(dateOfBirth);
-                                dob.add(Calendar.MONTH, 11);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
-                            case RchConstants.Z_VITTAMIN_A_200000_1:
+
+                            case RchConstants.Z_VITTAMIN_A_100000:
+                                // Vitamin A 100,000: 6-11 months ±2 weeks
+                                dob.add(Calendar.MONTH, 6);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS); // Lower bound buffer
+                                lbw = dob.getTime();
+                                dob.setTime(dateOfBirth);
                                 dob.add(Calendar.MONTH, 12);
+                                dob.add(Calendar.DATE, BUFFER_DAYS); // Upper bound buffer
+                                ubw = dob.getTime();
+                                dob.setTime(dateOfBirth);
+                                break;
+
+                            case RchConstants.Z_VITTAMIN_A_200000_1:
+                                // Vitamin A 200,000 (1st dose): 12-18 months ±2 weeks
+                                dob.add(Calendar.MONTH, 12);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 dob.add(Calendar.MONTH, 18);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
+                            // Similar pattern for other Vitamin A doses
                             case RchConstants.Z_VITTAMIN_A_200000_2:
                                 dob.add(Calendar.MONTH, 18);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 dob.add(Calendar.MONTH, 24);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             case RchConstants.Z_VITTAMIN_A_200000_3:
                                 dob.add(Calendar.MONTH, 24);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 dob.add(Calendar.MONTH, 30);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             case RchConstants.Z_VITTAMIN_A_200000_4:
                                 dob.add(Calendar.MONTH, 30);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 dob.add(Calendar.MONTH, 36);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             case RchConstants.Z_VITTAMIN_A_200000_5:
                                 dob.add(Calendar.MONTH, 36);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 dob.add(Calendar.MONTH, 42);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             case RchConstants.Z_VITTAMIN_A_200000_6:
                                 dob.add(Calendar.MONTH, 42);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 dob.add(Calendar.MONTH, 48);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             case RchConstants.Z_VITTAMIN_A_200000_7:
                                 dob.add(Calendar.MONTH, 48);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 dob.add(Calendar.MONTH, 54);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             case RchConstants.Z_VITTAMIN_A_200000_8:
                                 dob.add(Calendar.MONTH, 54);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
-                                dob.add(Calendar.MONTH, 59);
+                                dob.add(Calendar.MONTH, 60);
+                                dob.add(Calendar.DATE, BUFFER_DAYS);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             case RchConstants.Z_OPV_0:
+                                // OPV 0: Strict 20 days (no buffer)
                                 lbw = dob.getTime();
-                                dob.add(Calendar.DATE, 13);
+                                dob.add(Calendar.DATE, 20);
                                 ubw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
@@ -2303,18 +2337,20 @@ public class MyDynamicComponents {
                             case RchConstants.Z_ROTA_VACCINE_1:
                             case RchConstants.Z_PCV_1:
                             case RchConstants.Z_DPT_HEB_HIB_1:
-                                dob.add(Calendar.DATE, 42);
+                                // Initial doses: 4 weeks (42 days) ±2 weeks
+                                dob.add(Calendar.DATE, 28 - BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
 
                             case RchConstants.Z_OPV_2:
-                                dob.add(Calendar.DATE, 70);
+                                // OPV 2: 10 weeks (70 days) ±2 weeks
+                                dob.add(Calendar.DATE, 84 - BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_1);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 28);
+                                    temp.add(Calendar.DATE, 14); // Minimum 2 weeks from first dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2323,12 +2359,13 @@ public class MyDynamicComponents {
                                 break;
 
                             case RchConstants.Z_OPV_3:
-                                dob.add(Calendar.DATE, 98);
+                                // OPV 3: 12 weeks (84 days) ±2 weeks
+                                dob.add(Calendar.DATE, 84 - BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.OPV_1);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 56);
+                                    temp.add(Calendar.DATE, 56); // Minimum 8 weeks from first dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2336,7 +2373,7 @@ public class MyDynamicComponents {
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_2);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 28);
+                                    temp.add(Calendar.DATE, 14); // Minimum 2 weeks from second dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2345,12 +2382,13 @@ public class MyDynamicComponents {
                                 break;
 
                             case RchConstants.Z_ROTA_VACCINE_2:
-                                dob.add(Calendar.DATE, 70);
+                                // ROTA 2: 12 weeks (84 days) ±2 weeks
+                                dob.add(Calendar.DATE, 84 - BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_ROTA_VACCINE_1);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 28);
+                                    temp.add(Calendar.DATE, 14); // Minimum 2 weeks from first dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2359,12 +2397,13 @@ public class MyDynamicComponents {
                                 break;
 
                             case RchConstants.Z_PCV_2:
-                                dob.add(Calendar.DATE, 70);
+                                // PCV 2: 12 weeks (84 days) ±2 weeks
+                                dob.add(Calendar.DATE, 84 - BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 28);
+                                    temp.add(Calendar.DATE, 14); // Minimum 4 weeks from first dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2373,12 +2412,13 @@ public class MyDynamicComponents {
                                 break;
 
                             case RchConstants.Z_PCV_3:
-                                dob.add(Calendar.DATE, 98);
+                                // PCV 3: 14 weeks (98 days) ±2 weeks
+                                dob.add(Calendar.DATE, 84 - BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 56);
+                                    temp.add(Calendar.DATE, 56); // Minimum 8 weeks from first dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2386,7 +2426,7 @@ public class MyDynamicComponents {
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_2);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 28);
+                                    temp.add(Calendar.DATE, 14); // Minimum 4 weeks from second dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2395,12 +2435,13 @@ public class MyDynamicComponents {
                                 break;
 
                             case RchConstants.Z_DPT_HEB_HIB_2:
-                                dob.add(Calendar.DATE, 70);
+                                // DPT-HepB-Hib 2: 10 weeks (70 days) ±2 weeks
+                                dob.add(Calendar.DATE, 84 - BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 28);
+                                    temp.add(Calendar.DATE, 14); // Minimum 4 weeks from first dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2409,12 +2450,13 @@ public class MyDynamicComponents {
                                 break;
 
                             case RchConstants.Z_DPT_HEB_HIB_3:
-                                dob.add(Calendar.DATE, 98);
+                                // DPT-HepB-Hib 3: 14 weeks (98 days) ±2 weeks
+                                dob.add(Calendar.DATE, 84 - BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 56);
+                                    temp.add(Calendar.DATE, 56); // Minimum 8 weeks from first dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2422,7 +2464,7 @@ public class MyDynamicComponents {
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_2);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 28);
+                                    temp.add(Calendar.DATE, 14); // Minimum 4 weeks from second dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
@@ -2431,27 +2473,33 @@ public class MyDynamicComponents {
                                 break;
 
                             case RchConstants.Z_MEASLES_RUBELLA_1:
+                                // Measles Rubella 1: 9 months ±2 weeks
                                 dob.add(Calendar.MONTH, 9);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 dob.setTime(dateOfBirth);
                                 break;
 
                             case RchConstants.Z_MEASLES_RUBELLA_2:
+                                // Measles Rubella 2: 18 months ±2 weeks
                                 dob.add(Calendar.MONTH, 18);
+                                dob.add(Calendar.DATE, -BUFFER_DAYS);
                                 lbw = dob.getTime();
                                 tmpDate = vaccineGivenDateMap.get(RchConstants.MEASLES_RUBELLA_1);
                                 if (tmpDate != null) {
                                     temp.setTime(tmpDate);
-                                    temp.add(Calendar.DATE, 28);
+                                    temp.add(Calendar.DATE, 28); // Minimum 4 weeks from first dose
                                     if (temp.getTimeInMillis() > dob.getTimeInMillis()) {
                                         lbw = temp.getTime();
                                     }
                                 }
                                 dob.setTime(dateOfBirth);
                                 break;
+
                             default:
                         }
 
+                        // Format date ranges for display
                         if (split[0].equalsIgnoreCase(RchConstants.Z_BCG) ||
                                 split[0].equalsIgnoreCase(RchConstants.Z_OPV_0) ||
                                 split[0].equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_50000) ||
@@ -2463,7 +2511,9 @@ public class MyDynamicComponents {
                                 split[0].equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_5) ||
                                 split[0].equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_6) ||
                                 split[0].equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_7) ||
-                                split[0].equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_8)
+                                split[0].equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_8) ||
+                                split[0].equalsIgnoreCase(RchConstants.HEPATITIS_B_0) ||
+                                split[0].equalsIgnoreCase(RchConstants.VITAMIN_K)
                         ) {
                             immunisationsMap.put(split[0], sdf.format(lbw) + " - " + sdf.format(ubw));
                         } else {
@@ -2475,11 +2525,7 @@ public class MyDynamicComponents {
                 if (dueImmunisationsForChild != null && !dueImmunisationsForChild.isEmpty()) {
                     for (String str : dueImmunisationsForChild) {
                         Map<Boolean, String> immunisationMissedMap;
-                        if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                            immunisationMissedMap = SharedStructureData.immunisationService.isImmunisationMissedOrNotValidZambia(memberBean.getDob(), str, new Date(), SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true);
-                        } else {
-                            immunisationMissedMap = SharedStructureData.immunisationService.isImmunisationMissedOrNotValid(memberBean.getDob(), str, new Date(), SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true);
-                        }
+                        immunisationMissedMap = SharedStructureData.immunisationService.isImmunisationMissedOrNotValidZambia(memberBean.getDob(), str, new Date(), SharedStructureData.getVaccineGivenDateMap(queFormBean.getLoopCounter()), true);
 
                         for (Map.Entry<Boolean, String> entry : immunisationMissedMap.entrySet()) {
                             Boolean isMissed = entry.getKey();
@@ -2517,11 +2563,7 @@ public class MyDynamicComponents {
 
         if (!immunisationsMap.isEmpty()) {
             List<String> vaccineList = new ArrayList<>(immunisationsMap.keySet());
-            if (GlobalTypes.FLAVOUR_CHIP.equalsIgnoreCase(BuildConfig.FLAVOR)) {
-                Collections.sort(vaccineList, UtilBean.Z_VACCINATION_COMPARATOR);
-            } else {
-                Collections.sort(vaccineList, UtilBean.VACCINATION_COMPARATOR);
-            }
+            Collections.sort(vaccineList, UtilBean.Z_VACCINATION_COMPARATOR);
 
             for (String vaccine : vaccineList) {
                 row = new TableRow(context);
