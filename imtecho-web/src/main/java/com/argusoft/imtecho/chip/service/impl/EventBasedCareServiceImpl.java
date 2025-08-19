@@ -111,7 +111,7 @@ public class EventBasedCareServiceImpl implements EventBasedCareService {
                     int id = Integer.parseInt(idStr.trim());
                     String value = listValueFieldValueDetailService.retrieveValueFromId(id);
                     if (value != null && !value.trim().isEmpty()) {
-                        if (sb.length() > 0) {
+                        if (!sb.isEmpty()) {
                             sb.append(",");
                         }
                         sb.append(value);
@@ -179,9 +179,6 @@ public class EventBasedCareServiceImpl implements EventBasedCareService {
             case "8669":
             case "8672":
                 eventBasedCareModule.setFacility(answer);
-                break;
-            case "3333":
-                eventBasedCareModule.setReferralRequired(ImtechoUtil.returnTrueFalseFromInitials(answer));
                 break;
             case "8989":
                 eventBasedCareModule.setIsIecGiven(ImtechoUtil.returnTrueFalseFromInitials(answer));

@@ -201,7 +201,7 @@ public class AncServiceImpl implements AncService {
 
             for (String childId : split) {
                 if (!childId.equals("ADDNEW") && !childId.isEmpty()) {
-                    if(!childId.startsWith("UN")) {
+                    if (!childId.startsWith("UN")) {
                         MemberEntity childMember = memberDao.retrieveById(Integer.valueOf(childId));
                         childMember.setMotherId(memberId);
                     }
@@ -292,21 +292,6 @@ public class AncServiceImpl implements AncService {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 ancVisit.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
                 ancVisit.setReferralInfraId(Integer.valueOf(keyAndAnswerMap.get("-20")));
-                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
-                storeReferralDetailsService.storeDataToStoreReferralDetails(
-                        motherEntity.getId(),
-                        Integer.parseInt(keyAndAnswerMap.get("-20")),
-                        healthInfrastructureDetails.getName(),
-                        listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(ancVisit.getReferralFor())),
-                        SystemConstantUtil.FHW_ANC,
-                        "-1",
-                        user.getId(),
-                        "NOTES",
-                        ancVisit.getLocationId(),
-                        ancVisit.getServiceDate(),
-                        Boolean.TRUE,
-                        ancVisitDao.create(ancVisit)
-                );
             }
         }
 
@@ -316,10 +301,34 @@ public class AncServiceImpl implements AncService {
         if (ancVisit.getMemberStatus().equals(RchConstants.MEMBER_STATUS_DEATH)) {
             mobileFhsService.checkIfMemberDeathEntryExists(memberId);
         }
+
         ancVisitDao.create(ancVisit);
 
-        StringBuilder immunisationGiven = new StringBuilder();
+        if (ancVisit.getReferralPlace() != null && ancVisit.getReferralInfraId() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(ancVisit.getReferralPlace());
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(ancVisit.getReferralFor())) {
+                refReason = ancVisit.getReferralReason() != null && !ancVisit.getReferralReason().isEmpty() ? ancVisit.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(ancVisit.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    motherEntity.getId(),
+                    ancVisit.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "ANC",
+                    motherEntity.getNupn() != null ? motherEntity.getNupn() : null,
+                    user.getId(),
+                    "NOTES",
+                    ancVisit.getLocationId(),
+                    ancVisit.getServiceDate(),
+                    Boolean.TRUE,
+                    ancVisit.getId()
+            );
+        }
 
+        StringBuilder immunisationGiven = new StringBuilder();
         if (keyAndAnswerMap.containsKey("2207") && keyAndAnswerMap.get("2207").equals("1")
                 && keyAndAnswerMap.containsKey("2208") && keyAndAnswerMap.get("2207") != null) {
             Date givenDate = new Date(Long.parseLong(keyAndAnswerMap.get("2208")));
@@ -432,7 +441,7 @@ public class AncServiceImpl implements AncService {
         if (jsonObject.get("memberId") != null) {
             memberId = jsonObject.get("memberId").getAsInt();
         } else {
-            if (jsonObject.get("memberUUID")  != null) {
+            if (jsonObject.get("memberUUID") != null) {
                 memberId = memberDao.retrieveMemberByUuid(String.valueOf(jsonObject.get("memberUUID"))).getId();
             }
         }

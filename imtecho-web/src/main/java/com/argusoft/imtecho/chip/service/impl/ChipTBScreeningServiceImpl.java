@@ -126,21 +126,35 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 chipTBEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
-                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
-                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(
-                            memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),(chipTBEntity.getReferralReason()),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
-                    );
-                }
-                else{
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(
-                            memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipTBEntity.getReferralFor())),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
-                    );
-                }
             }
         }
 
 
+        chipTBDao.create(chipTBEntity);
+
+        if (chipTBEntity.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(chipTBEntity.getReferralPlace());
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(chipTBEntity.getReferralFor())) {
+                refReason = chipTBEntity.getReferralReason() != null && !chipTBEntity.getReferralReason().isEmpty() ? chipTBEntity.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipTBEntity.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    chipTBEntity.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "TB",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "NOTES",
+                    chipTBEntity.getLocationId(),
+                    chipTBEntity.getServiceDate(),
+                    Boolean.TRUE,
+                    chipTBEntity.getId()
+            );
+        }
 
         memberDao.update(memberEntity);
 
@@ -302,20 +316,34 @@ public class ChipTBScreeningServiceImpl implements ChipTBScreeningService {
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 chipTBEntity.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
-                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
-                if(keyAndAnswerMap.get("3333") != null && keyAndAnswerMap.get("3333").equalsIgnoreCase("OTHER")){
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(
-                            memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),(chipTBEntity.getReferralReason()),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
-                    );
-                }
-                else{
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(
-                            memberEntity.getId(),Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipTBEntity.getReferralFor())),SystemConstantUtil.CHIP_TB, "-1", (user.getId()),"Notes",chipTBEntity.getLocationId(),chipTBEntity.getServiceDate(),Boolean.TRUE,chipTBDao.create(chipTBEntity)
-                    );
-                }
             }
         }
 
+        chipTBDao.create(chipTBEntity);
+
+        if (chipTBEntity.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(chipTBEntity.getReferralPlace());
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(chipTBEntity.getReferralFor())) {
+                refReason = chipTBEntity.getReferralReason() != null && !chipTBEntity.getReferralReason().isEmpty() ? chipTBEntity.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(chipTBEntity.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    chipTBEntity.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "TB_FOLLOW_UP",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "NOTES",
+                    chipTBEntity.getLocationId(),
+                    chipTBEntity.getServiceDate(),
+                    Boolean.TRUE,
+                    chipTBEntity.getId()
+            );
+        }
 
         memberDao.update(memberEntity);
 

@@ -282,6 +282,7 @@ public class HouseHoldLineListMobileDto {
         private String childStandard;
         private Boolean familyPlanning;
         private String[] chronicDisease;
+        private String[] disabilityIds;
         private Boolean onTreatment;
         private String[] chronicDiseaseTreatment;
         private String otherChronicDiseaseTreatment;
@@ -546,6 +547,14 @@ public class HouseHoldLineListMobileDto {
 
         public void setChronicDisease(String[] chronicDisease) {
             this.chronicDisease = chronicDisease;
+        }
+
+        public String[] getDisabilityIds() {
+            return disabilityIds;
+        }
+
+        public void setDisabilityIds(String[] disabilityIds) {
+            this.disabilityIds = disabilityIds;
         }
 
         public Boolean getOnTreatment() {

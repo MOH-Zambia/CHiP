@@ -141,39 +141,36 @@ public class HouseHoldLineListMobileMapper {
                         memberBean.getPassportNumber() + " " +
                         UtilBean.getFamilyFullAddress(familyBean) + " ";
         memberBean.setSearchString(stringBuilder);
-        if (memberBean.getChronicDiseaseIds() != null && memberBean.getChronicDiseaseIds().equalsIgnoreCase(RchConstants.NONE)) {
-            memberBean.setChronicDiseaseIds(null);
-        }
-        if (member.getChronicDisease() != null) {
-            for (String diseaseId : convertSetToCommaSeparatedString(member.getChronicDisease(), ",").split(",")) {
-                if (memberBean.getChronicDiseaseIds() != null) {
-                    if (!memberBean.getChronicDiseaseIds().contains(diseaseId)) {
-                        memberBean.setChronicDiseaseIds(memberBean.getChronicDiseaseIds() + "," + diseaseId);
-                    }
-                } else {
-                    memberBean.setChronicDiseaseIds(diseaseId);
-                }
-            }
-        }
-        if (memberBean.getChronicDiseaseIds() != null) {
-            member.setChronicDisease(memberBean.getChronicDiseaseIds().split(","));
-        }
-        if (member.getChronicDisease() != null) {
-            for (String id : convertSetToCommaSeparatedString(member.getChronicDisease(), ",").split(",")) {
-                switch (id) {
-                    case "2678":
-                        memberAdditionalInfo.setHivTest("POSITIVE");
-                        break;
-                    case "2679":
-                        memberAdditionalInfo.setTbCured(false);
-                        memberAdditionalInfo.setTbSuspected(true);
-                        break;
-                    default:
 
+
+        if (member.getChronicDisease() != null) {
+            // Build clean, comma-separated string without OTHER/NONE
+            String chronicDiseaseStr = convertSetToCommaSeparatedString(member.getChronicDisease(), ",");
+            memberBean.setChronicDiseaseIds(chronicDiseaseStr);
+        }
+
+        // Handle special IDs (HIV, TB etc.)
+        if (member.getChronicDisease() != null) {
+            String chronicDiseaseStr = convertSetToCommaSeparatedString(member.getChronicDisease(), ",");
+            if (chronicDiseaseStr != null && !chronicDiseaseStr.isEmpty()) {
+                for (String id : chronicDiseaseStr.split(",")) {
+                    id = id.trim();
+                    switch (id) {
+                        case "2678": // HIV
+                            memberAdditionalInfo.setHivTest("POSITIVE");
+                            break;
+                        case "2679": // TB
+                            memberAdditionalInfo.setTbCured(false);
+                            memberAdditionalInfo.setTbSuspected(true);
+                            break;
+                        default:
+                            // do nothing
+                    }
                 }
                 memberBean.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
             }
         }
+
 
         memberBean.setOtherChronic(member.getOtherChronicDisease() != null ? member.getOtherChronicDisease() : memberBean.getOtherChronic());
         memberBean.setUnderTreatmentChronic(member.getOnTreatment() != null ? member.getOnTreatment() : memberBean.getUnderTreatmentChronic());
@@ -182,17 +179,27 @@ public class HouseHoldLineListMobileMapper {
         memberBean.setOtherChronicDiseaseTreatment(member.getOtherChronicDiseaseTreatment() != null ? member.getOtherChronicDiseaseTreatment() : memberBean.getOtherChronicDiseaseTreatment());
 
         if (member.getChronicDisease() != null) {
-            if (convertSetToCommaSeparatedString(member.getChronicDisease(), ",").contains("2678")) {
-                memberBean.setIsHivPositive(RchConstants.TEST_POSITIVE);
-            }
-            if (convertSetToCommaSeparatedString(member.getChronicDisease(), ",").contains("2679")) {
-                memberBean.setTbCured(Boolean.FALSE);
-                memberBean.setTbSuspected(Boolean.TRUE);
+            String chronicDiseaseStr = convertSetToCommaSeparatedString(member.getChronicDisease(), ",");
+
+            if (chronicDiseaseStr != null && !chronicDiseaseStr.isEmpty()) {
+                if (chronicDiseaseStr.contains("2678")) {
+                    memberBean.setIsHivPositive(RchConstants.TEST_POSITIVE);
+                }
+                if (chronicDiseaseStr.contains("2679")) {
+                    memberBean.setTbCured(Boolean.FALSE);
+                    memberBean.setTbSuspected(Boolean.TRUE);
+                }
             }
         }
 
         memberAdditionalInfo.setHpvGiven(member.getHpvGiven() != null ? member.getHpvGiven() : memberAdditionalInfo.getHpvGiven());
         memberBean.setAdditionalInfo(gson.toJson(memberAdditionalInfo));
+
+        if (member.getDisabilityIds() != null) {
+            // Clean comma-separated string without OTHER/NONE
+            String disabilityStr = convertSetToCommaSeparatedString(member.getDisabilityIds(), ",");
+            memberBean.setDisabilityIds(disabilityStr);
+        }
 
         //only update following info if member is getting registered for the first time
         if (!isFromUpdate) {
@@ -219,26 +226,27 @@ public class HouseHoldLineListMobileMapper {
     }
 
     public static String convertSetToCommaSeparatedString(String[] list, String separator) {
-        if (list != null && list.length > 0) {
-            StringBuilder sb = new StringBuilder();
-            boolean first = true;
-            for (String item : list) {
-                boolean isOtherOrNone = !item.isEmpty() && !item.equalsIgnoreCase(LabelConstants.OTHER) && !item.equalsIgnoreCase(LabelConstants.NONE);
-                if (first) {
-                    first = false;
-                } else {
-                    if (isOtherOrNone) {
+        if (list == null || list.length == 0) {
+            return null;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String item : list) {
+            if (item != null) {
+                item = item.trim(); // remove extra spaces
+                if (!item.isEmpty()
+                        && !item.equalsIgnoreCase(LabelConstants.NONE)) {
+
+                    if (sb.length() > 0) {  // ✅ no leading separator
                         sb.append(separator);
                     }
-                }
-                if (isOtherOrNone) {
                     sb.append(item);
                 }
             }
-            return sb.toString();
-        } else {
-            return null;
         }
+
+        return sb.toString();
     }
 
     private static String checkGenderFromNumber(String gender) {
@@ -254,7 +262,7 @@ public class HouseHoldLineListMobileMapper {
     }
 
     private static String extractMobileNumber(String mobileNumber) {
-        String mob = null;
+        String mob = mobileNumber;
         if (mobileNumber.contains("F/")) {
             mob = mobileNumber.replace("F/", "");
         }

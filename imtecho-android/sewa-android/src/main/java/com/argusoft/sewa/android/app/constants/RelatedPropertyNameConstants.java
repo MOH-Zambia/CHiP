@@ -128,6 +128,7 @@ public class RelatedPropertyNameConstants {
     public static final String CHRONIC_DISEASE_STATUS = "chronicDiseaseStatus";
     public static final String CHRONIC_DISEASES = "chronicDiseases";
     public static final String CHRONIC_DISEASE_IDS = "chronicDiseaseIds";
+    public static final String DISABLITY_IDS = "disabilitiesIds";
     public static final String CURRENT_DISEASE_STATUS = "currentDiseaseStatus";
     public static final String CURRENT_DISEASE_IDS = "currentDiseaseIds";
     public static final String EYE_ISSUE_STATUS = "eyeIssueStatus";
@@ -156,7 +157,6 @@ public class RelatedPropertyNameConstants {
     public static final String OCCUPATION = "occupation";
     public static final String DISABILITIES = "disabilities";
     public static final String OTHER_DISABILITIES = "otherDisabilities";
-    public static final String CHRONIC_DISEASE = "chronicDiseaseIds";
     public static final String OTHER_CHRONIC_DISEASE = "otherChronicDisease";
     public static final String EYE_ISSUE = "eyeIssueIds";
     public static final String OTHER_EYE_ISSUE = "otherEyeIssue";

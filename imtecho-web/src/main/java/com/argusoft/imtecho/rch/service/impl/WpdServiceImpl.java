@@ -267,15 +267,6 @@ public class WpdServiceImpl implements WpdService {
         if (keyAndAnswerMap.containsKey("8672")) {
             if (keyAndAnswerMap.get("-20") != null && !keyAndAnswerMap.get("-20").equalsIgnoreCase("null")) {
                 wpdMotherMaster.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
-                HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.parseInt(keyAndAnswerMap.get("-20")));
-                if(keyAndAnswerMap.get("3334") != null && keyAndAnswerMap.get("3334").equalsIgnoreCase("OTHER")) {
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(motherEntity.getId(),
-                            Integer.parseInt(keyAndAnswerMap.get("-20")),
-                            healthInfrastructureDetails.getName(),wpdMotherMaster.getReferralReason(), SystemConstantUtil.FHW_WPD, "-1", (user.getId()), "Notes", wpdMotherMaster.getLocationId(),motherEntity.getModifiedOn(), Boolean.TRUE,wpdMotherDao.create(wpdMotherMaster));
-                }
-                else{
-                    storeReferralDetailsService.storeDataToStoreReferralDetails(motherEntity.getId(), Integer.parseInt(keyAndAnswerMap.get("-20")),healthInfrastructureDetails.getName(),listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(wpdMotherMaster.getReferralFor())), SystemConstantUtil.FHW_WPD, "-1", (user.getId()), "Notes", wpdMotherMaster.getLocationId(), motherEntity.getLmpDate(), Boolean.TRUE,wpdMotherDao.create(wpdMotherMaster));
-                }
             }
         }
 
@@ -304,6 +295,31 @@ public class WpdServiceImpl implements WpdService {
         }
 
         wpdMotherDao.create(wpdMotherMaster);
+
+        if (wpdMotherMaster.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(wpdMotherMaster.getReferralPlace());
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(wpdMotherMaster.getReferralFor())) {
+                refReason = wpdMotherMaster.getReferralReason() != null && !wpdMotherMaster.getReferralReason().isEmpty() ? wpdMotherMaster.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(wpdMotherMaster.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    motherEntity.getId(),
+                    wpdMotherMaster.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "POV_MOTHER",
+                    motherEntity.getNupn() != null ? motherEntity.getNupn() : null,
+                    user.getId(),
+                    "NOTES",
+                    wpdMotherMaster.getLocationId(),
+                    wpdMotherMaster.getModifiedOn(),
+                    Boolean.TRUE,
+                    wpdMotherMaster.getId()
+            );
+        }
+
         this.updateMemberAdditionalInfo(motherEntity, wpdMotherMaster, keyAndAnswerMap);
 
         if (parsedRecordBean.getNotificationId() != null && !parsedRecordBean.getNotificationId().equals("-1")) {
@@ -439,7 +455,33 @@ public class WpdServiceImpl implements WpdService {
                 wpdChildMaster.setMemberId(childEntity.getId());
                 wpdChildMaster.setIsHighRiskCase(childEntity.getIsHighRiskCase());
                 wpdChildMaster.setName(childEntity.getFirstName());
+
                 wpdChildDao.create(wpdChildMaster);
+
+                if (wpdChildMaster.getReferralPlace() != null) {
+                    HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(wpdChildMaster.getReferralPlace());
+                    String refReason;
+                    if ("OTHER".equalsIgnoreCase(wpdChildMaster.getReferralFor())) {
+                        refReason = wpdChildMaster.getReferralReason() != null && !wpdChildMaster.getReferralReason().isEmpty() ? wpdChildMaster.getReferralReason() : null;
+                    } else {
+                        refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(wpdChildMaster.getReferralFor()));
+                    }
+                    storeReferralDetailsService.storeDataToStoreReferralDetails(
+                            childEntity.getId(),
+                            wpdChildMaster.getReferralPlace(),
+                            healthInfrastructureDetails.getName(),
+                            refReason,
+                            "POV_CHILD",
+                            childEntity.getNupn() != null ? childEntity.getNupn() : null,
+                            user.getId(),
+                            "NOTES",
+                            wpdChildMaster.getLocationId(),
+                            wpdChildMaster.getModifiedOn(),
+                            Boolean.TRUE,
+                            wpdChildMaster.getId()
+                    );
+                }
+
                 if (!wpdMotherMaster.getPregnancyOutcome().equals(RchConstants.PREGNANCY_OUTCOME_LIVE_BIRTH)
                         || !wpdMotherMaster.getPregnancyOutcome().equalsIgnoreCase(RchConstants.PREGNANCY_OUTCOME_PREMATURE)) {
                     wpdMotherMaster.setPregnancyOutcome(wpdChildMaster.getPregnancyOutcome());

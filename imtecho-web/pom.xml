@@ -684,15 +684,16 @@
                 <server.type>LIVE</server.type>
                 <server.implementation.type>chip</server.implementation.type>
 
-                <jdbc.url>102.23.121.123</jdbc.url>
-                <jdbc.database>techo</jdbc.database>
+                <jdbc.url>localhost</jdbc.url>
+                <jdbc.database>chip_db</jdbc.database>
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>q1w2e3R$</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
-                <jdbc.maxPoolSize>200</jdbc.maxPoolSize>
+                <jdbc.maxActiveConnection>300</jdbc.maxActiveConnection>
+                <jdbc.maxPoolSize>3000</jdbc.maxPoolSize>
 
-                <repository.path>/home/pathserver1/Repository/</repository.path>
-                <firebasejson.path>/home/pathserver1/Firebase/</firebasejson.path>
+                <repository.path>/chip/Repository/</repository.path>
+                <firebasejson.path>/chip/Firebase/</firebasejson.path>
 
                 <hibernate.showsql>true</hibernate.showsql>
                 <hibernate.formatsql>true</hibernate.formatsql>
@@ -711,7 +712,7 @@
                 <email.isSecure>true</email.isSecure>
 
                 <ssl.keystore.enable>true</ssl.keystore.enable>
-                <ssl.keystore.file>/home/pathserver1/ssl-certificate/keystore.p12</ssl.keystore.file>
+                <ssl.keystore.file>/chip/ssl-certificate/keystore.p12</ssl.keystore.file>
                 <ssl.keystore.password>q1w2e3R$</ssl.keystore.password>
 
                 <allow.origin>*</allow.origin>
@@ -837,8 +838,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>21</source>
+                    <target>21</target>
                     <compilerArgs>
                         <arg>--add-exports</arg>
                         <arg>java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED</arg>
