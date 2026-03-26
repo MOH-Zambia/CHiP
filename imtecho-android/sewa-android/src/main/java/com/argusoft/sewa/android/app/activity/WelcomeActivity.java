@@ -121,9 +121,9 @@ public class WelcomeActivity extends MenuActivity {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            map.put(Manifest.permission.POST_NOTIFICATIONS,
-                    PermissionChecker.checkSelfPermission(getApplicationContext(),
-                            Manifest.permission.POST_NOTIFICATIONS));
+//            map.put(Manifest.permission.POST_NOTIFICATIONS,
+//                    PermissionChecker.checkSelfPermission(getApplicationContext(),
+//                            Manifest.permission.POST_NOTIFICATIONS));
             map.put(Manifest.permission.READ_MEDIA_IMAGES,
                     PermissionChecker.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.READ_MEDIA_IMAGES));

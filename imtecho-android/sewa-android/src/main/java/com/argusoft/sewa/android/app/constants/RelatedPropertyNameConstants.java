@@ -547,4 +547,6 @@ public class RelatedPropertyNameConstants {
     public static final String SINGLE_MEMBER_FAMILY = "singleMemberFamily";
 
     public static final String EVENTS_LIST = "eventsList";
+    public static final String TRANSCRIPTION = "transcription";
+
 }

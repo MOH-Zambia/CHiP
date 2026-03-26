@@ -725,6 +725,9 @@ public class DynamicUtils {
                         case FormulaConstants.FORMULA_CHECK_IF_LIST_VALUE_SELECTED:
                             HiddenQuestionFormulaUtil.checkIfListValueSelected(split, queFormBean);
                             break;
+                        case FormulaConstants.FORMULA_GENERATE_AI_INSIGHT:
+                            HiddenQuestionFormulaUtil.generateAiSummaryAsync(queFormBean);
+                            break;
                         default:
                             Log.i(TAG, "Formula for Hidden Question Not Handled : " + formulaTag.getFormulavalue());
                             break;
@@ -925,6 +928,10 @@ public class DynamicUtils {
 
                             case FormulaConstants.FORMULA_CHECK_MEMBER_SURVEY_ELIGIBILITY:
                                 FormulaUtil.checkMemberEligibility(split, queFormBean);
+                                break;
+
+                            case "loadTranscription":
+                                FormulaUtil.loadTranscription(split, queFormBean);
                                 break;
 
                             default:

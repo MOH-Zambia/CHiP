@@ -1,1 +1,2 @@
 include ':sewa-android'
+include ':core-llm'

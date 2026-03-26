@@ -246,5 +246,6 @@ public class FormulaConstants {
     public static final String FORMULA_CHECK_IF_SECOND_TRIMESTER = "checkifsecondtrimester"; // checkIfSecondTrimester
     public static final String FORMULA_SET_DEFAULT_NON_HOF_MEMBER_NAMES_CBDS = "setDefaultNonHofMemberNames";
     public static final String FORMULA_CHECK_IF_LIST_VALUE_SELECTED = "checkiflistvalueselected";
+    public static final String FORMULA_GENERATE_AI_INSIGHT = "generateaiinsight";
 
 }

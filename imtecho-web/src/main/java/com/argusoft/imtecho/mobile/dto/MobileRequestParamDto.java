@@ -19,6 +19,7 @@ public class MobileRequestParamDto {
     private Integer userId;
     // For language change
     private String languageCode;
+    private String memberId;
     // For Validate User
     private String userName;
     private String password;
@@ -261,6 +262,14 @@ public class MobileRequestParamDto {
 
     public void setFirebaseToken(String firebaseToken) {
         this.firebaseToken = firebaseToken;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     @Override

@@ -63,6 +63,7 @@ import com.argusoft.sewa.android.app.datastructure.QueFormBean;
 import com.argusoft.sewa.android.app.datastructure.SharedStructureData;
 import com.argusoft.sewa.android.app.db.DBConnection;
 import com.argusoft.sewa.android.app.exception.DataException;
+import com.argusoft.sewa.android.app.llm.LlmService;
 import com.argusoft.sewa.android.app.model.LocationBean;
 import com.argusoft.sewa.android.app.model.LocationMasterBean;
 import com.argusoft.sewa.android.app.model.MemberBean;
@@ -135,6 +136,7 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
 
     private static final String TAG = "MyPeopleActivity";
     private static final Integer REQUEST_CODE_FOR_MY_PEOPLE_ACTIVITY = 200;
+    private static final Integer REQUEST_CODE_PATIENT_INSIGHTS = 1002;
     private static final Integer REQUEST_CODE_FOR_OCR_ACTIVITY = 202;
     private static final long DELAY = 500;
     private static final String VILLAGE_SELECTION_SCREEN = "villageSelectionScreen";
@@ -224,8 +226,26 @@ public class MyPeopleCBVActivity extends MenuActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadAiModel();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         initView();
+    }
+
+    private void loadAiModel() {
+        SharedStructureData.context = getApplicationContext();
+        LlmService llm = LlmService.getInstance();
+        llm.loadModel(null,new LlmService.ModelStateListener() {
+            @Override public void onModelReady() {
+                runOnUiThread(() -> {
+                    Log.i("LLMService","Model ready ✓");
+//                    setUiReady(true);
+                });
+            }
+            @Override public void onModelUnloaded() { /* no-op */ }
+            @Override public void onModelError(String message) {
+                runOnUiThread(() -> Log.i("Load error: ", message));
+            }
+        });
     }
 
     @Override

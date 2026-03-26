@@ -32,6 +32,7 @@ import com.argusoft.sewa.android.app.service.GPSTracker;
 import com.argusoft.sewa.android.app.util.GlobalTypes;
 import com.argusoft.sewa.android.app.util.SewaConstants;
 import com.argusoft.sewa.android.app.util.UtilBean;
+import com.argusoft.sewa.android.app.llm.LlmService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,6 +77,7 @@ public class SharedStructureData {
     public static SewaService sewaService;
     public static TechoService techoService;
     public static SewaFhsService sewaFhsService;
+    public static LlmService llmService;
     public static RchHighRiskService rchHighRiskService;
     public static ImmunisationService immunisationService;
     public static HealthInfrastructureService healthInfrastructureService;
@@ -87,8 +89,8 @@ public class SharedStructureData {
 
     public static Context context;
 
-    public static int currentQuestion;  // question id for external activity called like camera or video etc.
-    public static int loopBakCounter; // that is used in repetitive question
+    public static int currentQuestion;
+    public static int loopBakCounter;
     public static int newBindingForMorbidity;
 
     public static Map<Integer, QueFormBean> mapIndexQuestion;

@@ -11,6 +11,7 @@ import com.argusoft.sewa.android.app.databean.RecordStatusBean;
 import com.argusoft.sewa.android.app.databean.StockManagementDataBean;
 import com.argusoft.sewa.android.app.databean.UserInfoDataBean;
 import com.argusoft.sewa.android.app.model.FormAccessibilityBean;
+import com.argusoft.sewa.android.app.model.InsightBean;
 import com.argusoft.sewa.android.app.model.UploadFileDataBean;
 
 import java.util.List;
@@ -158,4 +159,18 @@ public interface ApiService {
 
     @POST("api/mobile/user/changeLanguage")
     Call<ResponseBody> updateLanguagePreference(@Body MobileRequestParamDto mobileRequestParamDto);
+
+    @POST("api/mobile/patientInsights")
+    Call<List<InsightBean>> getPatientInsights(@Body MobileRequestParamDto mobileRequestParamDto);
+    @POST("api/mobile/aiMedicalInsights")
+    Call<List<InsightBean>> getAIMedicalInsight(@Body MobileRequestParamDto mobileRequestParamDto);
+
+    @Multipart
+    @POST("api/mobile/aiAudioTranscription")
+    Call<ResponseBody> getAIAudioTranscription(
+            @Part MultipartBody.Part filePart,
+            @Part("memberId") okhttp3.RequestBody memberId,
+            @Part("token") okhttp3.RequestBody token
+    );
+
 }

@@ -890,6 +890,9 @@ public class FormMetaDataUtil {
                 if (memberAdditionalInfo.getRchId() != null) {
                     SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.RCH_ID, memberAdditionalInfo.getRchId());
                 }
+                if(memberBean.getActualId() != null){
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID, memberBean.getActualId());
+                }
 
                 break;
 

@@ -12,6 +12,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
@@ -108,6 +109,16 @@ public class GenericHomeScreenActivity extends HomeScreenMenuActivity implements
             constant.add(m.getConstant());
         }
         orderList.removeAll(menuToRemove);
+
+        // --- Inject the LLM Chat tile as a static, always-visible entry ---
+        MenuBean llmMenuBean = new MenuBean();
+        llmMenuBean.setConstant(MenuConstants.LLM_CHAT);
+        llmMenuBean.setDisplayName("Chat with AI");
+        orderList.add(llmMenuBean);
+        icons.add(MenuConstants.getMenuIcons(MenuConstants.LLM_CHAT));
+        names.add("Chat with AI");
+        constant.add(MenuConstants.LLM_CHAT);
+        // ------------------------------------------------------------------
 
         if (orderList.isEmpty()) {
             showAlert(LabelConstants.NO_FEATURE_FOUND, GlobalTypes.MSG_NO_MENU, v -> alertDialog.dismiss(), DynamicUtils.BUTTON_OK);
@@ -242,14 +253,21 @@ public class GenericHomeScreenActivity extends HomeScreenMenuActivity implements
 
     @Override
     public void onItemClickListener(int position, View view) {
+        MenuBean tappedMenu = orderList.get(position);
+
+        // Fast-path: LLM Chat is a local tile — no server round-trip needed
+        if (MenuConstants.LLM_CHAT.equals(tappedMenu.getConstant())) {
+            startActivity(new Intent(this, LlmChatActivity.class));
+            return;
+        }
+
         processDialog = new MyProcessDialog(this, GlobalTypes.PLEASE_WAIT);
         processDialog.show();
         new Thread() {
             @Override
             public void run() {
-                MenuBean menuConstant = orderList.get(position);
-                if (checkMenuAccessibleToUser(view, menuConstant.getConstant())) {
-                    MenuClickListener menuListener = new MenuClickListener(context, menuConstant.getConstant());
+                if (checkMenuAccessibleToUser(view, tappedMenu.getConstant())) {
+                    MenuClickListener menuListener = new MenuClickListener(context, tappedMenu.getConstant());
                     menuListener.onClick(view);
                 }
                 processDialog.dismiss();
@@ -388,6 +406,19 @@ public class GenericHomeScreenActivity extends HomeScreenMenuActivity implements
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.menu_announcement).setVisible(true);
         menu.findItem(R.id.menu_home).setVisible(false);
+        if (menu.findItem(R.id.menu_llm) != null) {
+            menu.findItem(R.id.menu_llm).setVisible(true);
+        }
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_llm) {
+            android.content.Intent intent = new android.content.Intent(this, LlmChatActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

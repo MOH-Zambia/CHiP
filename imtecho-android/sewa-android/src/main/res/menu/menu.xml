@@ -25,4 +25,9 @@
         android:icon="@drawable/about"
         android:title="@string/about"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_llm"
+        android:title="Chat with LLM"
+        app:showAsAction="never" />
 </menu>

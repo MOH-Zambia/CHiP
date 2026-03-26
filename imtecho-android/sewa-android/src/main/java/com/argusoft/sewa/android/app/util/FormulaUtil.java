@@ -5,6 +5,7 @@ import static com.argusoft.sewa.android.app.util.DynamicUtils.getLoopId;
 import static com.argusoft.sewa.android.app.util.UtilBean.createAdapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.text.InputType;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat;
 
 import com.argusoft.sewa.android.app.BuildConfig;
 import com.argusoft.sewa.android.app.R;
+import com.argusoft.sewa.android.app.component.AiTextcomponent;
 import com.argusoft.sewa.android.app.component.MyStaticComponents;
 import com.argusoft.sewa.android.app.constants.FormulaConstants;
 import com.argusoft.sewa.android.app.constants.IdConstants;
@@ -29,6 +31,7 @@ import com.argusoft.sewa.android.app.databean.OptionDataBean;
 import com.argusoft.sewa.android.app.databean.OptionTagBean;
 import com.argusoft.sewa.android.app.datastructure.QueFormBean;
 import com.argusoft.sewa.android.app.datastructure.SharedStructureData;
+import com.argusoft.sewa.android.app.model.InsightBean;
 import com.argusoft.sewa.android.app.morbidities.constants.MorbiditiesConstant;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -1723,5 +1726,9 @@ public class FormulaUtil {
                 materialTextView.setText(UtilBean.getMyLabel("Participant does not meet all inclusion criteria and exclusion criteria, and is not eligible to enroll in the study"));
             }
         }
+    }
+    @SuppressLint("SetTextI18n")
+    public static void loadTranscription(String[] split, QueFormBean queFormBean) {
+
     }
 }

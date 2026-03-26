@@ -142,7 +142,8 @@ public class MobileController extends GenericSessionUtilService {
     private final Client client = Client.create();
     @Autowired
     private MobileFileUploadService mobileFileUploadService;
-
+    @Autowired
+    private GeminiApiService geminiApiService;
 
     @GetMapping(value = MobileApiPathConstants.GET_ANDROID_VERSION)
     public String retrieveAndroidVersion(HttpServletRequest request) {
@@ -958,4 +959,40 @@ public class MobileController extends GenericSessionUtilService {
 //        }
 //        return new Gson().toJson(list);
     }
+    
+    @PostMapping(value = "patientInsights")
+    public List<InsightDto> getPatientInsights(@RequestBody MobileRequestParamDto mobileRequestParamDto) {
+        Long memberActualId = null;
+        if (mobileRequestParamDto.getMemberId() != null) {
+            try {
+                memberActualId = Long.parseLong(mobileRequestParamDto.getMemberId());
+            } catch (NumberFormatException ignored) {}
+        }
+        return geminiApiService.generatePatientInsights(memberActualId, mobileRequestParamDto.getFormCode());
+    }
+
+    @PostMapping(value = "aiMedicalInsights")
+    public List<InsightDto> aiMedicalInsights(@RequestBody MobileRequestParamDto mobileRequestParamDto) {
+        Long memberActualId = null;
+        if (mobileRequestParamDto.getMemberId() != null) {
+            try {
+                memberActualId = Long.parseLong(mobileRequestParamDto.getMemberId());
+            } catch (NumberFormatException ignored) {}
+        }
+        return geminiApiService.aiMedicalInsights(memberActualId, mobileRequestParamDto.getAnswerString());
+    }
+    @PostMapping(value = "aiAudioTranscription", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String aiAudioTranscription(
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file,
+            @RequestParam("memberId") String memberId,
+            @RequestParam("token") String token) {
+        Long memberActualId = null;
+        if (memberId != null) {
+            try {
+                memberActualId = Long.parseLong(memberId);
+            } catch (NumberFormatException ignored) {}
+        }
+        return geminiApiService.aiAudioTranscription(memberActualId, file);
+    }
+
 }

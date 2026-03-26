@@ -14,6 +14,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.argusoft.sewa.android.app.BuildConfig;
+import com.argusoft.sewa.android.app.component.AiAudioComponent;
+import com.argusoft.sewa.android.app.component.AiTextcomponent;
 import com.argusoft.sewa.android.app.component.DistrictHealthInfraComponent;
 import com.argusoft.sewa.android.app.component.ImmunisationSelectionComponent;
 import com.argusoft.sewa.android.app.component.MyDynamicComponents;
@@ -692,6 +694,18 @@ public class FormGenerator {
             queFormBean.setQuestionTypeView(new ImmunisationSelectionComponent(context, queFormBean));
         } else if (queType.equalsIgnoreCase(GlobalTypes.TEXT_WATCHER_BOX)) {
             queFormBean.setQuestionTypeView(MyDynamicComponents.getTWBComponent(context, queFormBean));
+        } else if (queType.equalsIgnoreCase(GlobalTypes.AI_LABEL_FORMULA)) {
+            AiTextcomponent view = new AiTextcomponent(context, queFormBean);
+            if (view == null) {
+                view = new AiTextcomponent(context, queFormBean);
+            }
+            queFormBean.setQuestionTypeView(view);
+        } else if (queType.equalsIgnoreCase(GlobalTypes.AI_AUDIO_COMPONENT)) {
+            AiAudioComponent view = new AiAudioComponent(context, queFormBean);
+            if (view == null) {
+                view = new AiAudioComponent(context, queFormBean);
+            }
+            queFormBean.setQuestionTypeView(view);
         } else {
             Log.i("FormGenerator", "###########################" + queType + "########## not handled");
         }

@@ -2,10 +2,14 @@ package com.argusoft.sewa.android.app.util;
 
 import static com.argusoft.sewa.android.app.datastructure.SharedStructureData.context;
 import static com.argusoft.sewa.android.app.datastructure.SharedStructureData.sewaFhsService;
+import static com.argusoft.sewa.android.app.datastructure.SharedStructureData.sewaService;
+
 import static com.argusoft.sewa.android.app.util.DynamicUtils.getLoopId;
 import static com.argusoft.sewa.android.app.util.UtilBean.createAdapter;
 import static com.argusoft.sewa.android.app.util.UtilBean.setTextColourAsPerStatus;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -25,6 +29,8 @@ import androidx.core.content.ContextCompat;
 
 import com.argusoft.sewa.android.app.BuildConfig;
 import com.argusoft.sewa.android.app.R;
+import com.argusoft.sewa.android.app.component.AiAudioComponent;
+import com.argusoft.sewa.android.app.component.AiTextcomponent;
 import com.argusoft.sewa.android.app.component.MyAlertDialog;
 import com.argusoft.sewa.android.app.component.MyDynamicComponents;
 import com.argusoft.sewa.android.app.component.MyListInColorComponent;
@@ -46,6 +52,8 @@ import com.argusoft.sewa.android.app.databean.OptionTagBean;
 import com.argusoft.sewa.android.app.datastructure.PageFormBean;
 import com.argusoft.sewa.android.app.datastructure.QueFormBean;
 import com.argusoft.sewa.android.app.datastructure.SharedStructureData;
+import com.argusoft.sewa.android.app.llm.LlmService;
+import com.argusoft.sewa.android.app.model.InsightBean;
 import com.argusoft.sewa.android.app.model.ListValueBean;
 import com.argusoft.sewa.android.app.model.LocationBean;
 import com.argusoft.sewa.android.app.model.MemberBean;
@@ -58,6 +66,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -3846,5 +3855,150 @@ public class HiddenQuestionFormulaUtil {
             }
         }
     }
+    public static void generateAiSummaryAsync(QueFormBean queFormBean) {
+
+        String memberFormData = UtilBean.fetchImportantQuestions(queFormBean);
+        String memberId = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID);
+
+        Integer queId = Integer.valueOf(queFormBean.getNext());
+        QueFormBean nextQue = SharedStructureData.mapIndexQuestion.get(queId);
+        AiTextcomponent view = (AiTextcomponent) nextQue.getQuestionTypeView();
+
+        if (view == null) {
+            return;
+        }
+
+        Context context = view.getContext();
+        if (!(context instanceof Activity)) {
+            return;
+        }
+        Activity activity = (Activity) context;
+        activity.runOnUiThread(view::showLoader);
+
+        if (sewaService != null && sewaService.isOnline()) {
+            new Thread(() -> {
+                try {
+                    List<InsightBean> insights = SharedStructureData.sewaServiceRestClient.getAIMedicalInsight(memberId, memberFormData);
+
+                    activity.runOnUiThread(() -> {
+                        AiTextcomponent currentView = (AiTextcomponent) nextQue.getQuestionTypeView();
+                        if (currentView == null) {
+                            return;
+                        }
+
+                        if (insights == null || insights.isEmpty()) {
+                            currentView.showError("No insights available");
+                        } else {
+                            currentView.setInsights(insights);
+                            nextQue.setAnswer("AI insights generated");
+                        }
+                    });
+
+                } catch (Exception e) {
+                    activity.runOnUiThread(() -> {
+                        AiTextcomponent currentView = (AiTextcomponent) nextQue.getQuestionTypeView();
+                        if (currentView != null) {
+                            currentView.showError("Error generating insights");
+                        }
+                    });
+                }
+            }).start();
+        } else {
+            LlmService llm = LlmService.getInstance();
+            if (!llm.isModelLoaded()) {
+                activity.runOnUiThread(() -> {
+                    AiTextcomponent currentView = (AiTextcomponent) nextQue.getQuestionTypeView();
+                    if (currentView != null) {
+                        currentView.showError("Device is offline and Local AI model is not loaded.");
+                    }
+                });
+                return;
+            }
+
+            String offlinePrompt = PromptUtil.getPrompt("ACTIVE_MALARIA", memberFormData);
+
+            llm.generateResponse(Collections.emptyList(), offlinePrompt, new LlmService.GenerationListener() {
+                @Override
+                public void onToken(String token, String fullText) {
+                    activity.runOnUiThread(() -> {
+                        AiTextcomponent currentView = (AiTextcomponent) nextQue.getQuestionTypeView();
+                        if (currentView != null) {
+                            currentView.streamOfflineInsight(fullText);
+                        }
+                    });
+                }
+
+                @Override
+                public void onComplete(String fullText) {
+                    activity.runOnUiThread(() -> {
+                        nextQue.setAnswer("AI insights generated");
+                    });
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    activity.runOnUiThread(() -> {
+                        AiTextcomponent currentView = (AiTextcomponent) nextQue.getQuestionTypeView();
+                        if (currentView != null) {
+                            currentView.showError("Local AI Error: " + e.getMessage());
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public static void generateAiAudioTranscriptionAsync(QueFormBean queFormBean) {
+        String memberId = SharedStructureData.relatedPropertyHashTable.get(RelatedPropertyNameConstants.MEMBER_ACTUAL_ID);
+
+        AiAudioComponent view = (AiAudioComponent) queFormBean.getQuestionTypeView();
+
+        if (view == null) {
+            return;
+        }
+
+        Context context = view.getContext();
+        if (!(context instanceof Activity)) {
+            return;
+        }
+        Activity activity = (Activity) context;
+        activity.runOnUiThread(view::showLoader);
+
+        if (sewaService != null && sewaService.isOnline()) {
+            new Thread(() -> {
+                try {
+                    String audioFilePath = queFormBean.getAnswer().toString();
+                    String transcript = SharedStructureData.sewaServiceRestClient.getAIAudioTranscription(memberId, audioFilePath);
+
+                    activity.runOnUiThread(() -> {
+                        AiAudioComponent currentView = (AiAudioComponent) queFormBean.getQuestionTypeView();
+                        if (currentView == null) {
+                            return;
+                        }
+
+                        if (transcript == null || transcript.isEmpty()) {
+                            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.TRANSCRIPTION, String.valueOf(transcript));
+
+                            currentView.showError("No transcription available");
+                        } else {
+                            currentView.setTranscript(transcript);
+                            queFormBean.setAnswer(transcript);
+                        }
+                    });
+
+                } catch (Exception e) {
+                    activity.runOnUiThread(() -> {
+                        AiAudioComponent currentView = (AiAudioComponent) queFormBean.getQuestionTypeView();
+                        if (currentView != null) {
+                            currentView.showError("Error generating transcription");
+                        }
+                    });
+                }
+            }).start();
+        } else {
+            activity.runOnUiThread(() -> view.showError("Device is offline. Cannot get transcription."));
+        }
+    }
 
 }
+

@@ -184,7 +184,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationBuilder.setLargeIcon(image);
             notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
                     .bigPicture(image)
-                    .bigLargeIcon(null));
+                    .bigLargeIcon((Bitmap) null));
         }
         notificationManager.notify(atomicInteger.incrementAndGet(), notificationBuilder.build());
     }

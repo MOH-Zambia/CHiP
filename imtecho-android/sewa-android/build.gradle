@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 final BUILD_DATE = new Date().format('ddMMM')
 
 android {
-    compileSdk 34
+    compileSdk 36
     flavorDimensions "default"
     namespace 'com.argusoft.sewa.android.app'
     buildFeatures {
@@ -27,8 +27,8 @@ android {
         checkReleaseBuilds false
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -36,8 +36,8 @@ android {
         debug {
             shrinkResources false
             minifyEnabled false
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.1.13:8181/\""
-            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.168.1.13:8181/\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.1.170.64:8181/\""
+            buildConfigField "String", 'BASE_URL_TRAINING',"\"http://192.1.170.64:8181/\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -66,7 +66,7 @@ android {
     productFlavors {
         chip {
             applicationId "com.argusoft.chip.android.app"
-            minSdkVersion 21
+            minSdkVersion 27
             targetSdkVersion 32
             versionCode 131
             versionName "1.0.31"
@@ -81,8 +81,21 @@ android {
             ]
         }
     }
-    packagingOptions {
-        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+
+    packaging {
+        jniLibs.useLegacyPackaging = false
+        resources.pickFirsts += ["**/*.so"]
+    }
+    ndkVersion = "27.2.12479018"
+
+    aaptOptions {
+        noCompress '.gguf'
+    }
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+//            targets.set(listOf("medllm", "medwhisper"))
+        }
     }
 }
 
@@ -125,7 +138,7 @@ dependencies {
     //provided
     implementation 'com.github.vihtarb:tooltip:0.1.9'
     //Library For Reading PDF Files
-    //implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
+    implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
     implementation 'com.github.smart-fun:XmlToJson:1.5.1'
@@ -154,4 +167,6 @@ dependencies {
 
     implementation 'com.google.mlkit:text-recognition:16.0.0'
     implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1'
+    implementation(files("../libs/ai_gguf-release.aar"))
+    implementation(project(":core-llm"))
 }

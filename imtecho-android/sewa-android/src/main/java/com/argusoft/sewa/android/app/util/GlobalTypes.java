@@ -89,6 +89,8 @@ public class GlobalTypes {
     public static final String TEMPERATURE_BOX = "TEMB";
     public static final String LABEL = "L";
     public static final String LABEL_FORMULA = "LF";
+    public static final String AI_LABEL_FORMULA = "AILF";
+    public static final String AI_AUDIO_COMPONENT = "AUC";
     public static final String MULTI_SELECT = "MS";
     public static final String SEARCHABLE_MULTI_SELECT = "SRMS";
     public static final String CHARDHAM_CHIP_GROUP = "CCG";

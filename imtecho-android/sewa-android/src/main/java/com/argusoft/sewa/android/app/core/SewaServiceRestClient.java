@@ -10,6 +10,7 @@ import com.argusoft.sewa.android.app.databean.RecordStatusBean;
 import com.argusoft.sewa.android.app.databean.StockManagementDataBean;
 import com.argusoft.sewa.android.app.databean.UserInfoDataBean;
 import com.argusoft.sewa.android.app.model.FormAccessibilityBean;
+import com.argusoft.sewa.android.app.model.InsightBean;
 import com.argusoft.sewa.android.app.model.LmsEventBean;
 import com.argusoft.sewa.android.app.model.MergedFamiliesBean;
 import com.argusoft.sewa.android.app.model.UncaughtExceptionBean;
@@ -101,4 +102,9 @@ public interface SewaServiceRestClient {
     List<StockManagementDataBean> getStockManagementDataBeans(Long requestedBy, Boolean isApproved) throws RestHttpException;
 
     void markStockStatusAsDelivered(Integer stockReqId, Integer medicineId, Long userId) throws RestHttpException;
+
+//    List<InsightBean> getPatientInsights(String memberId, String formType) throws RestHttpException;
+
+    List<InsightBean> getAIMedicalInsight(String memberId, String formData) throws RestHttpException;
+    String getAIAudioTranscription(String memberId, String audioFilePath) throws RestHttpException;
 }

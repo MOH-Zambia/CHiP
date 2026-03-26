@@ -2,6 +2,7 @@ package com.argusoft.sewa.android.app.util;
 
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static com.argusoft.sewa.android.app.datastructure.SharedStructureData.context;
+import static com.argusoft.sewa.android.app.util.DynamicUtils.TAG;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -2660,6 +2661,38 @@ public class UtilBean {
             }
         }
         return LabelConstants.NOT_AVAILABLE;
+    }
+
+    public static String fetchImportantQuestions(QueFormBean queFormBean) {
+        String dataMap = queFormBean.getDatamap();
+        List<String> fieldIds = Arrays.asList(dataMap.split(","));
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String entry : fieldIds) {
+            try {
+                String qId = entry.split("-")[1];
+                Integer queId = Integer.parseInt(qId);
+
+                QueFormBean queFormBean1 = SharedStructureData.mapIndexQuestion.get(queId);
+
+                if (queFormBean1 != null) {
+                    String question = queFormBean1.getQuestion();
+                    String answer = queFormBean1.getAnswer() != null
+                            ? queFormBean1.getAnswer().toString()
+                            : "N/A";
+
+                    sb.append(question)
+                            .append(": ")
+                            .append(answer)
+                            .append("\n");
+                }
+            } catch (Exception e) {
+                Log.e("UtilBean", null, e);
+            }
+        }
+
+        return sb.toString();
     }
 
 }

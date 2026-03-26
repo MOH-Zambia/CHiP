@@ -4,6 +4,9 @@
     package="com.argusoft.sewa.android.app"
     tools:ignore="LockedOrientationActivity">
 
+    <!-- Override minSdk check for ai_gguf (requires 27) and core-llm (requires 31) -->
+    <uses-sdk tools:overrideLibrary="com.mp.ai_gguf,com.medlocal.core.llm" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature
         android:name="android.hardware.location.network"
@@ -31,7 +34,7 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+<!--    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />-->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -268,6 +271,9 @@
         <activity
             android:name=".activity.MyPeopleCBVActivity_"
             android:screenOrientation="portrait" />
+<!--        <activity-->
+<!--            android:name=".activity.PatientInsightsActivity_"-->
+<!--            android:screenOrientation="portrait" />-->
         <activity
             android:name=".activity.NotificationCBVActivity_"
             android:screenOrientation="portrait" />
@@ -282,6 +288,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".OCR.OCRActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LlmChatActivity"
             android:screenOrientation="portrait" />
     </application>
 

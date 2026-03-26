@@ -19,6 +19,7 @@ import com.argusoft.sewa.android.app.databean.StockManagementDataBean;
 import com.argusoft.sewa.android.app.databean.UserInfoDataBean;
 import com.argusoft.sewa.android.app.db.DBConnection;
 import com.argusoft.sewa.android.app.model.FormAccessibilityBean;
+import com.argusoft.sewa.android.app.model.InsightBean;
 import com.argusoft.sewa.android.app.model.LmsEventBean;
 import com.argusoft.sewa.android.app.model.MergedFamiliesBean;
 import com.argusoft.sewa.android.app.model.UncaughtExceptionBean;
@@ -415,4 +416,57 @@ public class SewaServiceRestClientImpl implements SewaServiceRestClient {
         mobileRequestParamDto.setLanguageCode(preferredLanguage);
         apiManager.execute(apiManager.getInstance().updateLanguagePreference(mobileRequestParamDto));
     }
+
+//    @Override
+//    public List<InsightBean> getPatientInsights(String memberId, String formType) throws RestHttpException {
+//        MobileRequestParamDto mobileRequestParamDto = new MobileRequestParamDto();
+//        mobileRequestParamDto.setToken(SewaTransformer.loginBean.getUserToken());
+//        mobileRequestParamDto.setMemberId(memberId);
+//        mobileRequestParamDto.setFormCode(formType);
+//        return apiManager.execute(apiManager.getInstance().getPatientInsights(mobileRequestParamDto));
+//    }
+
+    @Override
+    public List<InsightBean> getAIMedicalInsight(String memberId, String formData) throws RestHttpException {
+        MobileRequestParamDto mobileRequestParamDto = new MobileRequestParamDto();
+        mobileRequestParamDto.setToken(SewaTransformer.loginBean.getUserToken());
+        mobileRequestParamDto.setMemberId(memberId);
+        mobileRequestParamDto.setAnswerString(formData);
+        return apiManager.execute(apiManager.getInstance().getAIMedicalInsight(mobileRequestParamDto));
+    }
+
+    @Override
+    public String getAIAudioTranscription(String memberId, String audioFilePath) throws RestHttpException {
+        File file = new File(audioFilePath);
+        RequestBody requestFile;
+        MultipartBody.Part filePart;
+
+        if (file.exists()) {
+            requestFile = RequestBody.create(MediaType.parse("audio/*"), file);
+            filePart = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        } else {
+            requestFile = RequestBody.create(MediaType.parse("text/plain"), audioFilePath != null ? audioFilePath : "");
+            filePart = MultipartBody.Part.createFormData("file", "dummy.txt", requestFile);
+        }
+
+        RequestBody memberIdBody = RequestBody.create(MultipartBody.FORM, memberId != null ? memberId : "");
+        RequestBody tokenBody = RequestBody.create(MultipartBody.FORM, SewaTransformer.loginBean.getUserToken());
+
+        try {
+            retrofit2.Response<okhttp3.ResponseBody> response = apiManager.getInstance()
+                    .getAIAudioTranscription(filePart, memberIdBody, tokenBody)
+                    .execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body().string();
+            } else if (response.errorBody() != null) {
+                return "Error: " + response.errorBody().string();
+            } else {
+                return "Transcription failed.";
+            }
+        } catch (IOException e) {
+            throw new RestHttpException(e);
+        }
+    }
 }
+

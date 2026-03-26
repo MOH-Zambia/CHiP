@@ -174,5 +174,6 @@ public class FieldNameConstants {
     public static final String SICKLE_CELL_DISEASE = "SICKLE_CELL_DISEASE";
     public static final String CHILDREN_6_TO_24 = "CHILD_BETWEEN_6_TO_24";
     public static final String RESIDENCE_STATUS = "residenceStatus";
+    public static final String AI_CLINICAL_SUMMARY = "aiClinicalSummary";
 
 }
