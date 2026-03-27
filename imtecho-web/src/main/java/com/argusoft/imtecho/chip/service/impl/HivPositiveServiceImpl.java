@@ -3,6 +3,7 @@ package com.argusoft.imtecho.chip.service.impl;
 import com.argusoft.imtecho.chip.dao.EMTCTDao;
 import com.argusoft.imtecho.chip.model.EMTCTEntity;
 import com.argusoft.imtecho.chip.service.HivPositiveService;
+import com.argusoft.imtecho.chip.service.StoreReferralDetailsService;
 import com.argusoft.imtecho.common.model.UserMaster;
 import com.argusoft.imtecho.common.util.DateDeserializer;
 import com.argusoft.imtecho.common.util.ImtechoUtil;
@@ -14,6 +15,9 @@ import com.argusoft.imtecho.fhs.dao.MemberDao;
 import com.argusoft.imtecho.fhs.dto.MemberAdditionalInfo;
 import com.argusoft.imtecho.fhs.model.FamilyEntity;
 import com.argusoft.imtecho.fhs.model.MemberEntity;
+import com.argusoft.imtecho.listvalues.service.ListValueFieldValueDetailService;
+import com.argusoft.imtecho.location.dao.HealthInfrastructureDetailsDao;
+import com.argusoft.imtecho.location.model.HealthInfrastructureDetails;
 import com.argusoft.imtecho.mobile.constants.MobileConstantUtil;
 import com.argusoft.imtecho.mobile.dto.ParsedRecordBean;
 import com.argusoft.imtecho.notification.dao.NotificationTypeMasterDao;
@@ -60,6 +64,12 @@ public class HivPositiveServiceImpl implements HivPositiveService {
     private TechoNotificationMasterDao techoNotificationMasterDao;
     @Autowired
     private EventHandler eventHandler;
+    @Autowired
+    private HealthInfrastructureDetailsDao healthInfrastructureDetailsDao;
+    @Autowired
+    private StoreReferralDetailsService storeReferralDetailsService;
+    @Autowired
+    private ListValueFieldValueDetailService listValueFieldValueDetailService;
 
     @Override
     public Integer storeHivPositiveForm(ParsedRecordBean parsedRecordBean, Map<String, String> keyAndAnswerMap, UserMaster user) {
@@ -127,6 +137,32 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         }
 
         hivPositiveDao.create(hivPositiveEntity);
+
+        if (hivPositiveEntity.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(Integer.valueOf(hivPositiveEntity.getReferralPlace()));
+
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(hivPositiveEntity.getReferralFor())) {
+                refReason = hivPositiveEntity.getReferralReason() != null && !hivPositiveEntity.getReferralReason().isEmpty() ? hivPositiveEntity.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(hivPositiveEntity.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    Integer.valueOf(hivPositiveEntity.getReferralPlace()),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "HIV_POSITIVE",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "Notes",
+                    hivPositiveEntity.getLocationId(),
+                    hivPositiveEntity.getServiceDate(),
+                    Boolean.TRUE,
+                    hivPositiveEntity.getId()
+            );
+        }
+
         memberDao.update(memberEntity);
 
         hivPositiveDao.flush();
@@ -258,6 +294,25 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         }
 
         hivScreeningDao.create(hivScreeningEntity);
+
+        if (hivScreeningEntity.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(hivScreeningEntity.getReferralPlace());
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    hivScreeningEntity.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    "Further management",
+                    "HIV_SCREENING",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "Notes",
+                    hivScreeningEntity.getLocationId(),
+                    hivScreeningEntity.getServiceDate(),
+                    Boolean.TRUE,
+                    hivScreeningEntity.getId()
+            );
+        }
+
         hivScreeningDao.flush();
 
         if (!hivScreeningEntity.isHivTestResult()) {
@@ -400,6 +455,25 @@ public class HivPositiveServiceImpl implements HivPositiveService {
             techoNotificationMasterDao.update(techoNotificationMaster);
         }
         hivScreeningDao.create(hivScreeningEntity);
+
+        if (hivScreeningEntity.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(hivScreeningEntity.getReferralPlace());
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    hivScreeningEntity.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    "Further management",
+                    "HIV_SCREENING_FOLLOW_UP",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "Notes",
+                    hivScreeningEntity.getLocationId(),
+                    hivScreeningEntity.getServiceDate(),
+                    Boolean.TRUE,
+                    hivScreeningEntity.getId()
+            );
+        }
+
         hivScreeningDao.flush();
         updateMemberInfoFromHivDetails(hivScreeningEntity, memberEntity, keyAndAnswerMap);
         memberDao.update(memberEntity);
@@ -469,7 +543,35 @@ public class HivPositiveServiceImpl implements HivPositiveService {
                 hivKnownPositive.setReferralPlace(Integer.valueOf(keyAndAnswerMap.get("-20")));
             }
         }
+
         hivKnownDao.create(hivKnownPositive);
+
+        if (hivKnownPositive.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(hivKnownPositive.getReferralPlace());
+
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(hivKnownPositive.getReferralFor())) {
+                refReason = hivKnownPositive.getReferralReason() != null && !hivKnownPositive.getReferralReason().isEmpty() ? hivKnownPositive.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(hivKnownPositive.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    hivKnownPositive.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "HIV_KNOWN_POSITIVE",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "Notes",
+                    hivKnownPositive.getLocationId(),
+                    hivKnownPositive.getServiceDate(),
+                    Boolean.TRUE,
+                    hivKnownPositive.getId()
+            );
+        }
+
+
         memberDao.update(memberEntity);
 
         hivKnownDao.flush();
@@ -616,6 +718,32 @@ public class HivPositiveServiceImpl implements HivPositiveService {
         }
 
         emtctDao.create(emtctEntity);
+
+        if (emtctEntity.getReferralPlace() != null) {
+            HealthInfrastructureDetails healthInfrastructureDetails = healthInfrastructureDetailsDao.retrieveById(emtctEntity.getReferralPlace());
+
+            String refReason;
+            if ("OTHER".equalsIgnoreCase(emtctEntity.getReferralFor())) {
+                refReason = emtctEntity.getReferralReason() != null && !emtctEntity.getReferralReason().isEmpty() ? emtctEntity.getReferralReason() : null;
+            } else {
+                refReason = listValueFieldValueDetailService.retrieveValueFromId(Integer.valueOf(emtctEntity.getReferralFor()));
+            }
+            storeReferralDetailsService.storeDataToStoreReferralDetails(
+                    memberEntity.getId(),
+                    emtctEntity.getReferralPlace(),
+                    healthInfrastructureDetails.getName(),
+                    refReason,
+                    "EMTCT",
+                    memberEntity.getNupn() != null ? memberEntity.getNupn() : null,
+                    user.getId(),
+                    "Notes",
+                    emtctEntity.getLocationId(),
+                    emtctEntity.getServiceDate(),
+                    Boolean.TRUE,
+                    emtctEntity.getId()
+            );
+        }
+
         memberDao.update(memberEntity);
 
         emtctDao.flush();

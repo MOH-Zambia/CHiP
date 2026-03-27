@@ -173,6 +173,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             return new LinkedHashSet<>();
         }
     }
+
     @Override
     public Set<String> getDueImmunisationsForChildDnhdd(Date dateOfBirth, String givenImmunisations, Date currentDate, Map<String, Date> immunisationDateMap, boolean isRemovePreviousDoses) {
         Set<String> vaccinationSet = new LinkedHashSet<>();
@@ -395,7 +396,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             vaccinationSet.add(RchConstants.Z_MEASLES_RUBELLA_2);
             //if (!immunisationDateMap.isEmpty()
             //        && (!immunisationDateMap.containsKey(RchConstants.Z_OPV_0))) {
-                vaccinationSet.add(RchConstants.Z_OPV_4);
+            vaccinationSet.add(RchConstants.Z_OPV_4);
             //}
         }
 
@@ -1368,7 +1369,6 @@ public class ImmunisationServiceImpl implements ImmunisationService {
     }
 
 
-
     @Override
     public boolean isImmunisationMissed(Date dateOfBirth, String immunisation) {
         Calendar instance = Calendar.getInstance();
@@ -1522,122 +1522,165 @@ public class ImmunisationServiceImpl implements ImmunisationService {
 
 
     @Override
-    public String vaccinationValidationForChildZambia(Date dob, Date givenDate, String currentVaccine, Map<String, Date> vaccineGivenDateMap, QueFormBean queFormBean) {
+    public String vaccinationValidationForChildZambia(Date dob, Date givenDate, String currentVaccine,
+                                                      Map<String, Date> vaccineGivenDateMap, QueFormBean queFormBean) {
         if (currentVaccine == null) {
             return null;
         }
         if (givenDate == null) {
             return LabelConstants.PLEASE_SELECT_A_DATE;
         }
+
         dob = UtilBean.clearTimeFromDate(dob);
         givenDate = UtilBean.clearTimeFromDate(givenDate);
+
+        // First check - no vaccine can be given before birth
+        if (givenDate.before(dob)) {
+            return "Vaccine cannot be given before date of birth";
+        }
 
         Calendar from = Calendar.getInstance();
         from.setTime(dob);
         Calendar to = Calendar.getInstance();
         to.setTime(dob);
         Date tmpDate;
+
+        // Define buffer days (2 weeks)
+        final int BUFFER_DAYS = 14;
+
         switch (currentVaccine) {
             case RchConstants.Z_OPV_0:
+                // OPV 0: Within 20 days (strict window)
                 to.add(Calendar.DATE, 20);
-                if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
+                if (givenDate.after(to.getTime())) {
                     return "OPV 0 vaccine should be given within 20 days from date of birth";
                 }
                 break;
 
             case RchConstants.Z_BCG:
+                // BCG: 1 year ±2 weeks
                 to.add(Calendar.YEAR, 1);
-                to.add(Calendar.DATE, 7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return "BCG vaccine should be given within 1 year from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_50000:
-                to.add(Calendar.MONTH, 5);
-                to.add(Calendar.DATE, 7);
+                // Vitamin A 50,000: 5 months ±2 weeks
+                to.add(Calendar.MONTH, 6);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 50,000 IU vaccine should be given within 5 months from date of birth";
+                    return "Vitamin A, 50,000 IU vaccine should be given within 6 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_100000:
+                // Vitamin A 100,000: 6-11 months ±2 weeks
                 from.add(Calendar.MONTH, 6);
-                to.add(Calendar.MONTH, 11);
-                to.add(Calendar.DATE, 7);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
+                to.add(Calendar.MONTH, 12);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 100,000 IU vaccine should be given between 6 to 11 months from date of birth";
+                    return "Vitamin A, 100,000 IU vaccine should be given between 6 to 12 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_1:
+                // Vitamin A 200,000 (1st dose): 12-18 months ±2 weeks
                 from.add(Calendar.MONTH, 12);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
                 to.add(Calendar.MONTH, 18);
-                to.add(Calendar.DATE, 7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 200,000 IU first dose vaccine should be given between 12 to 18 months from date of birth";
+                    return "Vitamin A, 200,000 IU first dose should be given between 12 to 18 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_2:
+                // Vitamin A 200,000 (2nd dose): 18-24 months ±2 weeks
                 from.add(Calendar.MONTH, 18);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
                 to.add(Calendar.MONTH, 24);
-                to.add(Calendar.DATE, 7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 200,000 IU second dose vaccine should be given between 18 to 24 months from date of birth";
+                    return "Vitamin A, 200,000 IU second dose should be given between 18 to 24 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_3:
+                // Vitamin A 200,000 (3rd dose): 24-30 months ±2 weeks
                 from.add(Calendar.MONTH, 24);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
                 to.add(Calendar.MONTH, 30);
-                to.add(Calendar.DATE, 7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 200,000 IU third dose vaccine should be given between 24 to 30 months from date of birth";
+                    return "Vitamin A, 200,000 IU third dose should be given between 24 to 30 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_4:
+                // Vitamin A 200,000 (4th dose): 30-36 months ±2 weeks
                 from.add(Calendar.MONTH, 30);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
                 to.add(Calendar.MONTH, 36);
-                to.add(Calendar.DATE, 7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 200,000 IU fourth dose vaccine should be given between 30 to 36 months from date of birth";
+                    return "Vitamin A, 200,000 IU fourth dose should be given between 30 to 36 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_5:
+                // Vitamin A 200,000 (5th dose): 36-42 months ±2 weeks
                 from.add(Calendar.MONTH, 36);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
                 to.add(Calendar.MONTH, 42);
-                to.add(Calendar.DATE, 7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 200,000 IU fifth dose vaccine should be given between 36 to 42 months from date of birth";
+                    return "Vitamin A, 200,000 IU fifth dose should be given between 36 to 42 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_6:
+                // Vitamin A 200,000 (6th dose): 42-48 months ±2 weeks
                 from.add(Calendar.MONTH, 42);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
                 to.add(Calendar.MONTH, 48);
-                to.add(Calendar.DATE, 7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 200,000 IU sixth dose vaccine should be given between 42 to 48 months from date of birth";
+                    return "Vitamin A, 200,000 IU sixth dose should be given between 42 to 48 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_7:
+                // Vitamin A 200,000 (7th dose): 48-54 months ±2 weeks
                 from.add(Calendar.MONTH, 48);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
                 to.add(Calendar.MONTH, 54);
-                to.add(Calendar.DATE, 7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 200,000 IU seventh dose vaccine should be given between 48 to 54 months from date of birth";
+                    return "Vitamin A, 200,000 IU seventh dose should be given between 48 to 54 months from date of birth";
                 }
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_8:
+                // Vitamin A 200,000 (8th dose): 54-59 months ±2 weeks
                 from.add(Calendar.MONTH, 54);
-                to.add(Calendar.MONTH, 59);
-                to.add(Calendar.DATE, 7);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
+                to.add(Calendar.MONTH, 60);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Vitamin A, 200,000 IU eighth dose vaccine should be given between 54 to 59 months from date of birth";
+                    return "Vitamin A, 200,000 IU eighth dose should be given between 54 to 60 months from date of birth";
                 }
                 break;
 
             case RchConstants.Z_OPV_1:
-                from.add(Calendar.DATE, 28);
-                to.add(Calendar.MONTH, 58);
-                to.add(Calendar.DATE, 7);
+                // OPV 1: After 4 weeks ±2 weeks
+                from.add(Calendar.DATE, 28 - BUFFER_DAYS);
+                to.add(Calendar.MONTH, 60);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "OPV 1 vaccine should be given after 5 weeks from date of birth";
+                    return "OPV 1 vaccine should be given 4 weeks from date of birth";
                 }
                 break;
 
@@ -1651,13 +1694,15 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "OPV 2 vaccine date cannot be before OPV 1 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
-                    return "OPV 2 vaccine should be given 14 days after OPV 1 vaccine";
+                // Minimum 14 days between OPV1 and OPV2 remains
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 14) {
+                    return "OPV 2 vaccine should be given at least 14 days after OPV 1 vaccine";
                 }
 
-                from.add(Calendar.DATE, 56);
-                to.add(Calendar.MONTH, 59);
-                from.add(Calendar.DATE, 7);
+                // Window: 8 weeks ±2 weeks from birth
+                from.add(Calendar.DATE, 63 - BUFFER_DAYS);
+                to.add(Calendar.MONTH, 60);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
@@ -1673,12 +1718,15 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "OPV 3 vaccine date cannot be before OPV 2 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
-                    return "OPV 3 vaccine should be given 14 days after OPV 2 vaccine";
+                // Minimum 14 days between OPV2 and OPV3 remains
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 14) {
+                    return "OPV 3 vaccine should be given at least 14 days after OPV 2 vaccine";
                 }
 
-                from.add(Calendar.DATE, 84);
+                // Window: 12 weeks ±2 weeks from birth
+                from.add(Calendar.DATE, 84 - BUFFER_DAYS);
                 to.add(Calendar.MONTH, 60);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
@@ -1687,10 +1735,13 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_OPV_4:
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_0);
                 if (tmpDate == null) {
+                    // OPV 4: 9 months ±2 weeks
                     from.add(Calendar.MONTH, 9);
-                    to.add(Calendar.MONTH, 59);
+                    from.add(Calendar.DATE, -BUFFER_DAYS);
+                    to.add(Calendar.MONTH, 10);
+                    to.add(Calendar.DATE, BUFFER_DAYS);
                     if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                        return "OPV 4 should be given 9 months after date of birth";
+                        return "OPV 4 should be given at 9 months, Only if OPV 0 was not given";
                     }
                 } else {
                     return "OPV 0 is already given";
@@ -1700,11 +1751,12 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_ROTA_VACCINE_1:
             case RchConstants.Z_PCV_1:
             case RchConstants.Z_DPT_HEB_HIB_1:
-                from.add(Calendar.DATE, 28);
+                // All initial doses: 4 weeks ±2 weeks
+                from.add(Calendar.DATE, 28 - BUFFER_DAYS);
                 to.add(Calendar.MONTH, 12);
-                to.add(Calendar.DATE,7);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return FullFormConstants.getFullFormOfVaccines(currentVaccine) + " should be given 4 weeks after date of birth";
+                    return FullFormConstants.getFullFormOfVaccines(currentVaccine) + " should be given 4 weeks from date of birth";
                 }
                 break;
 
@@ -1718,13 +1770,15 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "ROTA vaccine 2 date cannot be before ROTA vaccine 1 date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
-                    return "ROTA vaccine 2 should be given 14 days after ROTA vaccine 1";
+                // Minimum 14 days between ROTA1 and ROTA2 remains
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 14) {
+                    return "ROTA vaccine 2 should be given at least 14 days after ROTA vaccine 1";
                 }
 
-                from.add(Calendar.DATE, 56);
-                to.add(Calendar.MONTH, 23);
-                to.add(Calendar.DATE, 7);
+                // Window: 8 weeks ±2 weeks from birth
+                from.add(Calendar.DATE, 63 - BUFFER_DAYS);
+                to.add(Calendar.MONTH, 24);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
@@ -1740,12 +1794,15 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "PCV 2 vaccine date cannot be before PCV 1 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
-                    return "PCV 2 vaccine should be given 14 days after PCV 1";
+                // Minimum 14 days between PCV1 and PCV2 remains
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 14) {
+                    return "PCV 2 vaccine should be given at least 14 days after PCV 1";
                 }
 
-                from.add(Calendar.DATE, 63);
+                // Window: 8 weeks ±2 weeks from birth
+                from.add(Calendar.DATE, 63 - BUFFER_DAYS);
                 to.add(Calendar.MONTH, 12);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
@@ -1761,12 +1818,15 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "DPT-HepB-Hib 2 vaccine date cannot be before DPT-HepB-Hib 1 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
-                    return "DPT-HepB-Hib 2 vaccine should be given 14 days after DPT-HepB-Hib 1";
+                // Minimum 14 days between DPT1 and DPT2 remains
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 14) {
+                    return "DPT-HepB-Hib 2 vaccine should be given at least 14 days after DPT-HepB-Hib 1";
                 }
 
-                from.add(Calendar.DATE, 63);
+                // Window: 8 weeks ±2 weeks from birth
+                from.add(Calendar.DATE, 63 - BUFFER_DAYS);
                 to.add(Calendar.MONTH, 12);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
@@ -1782,12 +1842,15 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "PCV 3 vaccine date cannot be before PCV 2 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
-                    return "PCV 3 vaccine should be given 14 days after PCV 2";
+                // Minimum 14 days between PCV2 and PCV3 remains
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 14) {
+                    return "PCV 3 vaccine should be given at least 14 days after PCV 2";
                 }
 
-                from.add(Calendar.DATE, 91);
+                // Window: 12 weeks ±2 weeks from birth
+                from.add(Calendar.DATE, 84 - BUFFER_DAYS);
                 to.add(Calendar.MONTH, 12);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
@@ -1803,41 +1866,52 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                     return "DPT-HepB-Hib 3 vaccine date cannot be before DPT-HepB-Hib 2 vaccine date";
                 }
 
-                if (UtilBean.getNumberOfDays(tmpDate, givenDate) <= 14) {
-                    return "DPT-HepB-Hib 3 vaccine should be given 14 days after DPT-HepB-Hib 2";
+                // Minimum 14 days between DPT2 and DPT3 remains
+                if (UtilBean.getNumberOfDays(tmpDate, givenDate) < 14) {
+                    return "DPT-HepB-Hib 3 vaccine should be given at least 14 days after DPT-HepB-Hib 2";
                 }
 
-                from.add(Calendar.DATE, 91);
+                // Window: 12 weeks ±2 weeks from birth
+                from.add(Calendar.DATE, 84 - BUFFER_DAYS);
                 to.add(Calendar.MONTH, 12);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
                     return LabelConstants.VACCINATION_DATE_IS_NOT_VALID;
                 }
                 break;
 
             case RchConstants.Z_MEASLES_RUBELLA_1:
+                // Measles Rubella 1: 8 months ±2 weeks
                 from.add(Calendar.MONTH, 8);
-                to.add(Calendar.MONTH, 59);
-                if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Measles Rubella 1 should be given after 8 months from date of birth";
-                }
-                break;
-            case RchConstants.Z_MEASLES_RUBELLA_2:
-                from.add(Calendar.MONTH, 16);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
                 to.add(Calendar.MONTH, 60);
+                to.add(Calendar.DATE, BUFFER_DAYS);
                 if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
-                    return "Measles Rubella 2 should be given after 16 months from date of birth";
+                    return "Measles Rubella 1 should be given 8 months from date of birth";
                 }
                 break;
+
+            case RchConstants.Z_MEASLES_RUBELLA_2:
+                // Measles Rubella 2: 16 months ±2 weeks
+                from.add(Calendar.MONTH, 16);
+                from.add(Calendar.DATE, -BUFFER_DAYS);
+                to.add(Calendar.MONTH, 60);
+                to.add(Calendar.DATE, BUFFER_DAYS);
+                if (givenDate.after(to.getTime()) || givenDate.before(from.getTime())) {
+                    return "Measles Rubella 2 should be given 16 months from date of birth";
+                }
+                break;
+
             default:
         }
         return null;
     }
 
 
-
     @Override
     public Map<Boolean, String> isImmunisationMissedOrNotValidZambia(Date dateOfBirth, String immunisation,
-                                                                     Date currentDate, Map<String, Date> vaccineGivenDateMap, boolean isForNextDueDate) {
+                                                                     Date currentDate, Map<String, Date> vaccineGivenDateMap,
+                                                                     boolean isForNextDueDate) {
         Map<Boolean, String> vaccineMissedMap = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         boolean isMissed;
@@ -1852,112 +1926,144 @@ public class ImmunisationServiceImpl implements ImmunisationService {
         Date ubw = UtilBean.clearTimeFromDate(new Date());
         Date tmpDate;
 
+        // Define buffer days (2 weeks)
+        final int BUFFER_DAYS = 14;
+
         if (vaccineGivenDateMap == null) {
             vaccineGivenDateMap = new HashMap<>();
         }
 
         switch (immunisation) {
             case RchConstants.Z_BCG:
+                // BCG: 1 year ±2 weeks
                 lbw = dob.getTime();
                 dob.add(Calendar.YEAR, 1);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.DATE, BUFFER_DAYS); // Add buffer to upper bound
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
 
             case RchConstants.Z_OPV_0:
+                // OPV 0: Strict 20 days (no buffer)
                 lbw = dob.getTime();
                 dob.add(Calendar.DATE, 20);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
+
             case RchConstants.Z_VITTAMIN_A_50000:
+                // Vitamin A 50,000: 5 months ±2 weeks
                 lbw = dob.getTime();
-                dob.add(Calendar.MONTH, 5);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.MONTH, 6);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
 
             case RchConstants.Z_VITTAMIN_A_100000:
+                // Vitamin A 100,000: 6-11 months ±2 weeks
                 dob.add(Calendar.MONTH, 6);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 11);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.MONTH, 12);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
 
             case RchConstants.Z_VITTAMIN_A_200000_1:
+                // Vitamin A 200,000 (1st dose): 12-18 months ±2 weeks
                 dob.add(Calendar.MONTH, 12);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 18);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_2:
+                // Vitamin A 200,000 (2nd dose): 18-24 months ±2 weeks
                 dob.add(Calendar.MONTH, 18);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 24);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_3:
+                // Vitamin A 200,000 (3rd dose): 24-30 months ±2 weeks
                 dob.add(Calendar.MONTH, 24);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 30);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_4:
+                // Vitamin A 200,000 (4th dose): 30-36 months ±2 weeks
                 dob.add(Calendar.MONTH, 30);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 36);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_5:
+                // Vitamin A 200,000 (5th dose): 36-42 months ±2 weeks
                 dob.add(Calendar.MONTH, 36);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 42);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_6:
+                // Vitamin A 200,000 (6th dose): 42-48 months ±2 weeks
                 dob.add(Calendar.MONTH, 42);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 48);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_7:
+                // Vitamin A 200,000 (7th dose): 48-54 months ±2 weeks
                 dob.add(Calendar.MONTH, 48);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 dob.add(Calendar.MONTH, 54);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
+
             case RchConstants.Z_VITTAMIN_A_200000_8:
+                // Vitamin A 200,000 (8th dose): 54-59 months ±2 weeks
                 dob.add(Calendar.MONTH, 54);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
-                dob.add(Calendar.MONTH, 59);
-                dob.add(Calendar.DATE, 7);
+                dob.add(Calendar.MONTH, 60);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
                 ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
@@ -1966,13 +2072,14 @@ public class ImmunisationServiceImpl implements ImmunisationService {
             case RchConstants.Z_ROTA_VACCINE_1:
             case RchConstants.Z_PCV_1:
             case RchConstants.Z_DPT_HEB_HIB_1:
-                dob.add(Calendar.DATE, 28);
+                // All initial doses: 4 weeks ±2 weeks
+                dob.add(Calendar.DATE, 28 - BUFFER_DAYS); // Lower bound with buffer
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
 
             case RchConstants.Z_OPV_2:
-                dob.add(Calendar.DATE, 56);
+                dob.add(Calendar.DATE, 63 - BUFFER_DAYS); // Lower bound with buffer
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_OPV_1);
                 if (tmpDate != null) {
@@ -1986,7 +2093,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_OPV_3:
-                dob.add(Calendar.DATE, 84);
+                dob.add(Calendar.DATE, 84 - BUFFER_DAYS); // Lower bound with buffer
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.OPV_1);
                 if (tmpDate != null) {
@@ -2008,7 +2115,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_ROTA_VACCINE_2:
-                dob.add(Calendar.DATE, 56);
+                dob.add(Calendar.DATE, 63 - BUFFER_DAYS); // Lower bound with buffer
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_ROTA_VACCINE_1);
                 if (tmpDate != null) {
@@ -2022,7 +2129,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_PCV_2:
-                dob.add(Calendar.DATE, 56);
+                dob.add(Calendar.DATE, 63 - BUFFER_DAYS); // Lower bound with buffer
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
                 if (tmpDate != null) {
@@ -2036,7 +2143,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_PCV_3:
-                dob.add(Calendar.DATE, 84);
+                dob.add(Calendar.DATE, 84 - BUFFER_DAYS); // Lower bound with buffer
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_PCV_1);
                 if (tmpDate != null) {
@@ -2058,7 +2165,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_DPT_HEB_HIB_2:
-                dob.add(Calendar.DATE, 56);
+                dob.add(Calendar.DATE, 63 - BUFFER_DAYS); // Lower bound with buffer
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
                 if (tmpDate != null) {
@@ -2072,7 +2179,7 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_DPT_HEB_HIB_3:
-                dob.add(Calendar.DATE, 84);
+                dob.add(Calendar.DATE, 84 - BUFFER_DAYS); // Lower bound with buffer
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.Z_DPT_HEB_HIB_1);
                 if (tmpDate != null) {
@@ -2094,14 +2201,17 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 break;
 
             case RchConstants.Z_MEASLES_RUBELLA_1:
+                // Measles Rubella 1: 8 months ±2 weeks
                 dob.add(Calendar.MONTH, 8);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
 
-
             case RchConstants.Z_MEASLES_RUBELLA_2:
+                // Measles Rubella 2: 16 months ±2 weeks
                 dob.add(Calendar.MONTH, 16);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
                 lbw = dob.getTime();
                 tmpDate = vaccineGivenDateMap.get(RchConstants.MEASLES_RUBELLA_1);
                 if (tmpDate != null) {
@@ -2111,6 +2221,16 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                         lbw = temp.getTime();
                     }
                 }
+                dob.setTime(dateOfBirth);
+                break;
+            case RchConstants.Z_OPV_4:
+                dob.add(Calendar.MONTH, 9);
+                dob.add(Calendar.DATE, -BUFFER_DAYS);
+                lbw = dob.getTime();
+                dob.setTime(dateOfBirth);
+                dob.add(Calendar.MONTH, 10);
+                dob.add(Calendar.DATE, BUFFER_DAYS);
+                ubw = dob.getTime();
                 dob.setTime(dateOfBirth);
                 break;
             default:
@@ -2124,6 +2244,8 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                             !UtilBean.clearTimeFromDate(ubw).after(currentDate) :
                             (!UtilBean.clearTimeFromDate(lbw).before(currentDate) || !UtilBean.clearTimeFromDate(ubw).after(currentDate)));
         }
+
+        // Format date ranges for display
         if (immunisation.equalsIgnoreCase(RchConstants.Z_BCG) ||
                 immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_50000) ||
                 immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_100000) ||
@@ -2135,11 +2257,13 @@ public class ImmunisationServiceImpl implements ImmunisationService {
                 immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_6) ||
                 immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_7) ||
                 immunisation.equalsIgnoreCase(RchConstants.Z_VITTAMIN_A_200000_8) ||
-                immunisation.equalsIgnoreCase(RchConstants.Z_OPV_0)) {
+                immunisation.equalsIgnoreCase(RchConstants.Z_OPV_0) ||
+                immunisation.equalsIgnoreCase(RchConstants.Z_OPV_4)) {
             dateRange = sdf.format(lbw) + " - " + sdf.format(ubw);
         } else {
             dateRange = "After " + sdf.format(lbw);
         }
+
         vaccineMissedMap.put(isMissed, dateRange);
         return vaccineMissedMap;
     }

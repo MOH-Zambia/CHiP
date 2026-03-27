@@ -20,20 +20,11 @@ import java.time.LocalDateTime;
 public class PatientData extends EntityAuditInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "referral_id", nullable = false, unique = true)
     private String referralId;
 
-//    @Column(name = "created_on", nullable = false)
-//    private Date createdOn;
-
     @Column(name = "nrc", nullable = false)
     private String nrc;
-
-//    @Column(name = "created_by", nullable = false)
-//    private int createdBy;
-
-
-
 }

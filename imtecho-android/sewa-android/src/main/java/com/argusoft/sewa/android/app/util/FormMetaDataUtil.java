@@ -389,7 +389,7 @@ public class FormMetaDataUtil {
 
         if (memberBean.getChronicDiseaseIds() != null && !memberBean.getChronicDiseaseIds().isEmpty()) {
             StringBuilder builder = new StringBuilder();
-            if (memberBean.getChronicDiseaseIds().contains(",")) {
+            if (memberBean.getChronicDiseaseIds() != null || memberBean.getChronicDiseaseIds().contains(",")) {
                 String[] split = memberBean.getChronicDiseaseIds().split(",");
                 for (int i = 0; i < split.length; i++) {
                     builder.append(UtilBean.getNotAvailableIfNull(fhsService.getValueOfListValuesById(split[i])));
@@ -597,8 +597,20 @@ public class FormMetaDataUtil {
             SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.INDEX_CASE, "No");
         }
 
-        if (memberBean.getChronicDiseaseIds() != null && !memberBean.getChronicDiseaseIds().isEmpty()) {
-            SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHRONIC_DISEASE_IDS, memberBean.getChronicDiseaseIds());
+        if (memberBean.getChronicDiseaseIds() != null) {
+            if (memberBean.getChronicDiseaseIds().isEmpty() || "NONE".equalsIgnoreCase(memberBean.getChronicDiseaseIds())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHRONIC_DISEASE_IDS, "NONE");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHRONIC_DISEASE_IDS, memberBean.getChronicDiseaseIds());
+            }
+        }
+
+        if (memberBean.getDisabilityIds() != null) {
+            if (memberBean.getDisabilityIds().isEmpty() || "NONE".equalsIgnoreCase(memberBean.getDisabilityIds())) {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DISABLITY_IDS, "NONE");
+            } else {
+                SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DISABLITY_IDS, memberBean.getDisabilityIds());
+            }
         }
 
         if (memberBean.getCurrentDiseaseIds() != null && !memberBean.getCurrentDiseaseIds().isEmpty()) {
@@ -2097,7 +2109,7 @@ public class FormMetaDataUtil {
 
             if (memberDataBean.getChronicDiseaseIds() != null && !memberDataBean.getChronicDiseaseIds().isEmpty()) {
                 StringBuilder builder = new StringBuilder();
-                if (memberDataBean.getChronicDiseaseIds().contains(",")) {
+                if (memberDataBean.getChronicDiseaseIds() != null || memberDataBean.getChronicDiseaseIds().contains(",")) {
                     String[] split = memberDataBean.getChronicDiseaseIds().split(",");
                     for (int i = 0; i < split.length; i++) {
                         builder.append(UtilBean.getNotAvailableIfNull(fhsService.getValueOfListValuesById(split[i])));
@@ -2225,7 +2237,19 @@ public class FormMetaDataUtil {
                 }
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHRONIC_DISEASE_IDS, chronicDiseaseIds);
             } else {
+                if (memberDataBean.getChronicDiseaseIds() != null
+                        && (memberDataBean.getChronicDiseaseIds().isEmpty() || "NONE".equalsIgnoreCase(memberDataBean.getChronicDiseaseIds()))) {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHRONIC_DISEASE_IDS, "NONE");
+                }
                 SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.CHRONIC_DISEASE_STATUS, "2");
+            }
+
+            if (memberDataBean.getDisabilityIds() != null) {
+                if (memberDataBean.getDisabilityIds().isEmpty() || "NONE".equalsIgnoreCase(memberDataBean.getDisabilityIds())) {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DISABLITY_IDS, "NONE");
+                } else {
+                    SharedStructureData.relatedPropertyHashTable.put(RelatedPropertyNameConstants.DISABLITY_IDS, memberDataBean.getDisabilityIds());
+                }
             }
 
             if (memberDataBean.getCurrentDiseaseIds() != null && !memberDataBean.getCurrentDiseaseIds().isEmpty()) {
