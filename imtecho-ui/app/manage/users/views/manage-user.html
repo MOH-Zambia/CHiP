@@ -298,20 +298,22 @@
                                         </validate>
                                     </div>
                                     <div class="form-group" ng-if="usercontroller.env=='chip' && usercontroller.isUserSmagTrained">
-                                        <validate for='isUserSmagTrained' required-msg="Please Select Value"></validate>
-                                        <label for="isUserSmagTrained" style="text-wrap: wrap;">Is User SMAG Trained (Safe Motherhood Action Group)</label>
+                                        <validate for='isUserSmagTrained' required-msg="Please Select Value">
+                                        <label for="isUserSmagTrained" style="text-wrap: wrap;">Is User SMAG Trained <span
+                                                class="required-asterisk">*</span>(Safe Motherhood Action Group)</label>
                                         <label class="control control-radio">Yes
                                             <input ng-value="true"
                                                 name="Yes" type="radio" ng-model="usercontroller.userObj.isUserSmagTrained"
-                                                required>
+                                                form-control required>
                                             <div class="control_indicator"></div>
                                         </label>
                                         <label class="control control-radio">No
                                             <input ng-value="false"
                                                 name="No" type="radio" ng-model="usercontroller.userObj.isUserSmagTrained"
-                                                required>
+                                                   form-control required>
                                             <div class="control_indicator"></div>
                                         </label>
+                                        <placeholder></placeholder>
                                         </validate>
                                     </div>
                                     <div class="form-group" ng-if="!!usercontroller.userObj.loginCode">
