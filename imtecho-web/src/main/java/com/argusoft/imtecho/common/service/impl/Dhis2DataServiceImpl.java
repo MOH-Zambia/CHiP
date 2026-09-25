@@ -12,6 +12,7 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
@@ -39,6 +40,10 @@ public class Dhis2DataServiceImpl implements Dhis2DataService {
     private static final String DHIS2_PASSWORD = "Newp@ss2";
 
     @Override
+    // Its own transaction, so one facility's failure cannot mark the
+    // scheduled run's transaction rollback-only and take the other 39
+    // with it. Also lets the call-log interceptor's insert commit.
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String sendData(Date monthEnd, Integer facilityId) {
         String jsonString = dhis2Dao.getData(monthEnd, facilityId);
 
