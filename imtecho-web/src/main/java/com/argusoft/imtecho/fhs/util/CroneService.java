@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -358,9 +359,39 @@ public class CroneService {
 
     public void syncDataForDhis2(){
         List<Integer> facilityIds = dhis2DataService.getEnabledFacilities();
-        Date currentDate = new Date();
+        // The previous, COMPLETED month - deliberately not today. DHIS2 rejects
+        // the running period outright: data set SR9ZbwPhMOI carries a latest
+        // open future period one month back, so a push for the current month
+        // returns HTTP 409 with every value ignored. Passing new Date() here is
+        // why this job had never once succeeded. Midday, so a timezone shift
+        // cannot roll the date back into the month before.
+        Calendar dhis2ReportingMonth = Calendar.getInstance();
+        dhis2ReportingMonth.add(Calendar.MONTH, -1);
+        dhis2ReportingMonth.set(Calendar.DAY_OF_MONTH,
+                dhis2ReportingMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+        dhis2ReportingMonth.set(Calendar.HOUR_OF_DAY, 12);
+        dhis2ReportingMonth.set(Calendar.MINUTE, 0);
+        dhis2ReportingMonth.set(Calendar.SECOND, 0);
+        dhis2ReportingMonth.set(Calendar.MILLISECOND, 0);
+        Date currentDate = dhis2ReportingMonth.getTime();
+        int dhis2SyncOk = 0;
+        int dhis2SyncFailures = 0;
         for(Integer facilityId : facilityIds){
-            dhis2DataService.sendData(currentDate, facilityId);
+            // Per facility, so one unreachable facility costs one facility
+            // rather than the whole month. sendData runs in its own
+            // transaction (REQUIRES_NEW), so a failure here does not mark this
+            // run's transaction rollback-only.
+            try {
+                dhis2DataService.sendData(currentDate, facilityId);
+                dhis2SyncOk++;
+            } catch (Exception exception) {
+                dhis2SyncFailures++;
+                Logger.getLogger(CroneService.class.getName()).log(Level.SEVERE,
+                        "DHIS2 sync failed for facility " + facilityId, exception);
+            }
         }
+        Logger.getLogger(CroneService.class.getName()).log(Level.INFO,
+                "DHIS2 sync for {0}: {1} succeeded, {2} failed, of {3} enabled facilities",
+                new Object[]{currentDate, dhis2SyncOk, dhis2SyncFailures, facilityIds.size()});
     }
 }
